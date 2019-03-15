@@ -1,0 +1,7 @@
+.App {
+  padding: 20px;
+}
+
+.p-steps .p-steps-item{
+  width: calc(100% / 6)
+}
