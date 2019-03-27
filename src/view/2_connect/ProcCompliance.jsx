@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import ProjectModel from './../models/ProjectModel';
+import ProjectModel from '../../models/ProjectModel';
 
 export default class StepProcCompliance extends Component {
   constructor(props) {

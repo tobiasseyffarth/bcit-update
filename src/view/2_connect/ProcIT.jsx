@@ -2,7 +2,7 @@ import { Component } from 'react';
 import { Button } from 'primereact/button';
 import PropTypes from 'prop-types'; // ES6
 
-import ProjectModel from './../models/ProjectModel';
+import ProjectModel from '../../models/ProjectModel';
 
 export default class StepProcIT extends Component {
   constructor(props) {

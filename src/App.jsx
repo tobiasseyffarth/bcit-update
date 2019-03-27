@@ -10,14 +10,10 @@ import 'primereact/resources/primereact.css';
 import 'mini.css';
 import './App.css';
 
-import TopMenu from './TopMenu';
-import ComplianceWizard from './ComplianceWizard';
+import TopMenu from './view/TopMenu';
+import ConnectWizard from './view/2_connect/ConnectWizard';
+import ImportModels from './view/1_import/ImportModels';
 
-const Home = () => (
-  <div>
-    <h2>Home</h2>
-  </div>
-);
 
 export default class App extends Component {
   state = {
@@ -31,11 +27,14 @@ export default class App extends Component {
           <div>
             <TopMenu />
             <header>
-              <Link href="/" to="/" className="logo">Home</Link>
+              <Link href="/" to="/import" className="logo">Import Models</Link>
+                <Link href="/" to="/connect" className="logo">Connect Models</Link>
+                <Link href="/" to="/alternatives" className="logo">Define Alternatives</Link>
+                <Link href="/" to="/analyze" className="logo">Analyze Models</Link>
             </header>
             <div className="container content">
-              <Route exact path="/" component={Home} />
-              <Route path="/wizard" component={ComplianceWizard} />
+              <Route exact path="/import" component={ImportModels} />
+              <Route path="/connect" component={ConnectWizard} />
             </div>
           </div>
         </Router>

@@ -53,11 +53,11 @@ export default class TopMenu extends Component {
     return (
       <div>
         <Menubar model={items}>
-          <li className="p-menuitem">
-            <Link href="/wizard" to="/wizard" className="p-menuitem-link">
-              <span className="p-menuitem-text">Wizard</span>
+          <p className="p-menuitem">
+            <Link href="/about" to="/about" className="p-menuitem-link">
+              <span className="p-menuitem-text">About</span>
             </Link>
-          </li>
+          </p>
         </Menubar>
       </div>
     );
