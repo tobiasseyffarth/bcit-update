@@ -6,13 +6,19 @@ export default class TopMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      visible: false,
     };
+    this.showAboutDialog = this.showAboutDialog.bind(this);
   }
 
   state = {
     // name: 'zeugnis',
   };
+
+  showAboutDialog(event) {
+    console.log('click');
+    this.setState({ visible: true });
+  }
 
   render() {
     const items = [
@@ -54,7 +60,7 @@ export default class TopMenu extends Component {
       <div>
         <Menubar model={items}>
           <p className="p-menuitem">
-            <Link href="/about" to="/about" className="p-menuitem-link">
+            <Link href="/about" to="/about" className="p-menuitem-link" onClick={this.showAboutDialog}>
               <span className="p-menuitem-text">About</span>
             </Link>
           </p>

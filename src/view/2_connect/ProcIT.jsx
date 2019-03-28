@@ -7,15 +7,13 @@ import ProjectModel from '../../models/ProjectModel';
 export default class StepProcIT extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-
-    };
+    this.state = {};
   }
 
   render() {
     return (
       <div>
-        Zuordnung Prozess zu IT <br />
+          Zuordnung Prozess zu IT <br />
         {ProjectModel.getName()}
         <Button
           label="Next"

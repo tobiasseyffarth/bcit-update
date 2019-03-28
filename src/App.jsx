@@ -16,9 +16,6 @@ import ImportModels from './view/1_import/ImportModels';
 
 
 export default class App extends Component {
-  state = {
-    // name: 'zeugnis',
-  };
 
   render() {
     return (
@@ -28,9 +25,9 @@ export default class App extends Component {
             <TopMenu />
             <header>
               <Link href="/" to="/import" className="logo">Import Models</Link>
-                <Link href="/" to="/connect" className="logo">Connect Models</Link>
-                <Link href="/" to="/alternatives" className="logo">Define Alternatives</Link>
-                <Link href="/" to="/analyze" className="logo">Analyze Models</Link>
+              <Link href="/" to="/connect" className="logo">Connect Models</Link>
+              <Link href="/" to="/alternatives" className="logo">Define Alternatives</Link>
+              <Link href="/" to="/analyze" className="logo">Analyze Models</Link>
             </header>
             <div className="container content">
               <Route exact path="/import" component={ImportModels} />

@@ -10,7 +10,8 @@ module.exports = {
           "no-await-in-loop": "off",
           "consistent-return": "off",
           "function-paren-newline": "off",
-          "linebreak-style": "off"
+          "linebreak-style": "off",
+          "no-unused-state": "off"
         }
       }
     }],

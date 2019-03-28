@@ -1,20 +1,20 @@
 import { Component } from 'react';
 import ProjectModel from '../../models/ProjectModel';
+import BpmnView from '../BpmnView';
+import BpmnPanel from '../BpmnPanel';
 
 export default class StepProcCompliance extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-
-    };
+    this.state = {};
     ProjectModel.setName('New Name');
   }
 
   render() {
     return (
       <div>
-        Zuordnung Prozess zu Compliance <br />
-        {ProjectModel.getName()}
+        <BpmnView />
+        <BpmnPanel />
       </div>
     );
   }
