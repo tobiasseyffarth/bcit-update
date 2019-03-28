@@ -10,6 +10,11 @@ export default class StepITCompliance extends Component {
         this.state = {
 
         };
+        this.click= this.click.bind(this);
+    }
+
+    click(){
+        console.log(ProjectModel.getBpmnXml());
     }
 
     render() {
@@ -19,6 +24,7 @@ export default class StepITCompliance extends Component {
                 {ProjectModel.getName()}
                 <Button
                     label="Next"
+                    onClick={this.click}
                 />
             </div>
         );

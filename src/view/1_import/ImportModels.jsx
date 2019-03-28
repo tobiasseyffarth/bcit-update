@@ -2,8 +2,9 @@ import { Component } from 'react';
 import { Button } from 'primereact/button';
 import { Growl } from 'primereact/growl';
 import PropTypes from 'prop-types'; // ES6
+import * as fileio from './../../controller/helpers/fileio';
 
-//import ProjectModel from './../../models/ProjectModel';
+import ProjectModel from './../../models/ProjectModel';
 
 export default class ImportModels extends Component {
     constructor(props) {
@@ -14,7 +15,13 @@ export default class ImportModels extends Component {
         this.openBPMN = this.openBPMN.bind(this);
     }
 
+    async openFile(){
+        let file = await fileio.getFile();
+        let input = await fileio.readFile(file);
+    }
+
     openCompliance(){
+
         this.growl.show({severity: 'info', summary: 'Compliance successfull imported', detail: 'detail...'});
     }
 
@@ -22,7 +29,10 @@ export default class ImportModels extends Component {
         this.growl.show({severity: 'info', summary: 'Infra successfull imported', detail: 'detail...'});
     }
 
-    openBPMN(){
+    async openBPMN(){
+        let file = await fileio.getFile();
+        let input = await fileio.readFile(file);
+        ProjectModel.setBpmnXml(input);
         this.growl.show({severity: 'info', summary: 'BPMN successfull imported', detail: 'detail...'});
     }
 
