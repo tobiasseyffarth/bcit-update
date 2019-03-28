@@ -11,9 +11,9 @@ import 'mini.css';
 import './App.css';
 
 import TopMenu from './view/TopMenu';
-import ConnectWizard from './view/2_connect/ConnectWizard';
 import ImportModels from './view/1_import/ImportModels';
-
+import ConnectWizard from './view/2_connect/ConnectWizard';
+import AnalyzeWizard from './view/4_analyze/AnalyzeWizard';
 
 export default class App extends Component {
 
@@ -32,6 +32,7 @@ export default class App extends Component {
             <div className="container content">
               <Route exact path="/import" component={ImportModels} />
               <Route path="/connect" component={ConnectWizard} />
+              <Route path="/analyze" component={AnalyzeWizard} />
             </div>
           </div>
         </Router>

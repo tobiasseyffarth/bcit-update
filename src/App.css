@@ -1,37 +1,42 @@
 .App {
-  padding: 20px;
+    padding: 20px;
+    height: 100%; /*change*/
 }
 
-.p-steps .p-steps-item{
-  width: calc(100% / 6)
+.p-steps .p-steps-item {
+    width: calc(100% / 6)
 }
 
-.bpmn-viewer {
-  height: 500px;
+.viewer {
+    flex: auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
-
-.infra-viewer{
-
+.property-panel {
+    overflow: auto;
+    flex-direction: column;
+    min-width: 300px;
 }
 
-.property-panel{
-  overflow: auto;
-  width: 300px;
-  background-color: #f8f8f8;
+.property-panel .infra{
+    width: 300px;
 }
-
 
 .container-process {
-  display: flex;
-  flex-direction: row;
-  box-shadow: 0 2px 10px grey;
-  flex: 50%;
+    display: flex;
+    flex-direction: row;
+    height: 350px;
 }
 
-.bpmn-container {
-  flex: auto;
-  position: relative;
-  display: flex;
-  flex-direction: column;
+.container-compliance {
+    height: 350px;
+}
+
+.container-infra {
+    display: flex;
+    flex-direction: row;
+    height: 350px;
 }

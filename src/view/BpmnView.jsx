@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
-// import BpmnPanel from './BpmnPanel';
 
 import ProjectModel from './../models/ProjectModel';
 import processquery from './../controller/processquery';
@@ -23,8 +22,8 @@ class BpmnView extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.bpmnXml !== this.props.bpmnXml) {
-      this.renderDiagram(nextProps.bpmnXml);
+    if (nextProps.view !== this.props.view) {
+
     }
   }
 
@@ -50,16 +49,24 @@ class BpmnView extends Component {
 
   hookOnClick(e) {
     const element = e.element;
-    this.setState({ element });
+    this.setState({element});
     const process = ProjectModel.getProcess();
     console.log(process);
+
+    if (this.props.view === 'connectProcessInfra') {
+
+    } else if (this.props.view === 'connectProcessCompliance') {
+
+    } else if (this.props.view === 'analyzeProcess') {
+
+    }
   }
 
   render() {
     return (
-      <div className="content">
-        <div className="bpmn-viewer" id="canvas" />
-      </div>
+        <div>
+          <div className="viewer" id="canvas"/>
+        </div>
     );
   }
 }
