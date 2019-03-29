@@ -1,16 +1,15 @@
 // import { Steps } from 'primereact/steps';
-import { Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types'; // ES6
 import { TabView, TabPanel } from 'primereact/tabview';
-import BpmnView from '../BpmnView';
 import InfraView from '../InfraView';
 import ComplianceView from '../ComplianceView';
+import BpmnView from '../BpmnView';
 
 export default class AnalyzeWizard extends Component {
   state = {
     // name: 'zeugnis',
   };
-
 
   render() {
     return (
@@ -19,7 +18,7 @@ export default class AnalyzeWizard extends Component {
           <TabView>
             <TabPanel header="View process model" leftIcon="pi pi-calendar" contentStyle={{}}>
               <section className="container-process">
-                <BpmnView view="analyzeProcess" />
+                <BpmnView />
               </section>
             </TabPanel>
             <TabPanel header="View infrastructure model" leftIcon="pi pi-calendar" contentStyle={{}}>

@@ -3,10 +3,10 @@ function getElement(viewer, e) {
   return e.element;
 }
 
-function getProcess(viewer, e) {
-  if (e === null) {
+export function getProcess(viewer, e) {
+  if (e === null || e===undefined) {
     const elementRegistry = viewer.get('elementRegistry');
-    let nodes = elementRegistry.getAll();
+    const nodes = elementRegistry.getAll();
     for (let i = 0; i < nodes.length; i++) {
       if (nodes[i].businessObject.$type === 'bpmn:Process') {
         return nodes[i].businessObject;
@@ -44,7 +44,7 @@ function getFlowElementsOfProcess(process) {
 
 // final
 function getFlowNodesOfProcess(process) {
-  let flowElements = getFlowElementsOfProcess(process);
+  const flowElements = getFlowElementsOfProcess(process);
   const nodes = [];
 
   if (flowElements != null) {
@@ -60,7 +60,7 @@ function getFlowNodesOfProcess(process) {
 
 // final
 function getSequenceFlowsofProcess(process) {
-  let flowElements = getFlowElementsOfProcess(process);
+  const flowElements = getFlowElementsOfProcess(process);
   const sequence = [];
 
   if (flowElements != null) {
@@ -76,7 +76,7 @@ function getSequenceFlowsofProcess(process) {
 
 // final
 function getFlowElementById(process, id) {
-  let flowElements = getFlowElementsOfProcess(process);
+  const flowElements = getFlowElementsOfProcess(process);
 
   for (let i = 0; i < flowElements.length; i++) {
     if (flowElements[i].id === id) {
@@ -293,7 +293,7 @@ function isTaskOrSubprocess(input) {
 }
 
 // final
-export function getSucessors(flownode) {
+function getSucessors(flownode) {
   const result = [];
 
   if (flownode.outgoing !== undefined) {
@@ -308,7 +308,7 @@ export function getSucessors(flownode) {
 }
 
 // testen
-export function getPredecessors(flownode) {
+function getPredecessors(flownode) {
   const result = [];
 
   if (flownode.incoming !== undefined) {
@@ -422,7 +422,7 @@ function searchTrace(openTraces, finalTraces, endNode) {
 }
 
 // todo: testen
-export function getTraces(process) {
+function getTraces(process) {
   const finalTraces = [];
   const openTraces = [];
   const trace = [];
@@ -436,7 +436,7 @@ export function getTraces(process) {
   return searchTrace(openTraces, finalTraces, endNode);
 }
 
-
+/*
 module.exports = {
   getElement,
   getProcess,
@@ -458,3 +458,5 @@ module.exports = {
   isDataStore,
   isTaskOrSubprocess,
 };
+
+*/

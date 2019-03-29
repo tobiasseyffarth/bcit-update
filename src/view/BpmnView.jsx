@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
-
 import ProjectModel from './../models/ProjectModel';
-import processquery from './../controller/processquery';
+import * as processquery from './../controller/processquery';
 
 class BpmnView extends Component {
   constructor(props) {
@@ -13,7 +12,9 @@ class BpmnView extends Component {
   componentDidMount() {
     this.bpmnModeler = new BpmnModeler({
       container: '#canvas',
+      height: '350px',
     });
+
     this.hookEventBus();
 
     if (ProjectModel.getBpmnXml() !== null) {
@@ -36,7 +37,7 @@ class BpmnView extends Component {
     const { element } = e;
     this.setState({ element });
     const process = ProjectModel.getProcess();
-    console.log(process);
+
     /*
     if (this.props.view === 'connectProcessInfra') {
 
@@ -56,18 +57,17 @@ class BpmnView extends Component {
         ProjectModel.setViewer(this.bpmnModeler);
         const process = processquery.getProcess(this.bpmnModeler);
         ProjectModel.setProcess(process);
-
         const canvas = this.bpmnModeler.get('canvas');
-        canvas.zoom('fit-viewport', 'auto');
+        canvas.zoom('fit-viewport');
       }
     });
   };
 
   render() {
     return (
-      <div>
-        <div className="viewer" id="canvas" />
-      </div>
+        <div className="viewer">
+          <div id="canvas"></div>
+        </div>
     );
   }
 }
