@@ -1,4 +1,4 @@
-import { Steps } from 'primereact/steps';
+// import { Steps } from 'primereact/steps';
 import { Component } from 'react';
 import PropTypes from 'prop-types'; // ES6
 import { TabView, TabPanel } from 'primereact/tabview';

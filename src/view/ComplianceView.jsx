@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './../App.css';
-import ProjectModel from './../models/ProjectModel';
-import './../App.css';
+// import ProjectModel from './../models/ProjectModel';
 
 class ComplianceView extends Component {
   constructor(props) {
