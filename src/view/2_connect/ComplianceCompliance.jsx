@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { Button } from 'primereact/button';
 import PropTypes from 'prop-types'; // ES6
-import ComplianceView from './../ComplianceView';
+import ComplianceView from '../container/ComplianceView';
 import ProjectModel from '../../models/ProjectModel';
 
 export default class StepComplianceCompliance extends Component {

@@ -1,9 +1,9 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import InfraPanel from './../InfraPanel';
-import InfraView from './../InfraView';
-import ComplianceView from './../ComplianceView';
+import InfraPanel from '../container/InfraPanel';
+import InfraView from '../container/InfraView';
+import ComplianceView from '../container/ComplianceView';
 import './../../App.css';
 // import ProjectModel from '../../models/ProjectModel';
 

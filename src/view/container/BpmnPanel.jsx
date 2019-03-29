@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import './../App.css';
+import '../../App.css';
 // import ProjectModel from './../models/ProjectModel';
 
-class InfraPanel extends Component {
+class BpmnPanel extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -19,10 +19,10 @@ class InfraPanel extends Component {
   render() {
     return (
       <div className="property-panel">
-        <p>Infra Panel</p>
+        <p>BPMN Panel</p>
       </div>
     );
   }
 }
 
-export default InfraPanel;
+export default BpmnPanel;

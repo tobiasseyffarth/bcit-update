@@ -1,8 +1,8 @@
 import { Component } from 'react';
 import ProjectModel from '../../models/ProjectModel';
-import BpmnView from '../BpmnView';
-import BpmnPanel from '../BpmnPanel';
-import ComplianceView from '../ComplianceView';
+import BpmnView from '../container/BpmnView';
+import BpmnPanel from '../container/BpmnPanel';
+import ComplianceView from '../container/ComplianceView';
 
 export default class StepProcCompliance extends Component {
   constructor(props) {

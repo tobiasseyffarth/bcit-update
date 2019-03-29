@@ -1,12 +1,11 @@
-// import { Steps } from 'primereact/steps';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'; // ES6
 import { TabView, TabPanel } from 'primereact/tabview';
-import InfraView from '../InfraView';
-import ComplianceView from '../ComplianceView';
-import BpmnView from '../BpmnView';
+import InfraView from '../container/InfraView';
+import ComplianceView from '../container/ComplianceView';
+import BpmnView from '../container/BpmnView';
 
-export default class AnalyzeWizard extends Component {
+export default class Analyze extends Component {
   state = {
     // name: 'zeugnis',
   };
@@ -38,7 +37,7 @@ export default class AnalyzeWizard extends Component {
   }
 }
 
-AnalyzeWizard.propTypes = {
+Analyze.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,

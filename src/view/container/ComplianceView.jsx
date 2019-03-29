@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import './../App.css';
+import '../../App.css';
 // import ProjectModel from './../models/ProjectModel';
 
-class BpmnPanel extends Component {
+class ComplianceView extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -18,11 +18,11 @@ class BpmnPanel extends Component {
 
   render() {
     return (
-      <div className="property-panel">
-        <p>BPMN Panel</p>
+      <div>
+        <p>Compliance View</p>
       </div>
     );
   }
 }
 
-export default BpmnPanel;
+export default ComplianceView;

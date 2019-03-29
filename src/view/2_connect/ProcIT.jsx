@@ -1,9 +1,9 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types'; // ES6
-import InfraPanel from './../InfraPanel';
-import InfraView from './../InfraView';
-import BpmnView from '../BpmnView';
-import BpmnPanel from '../BpmnPanel';
+import InfraPanel from '../container/InfraPanel';
+import InfraView from '../container/InfraView';
+import BpmnView from '../container/BpmnView';
+import BpmnPanel from '../container/BpmnPanel';
 // import ProjectModel from '../../models/ProjectModel';
 
 export default class StepProcIT extends Component {

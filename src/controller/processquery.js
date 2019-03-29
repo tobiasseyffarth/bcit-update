@@ -4,7 +4,7 @@ function getElement(viewer, e) {
 }
 
 export function getProcess(viewer, e) {
-  if (e === null || e===undefined) {
+  if (e === null || e === undefined) {
     const elementRegistry = viewer.get('elementRegistry');
     const nodes = elementRegistry.getAll();
     for (let i = 0; i < nodes.length; i++) {

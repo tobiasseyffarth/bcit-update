@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
-import ProjectModel from './../models/ProjectModel';
-import * as processquery from './../controller/processquery';
+import ProjectModel from '../../models/ProjectModel';
+import * as processquery from '../../controller/processquery';
 
 class BpmnView extends Component {
   constructor(props) {
@@ -38,6 +38,8 @@ class BpmnView extends Component {
     this.setState({ element });
     const process = ProjectModel.getProcess();
 
+    console.log(process);
+
     /*
     if (this.props.view === 'connectProcessInfra') {
 
@@ -65,9 +67,9 @@ class BpmnView extends Component {
 
   render() {
     return (
-        <div className="viewer">
-          <div id="canvas"></div>
-        </div>
+      <div className="viewer">
+        <div id="canvas" />
+      </div>
     );
   }
 }

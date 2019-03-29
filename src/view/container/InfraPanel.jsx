@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import './../App.css';
+import '../../App.css';
 // import ProjectModel from './../models/ProjectModel';
 
-class ComplianceView extends Component {
+class InfraPanel extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -18,11 +18,11 @@ class ComplianceView extends Component {
 
   render() {
     return (
-      <div>
-        <p>Compliance View</p>
+      <div className="property-panel">
+        <p>Infra Panel</p>
       </div>
     );
   }
 }
 
-export default ComplianceView;
+export default InfraPanel;

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './../App.css';
+import '../../App.css';
 // import ProjectModel from './../models/ProjectModel';
 
 class InfraView extends Component {
