@@ -11,7 +11,12 @@ module.exports = {
           "consistent-return": "off",
           "function-paren-newline": "off",
           "linebreak-style": "off",
-          "no-unused-state": "off"
+          "no-unused-state": "off",
+          "react/prop-types": "off",
+          "react/no-unused-state": "off",
+          "no-unused-vars": "off",
+          "react/sort-comp": "off",
+          "react/prefer-stateless-function": "off"
         }
       }
     }],

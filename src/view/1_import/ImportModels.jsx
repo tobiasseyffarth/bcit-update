@@ -15,7 +15,7 @@ export default class ImportModels extends Component {
     this.openBPMN = this.openBPMN.bind(this);
   }
 
-  async openFile() {
+  static async openFile() {
     const file = await fileio.getFile();
     const input = await fileio.readFile(file);
   }
@@ -38,7 +38,7 @@ export default class ImportModels extends Component {
   render() {
     return (
       <div>
-        <Growl ref={el => this.growl = el} position="topright" />
+        <Growl ref={(el) => { this.growl = el; }} position="topright" />
         <div>
           <br />
           <br />

@@ -18,9 +18,9 @@ class InfraView extends Component {
 
   render() {
     return (
-        <div className="viewer">
-          <p>Infra View</p>
-        </div>
+      <div className="viewer">
+        <p>Infra View</p>
+      </div>
     );
   }
 }

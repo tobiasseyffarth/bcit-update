@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import {Button} from 'primereact/button';
+import { Button } from 'primereact/button';
 import PropTypes from 'prop-types'; // ES6
 import InfraPanel from './../InfraPanel';
 import InfraView from './../InfraView';
@@ -16,16 +16,16 @@ export default class StepProcIT extends Component {
 
   render() {
     return (
-        <div>
-          <section className="container-process">
-            <BpmnView view={'connectProcessInfra'}/>
-            <BpmnPanel />
-          </section>
-          <section className="container-infra">
-            <InfraView />
-            <InfraPanel />
-          </section>
-        </div>
+      <div>
+        <section className="container-process">
+          <BpmnView view="connectProcessInfra" />
+          <BpmnPanel />
+        </section>
+        <section className="container-infra">
+          <InfraView />
+          <InfraPanel />
+        </section>
+      </div>
     );
   }
 }

@@ -18,9 +18,9 @@ class InfraPanel extends Component {
 
   render() {
     return (
-        <div className="property-panel">
-          <p>Infra Panel</p>
-        </div>
+      <div className="property-panel">
+        <p>Infra Panel</p>
+      </div>
     );
   }
 }

@@ -19,9 +19,9 @@ class BpmnPanel extends Component {
 
   render() {
     return (
-        <div className="property-panel">
-          <p>BPMN Panel</p>
-        </div>
+      <div className="property-panel">
+        <p>BPMN Panel</p>
+      </div>
     );
   }
 }

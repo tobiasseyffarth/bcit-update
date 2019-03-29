@@ -16,7 +16,6 @@ import ConnectWizard from './view/2_connect/ConnectWizard';
 import AnalyzeWizard from './view/4_analyze/AnalyzeWizard';
 
 export default class App extends Component {
-
   render() {
     return (
       <div>

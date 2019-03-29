@@ -15,7 +15,7 @@ export default class TopMenu extends Component {
     // name: 'zeugnis',
   };
 
-  showAboutDialog(event) {
+  showAboutDialog(/* event */) {
     console.log('click');
     this.setState({ visible: true });
   }

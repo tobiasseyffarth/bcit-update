@@ -19,9 +19,9 @@ class ComplianceView extends Component {
 
   render() {
     return (
-        <div>
-          <p>Compliance View</p>
-        </div>
+      <div>
+        <p>Compliance View</p>
+      </div>
     );
   }
 }
