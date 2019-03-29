@@ -1,13 +1,11 @@
 import { Component } from 'react';
-import { Button } from 'primereact/button';
 import PropTypes from 'prop-types';
 
 import InfraPanel from './../InfraPanel';
 import InfraView from './../InfraView';
 import ComplianceView from './../ComplianceView';
 import './../../App.css';
-
-import ProjectModel from '../../models/ProjectModel';
+// import ProjectModel from '../../models/ProjectModel';
 
 export default class StepITCompliance extends Component {
   constructor(props) {

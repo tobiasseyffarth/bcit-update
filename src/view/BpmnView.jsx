@@ -27,21 +27,6 @@ class BpmnView extends Component {
     }
   }
 
-  renderDiagram = (xml) => {
-    this.bpmnModeler.importXML(xml, (err) => {
-      if (err) {
-        console.log('error rendering', err);
-      } else {
-        ProjectModel.setViewer(this.bpmnModeler);
-        const process = processquery.getProcess(this.bpmnModeler);
-        ProjectModel.setProcess(process);
-
-        const canvas = this.bpmnModeler.get('canvas');
-        canvas.zoom('fit-viewport', 'auto');
-      }
-    });
-  };
-
   hookEventBus() {
     const eventBus = this.bpmnModeler.get('eventBus');
     eventBus.on('element.click', e => this.hookOnClick(e));
@@ -62,6 +47,21 @@ class BpmnView extends Component {
     }
     */
   }
+
+  renderDiagram = (xml) => {
+    this.bpmnModeler.importXML(xml, (err) => {
+      if (err) {
+        console.log('error rendering', err);
+      } else {
+        ProjectModel.setViewer(this.bpmnModeler);
+        const process = processquery.getProcess(this.bpmnModeler);
+        ProjectModel.setProcess(process);
+
+        const canvas = this.bpmnModeler.get('canvas');
+        canvas.zoom('fit-viewport', 'auto');
+      }
+    });
+  };
 
   render() {
     return (

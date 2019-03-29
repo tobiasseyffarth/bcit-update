@@ -12,7 +12,7 @@ class ComplianceView extends Component {
 
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps() {
 
   }
 

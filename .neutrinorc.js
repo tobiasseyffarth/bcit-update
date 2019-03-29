@@ -14,8 +14,6 @@ module.exports = {
           "no-unused-state": "off",
           "react/prop-types": "off",
           "react/no-unused-state": "off",
-          "no-unused-vars": "off",
-          "react/sort-comp": "off",
           "react/prefer-stateless-function": "off",
           "no-underscore-dangle": "off"
         }

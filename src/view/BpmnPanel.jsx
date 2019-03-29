@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './../App.css';
-
-import ProjectModel from './../models/ProjectModel';
+// import ProjectModel from './../models/ProjectModel';
 
 class BpmnPanel extends Component {
   constructor(props) {
@@ -13,7 +12,7 @@ class BpmnPanel extends Component {
 
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps() {
 
   }
 

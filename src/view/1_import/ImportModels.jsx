@@ -15,11 +15,6 @@ export default class ImportModels extends Component {
     this.openBPMN = this.openBPMN.bind(this);
   }
 
-  static async openFile() {
-    const file = await fileio.getFile();
-    const input = await fileio.readFile(file);
-  }
-
   openCompliance() {
     this.growl.show({ severity: 'info', summary: 'Compliance successfull imported', detail: 'detail...' });
   }

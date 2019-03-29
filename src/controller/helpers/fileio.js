@@ -5,7 +5,7 @@ export async function getFile() {
     fileSelector.setAttribute('multiple', 'multiple');
     fileSelector.click();
 
-    fileSelector.addEventListener('change', (e) => {
+    fileSelector.addEventListener('change', () => {
       const file = fileSelector.files[0];
       resolve(file);
     });

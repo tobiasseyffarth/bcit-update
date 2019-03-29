@@ -3,20 +3,10 @@ function getElement(viewer, e) {
   return e.element;
 }
 
-function getDirectPredecessor(element) {
-
-}
-
-function getDirectSucessor(element) {
-
-}
-
-// Überladen, wenn eingabe einmal der Viewer und einmal ein Node ist??
 function getProcess(viewer, e) {
   if (e === null) {
     const elementRegistry = viewer.get('elementRegistry');
-    let nodes = [];
-    nodes = elementRegistry.getAll();
+    let nodes = elementRegistry.getAll();
     for (let i = 0; i < nodes.length; i++) {
       if (nodes[i].businessObject.$type === 'bpmn:Process') {
         return nodes[i].businessObject;
@@ -54,10 +44,8 @@ function getFlowElementsOfProcess(process) {
 
 // final
 function getFlowNodesOfProcess(process) {
-  let flowElements = [];
+  let flowElements = getFlowElementsOfProcess(process);
   const nodes = [];
-
-  flowElements = getFlowElementsOfProcess(process);
 
   if (flowElements != null) {
     for (let i = 0; i < flowElements.length; i++) {
@@ -72,10 +60,8 @@ function getFlowNodesOfProcess(process) {
 
 // final
 function getSequenceFlowsofProcess(process) {
-  let flowElements = [];
+  let flowElements = getFlowElementsOfProcess(process);
   const sequence = [];
-
-  flowElements = getFlowElementsOfProcess(process);
 
   if (flowElements != null) {
     for (let i = 0; i < flowElements.length; i++) {
@@ -90,8 +76,7 @@ function getSequenceFlowsofProcess(process) {
 
 // final
 function getFlowElementById(process, id) {
-  let flowElements = [];
-  flowElements = getFlowElementsOfProcess(process);
+  let flowElements = getFlowElementsOfProcess(process);
 
   for (let i = 0; i < flowElements.length; i++) {
     if (flowElements[i].id === id) {
@@ -99,6 +84,20 @@ function getFlowElementById(process, id) {
     }
   }
   return null;
+}
+
+// final
+export function getFlowNodeByType(process, type) {
+  const result = [];
+  const nodes = getFlowNodesOfProcess(process);
+
+  for (let i = 0; i < nodes.length; i++) {
+    const _type = nodes[i].$type;
+    if (_type === type) {
+      result.push(nodes[i]);
+    }
+  }
+  return result;
 }
 
 // final
@@ -292,6 +291,151 @@ function isTaskOrSubprocess(input) {
   type = type.toLowerCase();
   return (type.includes('task') || type.includes('subprocess'));
 }
+
+// final
+export function getSucessors(flownode) {
+  const result = [];
+
+  if (flownode.outgoing !== undefined) {
+    const { outgoing } = flownode;
+
+    for (let i = 0; i < outgoing.length; i++) {
+      result.push(outgoing[i].targetRef);
+    }
+    return result; // array of flownodes
+  }
+  return null;
+}
+
+// testen
+export function getPredecessors(flownode) {
+  const result = [];
+
+  if (flownode.incoming !== undefined) {
+    const { incoming } = flownode;
+
+    for (let i = 0; i < incoming.length; i++) {
+      result.push(incoming[i].sourceRef);
+    }
+    return result;
+  }
+  return null;
+}
+
+// todo: testen mit Parallelitäten in Parallität und Exklusivität
+function getParallelTrace(node, parallelTrace) {
+  const sucs = getSucessors(node);
+
+  if (parallelTrace === undefined) {
+    const _parallelTrace = [];
+
+    for (let i = 0; i < sucs.length; i++) {
+      const sequence = [];
+      _parallelTrace.push({ status: 'open', sequence });
+    }
+    return getParallelTrace(node, _parallelTrace);
+  }
+  let finished = true;
+  const _parallelTrace = [];
+
+  for (let i = 0; i < parallelTrace.length; i++) {
+    const _trace = parallelTrace[i];
+    // console.log('trace', _trace);
+
+    if (_trace.status === 'open') {
+      finished = false;
+      let _node;
+      let suc;
+
+      if (_trace.sequence.length === 0) {
+        _node = node;
+        suc = getSucessors(_node)[i];
+      } else {
+        _node = _trace.sequence[_trace.sequence.length - 1];
+        suc = getSucessors(_node)[0];
+      }
+
+      if (suc.$type === 'bpmn:ParallelGateway') {
+        if (getSucessors(node).length === getPredecessors(suc).length) {
+          _trace.status = 'closed';
+        } else {
+          // let trace = getParallelTrace(_node);
+        }
+      } else if (_node.$type === 'bpmn:ExclusiveGateway') {
+        // todo: weiter bauen
+        console.log('test');
+      } else {
+        _trace.sequence.push(suc);
+      }
+    }
+    _parallelTrace.push(_trace);
+  }
+
+  if (finished) {
+    return parallelTrace;
+  }
+  return getParallelTrace(node, _parallelTrace);
+}
+
+// todo: testen
+function searchTrace(openTraces, finalTraces, endNode) {
+  const help = []; // openTraces
+  const _finalTraces = finalTraces;
+
+  for (let i = 0; i < openTraces.length; i++) {
+    const openTrace = openTraces[i];
+    const node = openTrace[openTrace.length - 1];
+    const sucs = getSucessors(node);
+
+    if ((node.$type === 'bpmn:ExclusiveGateway')) {
+      for (let j = 0; j < sucs.length; j++) {
+        const newTrace = [];
+        Array.prototype.push.apply(newTrace, openTrace);
+        newTrace.push(sucs[j]);
+        help.push(newTrace);
+      }
+    } else if ((node.$type === 'bpmn:ParallelGateway')) {
+      for (let j = 0; j < sucs.length; j++) {
+        const parallelTrace = getParallelTrace(node);
+        Array.prototype.push.apply(openTrace, parallelTrace);
+      }
+
+      const closingParallel = getSucessors(openTrace[openTrace.length - 1].sequence[0])[0];
+      openTrace.push(closingParallel);
+      const suc = getSucessors(closingParallel)[0];
+      openTrace.push(suc);
+      help.push(openTrace);
+    } else if (node === endNode) {
+      _finalTraces.push(openTrace);
+    } else {
+      for (let j = 0; j < sucs.length; j++) {
+        openTrace.push(sucs[j]);
+      }
+      help.push(openTrace);
+    }
+  }
+
+  if (help.length === 0) {
+    return _finalTraces;
+  }
+  return searchTrace(help, _finalTraces, endNode);
+}
+
+// todo: testen
+export function getTraces(process) {
+  const finalTraces = [];
+  const openTraces = [];
+  const trace = [];
+
+  const startNode = getFlowNodeByType(process, 'bpmn:StartEvent')[0];
+  const endNode = getFlowNodeByType(process, 'bpmn:EndEvent')[0];
+
+  trace.push(startNode);
+  openTraces.push(trace);
+
+  return searchTrace(openTraces, finalTraces, endNode);
+}
+
 
 module.exports = {
   getElement,

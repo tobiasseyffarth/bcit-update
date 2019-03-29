@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './../App.css';
-import ProjectModel from './../models/ProjectModel';
+// import ProjectModel from './../models/ProjectModel';
 
 class InfraView extends Component {
   constructor(props) {
@@ -12,7 +12,7 @@ class InfraView extends Component {
 
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps() {
 
   }
 
