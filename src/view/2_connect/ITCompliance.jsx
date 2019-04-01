@@ -1,8 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import InfraPanel from '../container/InfraPanel';
-import InfraView from '../container/InfraView';
 import ComplianceView from '../container/ComplianceView';
 import './../../App.css';
 // import ProjectModel from '../../models/ProjectModel';
@@ -17,8 +15,7 @@ export default class StepITCompliance extends Component {
     return (
       <div>
         <section className="container-infra">
-          <InfraView />
-          <InfraPanel />
+
         </section>
         <section className="container-compliance">
           <ComplianceView />

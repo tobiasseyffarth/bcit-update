@@ -3,6 +3,7 @@ import { Button } from 'primereact/button';
 import { Growl } from 'primereact/growl';
 import PropTypes from 'prop-types';
 import * as fileio from './../../controller/helpers/fileio';
+import bpmnXml from './../../models/processmodel';
 
 import ProjectModel from './../../models/ProjectModel';
 
@@ -10,6 +11,9 @@ export default class ImportModels extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+
+    ProjectModel.setBpmnXml(bpmnXml);
+
     this.openCompliance = this.openCompliance.bind(this);
     this.openInfra = this.openInfra.bind(this);
     this.openBPMN = this.openBPMN.bind(this);

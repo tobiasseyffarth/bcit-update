@@ -115,12 +115,12 @@ function getExtensionOfElement(element) {
         for (let j = 0; j < extensionElements[i].$children.length; j++) {
           _name = extensionElements[i].$children[j].name;
           _value = extensionElements[i].$children[j].value;
-          result.push({ _name, _value });
+          result.push({_name, _value});
         }
       } else { // get own extension
         _name = extensionElements[i].name;
         _value = extensionElements[i].value;
-        result.push({ _name, _value });
+        result.push({_name, _value});
       }
     }
 
@@ -130,17 +130,20 @@ function getExtensionOfElement(element) {
 
 function hasExtension(element, name, value) {
   const props = getExtensionOfElement(element);
+  console.log(props);
 
-  if (value === undefined) {
-    for (let i = 0; i < props.length; i++) { // check if the element has an extension of name
-      if (props[i].name === name) {
-        return true;
+  if (props !== undefined) {
+    if (value === undefined) {
+      for (let i = 0; i < props.length; i++) { // check if the element has an extension of name
+        if (props[i]._name === name) {
+          return true;
+        }
       }
-    }
-  } else {
-    for (let i = 0; i < props.length; i++) { // check if the node is a compliance process
-      if (props[i].name === name && props[i].value === value) {
-        return true;
+    } else {
+      for (let i = 0; i < props.length; i++) { // check if the node is a compliance process
+        if (props[i]._name === name && props[i]._value === value) {
+          return true;
+        }
       }
     }
   }
@@ -149,7 +152,7 @@ function hasExtension(element, name, value) {
 }
 
 // final
-function isCompliance(element) {
+export function isCompliance(element) {
   const name = 'isComplianceProcess';
   const value = 'true';
 
@@ -175,9 +178,9 @@ function isExtensionShape(shape) {
 
 // final
 function isFlowElement(option) { // identify flowNodes
-  const { element } = option;
-  const { shape } = option;
-  let { type } = null;
+  const {element} = option;
+  const {shape} = option;
+  let {type} = null;
 
   if (element != null) {
     type = element.$type;
@@ -193,9 +196,9 @@ function isFlowElement(option) { // identify flowNodes
 
 // final
 function isDataObject(option) { // identify Database or Document
-  const { element } = option;
-  const { shape } = option;
-  let { type } = null;
+  const {element} = option;
+  const {shape} = option;
+  let {type} = null;
 
   if (element != null) {
     type = element.$type;
@@ -211,9 +214,9 @@ function isDataObject(option) { // identify Database or Document
 }
 
 function isDataStore(option) {
-  const { element } = option;
-  const { shape } = option;
-  let { type } = null;
+  const {element} = option;
+  const {shape} = option;
+  let {type} = null;
 
   if (element != null) {
     type = element.$type;
@@ -229,8 +232,8 @@ function isDataStore(option) {
 }
 
 function isDataObjectRef(option) {
-  const { element } = option;
-  const { shape } = option;
+  const {element} = option;
+  const {shape} = option;
   let type = null;
 
   if (element !== null) {
@@ -267,18 +270,19 @@ function getIdFromExtensionShape(shape) {
   const shapeExtension = getExtensionOfElement(element);
 
   for (let i = 0; i < shapeExtension.length; i++) {
-    const { name } = shapeExtension[i];
-    const { value } = shapeExtension[i];
+    const {name} = shapeExtension[i];
+    const {value} = shapeExtension[i];
     if (name !== 'flowelement') {
       return value;
     }
   }
 }
 
-function isTaskOrSubprocess(input) {
-  const { element } = input;
-  const { shape } = input;
-  let { type } = null;
+export function isTaskOrSubprocess(input) {
+  /*
+  const {element} = input;
+  const {shape} = input;
+  let {type} = null;
 
   if (element !== null) {
     type = element.$type;
@@ -287,8 +291,11 @@ function isTaskOrSubprocess(input) {
   if (shape !== null) {
     type = shape;
   }
+  */
 
+  let type = input.type;
   type = type.toLowerCase();
+  console.log(type);
   return (type.includes('task') || type.includes('subprocess'));
 }
 
@@ -297,7 +304,7 @@ function getSucessors(flownode) {
   const result = [];
 
   if (flownode.outgoing !== undefined) {
-    const { outgoing } = flownode;
+    const {outgoing} = flownode;
 
     for (let i = 0; i < outgoing.length; i++) {
       result.push(outgoing[i].targetRef);
@@ -312,7 +319,7 @@ function getPredecessors(flownode) {
   const result = [];
 
   if (flownode.incoming !== undefined) {
-    const { incoming } = flownode;
+    const {incoming} = flownode;
 
     for (let i = 0; i < incoming.length; i++) {
       result.push(incoming[i].sourceRef);
@@ -331,7 +338,7 @@ function getParallelTrace(node, parallelTrace) {
 
     for (let i = 0; i < sucs.length; i++) {
       const sequence = [];
-      _parallelTrace.push({ status: 'open', sequence });
+      _parallelTrace.push({status: 'open', sequence});
     }
     return getParallelTrace(node, _parallelTrace);
   }
