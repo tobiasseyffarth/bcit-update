@@ -115,17 +115,16 @@ export function getExtensionOfElement(element) {
         for (let j = 0; j < extensionElements[i].$children.length; j++) {
           _name = extensionElements[i].$children[j].name;
           _value = extensionElements[i].$children[j].value;
-          result.push({_name, _value});
+          result.push({name: _name + ' ' + _value, _name, _value});
         }
       } else { // get own extension
         _name = extensionElements[i].name;
         _value = extensionElements[i].value;
-        result.push({_name, _value});
+        result.push({name: _name + ' ' + _value, _name, _value});
       }
     }
-
-    return result;
   }
+  return result;
 }
 
 function hasExtension(element, name, value) {

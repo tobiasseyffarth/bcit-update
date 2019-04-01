@@ -15,14 +15,15 @@ export default class StepProcIT extends Component {
       bpmnName: null,
       infraId: null,
       infraName: null,
-      bpmnProps:  [],
+      bpmnProps: [],
+      selectedBpmnProp: null,
       infraProps: [],
       isCompliance: false,
     };
 
     this.renderBpmnProps = this.renderBpmnProps.bind(this);
-    this.removeInfraProps = this.removeInfraProps.bind(this);
-    this.removeBpmnProps = this.removeBpmnProps.bind(this);
+    this.removeInfraProp = this.removeInfraProp.bind(this);
+    this.removeBpmnProp = this.removeBpmnProp.bind(this);
   }
 
   componentDidMount() {
@@ -51,9 +52,9 @@ export default class StepProcIT extends Component {
 
   hookOnClick(e) {
     const { element } = e;
-    if(processquery.isTaskOrSubprocess(element)){
+    if (processquery.isTaskOrSubprocess(element)){
       this.renderBpmnProps(element);
-    }else{
+    } else {
       this.renderBpmnProps(null);
     }
   }
@@ -73,28 +74,26 @@ export default class StepProcIT extends Component {
   };
 
   renderBpmnProps(element){
-    if (element!== null) {
+    if (element !== null) {
       const businessObject = element.businessObject;
 
       this.setState({bpmnId: businessObject.id});
       this.setState({bpmnName: businessObject.name});
       this.setState({isCompliance: processquery.isCompliance(businessObject)});
-
-      console.log(businessObject);
-      console.log(processquery.getExtensionOfElement(businessObject));
-
+      this.setState({bpmnProps: processquery.getExtensionOfElement(businessObject)});
     } else {
       this.setState({bpmnId: null});
       this.setState({bpmnName: null});
       this.setState({isCompliance: false});
+      this.setState({bpmnProps: []});
     }
   }
 
-  removeBpmnProps(){
-    console.log('remove BPMN prop');
+  removeBpmnProp(){
+    console.log('remove BPMN prop', this.state.selectedBpmnProp);
   }
 
-  removeInfraProps(){
+  removeInfraProp(){
     console.log('remove infra prop');
   }
 
@@ -108,7 +107,7 @@ export default class StepProcIT extends Component {
             <label>Name: {this.state.bpmnName}</label>
           </div>
           <div>
-            <ListBox value={this.state.extension} options={this.state.bpmnProps} onChange={(e) => this.setState({ extension: e.value })} optionLabel="name" />
+            <ListBox value={this.state.selectedBpmnProp} options={this.state.bpmnProps} onChange={(e) => this.setState({ extension: e.value })} optionLabel="name" />
             <Button
                 label="remove"
                 onClick={this.removeBpmnProp}

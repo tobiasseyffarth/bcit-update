@@ -44,3 +44,7 @@ html {
     flex-direction: row;
     height: 350px;
 }
+
+.button-import {
+    width: 250px;
+}

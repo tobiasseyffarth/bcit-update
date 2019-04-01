@@ -6,6 +6,7 @@ import * as fileio from './../../controller/helpers/fileio';
 import bpmnXml from './../../models/processmodel';
 
 import ProjectModel from './../../models/ProjectModel';
+import './../../App.css';
 
 export default class ImportModels extends Component {
   constructor(props) {
@@ -42,6 +43,7 @@ export default class ImportModels extends Component {
           <br />
           <br />
           <Button
+            className="button-import"
             label="Import Compliance"
             onClick={this.openCompliance}
             tooltip="open compliance file"
@@ -49,6 +51,7 @@ export default class ImportModels extends Component {
           <br />
           <br />
           <Button
+            className="button-import"
             label="Import BPMN"
             onClick={this.openBPMN}
             tooltip="open BPMN file"
@@ -56,6 +59,7 @@ export default class ImportModels extends Component {
           <br />
           <br />
           <Button
+            className="button-import"
             label="Import Infrastructure"
             tooltip="open archimate file"
             onClick={this.openInfra}

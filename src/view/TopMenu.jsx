@@ -8,7 +8,7 @@ export default class TopMenu extends Component {
     this.state = {
       visible: false,
     };
-    this.exportBpmn= this.exportBpmn.bind(this);
+    this.exportBpmn = this.exportBpmn.bind(this);
     this.showAboutDialog = this.showAboutDialog.bind(this);
   }
 
@@ -48,7 +48,7 @@ export default class TopMenu extends Component {
           },
           {
             label: 'Export BPMN',
-            command:()=>{ this.exportBpmn() }
+            command: () => { this.exportBpmn(); },
           },
         ],
       },
