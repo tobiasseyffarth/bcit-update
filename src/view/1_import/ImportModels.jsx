@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { Button } from 'primereact/button';
 import { Growl } from 'primereact/growl';
-import PropTypes from 'prop-types'; // ES6
+import PropTypes from 'prop-types';
 import * as fileio from './../../controller/helpers/fileio';
 
 import ProjectModel from './../../models/ProjectModel';

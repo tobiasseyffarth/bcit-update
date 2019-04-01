@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import ProjectModel from '../../models/ProjectModel';
 import * as processquery from '../../controller/processquery';
+import BpmnPanel from './BpmnPanel';
 
 class BpmnView extends Component {
   constructor(props) {
@@ -40,15 +41,13 @@ class BpmnView extends Component {
 
     console.log(process);
 
-    /*
     if (this.props.view === 'connectProcessInfra') {
-
+      // BpmnPanel.props.element = element;
     } else if (this.props.view === 'connectProcessCompliance') {
-
+      console.log(element.businessObject);
     } else if (this.props.view === 'analyzeProcess') {
-
+      console.log('analyze process', element);
     }
-    */
   }
 
   renderDiagram = (xml) => {
