@@ -11,13 +11,13 @@ export default class StepProcIT extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      bpmnId: '_id',
-      bpmnName: '_name',
-      infraId: '_id infra',
-      infraName: '_name infra',
+      bpmnId: null,
+      bpmnName: null,
+      infraId: null,
+      infraName: null,
       bpmnProps:  [],
       infraProps: [],
-      isCompliance: true,
+      isCompliance: false,
     };
 
     this.renderBpmnProps = this.renderBpmnProps.bind(this);
@@ -51,10 +51,11 @@ export default class StepProcIT extends Component {
 
   hookOnClick(e) {
     const { element } = e;
-    this.setState({ element });
-    const process = ProjectModel.getProcess();
-    console.log(element);
-    this.renderBpmnProps(element);
+    if(processquery.isTaskOrSubprocess(element)){
+      this.renderBpmnProps(element);
+    }else{
+      this.renderBpmnProps(null);
+    }
   }
 
   renderDiagram = (xml) => {
@@ -72,11 +73,21 @@ export default class StepProcIT extends Component {
   };
 
   renderBpmnProps(element){
-    const businessObject = element.businessObject;
+    if (element!== null) {
+      const businessObject = element.businessObject;
 
-    this.setState({bpmnId: businessObject.id});
-    this.setState({bpmnName: businessObject.name});
-    this.setState({isCompliance: processquery.isCompliance(businessObject)});
+      this.setState({bpmnId: businessObject.id});
+      this.setState({bpmnName: businessObject.name});
+      this.setState({isCompliance: processquery.isCompliance(businessObject)});
+
+      console.log(businessObject);
+      console.log(processquery.getExtensionOfElement(businessObject));
+
+    } else {
+      this.setState({bpmnId: null});
+      this.setState({bpmnName: null});
+      this.setState({isCompliance: false});
+    }
   }
 
   removeBpmnProps(){

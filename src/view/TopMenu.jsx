@@ -8,6 +8,7 @@ export default class TopMenu extends Component {
     this.state = {
       visible: false,
     };
+    this.exportBpmn= this.exportBpmn.bind(this);
     this.showAboutDialog = this.showAboutDialog.bind(this);
   }
 
@@ -20,6 +21,10 @@ export default class TopMenu extends Component {
     this.setState({ visible: true });
   }
 
+  exportBpmn(){
+    console.log('export BPMN');
+  }
+
   render() {
     const items = [
       {
@@ -27,30 +32,23 @@ export default class TopMenu extends Component {
         icon: 'pi pi-fw pi-file',
         items: [
           {
-            label: 'New',
-            icon: 'pi pi-fw pi-plus',
-            items: [
-              {
-                label: 'Bookmark',
-                icon: 'pi pi-fw pi-bookmark',
-              },
-              {
-                label: 'Video',
-                icon: 'pi pi-fw pi-video',
-              },
-
-            ],
+            label: 'New Project',
           },
           {
-            label: 'Delete',
-            icon: 'pi pi-fw pi-trash',
+            label: 'Open Project',
+          },
+          {
+            label: 'Save Project',
           },
           {
             separator: true,
           },
           {
-            label: 'Export',
-            icon: 'pi pi-fw pi-external-link',
+            label: 'View Graph',
+          },
+          {
+            label: 'Export BPMN',
+            command:()=>{ this.exportBpmn() }
           },
         ],
       },

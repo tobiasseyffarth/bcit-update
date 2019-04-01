@@ -101,7 +101,7 @@ export function getFlowNodeByType(process, type) {
 }
 
 // final
-function getExtensionOfElement(element) {
+export function getExtensionOfElement(element) {
   let extensionElements = [];
   const result = [];
   let _name;
@@ -130,7 +130,6 @@ function getExtensionOfElement(element) {
 
 function hasExtension(element, name, value) {
   const props = getExtensionOfElement(element);
-  console.log(props);
 
   if (props !== undefined) {
     if (value === undefined) {
@@ -279,23 +278,8 @@ function getIdFromExtensionShape(shape) {
 }
 
 export function isTaskOrSubprocess(input) {
-  /*
-  const {element} = input;
-  const {shape} = input;
-  let {type} = null;
-
-  if (element !== null) {
-    type = element.$type;
-  }
-
-  if (shape !== null) {
-    type = shape;
-  }
-  */
-
   let type = input.type;
   type = type.toLowerCase();
-  console.log(type);
   return (type.includes('task') || type.includes('subprocess'));
 }
 
