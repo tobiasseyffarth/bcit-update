@@ -1,14 +1,4 @@
 import BpmnModdle from 'bpmn-moddle';
-// import processquery from './processquery';
-
-module.exports = {
-  addElements,
-  definition2xml,
-  addExtension,
-  defineAsComplianceProcess,
-  removeExt,
-  createExtensionElement
-};
 
 //final
 function addElements(viewer, process) {
@@ -59,21 +49,28 @@ function createExtensionElement(name, value) {
 }
 
 //final
-function removeExt(extensionElements, option) {
+export function removeExt(extensionElements, option) {
   let ext = extensionElements.get('values');
   let name = option.name;
   let value = option.value;
-  let index = option.index;
+  let removeExt = option.remove;
+  let no;
 
-  if (index == null) {
-    for (let i=0;i< ext.length;i++) {
+  if (removeExt == null) {
+    for (let i = 0; i < ext.length; i++) {
       if (ext[i].name === name && ext[i].value === value) {
         ext.splice(i, 1);
         break;
       }
     }
   } else {
-    ext.splice(index, 1);
+    for (let i = 0; i < ext.length; i++){
+      if (ext[i] === removeExt){
+        no = i;
+        break;
+      }
+    }
+    ext.splice(no, 1);
   }
 }
 

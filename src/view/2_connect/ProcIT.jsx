@@ -5,6 +5,7 @@ import { Button } from 'primereact/button';
 import PropTypes from 'prop-types';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import * as processquery from '../../controller/processquery';
+import * as editprocess from '../../controller/editprocess';
 import ProjectModel from '../../models/ProjectModel';
 
 export default class StepProcIT extends Component {
@@ -13,12 +14,14 @@ export default class StepProcIT extends Component {
     this.state = {
       bpmnId: null,
       bpmnName: null,
-      infraId: null,
-      infraName: null,
       bpmnProps: [],
       selectedBpmnProp: null,
-      infraProps: [],
+      selectedBpmnElement: null,
       isCompliance: false,
+      infraId: null,
+      infraName: null,
+      infraProps: [],
+      selectedInfraProp: null,
     };
 
     this.renderBpmnProps = this.renderBpmnProps.bind(this);
@@ -54,8 +57,10 @@ export default class StepProcIT extends Component {
     const { element } = e;
     if (processquery.isTaskOrSubprocess(element)){
       this.renderBpmnProps(element);
+      this.setState({selectedBpmnElement: element});
     } else {
       this.renderBpmnProps(null);
+      this.setState({selectedBpmnElement: null});
     }
   }
 
@@ -90,11 +95,18 @@ export default class StepProcIT extends Component {
   }
 
   removeBpmnProp(){
-    console.log('remove BPMN prop', this.state.selectedBpmnProp);
+    let element = this.state.selectedBpmnElement;
+    editprocess.removeExt(element.businessObject.extensionElements, {name: this.state.selectedBpmnProp._name, value: this.state.selectedBpmnProp._value});
+
+    this.setState({selectedBpmnElement: element}, () => this.renderBpmnProps(element));
+
+    //todo Graph anpassen
   }
 
   removeInfraProp(){
     console.log('remove infra prop');
+
+    //todo: Graph anpassen
   }
 
   renderBpmnPropsPanel(){
@@ -107,7 +119,7 @@ export default class StepProcIT extends Component {
             <label>Name: {this.state.bpmnName}</label>
           </div>
           <div>
-            <ListBox value={this.state.selectedBpmnProp} options={this.state.bpmnProps} onChange={(e) => this.setState({ extension: e.value })} optionLabel="name" />
+            <ListBox options={this.state.bpmnProps} onChange={(e) => this.setState({ selectedBpmnProp: e.value })} optionLabel="name" />
             <Button
                 label="remove"
                 onClick={this.removeBpmnProp}
@@ -133,7 +145,7 @@ export default class StepProcIT extends Component {
             <label>Name: {this.state.infraName}</label>
           </div>
           <div>
-            <ListBox value={this.state.extension} options={this.state.infraProps} onChange={(e) => this.setState({ extension: e.value })} optionLabel="name" />
+            <ListBox options={this.state.infraProps} onChange={(e) => this.setState({ selectedInfraProp: e.value })} optionLabel="name" />
             <Button
                 label="remove"
                 onClick={this.removeInfraProp}
