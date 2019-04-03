@@ -1,7 +1,7 @@
-import { Component } from 'react';
-import { ListBox } from 'primereact/listbox';
-import { Checkbox } from 'primereact/checkbox';
-import { Button } from 'primereact/button';
+import {Component} from 'react';
+import {ListBox} from 'primereact/listbox';
+import {Checkbox} from 'primereact/checkbox';
+import {Button} from 'primereact/button';
 import PropTypes from 'prop-types';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import * as processquery from '../../controller/processquery';
@@ -98,13 +98,18 @@ export default class StepProcIT extends Component {
   }
 
   removeBpmnProp() {
-    if (this.state.selectedBpmnElement!==null) {
+    if (this.state.selectedBpmnElement !== null) {
       const element = this.state.selectedBpmnElement;
-      editprocess.removeExt(element.businessObject.extensionElements, {
+      const businessObject = element.businessObject;
+      editprocess.removeExt(businessObject.extensionElements, {
         name: this.state.selectedBpmnProp._name,
         value: this.state.selectedBpmnProp._value
       });
-      this.setState({selectedBpmnElement: element}, () => this.renderBpmnProps(element));
+      this.setState({selectedBpmnElement: element}, () => {
+            this.renderBpmnProps(element);
+            renderprocess.renderComplianceProcess(this.bpmnModeler, element, processquery.isCompliance(businessObject));
+          }
+      );
 
       //todo Graph anpassen
 
