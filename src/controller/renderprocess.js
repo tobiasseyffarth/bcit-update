@@ -1,23 +1,13 @@
-import queryprocess from "./processquery";
-import editprocess from "./editprocess";
-
-module.exports = {
-  colorShape,
-  createShape,
-  updateShape,
-  connectShapes,
-  removeShape,
-  addExtensionShape,
-  removeExtensionShape
-};
+import queryprocess from './processquery';
+import editprocess from './editprocess';
 
 //final
-function colorShape(viewer, shape, coloroption) {
+function colorShape(viewer, element, coloroption) {
   let modeling = viewer.get('modeling');
   let _stroke = coloroption.stroke || 'black';
   let _fill = coloroption.fill || 'none';
 
-  modeling.setColor(shape, {stroke: _stroke, fill: _fill});
+  modeling.setColor(element, {stroke: _stroke, fill: _fill});
 }
 
 //final
@@ -57,24 +47,24 @@ function createShape(viewer, option) {
 }
 
 //final
-function removeShape(viewer, shape) {
+function removeShape(viewer, element) {
   let modeler = viewer.get('modeling');
 
   try {
-    modeler.removeShape(shape);
+    modeler.removeShape(element);
   } catch (err) {
     console.log(err);
   }
 }
 
 //final
-function updateShape(viewer, shape, option) {
+function updateShape(viewer, element, option) {
   let modeler = viewer.get('modeling');
   let _option = option || {id: 'neueid'};
 
-  modeler.updateProperties(shape, _option);
+  modeler.updateProperties(element, _option);
 
-  return shape;
+  return element;
 }
 
 //final
@@ -84,14 +74,14 @@ function connectShapes(viewer, source, target) {
 }
 
 //final
-function addExtensionShape(viewer, shape, option, extension) {
+function addExtensionShape(viewer, element, option, extension) {
   let itcomponent = option.infra;
   let compliance = option.compliance;
 
   let _name;
   let _id;
   let _type;
-  let _x = shape.x + (shape.width / 2);
+  let _x = element.x + (element.width / 2);
   let _y;
 
   //define shape type
@@ -113,11 +103,11 @@ function addExtensionShape(viewer, shape, option, extension) {
 
   //extend the element
   editprocess.addExtension(viewer, dataElement, extension);
-  let ext = editprocess.createExtensionElement('flowelement', shape.id);
+  let ext = editprocess.createExtensionElement('flowelement', element.id);
   editprocess.addExtension(viewer, dataElement, ext);
 
   // connect created shape with flownode and color it
-  connectShapes(viewer, dataShape, shape);
+  connectShapes(viewer, dataShape, element);
   colorShape(viewer, dataShape, {stroke: 'grey'});
 }
 
@@ -146,7 +136,7 @@ function removeExtensionShape(viewer, flowelement) {
   let valueFlowelement = [];
   let valueShape = [];
 
-  for (let i=0; i< ext.length; i++) {
+  for (let i = 0; i < ext.length; i++) {
     let value = ext[i].value;
     valueFlowelement.push(value);
   }
@@ -256,4 +246,12 @@ function getViewerComponents() { //Möglichkeiten des Viewers
   let canvas = viewer.get('canvas');
   let elementFactory = viewer.get('elementFactory');
   let modeler = viewer.get('modeling');
+}
+
+export function renderComplianceProcess(viewer, element, isCompliance) {
+  if (isCompliance) {
+    colorShape(viewer, element, {fill: 'grey'});
+  } else {
+    colorShape(viewer, element, {fill: 'none'});
+  }
 }

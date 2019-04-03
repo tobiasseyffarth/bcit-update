@@ -80,7 +80,7 @@ function removeFlowelement(){
 }
 
 //final
-function defineAsComplianceProcess(viewer, element, status) {
+export function defineAsComplianceProcess(viewer, element, status) {
   if (status === true) { //if element shall be set as a compliance process
     let extension = createExtensionElement('isComplianceProcess', 'true');
     addExtension(viewer, element, extension);

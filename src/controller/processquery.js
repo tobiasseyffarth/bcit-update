@@ -101,14 +101,14 @@ export function getFlowNodeByType(process, type) {
 }
 
 // final
-export function getExtensionOfElement(element) {
+export function getExtensionOfElement(businessObject) {
   let extensionElements = [];
   const result = [];
   let _name;
   let _value;
 
-  if (element.extensionElements !== undefined) {
-    extensionElements = element.extensionElements.values;
+  if (businessObject.extensionElements !== undefined) {
+    extensionElements = businessObject.extensionElements.values;
 
     for (let i = 0; i < extensionElements.length; i++) {
       if (extensionElements[i].$children !== undefined) { // get camunda extension
@@ -127,8 +127,8 @@ export function getExtensionOfElement(element) {
   return result;
 }
 
-function hasExtension(element, name, value) {
-  const props = getExtensionOfElement(element);
+function hasExtension(businessObject, name, value) {
+  const props = getExtensionOfElement(businessObject);
 
   if (props !== undefined) {
     if (value === undefined) {
@@ -158,8 +158,8 @@ export function isCompliance(element) {
 }
 
 // final
-function hasExtensionName(element, name) {
-  const props = getExtensionOfElement(element);
+function hasExtensionName(businessObject, name) {
+  const props = getExtensionOfElement(businessObject);
   for (let i = 0; i < props.length; i++) { // check if the element has an extension of name
     if (props[i].name === name) {
       return true;
@@ -168,10 +168,9 @@ function hasExtensionName(element, name) {
   return false;
 }
 
-
-function isExtensionShape(shape) {
-  const element = shape.businessObject;
-  return hasExtension(element, 'flowelement');
+function isExtensionShape(element) {
+  const businessObject = element.businessObject;
+  return hasExtension(businessObject, 'flowelement');
 }
 
 // final
@@ -248,11 +247,11 @@ function isDataObjectRef(option) {
 }
 
 // final
-function isUniqueExtension(viewer, element, extension) {
-  if (element.extensionElements === undefined) {
+function isUniqueExtension(viewer, businessObject, extension) {
+  if (businessObject.extensionElements === undefined) {
     return true;
   }
-  const ext = element.extensionElements.get('values');
+  const ext = businessObject.extensionElements.get('values');
   for (let i = 0; i < ext.length; i++) {
     if (ext[i].name === extension.name && ext[i].value === extension.value) {
       return false;
@@ -263,9 +262,9 @@ function isUniqueExtension(viewer, element, extension) {
 }
 
 // final
-function getIdFromExtensionShape(shape) {
-  const element = shape.businessObject;
-  const shapeExtension = getExtensionOfElement(element);
+function getIdFromExtensionShape(element) {
+  const businessObject = element.businessObject;
+  const shapeExtension = getExtensionOfElement(businessObject);
 
   for (let i = 0; i < shapeExtension.length; i++) {
     const {name} = shapeExtension[i];
