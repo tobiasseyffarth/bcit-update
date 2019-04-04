@@ -1,5 +1,5 @@
-import * as queryprocess from './processquery';
-import * as editprocess from './editprocess';
+// import * as queryprocess from './processquery';
+// import * as editprocess from './editprocess';
 
 // final
 function colorShape(viewer, element, coloroption) {
@@ -10,7 +10,7 @@ function colorShape(viewer, element, coloroption) {
   modeling.setColor(element, { stroke: _stroke, fill: _fill });
 }
 
-// final
+/*
 function createShape(viewer, option) {
   const canvas = viewer.get('canvas');
   const elementFactory = viewer.get('elementFactory');
@@ -26,26 +26,28 @@ function createShape(viewer, option) {
     type,
   });
 
-  modeler.createShape(shape, { x: posX, y: posY}, root);
+  modeler.createShape(shape, { x: posX, y: posY }, root);
   modeler.updateLabel(shape, name);
 
   return shape;
 
-  /* shape types
+  // shape types
 
-  bpmn:EndEvent
-  bpmn:StartEvent
-  bpmn:Task
-  bpmn:SubProcess
+  // bpmn:EndEvent
+  // bpmn:StartEvent
+  // bpmn:Task
+  // bpmn:SubProcess
 
-  bpmn:DataStoreReference
-  bpmn:DataObjectReference
+  // bpmn:DataStoreReference
+  // bpmn:DataObjectReference
 
-  bpmn:ParallelGateway
-  bpmn:ExclusiveGateway
-   */
+  // bpmn:ParallelGateway
+  // bpmn:ExclusiveGateway
+
 }
+*/
 
+/*
 // final
 function removeShape(viewer, element) {
   const modeler = viewer.get('modeling');
@@ -56,7 +58,9 @@ function removeShape(viewer, element) {
     console.log(err);
   }
 }
+*/
 
+/*
 // final
 function updateShape(viewer, element, option) {
   const modeler = viewer.get('modeling');
@@ -66,13 +70,17 @@ function updateShape(viewer, element, option) {
 
   return element;
 }
+*/
 
+/*
 // final
 function connectShapes(viewer, source, target) {
   const modeler = viewer.get('modeling');
   return modeler.connect(source, target);
 }
+*/
 
+/*
 // final
 function getTopPosition(viewer) {
   const elementRegistry = viewer.get('elementRegistry');
@@ -98,7 +106,9 @@ function getTopPosition(viewer) {
   }
   return top;
 }
+*/
 
+/*
 // final
 function getBottomPosition(viewer) {
   const elementRegistry = viewer.get('elementRegistry');
@@ -121,7 +131,9 @@ function getBottomPosition(viewer) {
   }
   return bottom;
 }
+*/
 
+/*
 // final
 function addExtensionShape(viewer, element, option, extension) {
   const { infra } = option;
@@ -160,7 +172,9 @@ function addExtensionShape(viewer, element, option, extension) {
   connectShapes(viewer, dataShape, element);
   colorShape(viewer, dataShape, { stroke: 'grey' });
 }
+*/
 
+/*
 // final
 function removeExtensionShape(viewer, flowelement) {
   const elementRegistry = viewer.get('elementRegistry');
@@ -239,7 +253,7 @@ function removeExtensionShape(viewer, flowelement) {
     removeShape(viewer, shape);
   }
 }
-
+*/
 
 /*
 function getViewerComponents(viewer) { // Möglichkeiten des Viewers

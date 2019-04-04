@@ -8,7 +8,6 @@ module.exports = {
           "no-plusplus": "off",
           "no-console": "off",
           "no-await-in-loop": "off",
-          "consistent-return": "off",
           "function-paren-newline": "off",
           "linebreak-style": "off",
           "no-unused-state": "off",

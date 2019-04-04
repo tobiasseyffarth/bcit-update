@@ -1,11 +1,15 @@
 import BpmnModdle from 'bpmn-moddle';
 
+/*
 // final
 function addElements(viewer, process) {
   // https://github.com/bpmn-io/bpmn-moddle/blob/master/test/spec/xml/edit.js
   // https://github.com/bpmn-io/bpmn-moddle/blob/master/test/spec/xml/write.js
   const moddle = viewer.get('moddle'); // Moddle verändert das Datenmodell
-  const dataObject = moddle.create('bpmn:DataObject', { id: 'dataObject_2' }); // mit moddle.create können beliebige BPMN-Objekte erzeugt werden
+
+  // mit moddle.create können beliebige BPMN-Objekte erzeugt werden
+  const dataObject = moddle.create('bpmn:DataObject', { id: 'dataObject_2' });
+
   const database = moddle.create('bpmn:DataStore', { id: 'dataStore_2' });
 
   const task = moddle.create('bpmn:Task', { id: 'task_2', name: 'name' });
@@ -23,7 +27,7 @@ function addElements(viewer, process) {
   process.flowElements.push(dataObject);
   process.flowElements.push(database);
 }
-
+*/
 function addExtension(viewer, element, extension) {
   const moddle = viewer.get('moddle'); // Moddle verändert das Datenmodell
   const extensionElements = moddle.create('bpmn:ExtensionElements'); // moddle.create('bpmn:DataObject', {id: 'dataObject_2'}); // mit moddle.create können beliebige BPMN-Objekte erzeugt werden
@@ -51,7 +55,7 @@ export function removeExt(extensionElements, option) {
   const ext = extensionElements.get('values');
   const { name } = option;
   const { value } = option;
-  const { remove } = option.remove;
+  const { remove } = option;
   let no;
 
   if (remove == null) {
@@ -72,10 +76,12 @@ export function removeExt(extensionElements, option) {
   }
 }
 
+/*
 // remove flowelement from repo and shape
 function removeFlowelement(){
 
 }
+*/
 
 // final
 export function defineAsComplianceProcess(viewer, element, status) {

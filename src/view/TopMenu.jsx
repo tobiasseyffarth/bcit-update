@@ -1,6 +1,7 @@
 import { Menubar } from 'primereact/menubar';
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
+import ProjectModel from './../models/ProjectModel';
 
 export default class TopMenu extends Component {
   constructor(props) {
@@ -22,7 +23,7 @@ export default class TopMenu extends Component {
   }
 
   exportBpmn(){
-    console.log('export BPMN');
+    console.log(ProjectModel.getViewer());
   }
 
   render() {

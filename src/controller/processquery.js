@@ -1,25 +1,33 @@
+/*
 // final
 function getElement(viewer, e) {
   return e.element;
 }
+*/
 
 export function getProcess(viewer, e) {
+  let process;
+
   if (e === null || e === undefined) {
     const elementRegistry = viewer.get('elementRegistry');
     const nodes = elementRegistry.getAll();
     for (let i = 0; i < nodes.length; i++) {
       if (nodes[i].businessObject.$type === 'bpmn:Process') {
-        return nodes[i].businessObject;
+        process = nodes[i].businessObject;
+        break;
       }
     }
   } else {
     const elementRegistry = viewer.get('elementRegistry');
     const nodeElement = elementRegistry.get(e.element.id);
     const node = nodeElement.businessObject;
-    return elementRegistry.get(node.$parent.id);
+    process = elementRegistry.get(node.$parent.id);
   }
+
+  return process;
 }
 
+/*
 // final
 function getElementOfRegistry(viewer, id) {
   const elementRegistry = viewer.get('elementRegistry');
@@ -27,7 +35,9 @@ function getElementOfRegistry(viewer, id) {
 
   return element.businessObject;
 }
+*/
 
+/*
 // final
 function getFlowElementsOfProcess(process) {
   const flowElements = [];
@@ -41,7 +51,9 @@ function getFlowElementsOfProcess(process) {
 
   return flowElements;
 }
+*/
 
+/*
 // final
 function getFlowNodesOfProcess(process) {
   const flowElements = getFlowElementsOfProcess(process);
@@ -57,7 +69,9 @@ function getFlowNodesOfProcess(process) {
   }
   return null;
 }
+*/
 
+/*
 // final
 function getSequenceFlowsofProcess(process) {
   const flowElements = getFlowElementsOfProcess(process);
@@ -73,7 +87,9 @@ function getSequenceFlowsofProcess(process) {
   }
   return null;
 }
+*/
 
+/*
 // final
 function getFlowElementById(process, id) {
   const flowElements = getFlowElementsOfProcess(process);
@@ -85,7 +101,9 @@ function getFlowElementById(process, id) {
   }
   return null;
 }
+*/
 
+/*
 // final
 export function getFlowNodeByType(process, type) {
   const result = [];
@@ -99,6 +117,7 @@ export function getFlowNodeByType(process, type) {
   }
   return result;
 }
+*/
 
 // final
 export function getExtensionOfElement(businessObject) {
@@ -157,6 +176,7 @@ export function isCompliance(element) {
   return hasExtension(element, name, value);
 }
 
+/*
 // final
 function hasExtensionName(businessObject, name) {
   const props = getExtensionOfElement(businessObject);
@@ -167,12 +187,16 @@ function hasExtensionName(businessObject, name) {
   }
   return false;
 }
+*/
 
+/*
 function isExtensionShape(element) {
   const { businessObject } = element;
   return hasExtension(businessObject, 'flowelement');
 }
+*/
 
+/*
 // final
 function isFlowElement(option) { // identify flowNodes
   const { element } = option;
@@ -190,7 +214,9 @@ function isFlowElement(option) { // identify flowNodes
   type = type.toLowerCase();
   return ((!type.includes('data')) && (!type.includes('sequence')));
 }
+*/
 
+/*
 // final
 function isDataObject(option) { // identify Database or Document
   const { element } = option;
@@ -209,7 +235,9 @@ function isDataObject(option) { // identify Database or Document
 
   return (type.includes('data'));
 }
+*/
 
+/*
 function isDataStore(option) {
   const { element } = option;
   const { shape } = option;
@@ -227,7 +255,9 @@ function isDataStore(option) {
 
   return (type.includes('datastore'));
 }
+*/
 
+/*
 function isDataObjectRef(option) {
   const { element } = option;
   const { shape } = option;
@@ -245,7 +275,9 @@ function isDataObjectRef(option) {
 
   return (type.includes('dataobject'));
 }
+*/
 
+/*
 // final
 function isUniqueExtension(viewer, businessObject, extension) {
   if (businessObject.extensionElements === undefined) {
@@ -260,7 +292,9 @@ function isUniqueExtension(viewer, businessObject, extension) {
 
   return true;
 }
+*/
 
+/*
 // final
 function getIdFromExtensionShape(element) {
   const { businessObject } = element;
@@ -274,6 +308,8 @@ function getIdFromExtensionShape(element) {
     }
   }
 }
+*/
+
 
 export function isTaskOrSubprocess(input) {
   let { type } = input;
@@ -281,6 +317,7 @@ export function isTaskOrSubprocess(input) {
   return (type.includes('task') || type.includes('subprocess'));
 }
 
+/*
 // final
 function getSucessors(flownode) {
   const result = [];
@@ -424,6 +461,7 @@ function getTraces(process) {
 
   return searchTrace(openTraces, finalTraces, endNode);
 }
+*/
 
 /*
 module.exports = {

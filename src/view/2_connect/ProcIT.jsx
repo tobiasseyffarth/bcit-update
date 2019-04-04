@@ -23,6 +23,7 @@ export default class StepProcIT extends Component {
       infraName: null,
       infraProps: [],
       selectedInfraProp: null,
+      selectedInfraElement: null,
     };
 
     this.renderBpmnProps = this.renderBpmnProps.bind(this);
@@ -49,11 +50,6 @@ export default class StepProcIT extends Component {
     if (nextProps.view !== this.props.view) {
       console.log('bhjbdhs');
     }
-  }
-
-  hookEventBus() {
-    const eventBus = this.bpmnModeler.get('eventBus');
-    eventBus.on('element.click', e => this.hookOnClick(e));
   }
 
   hookOnClick(e) {
@@ -83,7 +79,7 @@ export default class StepProcIT extends Component {
 
   renderBpmnProps(element) {
     if (element !== null) {
-      const businessObject = element.businessObject;
+      const { businessObject } = element;
 
       this.setState({ bpmnId: businessObject.id });
       this.setState({ bpmnName: businessObject.name });
@@ -100,14 +96,16 @@ export default class StepProcIT extends Component {
   removeBpmnProp() {
     if (this.state.selectedBpmnElement !== null) {
       const element = this.state.selectedBpmnElement;
-      const businessObject = element.businessObject;
+      const { businessObject } = element;
+
       editprocess.removeExt(businessObject.extensionElements, {
         name: this.state.selectedBpmnProp._name,
         value: this.state.selectedBpmnProp._value,
       });
       this.setState({ selectedBpmnElement: element }, () => {
         this.renderBpmnProps(element);
-        renderprocess.renderComplianceProcess(this.bpmnModeler, element, processquery.isCompliance(businessObject));
+        const isCPP = processquery.isCompliance(businessObject);
+        renderprocess.renderComplianceProcess(this.bpmnModeler, element, isCPP);
       },
       );
 
@@ -121,7 +119,7 @@ export default class StepProcIT extends Component {
     if (this.state.selectedBpmnElement !== null) {
       const modeler = this.bpmnModeler;
       const element = this.state.selectedBpmnElement;
-      const businessObject = element.businessObject;
+      const { businessObject } = element;
 
       if (e.checked) {
         this.setState({ isCompliance: true }, () => this.renderBpmnProps(element));
@@ -132,9 +130,14 @@ export default class StepProcIT extends Component {
         editprocess.defineAsComplianceProcess(modeler, businessObject, false);
         renderprocess.renderComplianceProcess(modeler, element, false);
       }
-
+      ProjectModel.setViewer(this.bpmnModeler);
       // todo: Graph anpassen
     }
+  }
+
+  hookEventBus() {
+    const eventBus = this.bpmnModeler.get('eventBus');
+    eventBus.on('element.click', e => this.hookOnClick(e));
   }
 
   showBpmnModeler() {
@@ -142,7 +145,9 @@ export default class StepProcIT extends Component {
   }
 
   removeInfraProp() {
-    console.log('remove infra prop');
+    if (this.state.selectedInfraElement !== null) {
+      console.log('remove infra prop');
+    }
 
     // todo: Graph anpassen
   }

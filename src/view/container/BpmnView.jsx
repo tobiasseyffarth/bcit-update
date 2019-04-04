@@ -36,7 +36,6 @@ class BpmnView extends Component {
   hookOnClick(e) {
     const { element } = e;
     this.setState({ element });
-    const process = ProjectModel.getProcess();
 
     if (this.props.view === 'analyzeProcess') {
       console.log('analyze process', element);
