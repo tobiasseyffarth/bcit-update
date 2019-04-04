@@ -14,9 +14,7 @@ export default class StepITCompliance extends Component {
   render() {
     return (
       <div>
-        <section className="container-infra">
-
-        </section>
+        <section className="container-infra" />
         <section className="container-compliance">
           <ComplianceView />
         </section>

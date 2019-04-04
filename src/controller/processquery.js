@@ -115,12 +115,12 @@ export function getExtensionOfElement(businessObject) {
         for (let j = 0; j < extensionElements[i].$children.length; j++) {
           _name = extensionElements[i].$children[j].name;
           _value = extensionElements[i].$children[j].value;
-          result.push({name: _name + ' ' + _value, _name, _value});
+          result.push({ name: `${_name} ${_value}`, _name, _value });
         }
       } else { // get own extension
         _name = extensionElements[i].name;
         _value = extensionElements[i].value;
-        result.push({name: _name + ' ' + _value, _name, _value});
+        result.push({ name: `${_name} ${_value}`, _name, _value });
       }
     }
   }
@@ -169,15 +169,15 @@ function hasExtensionName(businessObject, name) {
 }
 
 function isExtensionShape(element) {
-  const businessObject = element.businessObject;
+  const { businessObject } = element;
   return hasExtension(businessObject, 'flowelement');
 }
 
 // final
 function isFlowElement(option) { // identify flowNodes
-  const {element} = option;
-  const {shape} = option;
-  let {type} = null;
+  const { element } = option;
+  const { shape } = option;
+  let { type } = null;
 
   if (element != null) {
     type = element.$type;
@@ -193,9 +193,9 @@ function isFlowElement(option) { // identify flowNodes
 
 // final
 function isDataObject(option) { // identify Database or Document
-  const {element} = option;
-  const {shape} = option;
-  let {type} = null;
+  const { element } = option;
+  const { shape } = option;
+  let { type } = null;
 
   if (element != null) {
     type = element.$type;
@@ -211,9 +211,9 @@ function isDataObject(option) { // identify Database or Document
 }
 
 function isDataStore(option) {
-  const {element} = option;
-  const {shape} = option;
-  let {type} = null;
+  const { element } = option;
+  const { shape } = option;
+  let { type } = null;
 
   if (element != null) {
     type = element.$type;
@@ -229,8 +229,8 @@ function isDataStore(option) {
 }
 
 function isDataObjectRef(option) {
-  const {element} = option;
-  const {shape} = option;
+  const { element } = option;
+  const { shape } = option;
   let type = null;
 
   if (element !== null) {
@@ -263,12 +263,12 @@ function isUniqueExtension(viewer, businessObject, extension) {
 
 // final
 function getIdFromExtensionShape(element) {
-  const businessObject = element.businessObject;
+  const { businessObject } = element;
   const shapeExtension = getExtensionOfElement(businessObject);
 
   for (let i = 0; i < shapeExtension.length; i++) {
-    const {name} = shapeExtension[i];
-    const {value} = shapeExtension[i];
+    const { name } = shapeExtension[i];
+    const { value } = shapeExtension[i];
     if (name !== 'flowelement') {
       return value;
     }
@@ -276,7 +276,7 @@ function getIdFromExtensionShape(element) {
 }
 
 export function isTaskOrSubprocess(input) {
-  let type = input.type;
+  let { type } = input;
   type = type.toLowerCase();
   return (type.includes('task') || type.includes('subprocess'));
 }
@@ -286,7 +286,7 @@ function getSucessors(flownode) {
   const result = [];
 
   if (flownode.outgoing !== undefined) {
-    const {outgoing} = flownode;
+    const { outgoing } = flownode;
 
     for (let i = 0; i < outgoing.length; i++) {
       result.push(outgoing[i].targetRef);
@@ -301,7 +301,7 @@ function getPredecessors(flownode) {
   const result = [];
 
   if (flownode.incoming !== undefined) {
-    const {incoming} = flownode;
+    const { incoming } = flownode;
 
     for (let i = 0; i < incoming.length; i++) {
       result.push(incoming[i].sourceRef);
@@ -320,7 +320,7 @@ function getParallelTrace(node, parallelTrace) {
 
     for (let i = 0; i < sucs.length; i++) {
       const sequence = [];
-      _parallelTrace.push({status: 'open', sequence});
+      _parallelTrace.push({ status: 'open', sequence });
     }
     return getParallelTrace(node, _parallelTrace);
   }

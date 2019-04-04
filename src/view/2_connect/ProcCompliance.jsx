@@ -12,9 +12,7 @@ export default class StepProcCompliance extends Component {
   render() {
     return (
       <div>
-        <section className="container-process">
-
-        </section>
+        <section className="container-process" />
         <section className="container-compliance">
           <ComplianceView />
         </section>
