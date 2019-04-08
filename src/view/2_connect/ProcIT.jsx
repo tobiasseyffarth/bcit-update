@@ -52,17 +52,6 @@ export default class StepProcIT extends Component {
     }
   }
 
-  hookOnClick(e) {
-    const { element } = e;
-    if (processquery.isTaskOrSubprocess(element)) {
-      this.renderBpmnProps(element);
-      this.setState({ selectedBpmnElement: element });
-    } else {
-      this.renderBpmnProps(null);
-      this.setState({ selectedBpmnElement: null });
-    }
-  }
-
   renderDiagram = (xml) => {
     this.bpmnModeler.importXML(xml, (err) => {
       if (err) {
@@ -132,6 +121,17 @@ export default class StepProcIT extends Component {
       }
       ProjectModel.setViewer(this.bpmnModeler);
       // todo: Graph anpassen
+    }
+  }
+
+  hookOnClick(e) {
+    const { element } = e;
+    if (processquery.isTaskOrSubprocess(element)) {
+      this.renderBpmnProps(element);
+      this.setState({ selectedBpmnElement: element });
+    } else {
+      this.renderBpmnProps(null);
+      this.setState({ selectedBpmnElement: null });
     }
   }
 

@@ -31,6 +31,11 @@ class Project {
     this.viewer = viewer;
   };
   getViewer = () => this.viewer;
+
+  setInfra = (infra) => {
+    this.infra = infra;
+  };
+  getInfra = () => this.infra;
 }
 
 const ProjectModel = new Project();

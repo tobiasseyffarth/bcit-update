@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { Button } from 'primereact/button';
-import { Dialog } from 'primereact/dialog';
 import { Growl } from 'primereact/growl';
 import PropTypes from 'prop-types';
 import * as fileio from './../../controller/helpers/fileio';
+import * as infraimporter from './../../controller/InfraImporter';
 import bpmnXml from './../../models/processmodel';
-
 import ProjectModel from './../../models/ProjectModel';
 import './../../App.css';
 
@@ -25,8 +24,11 @@ export default class ImportModels extends Component {
     this.growl.show({ severity: 'info', summary: 'Compliance successfull imported', detail: 'detail...' });
   }
 
-
-  openInfra() {
+  async openInfra() {
+    const file = await fileio.getFile();
+    const input = await fileio.readFile(file);
+    const infra = infraimporter.getInfra(input);
+    ProjectModel.setInfra(infra);
     this.growl.show({ severity: 'info', summary: 'Infra successfull imported', detail: 'detail...' });
   }
 

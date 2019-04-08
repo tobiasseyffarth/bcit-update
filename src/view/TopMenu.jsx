@@ -18,9 +18,9 @@ export default class TopMenu extends Component {
     this.onHide = this.onHide.bind(this);
   }
 
-  onHide(event) {
-    this.setState({visibleAbout: false});
-    this.setState({visibleGraph: false});
+  onHide() {
+    this.setState({ visibleAbout: false });
+    this.setState({ visibleGraph: false });
   }
 
   showAboutDialog() {
@@ -38,22 +38,22 @@ export default class TopMenu extends Component {
   renderAboutDialog(){
     return (
       <div className="content-section implementation">
-        <Dialog header="About BCIT 2.0" visible={this.state.visibleAbout} style={{width: '50vw'}} onHide={this.onHide} maximizable>
+        <Dialog header="About BCIT 2.0" visible={this.state.visibleAbout} style={{ width: '50vw' }} onHide={this.onHide} maximizable>
           About
           ...
         </Dialog>
       </div>
-    )
+    );
   }
 
   renderGraphDialog(){
     return (
       <div className="content-section implementation">
-        <Dialog header="Graph" visible={this.state.visibleGraph} style={{width: '50vw'}} onHide={this.onHide} maximizable>
+        <Dialog header="Graph" visible={this.state.visibleGraph} style={{ width: '50vw' }} onHide={this.onHide} maximizable>
           Graph
         </Dialog>
       </div>
-    )
+    );
   }
 
   render() {

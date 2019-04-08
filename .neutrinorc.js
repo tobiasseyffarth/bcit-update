@@ -15,7 +15,8 @@ module.exports = {
           "react/no-unused-state": "off",
           "react/prefer-stateless-function": "off",
           "no-underscore-dangle": "off"
-        }
+        },
+
       }
     }],
     [
