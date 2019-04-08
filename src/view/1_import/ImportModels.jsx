@@ -1,5 +1,6 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { Button } from 'primereact/button';
+import { Dialog } from 'primereact/dialog';
 import { Growl } from 'primereact/growl';
 import PropTypes from 'prop-types';
 import * as fileio from './../../controller/helpers/fileio';
@@ -23,6 +24,7 @@ export default class ImportModels extends Component {
   openCompliance() {
     this.growl.show({ severity: 'info', summary: 'Compliance successfull imported', detail: 'detail...' });
   }
+
 
   openInfra() {
     this.growl.show({ severity: 'info', summary: 'Infra successfull imported', detail: 'detail...' });
