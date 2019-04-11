@@ -1,12 +1,12 @@
 
 export function getRequirementContainsTitle(requirements, input) {
-  let result = [];
+  const result = [];
 
   for (let i = 0; i < requirements.length; i++) {
     if (requirements[i].title !== undefined) {
-      let low_title = requirements[i].title.toLowerCase();
-      let low_input = input.toLowerCase();
-      if (low_title.includes(low_input)) {
+      const title = requirements[i].title.toLowerCase();
+      const lowInput = input.toLowerCase();
+      if (title.includes(lowInput)) {
         result.push(requirements[i]);
       }
     }
@@ -15,12 +15,12 @@ export function getRequirementContainsTitle(requirements, input) {
 }
 
 export function getRequirementContainsText(requirements, input) {
-  let result = [];
+  const result = [];
 
   for (let i = 0; i < requirements.length; i++) {
-    let low_req = requirements[i].text.toLowerCase();
-    let low_input = input.toLowerCase();
-    if (low_req.includes(low_input)) {
+    const req = requirements[i].text.toLowerCase();
+    const lowInput = input.toLowerCase();
+    if (req.includes(lowInput)) {
       result.push(requirements[i]);
     }
   }
@@ -28,7 +28,7 @@ export function getRequirementContainsText(requirements, input) {
 }
 
 export function getRequirementBySource(requirements, paragraph, section) {
-  let result = [];
+  const result = [];
 
   if (section === undefined) {
     for (let i = 0; i < requirements.length; i++) {
@@ -58,9 +58,10 @@ export function getRequirementById(requirements, id) {
       return requirements[i];
     }
   }
+  return null;
 }
 
 export function toString(requirements, id) {
-  let requirement = getRequirementById(requirements, id);
-  return "ID: " + requirement.id + "\n" + "Source: " + requirement.source.norm + ", " + requirement.source.paragraph + ", Section " + requirement.source.section + "\nTitle: " + requirement.title + "\n" + requirement.text;
+  const requirement = getRequirementById(requirements, id);
+  return `ID: ${requirement.id}\n Source: ${requirement.source.norm}, ${requirement.source.paragraph}, Section ${requirement.source.section}\nTitle: ${requirement.title}\n${requirement.text}`;
 }

@@ -14,7 +14,8 @@ module.exports = {
           "react/prop-types": "off",
           "react/no-unused-state": "off",
           "react/prefer-stateless-function": "off",
-          "no-underscore-dangle": "off"
+          "no-underscore-dangle": "off",
+          "max-len": "off"
         },
 
       }

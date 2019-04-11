@@ -102,21 +102,25 @@ function getSequenceFlows(obj) {
 }
 
 export function getInfra(data) {
-  const jsonObj = fastXmlParser.parse(data, {
-    attrPrefix: '@_',
-    attrNodeName: 'attr',
-    textNodeName: '#text',
-    ignoreTextNodeAttr: false,
-    ignoreNonTextNodeAttr: false,
-    textAttrConversion: true,
-  });
+  try {
+    const jsonObj = fastXmlParser.parse(data, {
+      attrPrefix: '@_',
+      attrNodeName: 'attr',
+      textNodeName: '#text',
+      ignoreTextNodeAttr: false,
+      ignoreNonTextNodeAttr: false,
+      textAttrConversion: true,
+    });
 
-  elements.splice(0, elements.length);
-  sequenceFlows.splice(0, sequenceFlows.length);
+    elements.splice(0, elements.length);
+    sequenceFlows.splice(0, sequenceFlows.length);
 
-  getAttributeRelations(jsonObj);
-  getSequenceFlows(jsonObj);
-  getArchiElements(jsonObj);
-  getMetadata(jsonObj);
-  return elements;
+    getAttributeRelations(jsonObj);
+    getSequenceFlows(jsonObj);
+    getArchiElements(jsonObj);
+    getMetadata(jsonObj);
+    return { infra: elements };
+  } catch (e) {
+    return { error: e };
+  }
 }

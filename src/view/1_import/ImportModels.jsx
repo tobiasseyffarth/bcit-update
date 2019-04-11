@@ -4,10 +4,11 @@ import { Growl } from 'primereact/growl';
 import PropTypes from 'prop-types';
 import * as fileio from './../../controller/helpers/fileio';
 import * as infraimporter from './../../controller/InfraImporter';
+import * as infraquery from './../../controller/InfraQuery';
 import * as complianceimporter from './../../controller/ComplianceImporter';
 import bpmnXml from './../../models/processmodel';
 import infraXml from './../../models/inframodel';
-import complianceJson from './../../models/compliancemodel';
+import complianceJson from '../../models/compliancemodel';
 import ProjectModel from './../../models/ProjectModel';
 import './../../App.css';
 
@@ -26,10 +27,12 @@ export default class ImportModels extends Component {
     const file = await fileio.getFile('.json, .xml');
     const input = await fileio.readFile(file);
 
-    const compliance_import = complianceimporter.getJSON(input);
+    const complianceImport = complianceimporter.getJSON(input);
     const helper = ProjectModel.getCompliance();
-    const compliance_add = complianceimporter.addCompliance({compliance: helper, imported_compliance: compliance_import})
-    ProjectModel.setCompliance(compliance_add);
+    const complianceAdd = complianceimporter.addCompliance({ compliance: helper, imported_compliance: complianceImport });
+    ProjectModel.setCompliance(complianceAdd);
+
+    console.log(ProjectModel.getCompliance());
 
     this.growl.show({ severity: 'info', summary: 'Compliance successfull imported', detail: 'detail...' });
   }
@@ -37,10 +40,15 @@ export default class ImportModels extends Component {
   async openInfra() {
     const file = await fileio.getFile('.xml');
     const input = await fileio.readFile(file);
-    const infra = infraimporter.getInfra(input);
+    const result = infraimporter.getInfra(input);
 
-    ProjectModel.setInfra(infra);
-    this.growl.show({ severity: 'info', summary: 'Infra successfull imported', detail: 'detail...' });
+    if (result.infra !== undefined){
+      ProjectModel.setInfra(result.infra);
+      const metadata = infraquery.getMetadata(result.infra);
+      this.growl.show({ severity: 'info', summary: 'Infrastructure imported', detail: metadata.name });
+    } else {
+      this.growl.show({ severity: 'error', summary: 'Error importing infrastructure', detail: result.error.toString() });
+    }
   }
 
   async openBPMN() {
