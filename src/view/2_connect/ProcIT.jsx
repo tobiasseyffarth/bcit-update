@@ -4,9 +4,9 @@ import { Checkbox } from 'primereact/checkbox';
 import { Button } from 'primereact/button';
 import PropTypes from 'prop-types';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
-import * as processquery from '../../controller/processquery';
-import * as editprocess from '../../controller/editprocess';
-import * as renderprocess from '../../controller/renderprocess';
+import * as processquery from '../../controller/ProcessQuery';
+import * as editprocess from '../../controller/ProcessEditor';
+import * as renderprocess from '../../controller/ProcessRenderer';
 import ProjectModel from '../../models/ProjectModel';
 
 export default class StepProcIT extends Component {

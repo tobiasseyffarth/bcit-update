@@ -36,6 +36,11 @@ class Project {
     this.infra = infra;
   };
   getInfra = () => this.infra;
+
+  setCompliance = (compliance) => {
+    this.compliance = compliance;
+  };
+  getCompliance = () => this.compliance;
 }
 
 const ProjectModel = new Project();

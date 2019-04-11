@@ -20,20 +20,26 @@ export default class ImportModels extends Component {
     this.openBPMN = this.openBPMN.bind(this);
   }
 
-  openCompliance() {
+  async openCompliance() {
+    const file = await fileio.getFile('.xml');
+    const input = await fileio.readFile(file);
+    const compliance = null;
+
+    ProjectModel.setCompliance(compliance);
     this.growl.show({ severity: 'info', summary: 'Compliance successfull imported', detail: 'detail...' });
   }
 
   async openInfra() {
-    const file = await fileio.getFile();
+    const file = await fileio.getFile('.xml');
     const input = await fileio.readFile(file);
     const infra = infraimporter.getInfra(input);
+
     ProjectModel.setInfra(infra);
     this.growl.show({ severity: 'info', summary: 'Infra successfull imported', detail: 'detail...' });
   }
 
   async openBPMN() {
-    const file = await fileio.getFile();
+    const file = await fileio.getFile('.bpmn');
     const input = await fileio.readFile(file);
     ProjectModel.setBpmnXml(input);
     this.growl.show({ severity: 'info', summary: 'BPMN successfull imported', detail: 'detail...' });

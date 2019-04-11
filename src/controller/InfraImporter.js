@@ -101,7 +101,7 @@ function getSequenceFlows(obj) {
   Object.assign(elements, sequenceFlows);
 }
 
-function getInfra(data) {
+export function getInfra(data) {
   const jsonObj = fastXmlParser.parse(data, {
     attrPrefix: '@_',
     attrNodeName: 'attr',
@@ -120,5 +120,3 @@ function getInfra(data) {
   getMetadata(jsonObj);
   return elements;
 }
-
-export { getInfra as default };

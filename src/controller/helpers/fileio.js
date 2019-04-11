@@ -1,10 +1,9 @@
-import fs from 'fs';
 
-export async function getFile() {
+export async function getFile(accept) {
   return new Promise((resolve) => {
     const fileSelector = document.createElement('input');
     fileSelector.setAttribute('type', 'file');
-    fileSelector.setAttribute('multiple', 'multiple');
+    fileSelector.setAttribute('accept', accept);
     fileSelector.click();
 
     fileSelector.addEventListener('change', () => {
@@ -23,15 +22,5 @@ export async function readFile(file) {
 
     reader.onerror = reject;
     reader.readAsText(file);
-  });
-}
-
-export async function readURL(url) {
-  return new Promise((res, rej) => {
-    fs.readFile(url, 'utf-8', (err, data) => {
-      if (err) rej(err);
-
-      res(data);
-    });
   });
 }
