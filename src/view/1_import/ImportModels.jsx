@@ -3,9 +3,9 @@ import { Button } from 'primereact/button';
 import { Growl } from 'primereact/growl';
 import PropTypes from 'prop-types';
 import * as fileio from './../../controller/helpers/fileio';
-import * as infraimporter from './../../controller/InfraImporter';
-import * as infraquery from './../../controller/InfraQuery';
-import * as complianceimporter from './../../controller/ComplianceImporter';
+import * as infraimporter from '../../controller/infra/InfraImporter';
+import * as infraquery from '../../controller/infra/InfraQuery';
+import * as complianceimporter from '../../controller/compliance/ComplianceImporter';
 import bpmnXml from './../../models/processmodel';
 import infraXml from './../../models/inframodel';
 import complianceJson from '../../models/compliancemodel';
@@ -31,8 +31,6 @@ export default class ImportModels extends Component {
     const helper = ProjectModel.getCompliance();
     const complianceAdd = complianceimporter.addCompliance({ compliance: helper, imported_compliance: complianceImport });
     ProjectModel.setCompliance(complianceAdd);
-
-    console.log(ProjectModel.getCompliance());
 
     this.growl.show({ severity: 'info', summary: 'Compliance successfull imported', detail: 'detail...' });
   }
@@ -63,7 +61,7 @@ export default class ImportModels extends Component {
     const compliance = complianceimporter.getJSON(complianceJson);
 
     ProjectModel.setBpmnXml(bpmnXml);
-    ProjectModel.setInfra(infra);
+    ProjectModel.setInfra(infra.infra);
     ProjectModel.setCompliance(compliance);
   }
 

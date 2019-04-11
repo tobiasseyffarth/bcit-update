@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import ProjectModel from '../../models/ProjectModel';
-import * as processquery from '../../controller/ProcessQuery';
+import * as processquery from '../../controller/process/ProcessQuery';
 
 class BpmnView extends Component {
   constructor(props) {

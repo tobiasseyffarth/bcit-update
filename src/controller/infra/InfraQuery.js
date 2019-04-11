@@ -1,17 +1,5 @@
-/*
-module.exports = {
-  getNodes,
-  getSequences,
-  getElementById,
-  getMetadata,
-  removeITProps,
-  updateITProps,
-  isUniqueProp
-};
-*/
-
 // final
-function getNodes(infra) {
+export function getNodes(infra) {
   const result = [];
   for (let i = 0; i < infra.length; i++) {
     if (infra[i].type === 'node') {
@@ -22,7 +10,7 @@ function getNodes(infra) {
 }
 
 // final
-function getSequences(infra) {
+export function getSequences(infra) {
   const result = [];
   for (let i = 0; i < infra.length; i++) {
     if (infra[i].type === 'sequence') {
@@ -33,7 +21,7 @@ function getSequences(infra) {
 }
 
 // final
-function getElementById(infra, id) {
+export function getElementById(infra, id) {
   let element = null;
 
   for (let i = 0; i < infra.length; i++) {
@@ -61,13 +49,13 @@ export function getMetadata(infra) {
 }
 
 // final
-function removeITProps(element, index) {
+export function removeITProps(element, index) {
   const { props } = element;
   props.splice(index, 1);
 }
 
 // final
-function updateITProps(element, property) {
+export function updateITProps(element, property) {
   const { requirement } = property;
   const { props } = element;
   let updateProps = true;
@@ -89,7 +77,7 @@ function updateITProps(element, property) {
   return false;
 }
 
-function isUniqueProp(element, property){
+export function isUniqueProp(element, property){
   const { requirement } = property;
   const { props } = element;
   let updateProps = true;

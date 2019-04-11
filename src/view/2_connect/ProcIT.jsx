@@ -4,9 +4,12 @@ import { Checkbox } from 'primereact/checkbox';
 import { Button } from 'primereact/button';
 import PropTypes from 'prop-types';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
-import * as processquery from '../../controller/ProcessQuery';
-import * as editprocess from '../../controller/ProcessEditor';
-import * as renderprocess from '../../controller/ProcessRenderer';
+import cytoscape from 'cytoscape';
+import * as ProcessQuery from '../../controller/process/ProcessQuery';
+import * as ProcessEditor from '../../controller/process/ProcessEditor';
+import * as ProcessRenderer from '../../controller/process/ProcessRenderer';
+import * as GraphCreator from '../../controller/graph/GraphEditor';
+import * as GraphRenderer from '../../controller/graph/GraphRenderer';
 import ProjectModel from '../../models/ProjectModel';
 
 export default class StepProcIT extends Component {
@@ -22,6 +25,7 @@ export default class StepProcIT extends Component {
       infraId: null,
       infraName: null,
       infraProps: [],
+      infraGraph: null,
       selectedInfraProp: null,
       selectedInfraElement: null,
     };
@@ -42,7 +46,11 @@ export default class StepProcIT extends Component {
     this.hookEventBus();
 
     if (ProjectModel.getBpmnXml() !== null) {
-      this.renderDiagram(ProjectModel.getBpmnXml());
+      this.renderBpmn(ProjectModel.getBpmnXml());
+    }
+
+    if (ProjectModel.getInfra() !== null) {
+      this.renderInfra(ProjectModel.getInfra());
     }
   }
 
@@ -52,13 +60,13 @@ export default class StepProcIT extends Component {
     }
   }
 
-  renderDiagram = (xml) => {
+  renderBpmn = (xml) => {
     this.bpmnModeler.importXML(xml, (err) => {
       if (err) {
         console.log('error rendering', err);
       } else {
         ProjectModel.setViewer(this.bpmnModeler);
-        const process = processquery.getProcess(this.bpmnModeler);
+        const process = ProcessQuery.getProcess(this.bpmnModeler);
         ProjectModel.setProcess(process);
         const canvas = this.bpmnModeler.get('canvas');
         canvas.zoom('fit-viewport');
@@ -66,36 +74,75 @@ export default class StepProcIT extends Component {
     });
   };
 
+  renderInfra(infra) {
+    const container = document.getElementById('infra-container');
+    let graph = cytoscape({
+      container: container,
+      style: [ // the stylesheet for the graph
+        {
+          selector: 'node',
+          style: {
+            'label': 'data(display_name)',
+            'shape': 'triangle',
+            'background-color': '#ffffff',
+            'border-style': 'solid',
+            'border-color': '#666666',
+            'border-width': 1
+          }
+        },
+
+        {
+          selector: 'edge',
+          style: {
+            'width': 1,
+            'line-color': '#1c2966',
+            'mid-target-arrow-color': '#3040b7',
+            'mid-target-arrow-shape': 'triangle',
+            'line-style': 'dotted'
+          }
+        }
+      ],
+    });
+
+    GraphCreator.createGraphFromInfra(graph, infra);
+    let layout = graph.layout({name: 'breadthfirst'}); //more options http://js.cytoscape.org/#layouts
+    layout.run();
+    // graph.autolock(false); //elements can not be moved by the user
+    GraphRenderer.resizeGraph(graph);
+
+    this.setState({infraGraph: graph});
+  }
+
   renderBpmnProps(element) {
     if (element !== null) {
-      const { businessObject } = element;
+      const {businessObject} = element;
 
-      this.setState({ bpmnId: businessObject.id });
-      this.setState({ bpmnName: businessObject.name });
-      this.setState({ isCompliance: processquery.isCompliance(businessObject) });
-      this.setState({ bpmnProps: processquery.getExtensionOfElement(businessObject) });
+      this.setState({bpmnId: businessObject.id});
+      this.setState({bpmnName: businessObject.name});
+      this.setState({isCompliance: ProcessQuery.isCompliance(businessObject)});
+      this.setState({bpmnProps: ProcessQuery.getExtensionOfElement(businessObject)});
     } else {
-      this.setState({ bpmnId: null });
-      this.setState({ bpmnName: null });
-      this.setState({ isCompliance: false });
-      this.setState({ bpmnProps: [] });
+      this.setState({bpmnId: null});
+      this.setState({bpmnName: null});
+      this.setState({isCompliance: false});
+      this.setState({bpmnProps: []});
     }
   }
 
   removeBpmnProp() {
     if (this.state.selectedBpmnElement !== null) {
       const element = this.state.selectedBpmnElement;
-      const { businessObject } = element;
+      const {businessObject} = element;
 
-      editprocess.removeExt(businessObject.extensionElements, {
+      ProcessEditor.removeExt(businessObject.extensionElements, {
         name: this.state.selectedBpmnProp._name,
         value: this.state.selectedBpmnProp._value,
       });
-      this.setState({ selectedBpmnElement: element }, () => {
-        this.renderBpmnProps(element);
-        const isCPP = processquery.isCompliance(businessObject);
-        renderprocess.renderComplianceProcess(this.bpmnModeler, element, isCPP);
-      },
+      this.setState({selectedBpmnElement: element}, () => {
+            this.renderBpmnProps(element);
+            const isCPP = ProcessQuery.isCompliance(businessObject);
+            ProcessRenderer.renderComplianceProcess(this.bpmnModeler, element, isCPP);
+          },
       );
 
       // todo Graph anpassen
@@ -108,16 +155,16 @@ export default class StepProcIT extends Component {
     if (this.state.selectedBpmnElement !== null) {
       const modeler = this.bpmnModeler;
       const element = this.state.selectedBpmnElement;
-      const { businessObject } = element;
+      const {businessObject} = element;
 
       if (e.checked) {
-        this.setState({ isCompliance: true }, () => this.renderBpmnProps(element));
-        editprocess.defineAsComplianceProcess(modeler, businessObject, true);
-        renderprocess.renderComplianceProcess(modeler, element, true);
+        this.setState({isCompliance: true}, () => this.renderBpmnProps(element));
+        ProcessEditor.defineAsComplianceProcess(modeler, businessObject, true);
+        ProcessRenderer.renderComplianceProcess(modeler, element, true);
       } else {
-        this.setState({ isCompliance: false }, () => this.renderBpmnProps(element));
-        editprocess.defineAsComplianceProcess(modeler, businessObject, false);
-        renderprocess.renderComplianceProcess(modeler, element, false);
+        this.setState({isCompliance: false}, () => this.renderBpmnProps(element));
+        ProcessEditor.defineAsComplianceProcess(modeler, businessObject, false);
+        ProcessRenderer.renderComplianceProcess(modeler, element, false);
       }
       ProjectModel.setViewer(this.bpmnModeler);
       // todo: Graph anpassen
@@ -125,13 +172,13 @@ export default class StepProcIT extends Component {
   }
 
   hookOnClick(e) {
-    const { element } = e;
-    if (processquery.isTaskOrSubprocess(element)) {
+    const {element} = e;
+    if (ProcessQuery.isTaskOrSubprocess(element)) {
       this.renderBpmnProps(element);
-      this.setState({ selectedBpmnElement: element });
+      this.setState({selectedBpmnElement: element});
     } else {
       this.renderBpmnProps(null);
-      this.setState({ selectedBpmnElement: null });
+      this.setState({selectedBpmnElement: null});
     }
   }
 
@@ -154,84 +201,82 @@ export default class StepProcIT extends Component {
 
   renderBpmnPropsPanel() {
     return (
-      <div className="property-panel">
-        <div>
-          <label>ID: {this.state.bpmnId} </label>
+        <div className="property-panel">
+          <div>
+            <label>ID: {this.state.bpmnId} </label>
+          </div>
+          <div>
+            <label>Name: {this.state.bpmnName} </label>
+          </div>
+          <div>
+            <ListBox
+                options={this.state.bpmnProps}
+                onChange={e => this.setState({selectedBpmnProp: e.value})}
+                optionLabel="name"
+            />
+            <Button
+                label="remove"
+                onClick={this.removeBpmnProp}
+                tooltip="remove property"
+            />
+            <Button
+                label="xml"
+                onClick={this.showBpmnModeler}
+                tooltip="show Bpmn Modeler"
+            />
+          </div>
+          <div>
+            <Checkbox
+                inputId="cb"
+                onChange={e => this.setComplianceProcess(e)}
+                checked={this.state.isCompliance}
+            />
+            <label htmlFor="cb">is Compliance Process </label>
+          </div>
         </div>
-        <div>
-          <label>Name: {this.state.bpmnName} </label>
-        </div>
-        <div>
-          <ListBox
-            options={this.state.bpmnProps}
-            onChange={e => this.setState({ selectedBpmnProp: e.value })}
-            optionLabel="name"
-          />
-          <Button
-            label="remove"
-            onClick={this.removeBpmnProp}
-            tooltip="remove property"
-          />
-          <Button
-            label="xml"
-            onClick={this.showBpmnModeler}
-            tooltip="show Bpmn Modeler"
-          />
-        </div>
-        <div>
-          <Checkbox
-            inputId="cb"
-            onChange={e => this.setComplianceProcess(e)}
-            checked={this.state.isCompliance}
-          />
-          <label htmlFor="cb">is Compliance Process </label>
-        </div>
-      </div>
     );
   }
 
   renderInfraPropsPanel() {
     return (
-      <div className="property-panel">
-        <p>Infra Panel</p>
-        <div>
-          <label>ID: {this.state.infraId}</label>
+        <div className="property-panel">
+          <p>Infra Panel</p>
+          <div>
+            <label>ID: {this.state.infraId}</label>
+          </div>
+          <div>
+            <label>Name: {this.state.infraName}</label>
+          </div>
+          <div>
+            <ListBox
+                options={this.state.infraProps}
+                onChange={e => this.setState({selectedInfraProp: e.value})}
+                optionLabel="name"
+            />
+            <Button
+                label="remove"
+                onClick={this.removeInfraProp}
+                tooltip="remove property"
+            />
+          </div>
         </div>
-        <div>
-          <label>Name: {this.state.infraName}</label>
-        </div>
-        <div>
-          <ListBox
-            options={this.state.infraProps}
-            onChange={e => this.setState({ selectedInfraProp: e.value })}
-            optionLabel="name"
-          />
-          <Button
-            label="remove"
-            onClick={this.removeInfraProp}
-            tooltip="remove property"
-          />
-        </div>
-      </div>
     );
   }
 
   render() {
     return (
-      <div>
-        <section className="container-process">
-          <div className="viewer">
-            <div id="canvas" />
-          </div>
-          {this.renderBpmnPropsPanel()}
-        </section>
-        <section className="container-infra">
-          <div className="viewer">
-            <p>Infra View</p>
-          </div>
-          {this.renderInfraPropsPanel()}
-        </section>
-      </div>
+        <div>
+          <section className="container-process">
+            <div className="viewer">
+              <div id="canvas"/>
+            </div>
+            {this.renderBpmnPropsPanel()}
+          </section>
+          <section className="container-infra">
+            <div className="viewer" id="infra-container"/>
+            {this.renderInfraPropsPanel()}
+          </section>
+        </div>
     );
   }
 }

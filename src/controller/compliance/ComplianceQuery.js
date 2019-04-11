@@ -1,4 +1,3 @@
-
 export function getRequirementContainsTitle(requirements, input) {
   const result = [];
 

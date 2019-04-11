@@ -1,4 +1,4 @@
-import fastXmlParser from './helpers/fast-xml-parser';
+import fastXmlParser from '../helpers/fast-xml-parser/src/parser';
 
 const elements = [];
 

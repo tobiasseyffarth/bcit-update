@@ -69,7 +69,6 @@ function getPlainParagraph(input) {
   return input.substring(2, input.length);
 }
 
-
 function getComplianceFromXml(helpObj) {
   const compliance = {
     requirement: [],
