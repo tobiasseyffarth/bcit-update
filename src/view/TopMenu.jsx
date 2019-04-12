@@ -21,7 +21,7 @@ export default class TopMenu extends Component {
 
     this.exportBpmn = this.exportBpmn.bind(this);
     this.showAboutDialog = this.showAboutDialog.bind(this);
-    this.showGraphView = this.showGraphView.bind(this);
+    this.renderGraphView = this.renderGraphView.bind(this);
     this.onHide = this.onHide.bind(this);
   }
 
@@ -68,7 +68,7 @@ export default class TopMenu extends Component {
     });
   }
 
-  showGraphView(){
+  renderGraphView(){
     this.setState({ visibleGraph: true }, () => {
       const container = document.getElementById('graph-container');
       let graph = ProjectModel.getGraph();
@@ -77,6 +77,7 @@ export default class TopMenu extends Component {
       const layout = graph.layout({ name: 'breadthfirst' }); // more options http://js.cytoscape.org/#layouts
       layout.run(); // graph.autolock(false); //elements can not be moved by the user
       GraphRenderer.resizeGraph(graph);
+      GraphRenderer.colorNodes(graph);
       this.hookGraphOnClick(graph);
     });
   }
@@ -154,7 +155,7 @@ export default class TopMenu extends Component {
           },
           {
             label: 'View Graph',
-            command: () => { this.showGraphView(); },
+            command: () => { this.renderGraphView(); },
           },
           {
             label: 'Export BPMN',

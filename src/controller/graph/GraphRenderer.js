@@ -299,3 +299,22 @@ export function drawAnalyze(graph) {
   }
   clearGraph(graph);
 }
+
+export function colorNodes(graph){
+  let nodes = graph.nodes();
+
+  for (let i = 0; i < nodes.length; i++) {
+    let node = nodes[i];
+    let nodeType = node.data('nodetype');
+
+    if (nodeType === 'businessprocess') {
+      node.style('border-color', 'green');
+    } else if (nodeType === 'complianceprocess') {
+      node.style('border-color', 'blue');
+    } else if (nodeType === 'compliance') {
+      node.style('border-color', 'grey');
+    } else if (nodeType === 'infra') {
+      node.style('border-color', 'orange');
+    }
+  }
+}
