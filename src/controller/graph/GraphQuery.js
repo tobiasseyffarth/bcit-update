@@ -5,7 +5,7 @@ export function getDirectPredecessor(node, nodetype) {
   let exclude;
   let _nodetype;
 
-  if (nodetype !== null && nodetype.includes('!')) {
+  if (nodetype !== undefined && nodetype.includes('!')) { // todo: Aenderung von null auf undefined testen
     exclude = true;
     _nodetype = nodetype.replace('!', ''); // remove ! for checking the nodetypes
   } else {

@@ -100,8 +100,20 @@ export default class StepProcIT extends Component {
     }
   }
 
+  updateProjectModel(businessObject){
+    const modeler = this.bpmnModeler;
+    const bpmnXml = FileIO.getXmlFromViewer(modeler);
+    let graph = ProjectModel.getGraph();
+    GraphConnector.updateFlowelement(modeler, graph, businessObject);
+
+    ProjectModel.setBpmnXml(bpmnXml);
+    ProjectModel.setViewer(modeler);
+    ProjectModel.setGraph(graph);
+  }
+
   removeBpmnProp() {
     if (this.state.selectedBpmnElement !== null) {
+      const modeler = this.bpmnModeler;
       const element = this.state.selectedBpmnElement;
       const { businessObject } = element;
 
@@ -116,18 +128,15 @@ export default class StepProcIT extends Component {
       },
       );
 
-      // todo Graph anpassen
-      const bpmnXml = FileIO.getXmlFromViewer(this.bpmnModeler);
-      ProjectModel.setBpmnXml(bpmnXml);
-      ProjectModel.setViewer(this.bpmnModeler);
+      this.updateProjectModel(businessObject);
     }
   }
 
   setComplianceProcess(e) {
     if (this.state.selectedBpmnElement !== null) {
       const modeler = this.bpmnModeler;
-      const element = this.state.selectedBpmnElement;
-      const { businessObject } = element;
+      let element = this.state.selectedBpmnElement;
+      let { businessObject } = element;
 
       if (e.checked) {
         this.setState({ isCompliance: true }, () => this.renderBpmnProps(element));
@@ -139,10 +148,7 @@ export default class StepProcIT extends Component {
         ProcessRenderer.renderComplianceProcess(modeler, element, false);
       }
 
-      const bpmnXml = FileIO.getXmlFromViewer(this.bpmnModeler);
-      ProjectModel.setBpmnXml(bpmnXml);
-      ProjectModel.setViewer(this.bpmnModeler);
-      // todo: Graph anpassen
+      this.updateProjectModel(businessObject);
     }
   }
 

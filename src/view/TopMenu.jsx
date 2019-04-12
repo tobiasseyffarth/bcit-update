@@ -2,6 +2,7 @@ import { Menubar } from 'primereact/menubar';
 import React, { Component } from 'react';
 import { Dialog } from 'primereact/dialog';
 import { Link } from 'react-router-dom';
+import { ListBox } from 'primereact/listbox';
 import ProjectModel from './../models/ProjectModel';
 import * as GraphRenderer from "../controller/graph/GraphRenderer";
 
@@ -11,6 +12,11 @@ export default class TopMenu extends Component {
     this.state = {
       visibleAbout: false,
       visibleGraph: false,
+      nodeId: null,
+      nodeName: null,
+      nodeType: null,
+      modelType: null,
+      nodeProps: [],
     };
 
     this.exportBpmn = this.exportBpmn.bind(this);
@@ -28,18 +34,50 @@ export default class TopMenu extends Component {
     this.setState({ visibleAbout: true });
   }
 
+  renderGraphProps(node){
+    if (node !== null) {
+      this.setState({ nodeId: node.data('id')});
+      this.setState({ nodeName: node.data('name') });
+      this.setState({ nodeType: node.data('nodetype') });
+      this.setState({ modelType: node.data('modeltype') });
+      this.setState({ nodeProps: node.data('props') });
+    } else {
+      this.setState({ nodeId: null });
+      this.setState({ nodeName: null });
+      this.setState({ nodeType: null });
+      this.setState({ modelType: null });
+      this.setState({ nodeProps: []});
+    }
+  }
+
+  hookGraphOnClick(graph){
+    const _this = this;
+
+    graph.on('tap', (evt) => { // http://js.cytoscape.org/#core/events
+      const element = evt.target;
+      if (element === graph) { // background
+        _this.renderGraphProps(null);
+      } else {
+        if (element.isNode()) { // edge
+          _this.renderGraphProps(element);
+        }
+        if (element.isEdge()) {
+          console.log('taped on edge');
+        }
+      }
+    });
+  }
+
   showGraphView(){
     this.setState({ visibleGraph: true }, () => {
-      console.log(document.getElementById('graph-container'));
-
       const container = document.getElementById('graph-container');
       let graph = ProjectModel.getGraph();
       graph.mount(container);
-      console.log(graph.nodes());
 
       const layout = graph.layout({ name: 'breadthfirst' }); // more options http://js.cytoscape.org/#layouts
       layout.run(); // graph.autolock(false); //elements can not be moved by the user
       GraphRenderer.resizeGraph(graph);
+      this.hookGraphOnClick(graph);
     });
   }
 
@@ -47,21 +85,27 @@ export default class TopMenu extends Component {
     console.log(ProjectModel.getViewer());
   }
 
-  renderAboutDialog(){
-    return (
-      <div className="content-section implementation">
-        <Dialog header="About BCIT 2.0" visible={this.state.visibleAbout} style={{ width: '50vw' }} onHide={this.onHide} maximizable>
-          About
-          ...
-        </Dialog>
-      </div>
-    );
-  }
-
   renderGraphPropsPanel() {
     return (
       <div className="property-panel">
-        property
+        <div>
+          <label>ID: {this.state.nodeId}</label>
+        </div>
+        <div>
+          <label>Name: {this.state.nodeName}</label>
+        </div>
+        <div>
+          <label>Node Type: {this.state.nodeType}</label>
+        </div>
+        <div>
+          <label>Model Type: {this.state.modelType}</label>
+        </div>
+        <div>
+          <ListBox
+              options={this.state.nodeProps}
+              optionLabel="name"
+          />
+        </div>
       </div>
     );
   }
@@ -76,6 +120,17 @@ export default class TopMenu extends Component {
           </section>
         </Dialog>
       </div>
+    );
+  }
+
+  renderAboutDialog(){
+    return (
+        <div className="content-section implementation">
+          <Dialog header="About BCIT 2.0" visible={this.state.visibleAbout} style={{ width: '50vw' }} onHide={this.onHide} maximizable>
+            About
+            ...
+          </Dialog>
+        </div>
     );
   }
 

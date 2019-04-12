@@ -131,7 +131,7 @@ export function createGraphFromProcess(graph, process) {
       let nodetype = 'businessprocess';
 
       for (let j = 0; j < props.length; j++) { // check if the node is a compliance process
-        if (props[j].name === 'isComplianceProcess' && props[j].value === 'true') {
+        if (props[j]._name === 'isComplianceProcess' && props[j]._value === 'true') {
           nodetype = 'complianceprocess';
         }
       }
@@ -162,18 +162,19 @@ export function createGraphFromProcess(graph, process) {
 }
 
 // final
-export function updateFlownodeProperty(graph, flowelement) {
-  const node = graph.getElementById(flowelement.id);
-  const props = queryprocess.getExtensionOfElement(flowelement); // get extension props of flownode
+export function updateFlownodeProperty(graph, businessObject) {
+  const node = graph.getElementById(businessObject.id);
+
+  const props = queryprocess.getExtensionOfElement(businessObject); // get extension props of flownode
   let nodetype = 'businessprocess';
 
   for (let i = 0; i < props.length; i++) { // check if the node is a compliance process
-    if (props[i].name === 'isComplianceProcess' && props[i].value === 'true') {
+    if (props[i]._name === 'isComplianceProcess' && props[i]._value === 'true') {
       nodetype = 'complianceprocess';
     }
   }
 
-  node.data('name', flowelement.name);
+  node.data('name', businessObject.name);
   node.data('nodetype', nodetype);
   node.data('props', props);
 }
