@@ -17,6 +17,13 @@ html {
     display: flex;
     flex-direction: column;
     height: 100%;
+    min-height: 350px;
+}
+
+.container-graph {
+    display: flex;
+    flex-direction: row;
+    height: 600px;
 }
 
 .property-panel {
@@ -25,24 +32,20 @@ html {
     min-width: 300px;
 }
 
-.property-panel .infra{
-    width: 300px;
-}
-
 .container-process {
     display: flex;
     flex-direction: row;
-    height: 350px;
+    min-height: 400px;
 }
 
 .container-compliance {
-    height: 350px;
+    min-height: 350px;
 }
 
 .container-infra {
     display: flex;
     flex-direction: row;
-    height: 350px;
+    height: 400px;
 }
 
 .button-import {

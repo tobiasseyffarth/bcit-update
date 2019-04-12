@@ -9,9 +9,51 @@ import 'mini.css';
 import './App.css';
 import TopMenu from './view/TopMenu';
 import ConnectWizard from './view/Wizard';
-
+import ProjectModel from './models/ProjectModel';
+import cytoscape from "cytoscape";
 
 export default class App extends Component {
+  constructor(props){
+    super(props);
+
+    let graph = ProjectModel.getGraph();
+    if (graph === null) {
+      graph = cytoscape({
+        style: [ // the stylesheet for the graph
+          {
+            selector: 'node',
+            style: {
+              'background-color': '#ffffff',
+              'border-style': 'solid',
+              'border-color': '#666',
+              'border-width': 1,
+              label: 'data(id)',
+              'font-size': 10,
+              'text-wrap': 'wrap',
+              'text-max-width': 20,
+            },
+          },
+          {
+            selector: 'edge',
+            style: {
+              width: 1,
+              'line-color': '#666',
+              'mid-target-arrow-color': '#666',
+              'mid-target-arrow-shape': 'triangle',
+              'line-style': 'dotted',
+            },
+          },
+        ],
+        layout: {
+          name: 'grid',
+          rows: 1,
+        },
+      });
+      ProjectModel.setGraph(graph);
+    }
+
+  }
+
   render() {
     return (
       <div>

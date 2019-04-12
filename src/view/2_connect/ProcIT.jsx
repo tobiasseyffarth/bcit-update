@@ -14,6 +14,7 @@ import * as GraphRenderer from '../../controller/graph/GraphRenderer';
 import * as InfraQuery from '../../controller/infra/InfraQuery';
 import * as FileIO from '../../controller/helpers/fileio';
 import ProjectModel from '../../models/ProjectModel';
+// import './../../App.css';
 
 export default class StepProcIT extends Component {
   constructor(props) {
@@ -72,9 +73,11 @@ export default class StepProcIT extends Component {
       if (err) {
         console.log('error rendering', err);
       } else {
-        ProjectModel.setViewer(this.bpmnModeler);
         const process = ProcessQuery.getProcess(this.bpmnModeler);
+        ProjectModel.setViewer(this.bpmnModeler);
         ProjectModel.setProcess(process);
+        GraphConnector.addSubGraphs({ process });
+
         const canvas = this.bpmnModeler.get('canvas');
         canvas.zoom('fit-viewport');
       }
@@ -192,7 +195,7 @@ export default class StepProcIT extends Component {
     GraphCreator.createGraphFromInfra(graph, infra);
     const layout = graph.layout({ name: 'breadthfirst' }); // more options http://js.cytoscape.org/#layouts
     layout.run();
-    // graph.autolock(false); //elements can not be moved by the user
+    graph.autolock(false); //elements can not be moved by the user
     GraphRenderer.resizeGraph(graph);
 
     this.setState({ infra });
