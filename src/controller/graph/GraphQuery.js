@@ -1,13 +1,13 @@
 export function getDirectPredecessor(node, nodetype) {
   let helper = [];
   helper = node.incomers();
-  let predecessors = [];
+  const predecessors = [];
   let exclude;
   let _nodetype;
 
   if (nodetype !== null && nodetype.includes('!')) {
     exclude = true;
-    _nodetype = nodetype.replace('!', ''); //remove ! for checking the nodetypes
+    _nodetype = nodetype.replace('!', ''); // remove ! for checking the nodetypes
   } else {
     exclude = false;
     _nodetype = nodetype;
@@ -35,15 +35,15 @@ export function getDirectPredecessor(node, nodetype) {
 
 export function getDirectSuccessor(node, nodetype) {
   // let helper = [];
-  let successor = [];
+  const successor = [];
   // helper = node.outgoers();
-  let helper = node.outgoers();
+  const helper = node.outgoers();
   let _nodetype;
   let exclude;
 
   if (nodetype != null && nodetype.includes('!')) {
     exclude = true;
-    _nodetype = nodetype.replace('!', ''); //remove ! for checking the nodetypes
+    _nodetype = nodetype.replace('!', ''); // remove ! for checking the nodetypes
   } else {
     exclude = false;
     _nodetype = nodetype;
@@ -70,9 +70,9 @@ export function getDirectSuccessor(node, nodetype) {
 }
 
 export function filterNodesByType(nodes, type) {
-  let result = [];
+  const result = [];
 
-  for (let i in nodes) {
+  for (let i = 0; i < nodes.length; i++) {
     if (nodes[i].data('nodetype') === type) {
       result.push(nodes[i]);
     }
@@ -81,7 +81,7 @@ export function filterNodesByType(nodes, type) {
 }
 
 export function filterNodes(eles) {
-  let nodes = [];
+  const nodes = [];
 
   for (let i = 0; i < eles.length; i++) {
     if (eles[i].isNode()) {
@@ -93,30 +93,108 @@ export function filterNodes(eles) {
 }
 
 export function getEdge(source, target) {
-  let sourceEdge = source.connectedEdges();
-  let targetEdge = target.connectedEdges();
+  const sourceEdge = source.connectedEdges();
+  const targetEdge = target.connectedEdges();
+  let result;
 
   for (let i = 0; i < sourceEdge.length; i++) {
     for (let j = 0; j < targetEdge.length; j++) {
       if (sourceEdge[i] === targetEdge[j]) {
-        return sourceEdge[i];
+        result = sourceEdge[i];
+        break;
       }
     }
   }
+
+  return result;
+}
+
+function uniqueArray(input) {
+  const result = [];
+
+  for (let i = 0; i < input.length; i++) {
+    const el = input[i];
+    let unique = true;
+
+    for (let j = 0; j < result.length; j++) {
+      const check = result[j];
+      if (el === check) {
+        unique = false;
+        break;
+      }
+    }
+
+    if (unique) {
+      result.push(el);
+    } else {
+      unique = true;
+    }
+  }
+
+  return result;
+}
+
+function getPredsOfType(to_check, nodetype, preds) {
+  const toCheck = to_check;
+  const newCheck = [];
+
+  for (let i = 0; i < toCheck.length; i++) {
+    const dir_pred = getDirectPredecessor(toCheck[i], nodetype);
+
+    for (let j = 0; j < dir_pred.length; j++) {
+      preds.push(dir_pred[j]);
+      newCheck.push(dir_pred[j]);
+    }
+  }
+
+  if (newCheck.length > 0) {
+    return getPredsOfType(newCheck, nodetype, preds);
+  }
+  return uniqueArray(preds);
+}
+
+function getSucsOfType(to_check, nodetype, sucs) {
+  const toCheck = to_check;
+  const newCheck = [];
+
+  for (let i = 0; i < toCheck.length; i++) {
+    const dirSuc = getDirectSuccessor(toCheck[i], nodetype);
+
+    for (let j = 0; j < dirSuc.length; j++) {
+      sucs.push(dirSuc[j]);
+      newCheck.push(dirSuc[j]);
+    }
+  }
+
+  if (newCheck.length > 0) {
+    return getSucsOfType(newCheck, nodetype, sucs);
+  }
+  return uniqueArray(sucs);
+}
+
+export function getPredecessors(node, nodetype) {
+  const dirPreds = getDirectPredecessor(node, nodetype);
+
+  return getPredsOfType(dirPreds, nodetype, dirPreds);
+}
+
+export function getSuccessors(node, nodetype) {
+  const dirSucs = getDirectSuccessor(node, nodetype);
+
+  return getSucsOfType(dirSucs, nodetype, dirSucs);
 }
 
 export function getNodesBetween(source, target) {
-  let succ = source.successors().filter('node');
-  let pred = target.predecessors().filter('node');
-  let nodes = [];
+  const succ = source.successors().filter('node');
+  const pred = target.predecessors().filter('node');
+  const nodes = [];
 
   for (let i = 0; i < succ.length; i++) {
-    let node_suc = succ[i];
+    const node_suc = succ[i];
     for (let j = 0; j < pred.length; j++) {
-      let node_pred = pred[j];
+      const node_pred = pred[j];
       if (node_suc === node_pred) {
-
-        //avoid dublett
+        // avoid dublett
         let isUnique = true;
         for (let k = 0; k < nodes.length; k++) {
           if (node_suc === nodes[k]) {
@@ -136,7 +214,7 @@ export function getNodesBetween(source, target) {
 }
 
 export function getLeavesOfType(node, modeltype) {
-  let leaves = [];
+  const leaves = [];
   // let suc = node.successors().filter('node');
   let type;
 
@@ -146,14 +224,14 @@ export function getLeavesOfType(node, modeltype) {
     type = node.data('modeltype');
   }
 
-  let suc = getSuccessors(node, type);
+  const suc = getSuccessors(node, type);
 
   if (suc.length === 0) {
     return node;
   }
 
-  //check direct successor
-  let dir_suc = getDirectSuccessor(node);
+  // check direct successor
+  const dir_suc = getDirectSuccessor(node);
   let isLeave = false;
   for (let i = 0; i < dir_suc.length; i++) {
     if (dir_suc[i].data('modeltype') !== type) {
@@ -166,11 +244,11 @@ export function getLeavesOfType(node, modeltype) {
     leaves.push(node);
   }
 
-  //check successor
+  // check successor
   for (let i = 0; i < suc.length; i++) {
-    let node_check = suc[i];
+    const node_check = suc[i];
     if (node_check.data('modeltype') === type) {
-      let dir_suc = getDirectSuccessor(node_check);
+      const dir_suc = getDirectSuccessor(node_check);
 
       if (dir_suc.length === 0) {
         leaves.push(node_check);
@@ -185,81 +263,4 @@ export function getLeavesOfType(node, modeltype) {
   }
 
   return leaves;
-}
-
-export function getPredecessors(node, nodetype) {
-  let dirPreds = getDirectPredecessor(node, nodetype);
-
-  return getPredsOfType(dirPreds, nodetype, dirPreds);
-}
-
-function getPredsOfType(to_check, nodetype, preds) {
-  let toCheck = to_check;
-  let newCheck = [];
-
-  for (let i = 0; i < toCheck.length; i++) {
-    let dir_pred = getDirectPredecessor(toCheck[i], nodetype);
-
-    for (let j = 0; j < dir_pred.length; j++) {
-      preds.push(dir_pred[j]);
-      newCheck.push(dir_pred[j]);
-    }
-  }
-
-  if (newCheck.length > 0) {
-    return getPredsOfType(newCheck, nodetype, preds);
-  } else {
-    return uniqueArray(preds);
-  }
-}
-
-export function getSuccessors(node, nodetype) {
-  const dirSucs = getDirectSuccessor(node, nodetype);
-
-  return getSucsOfType(dirSucs, nodetype, dir_sucs);
-}
-
-function getSucsOfType(to_check, nodetype, sucs) {
-  let toCheck = to_check;
-  let newCheck = [];
-
-  for (let i = 0; i < toCheck.length; i++) {
-    let dir_suc = getDirectSuccessor(toCheck[i], nodetype);
-
-    for (let j = 0; j < dir_suc.length; j++) {
-      sucs.push(dir_suc[j]);
-      newCheck.push(dir_suc[j]);
-    }
-  }
-
-  if (newCheck.length > 0) {
-    return getSucsOfType(newCheck, nodetype, sucs);
-  } else {
-    return uniqueArray(sucs);
-  }
-}
-
-function uniqueArray(input) {
-  let result = [];
-
-  for (let i = 0; i < input.length; i++) {
-    let el = input[i];
-    let unique = true;
-
-    for (let j = 0; j < result.length; j++) {
-      let check = result[j];
-      if (el === check) {
-        unique = false;
-        break;
-      }
-    }
-
-    if (unique) {
-      result.push(el);
-    } else {
-      unique = true;
-    }
-  }
-
-  return result;
 }

@@ -1,5 +1,5 @@
-// import * as queryprocess from './processquery';
-// import * as editprocess from './editprocess';
+import * as queryprocess from './ProcessQuery';
+import * as editprocess from './ProcessEditor';
 
 // final
 function colorShape(viewer, element, coloroption) {
@@ -10,7 +10,6 @@ function colorShape(viewer, element, coloroption) {
   modeling.setColor(element, { stroke: _stroke, fill: _fill });
 }
 
-/*
 function createShape(viewer, option) {
   const canvas = viewer.get('canvas');
   const elementFactory = viewer.get('elementFactory');
@@ -43,11 +42,8 @@ function createShape(viewer, option) {
 
   // bpmn:ParallelGateway
   // bpmn:ExclusiveGateway
-
 }
-*/
 
-/*
 // final
 function removeShape(viewer, element) {
   const modeler = viewer.get('modeling');
@@ -58,7 +54,6 @@ function removeShape(viewer, element) {
     console.log(err);
   }
 }
-*/
 
 /*
 // final
@@ -72,15 +67,12 @@ function updateShape(viewer, element, option) {
 }
 */
 
-/*
 // final
 function connectShapes(viewer, source, target) {
   const modeler = viewer.get('modeling');
   return modeler.connect(source, target);
 }
-*/
 
-/*
 // final
 function getTopPosition(viewer) {
   const elementRegistry = viewer.get('elementRegistry');
@@ -106,9 +98,7 @@ function getTopPosition(viewer) {
   }
   return top;
 }
-*/
 
-/*
 // final
 function getBottomPosition(viewer) {
   const elementRegistry = viewer.get('elementRegistry');
@@ -131,11 +121,9 @@ function getBottomPosition(viewer) {
   }
   return bottom;
 }
-*/
 
-/*
 // final
-function addExtensionShape(viewer, element, option, extension) {
+export function addExtensionShape(viewer, element, option, extension) {
   const { infra } = option;
   const { compliance } = option;
 
@@ -146,9 +134,9 @@ function addExtensionShape(viewer, element, option, extension) {
 
   // define shape type
   if (infra != null) {
-    _name = itcomponent.name;
+    _name = infra.name;
     _type = 'bpmn:DataStoreReference';
-    _y = getBottomPosition(viewer) + shape.height + 100;
+    _y = getBottomPosition(viewer) + element.height + 100;
   }
 
   if (compliance != null) {
@@ -172,11 +160,9 @@ function addExtensionShape(viewer, element, option, extension) {
   connectShapes(viewer, dataShape, element);
   colorShape(viewer, dataShape, { stroke: 'grey' });
 }
-*/
 
-/*
 // final
-function removeExtensionShape(viewer, flowelement) {
+export function removeExtensionShape(viewer, flowelement) {
   const elementRegistry = viewer.get('elementRegistry');
   const shapes = elementRegistry.getAll();
   const extShapes = []; // determine extension shapes belong to flowelement
@@ -229,7 +215,7 @@ function removeExtensionShape(viewer, flowelement) {
     for (let i = 0; i < valueShape.length; i++) {
       const valueS = valueShape[i].value;
       // console.log('valueShapeExt', valueS);
-      for (const j in valueFlowelement) {
+      for (let j = 0; j < valueFlowelement.length; j++) {
         const valueF = valueFlowelement[j];
         // console.log('valueFlowelement', valueF);
 
@@ -253,7 +239,6 @@ function removeExtensionShape(viewer, flowelement) {
     removeShape(viewer, shape);
   }
 }
-*/
 
 /*
 function getViewerComponents(viewer) { // Möglichkeiten des Viewers
@@ -269,6 +254,6 @@ export function renderComplianceProcess(viewer, element, isCompliance) {
   if (isCompliance) {
     colorShape(viewer, element, { fill: 'grey' });
   } else {
-    colorShape(viewer, element, { fill: 'none' });
+    colorShape(viewer, element, { fill: 'white' });
   }
 }

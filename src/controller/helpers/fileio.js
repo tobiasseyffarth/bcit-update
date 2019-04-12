@@ -24,3 +24,12 @@ export async function readFile(file) {
     reader.readAsText(file);
   });
 }
+
+// final
+export function getXmlFromViewer(viewer) {
+  let result;
+  viewer.saveXML({ format: true }, (err, xml) => {
+    result = xml;
+  });
+  return result;
+}

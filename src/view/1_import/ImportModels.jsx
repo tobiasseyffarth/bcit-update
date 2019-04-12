@@ -20,7 +20,7 @@ export default class ImportModels extends Component {
     this.openCompliance = this.openCompliance.bind(this);
     this.openInfra = this.openInfra.bind(this);
     this.openBPMN = this.openBPMN.bind(this);
-    this.openModels();
+    this.openModels(); // temporary
   }
 
   async openCompliance() {
@@ -56,6 +56,7 @@ export default class ImportModels extends Component {
     this.growl.show({ severity: 'info', summary: 'BPMN successfull imported', detail: 'detail...' });
   }
 
+  // temporary
   openModels(){
     const infra = infraimporter.getInfra(infraXml);
     const compliance = complianceimporter.getJSON(complianceJson);

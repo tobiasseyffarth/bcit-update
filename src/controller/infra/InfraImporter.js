@@ -9,6 +9,8 @@ function getMetadata(archiObject) {
   elements.push({ id, name, type: 'metadata' });
 }
 
+const propDefintions = {};
+
 function getArchiElements(archiObject) {
   if (!archiObject) { throw 'Empty Archimate XML'; }
 
@@ -33,8 +35,9 @@ function getArchiElements(archiObject) {
         const propid = p.attr['@_propertyDefinitionRef'];
         props.push({
           id: propid,
+          key: propDefintions[propid],
           value: p.value['#text'],
-          name: propDefintions[propid],
+          name: `${propDefintions[propid]} ${p.value['#text']}`,
         });
       }
     }
@@ -43,8 +46,6 @@ function getArchiElements(archiObject) {
     });
   }
 }
-
-const propDefintions = {};
 
 function getAttributeRelations(obj) {
   if (obj.model.propertyDefinitions !== undefined) {

@@ -49,9 +49,22 @@ export function getMetadata(infra) {
 }
 
 // final
+/*
 export function removeITProps(element, index) {
   const { props } = element;
   props.splice(index, 1);
+}
+*/
+
+export function removeITProps(element, propRemove) {
+  const { props } = element;
+
+  for (let i = 0; i < props.length; i++){
+    if (props[i] === propRemove){
+      props.splice(i, 1);
+      break;
+    }
+  }
 }
 
 // final
@@ -59,18 +72,18 @@ export function updateITProps(element, property) {
   const { requirement } = property;
   const { props } = element;
   let updateProps = true;
-  const name = 'compliance';
+  const key = 'compliance';
 
   if (requirement != null) {
     for (let i = 0; i < props.length; i++) {
-      if (props[i].name === name && props[i].value === requirement.id) {
+      if (props[i].key === key && props[i].value === requirement.id) {
         updateProps = false;
         break;
       }
     }
 
     if (updateProps) { // avoid to insert a duplicate
-      props.push({ name, value: requirement.id });
+      props.push({ key, value: requirement.id, name: key + requirement.id });
     }
     return updateProps;
   }

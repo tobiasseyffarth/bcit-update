@@ -9,7 +9,10 @@ import * as ProcessQuery from '../../controller/process/ProcessQuery';
 import * as ProcessEditor from '../../controller/process/ProcessEditor';
 import * as ProcessRenderer from '../../controller/process/ProcessRenderer';
 import * as GraphCreator from '../../controller/graph/GraphEditor';
+import * as GraphConnector from '../../controller/graph/GraphConnector';
 import * as GraphRenderer from '../../controller/graph/GraphRenderer';
+import * as InfraQuery from '../../controller/infra/InfraQuery';
+import * as FileIO from '../../controller/helpers/fileio';
 import ProjectModel from '../../models/ProjectModel';
 
 export default class StepProcIT extends Component {
@@ -22,12 +25,13 @@ export default class StepProcIT extends Component {
       selectedBpmnProp: null,
       selectedBpmnElement: null,
       isCompliance: false,
-      infraId: null,
-      infraName: null,
-      infraProps: [],
+      infra: null,
       infraGraph: null,
-      selectedInfraProp: null,
-      selectedInfraElement: null,
+      infraElement: null,
+      infraElementId: null,
+      infraElementName: null,
+      infraElementProps: [],
+      infraElementProp: null,
     };
 
     this.renderBpmnProps = this.renderBpmnProps.bind(this);
@@ -43,15 +47,18 @@ export default class StepProcIT extends Component {
       height: '350px',
     });
 
-    this.hookEventBus();
-
     if (ProjectModel.getBpmnXml() !== null) {
       this.renderBpmn(ProjectModel.getBpmnXml());
     }
 
     if (ProjectModel.getInfra() !== null) {
-      this.renderInfra(ProjectModel.getInfra());
+      const infra = ProjectModel.getInfra();
+      this.setState({ infra }, () => {
+        this.renderInfra(infra);
+      });
     }
+
+    this.hookBpmnEventBus();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -74,79 +81,41 @@ export default class StepProcIT extends Component {
     });
   };
 
-  renderInfra(infra) {
-    const container = document.getElementById('infra-container');
-    let graph = cytoscape({
-      container: container,
-      style: [ // the stylesheet for the graph
-        {
-          selector: 'node',
-          style: {
-            'label': 'data(display_name)',
-            'shape': 'triangle',
-            'background-color': '#ffffff',
-            'border-style': 'solid',
-            'border-color': '#666666',
-            'border-width': 1
-          }
-        },
-
-        {
-          selector: 'edge',
-          style: {
-            'width': 1,
-            'line-color': '#1c2966',
-            'mid-target-arrow-color': '#3040b7',
-            'mid-target-arrow-shape': 'triangle',
-            'line-style': 'dotted'
-          }
-        }
-      ],
-    });
-
-    GraphCreator.createGraphFromInfra(graph, infra);
-    let layout = graph.layout({name: 'breadthfirst'}); //more options http://js.cytoscape.org/#layouts
-    layout.run();
-    // graph.autolock(false); //elements can not be moved by the user
-    GraphRenderer.resizeGraph(graph);
-
-    this.setState({infraGraph: graph});
-  }
-
   renderBpmnProps(element) {
     if (element !== null) {
-      const {businessObject} = element;
+      const { businessObject } = element;
 
-      this.setState({bpmnId: businessObject.id});
-      this.setState({bpmnName: businessObject.name});
-      this.setState({isCompliance: ProcessQuery.isCompliance(businessObject)});
-      this.setState({bpmnProps: ProcessQuery.getExtensionOfElement(businessObject)});
+      this.setState({ bpmnId: businessObject.id });
+      this.setState({ bpmnName: businessObject.name });
+      this.setState({ isCompliance: ProcessQuery.isCompliance(businessObject) });
+      this.setState({ bpmnProps: ProcessQuery.getExtensionOfElement(businessObject) });
     } else {
-      this.setState({bpmnId: null});
-      this.setState({bpmnName: null});
-      this.setState({isCompliance: false});
-      this.setState({bpmnProps: []});
+      this.setState({ bpmnId: null });
+      this.setState({ bpmnName: null });
+      this.setState({ isCompliance: false });
+      this.setState({ bpmnProps: [] });
     }
   }
 
   removeBpmnProp() {
     if (this.state.selectedBpmnElement !== null) {
       const element = this.state.selectedBpmnElement;
-      const {businessObject} = element;
+      const { businessObject } = element;
 
       ProcessEditor.removeExt(businessObject.extensionElements, {
         name: this.state.selectedBpmnProp._name,
         value: this.state.selectedBpmnProp._value,
       });
-      this.setState({selectedBpmnElement: element}, () => {
-            this.renderBpmnProps(element);
-            const isCPP = ProcessQuery.isCompliance(businessObject);
-            ProcessRenderer.renderComplianceProcess(this.bpmnModeler, element, isCPP);
-          },
+      this.setState({ selectedBpmnElement: element }, () => {
+        this.renderBpmnProps(element);
+        const isCPP = ProcessQuery.isCompliance(businessObject);
+        ProcessRenderer.renderComplianceProcess(this.bpmnModeler, element, isCPP);
+      },
       );
 
       // todo Graph anpassen
-
+      const bpmnXml = FileIO.getXmlFromViewer(this.bpmnModeler);
+      ProjectModel.setBpmnXml(bpmnXml);
       ProjectModel.setViewer(this.bpmnModeler);
     }
   }
@@ -155,36 +124,112 @@ export default class StepProcIT extends Component {
     if (this.state.selectedBpmnElement !== null) {
       const modeler = this.bpmnModeler;
       const element = this.state.selectedBpmnElement;
-      const {businessObject} = element;
+      const { businessObject } = element;
 
       if (e.checked) {
-        this.setState({isCompliance: true}, () => this.renderBpmnProps(element));
+        this.setState({ isCompliance: true }, () => this.renderBpmnProps(element));
         ProcessEditor.defineAsComplianceProcess(modeler, businessObject, true);
         ProcessRenderer.renderComplianceProcess(modeler, element, true);
       } else {
-        this.setState({isCompliance: false}, () => this.renderBpmnProps(element));
+        this.setState({ isCompliance: false }, () => this.renderBpmnProps(element));
         ProcessEditor.defineAsComplianceProcess(modeler, businessObject, false);
         ProcessRenderer.renderComplianceProcess(modeler, element, false);
       }
+
+      const bpmnXml = FileIO.getXmlFromViewer(this.bpmnModeler);
+      ProjectModel.setBpmnXml(bpmnXml);
       ProjectModel.setViewer(this.bpmnModeler);
       // todo: Graph anpassen
     }
   }
 
-  hookOnClick(e) {
-    const {element} = e;
+  hookBpmnOnClick(e) {
+    const { element } = e;
     if (ProcessQuery.isTaskOrSubprocess(element)) {
       this.renderBpmnProps(element);
-      this.setState({selectedBpmnElement: element});
+      this.setState({ selectedBpmnElement: element });
     } else {
       this.renderBpmnProps(null);
-      this.setState({selectedBpmnElement: null});
+      this.setState({ selectedBpmnElement: null });
     }
   }
 
-  hookEventBus() {
+  hookBpmnEventBus() {
     const eventBus = this.bpmnModeler.get('eventBus');
-    eventBus.on('element.click', e => this.hookOnClick(e));
+    eventBus.on('element.click', e => this.hookBpmnOnClick(e));
+  }
+
+  renderInfra(infra) {
+    const container = document.getElementById('infra-container');
+    const graph = cytoscape({
+      container,
+      style: [ // the stylesheet for the graph
+        {
+          selector: 'node',
+          style: {
+            label: 'data(display_name)',
+            shape: 'triangle',
+            'background-color': '#ffffff',
+            'border-style': 'solid',
+            'border-color': '#666666',
+            'border-width': 1,
+          },
+        },
+
+        {
+          selector: 'edge',
+          style: {
+            width: 1,
+            'line-color': '#1c2966',
+            'mid-target-arrow-color': '#3040b7',
+            'mid-target-arrow-shape': 'triangle',
+            'line-style': 'dotted',
+          },
+        },
+      ],
+    });
+
+    GraphCreator.createGraphFromInfra(graph, infra);
+    const layout = graph.layout({ name: 'breadthfirst' }); // more options http://js.cytoscape.org/#layouts
+    layout.run();
+    // graph.autolock(false); //elements can not be moved by the user
+    GraphRenderer.resizeGraph(graph);
+
+    this.setState({ infra });
+    this.setState({ infraGraph: graph }, () => this.hookInfraOnClick(graph));
+    GraphConnector.addSubGraphs({ infra });
+  }
+
+  renderInfraProps(element){
+    if (element !== null) {
+      this.setState({ infraElement: element });
+      this.setState({ infraElementId: element.data('id') });
+      this.setState({ infraElementName: element.data('display_name') });
+      this.setState({ infraElementProps: element.data('props') });
+    } else {
+      this.setState({ infraElement: null });
+      this.setState({ infraElementId: null });
+      this.setState({ infraElementName: null });
+      this.setState({ infraElementProps: null });
+    }
+  }
+
+  hookInfraOnClick(graph){
+    const _this = this;
+
+    graph.on('tap', (evt) => { // http://js.cytoscape.org/#core/events
+      const element = evt.target;
+      if (element === graph) { // background
+        _this.renderInfraProps(null);
+      } else {
+        if (element.isNode()) { // edge
+          _this.renderInfraProps(element);
+        }
+        if (element.isEdge()) {
+          console.log('taped on edge');
+        }
+      }
+    });
   }
 
   showBpmnModeler() {
@@ -192,91 +237,95 @@ export default class StepProcIT extends Component {
   }
 
   removeInfraProp() {
-    if (this.state.selectedInfraElement !== null) {
-      console.log('remove infra prop');
-    }
+    const { infra } = this.state;
+    const elementId = this.state.infraElementId;
+    const element = InfraQuery.getElementById(infra, elementId);
+    const prop = this.state.infraElementProp;
+
+    InfraQuery.removeITProps(element, prop);
+    ProjectModel.setInfra(infra);
 
     // todo: Graph anpassen
+    // todo: Links im Graph anpassen
   }
 
   renderBpmnPropsPanel() {
     return (
-        <div className="property-panel">
-          <div>
-            <label>ID: {this.state.bpmnId} </label>
-          </div>
-          <div>
-            <label>Name: {this.state.bpmnName} </label>
-          </div>
-          <div>
-            <ListBox
-                options={this.state.bpmnProps}
-                onChange={e => this.setState({selectedBpmnProp: e.value})}
-                optionLabel="name"
-            />
-            <Button
-                label="remove"
-                onClick={this.removeBpmnProp}
-                tooltip="remove property"
-            />
-            <Button
-                label="xml"
-                onClick={this.showBpmnModeler}
-                tooltip="show Bpmn Modeler"
-            />
-          </div>
-          <div>
-            <Checkbox
-                inputId="cb"
-                onChange={e => this.setComplianceProcess(e)}
-                checked={this.state.isCompliance}
-            />
-            <label htmlFor="cb">is Compliance Process </label>
-          </div>
+      <div className="property-panel">
+        <div>
+          <label>ID: {this.state.bpmnId} </label>
         </div>
+        <div>
+          <label>Name: {this.state.bpmnName} </label>
+        </div>
+        <div>
+          <ListBox
+            options={this.state.bpmnProps}
+            onChange={e => this.setState({ selectedBpmnProp: e.value })}
+            optionLabel="name"
+          />
+          <Button
+            label="remove"
+            onClick={this.removeBpmnProp}
+            tooltip="remove property"
+          />
+          <Button
+            label="xml"
+            onClick={this.showBpmnModeler}
+            tooltip="show Bpmn Modeler"
+          />
+        </div>
+        <div>
+          <Checkbox
+            inputId="cb"
+            onChange={e => this.setComplianceProcess(e)}
+            checked={this.state.isCompliance}
+          />
+          <label htmlFor="cb">is Compliance Process </label>
+        </div>
+      </div>
     );
   }
 
   renderInfraPropsPanel() {
     return (
-        <div className="property-panel">
-          <p>Infra Panel</p>
-          <div>
-            <label>ID: {this.state.infraId}</label>
-          </div>
-          <div>
-            <label>Name: {this.state.infraName}</label>
-          </div>
-          <div>
-            <ListBox
-                options={this.state.infraProps}
-                onChange={e => this.setState({selectedInfraProp: e.value})}
-                optionLabel="name"
-            />
-            <Button
-                label="remove"
-                onClick={this.removeInfraProp}
-                tooltip="remove property"
-            />
-          </div>
+      <div className="property-panel">
+        <div>
+          <label>ID: {this.state.infraElementId}</label>
         </div>
+        <div>
+          <label>Name: {this.state.infraElementName}</label>
+        </div>
+        <div>
+          <ListBox
+            options={this.state.infraElementProps}
+            onChange={e => this.setState({ infraElementProp: e.value })}
+            optionLabel="name"
+          />
+          <Button
+            label="remove"
+            onClick={this.removeInfraProp}
+            tooltip="remove property"
+          />
+        </div>
+      </div>
     );
   }
 
   render() {
     return (
-        <div>
-          <section className="container-process">
-            <div className="viewer">
-              <div id="canvas"/>
-            </div>
-            {this.renderBpmnPropsPanel()}
-          </section>
-          <section className="container-infra">
-            <div className="viewer" id="infra-container"/>
-            {this.renderInfraPropsPanel()}
-          </section>
-        </div>
+      <div>
+        <section className="container-process">
+          <div className="viewer">
+            <div id="canvas" />
+          </div>
+          {this.renderBpmnPropsPanel()}
+        </section>
+        <section className="container-infra">
+          <div className="viewer" id="infra-container" />
+          {this.renderInfraPropsPanel()}
+        </section>
+      </div>
     );
   }
 }

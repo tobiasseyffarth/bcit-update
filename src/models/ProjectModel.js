@@ -1,6 +1,7 @@
+// import cytoscape from 'cytoscape';
+
 class Project {
   constructor() {
-    this.name = 'Test'; // Project name
     this.project = null; // Project File
 
     this.BpmnXml = null; // content as String
@@ -8,8 +9,8 @@ class Project {
     this.viewer = null; // Bpmn viewer
 
     this.infra = null; // infrastructure
-    this.graph = null; // global graph
     this.compliance = null; // compliance
+    this.graph = null; // create an empty graph and define its style
   }
 
   setName = (name) => {
@@ -17,15 +18,15 @@ class Project {
   };
   getName = () => this.name;
 
-  setProcess = (process) => {
-    this.process = process;
-  };
-  getProcess = () => this.process;
-
   setBpmnXml = (BpmnXml) => {
     this.BpmnXml = BpmnXml;
   };
   getBpmnXml = () => this.BpmnXml;
+
+  setProcess = (process) => {
+    this.process = process;
+  };
+  getProcess = () => this.process;
 
   setViewer = (viewer) => {
     this.viewer = viewer;
@@ -41,6 +42,11 @@ class Project {
     this.compliance = compliance;
   };
   getCompliance = () => this.compliance;
+
+  setGraph = (graph) => {
+    this.graph = graph;
+  };
+  getGraph = () => this.graph;
 }
 
 const ProjectModel = new Project();
