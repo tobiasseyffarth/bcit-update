@@ -276,6 +276,24 @@ function removeComplianceNodes(node) { // only necessary for node of type 'compl
 }
 
 // final
+export function removeNode(node){
+  const dirPreds = querygraph.getDirectPredecessor(node);
+  const dirSucs = querygraph.getDirectSuccessor(node);
+
+  for (let i = 0; i < dirPreds.length; i++) {
+    const edge = querygraph.getEdge(dirPreds[i], node);
+    edge.remove();
+  }
+
+  for (let i = 0; i < dirSucs.length; i++) {
+    const edge = querygraph.getEdge(dirSucs[i], node);
+    edge.remove();
+  }
+
+  node.remove();
+}
+
+// final
 export function updateNeighborsBasedOnProps(graph, element) { //
   const node = graph.getElementById(element.id);
   const props = node.data('props');

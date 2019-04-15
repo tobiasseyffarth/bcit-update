@@ -3,8 +3,10 @@ import React, { Component } from 'react';
 import { Dialog } from 'primereact/dialog';
 import { Link } from 'react-router-dom';
 import { ListBox } from 'primereact/listbox';
+import { Button } from 'primereact/button';
 import ProjectModel from './../models/ProjectModel';
 import * as GraphRenderer from '../controller/graph/GraphRenderer';
+import * as GraphEditor from '../controller/graph/GraphEditor';
 
 export default class TopMenu extends Component {
   constructor(props) {
@@ -23,6 +25,7 @@ export default class TopMenu extends Component {
     this.showAboutDialog = this.showAboutDialog.bind(this);
     this.renderGraphView = this.renderGraphView.bind(this);
     this.onHide = this.onHide.bind(this);
+    this.removeNode = this.removeNode.bind(this);
   }
 
   onHide() {
@@ -60,7 +63,7 @@ export default class TopMenu extends Component {
   hookGraphOnClick(graph){
     const _this = this;
 
-    graph.on('tap', (evt) => { // http://js.cytoscape.org/#core/events
+    graph.on('click', (evt) => { // http://js.cytoscape.org/#core/events
       const element = evt.target;
       if (element === graph) { // background
         _this.renderGraphProps(null);
@@ -73,6 +76,19 @@ export default class TopMenu extends Component {
         }
       }
     });
+  }
+
+  removeNode(){
+    let graph = ProjectModel.getGraph();
+    let node = graph.getElementById(this.state.nodeId);
+
+    if (node !== null) {
+      if (node.data('nodetype') === 'compliance'){
+        console.log(node);
+        GraphEditor.removeNode(node);
+        ProjectModel.setGraph(graph);
+      }
+    }
   }
 
   renderGraphView(){
@@ -112,6 +128,17 @@ export default class TopMenu extends Component {
           <ListBox
             options={this.state.nodeProps}
             optionLabel="name"
+          />
+        </div>
+        <div>
+          <Button
+            label="remove"
+            onClick={this.removeNode}
+            tooltip="remove node"
+          />
+          <Button
+              label="close"
+              onClick={this.onHide}
           />
         </div>
       </div>
