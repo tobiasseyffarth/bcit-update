@@ -1,25 +1,22 @@
 import React, { Component } from 'react';
 import { Button } from 'primereact/button';
-import { InputText } from 'primereact/inputtext';
 import { ListBox } from 'primereact/listbox';
 import { InputTextarea } from 'primereact/inputtextarea';
 import PropTypes from 'prop-types';
-import ProjectModel from "../../models/ProjectModel"; // ES6
-import * as ComplianceQuery from './../../controller/compliance/ComplianceQuery'
-// import ProjectModel from '../../models/ProjectModel';
+import ProjectModel from '../../models/ProjectModel'; // ES6
+import * as ComplianceQuery from './../../controller/compliance/ComplianceQuery';
+import * as GraphConnector from './../../controller/graph/GraphConnector';
 
 export default class StepComplianceCompliance extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      compliance: [],
-      filterOne: null,
-      filterTwo: null,
-      complianceFilterOne: [],
+      compliance: [], // whole compliance from ProjectModel
+      complianceFilterOne: [], // compliance elements for ListBox 1
       complianceFilterTwo: [],
-      complianceTextOne: '',
+      complianceTextOne: '', // Text for TextArea
       complianceTextTwo: '',
-      selectedComplianceOne: null,
+      selectedComplianceOne: null, // selected element in the listbox
       selectedComplianceTwo: null,
     };
 
@@ -28,24 +25,15 @@ export default class StepComplianceCompliance extends Component {
 
   componentDidMount(){
     if (ProjectModel.getCompliance() !== null) {
-      const compliance = ProjectModel.getCompliance();
-      this.setState({ compliance });
-      this.setState({complianceFilterOne: compliance});
-      this.setState({complianceFilterTwo: compliance});
+      this.onMount();
     }
   }
 
-  filterCompliance(no, searchString){
-
-    const compliance = this.state.compliance.requirement;
-    let filter = ComplianceQuery.getRequirementContainsText(compliance, searchString);
-
-    if (no === 1 ){
-      this.setState({complianceFilterOne: filter});
-    } else if (no === 2) {
-      this.setState({complianceFilterTwo: filter});
-    }
-    console.log(filter);
+  onMount(){
+    const compliance = ProjectModel.getCompliance();
+    this.setState({ compliance });
+    this.setState({ complianceFilterOne: compliance });
+    this.setState({ complianceFilterTwo: compliance });
   }
 
   selectCompliance(no, selectedRequirement){
@@ -54,32 +42,38 @@ export default class StepComplianceCompliance extends Component {
     const reqText = ComplianceQuery.toString(compliance, id);
 
     if (no === 1) {
-      this.setState({complianceTextOne: reqText});
-      this.setState({selectedComplianceOne: selectedRequirement});
+      this.setState({ complianceTextOne: reqText });
+      this.setState({ selectedComplianceOne: selectedRequirement });
     } else if (no === 2) {
-      this.setState({complianceTextTwo: reqText});
-      this.setState({selectedComplianceTwo: selectedRequirement});
+      this.setState({ complianceTextTwo: reqText });
+      this.setState({ selectedComplianceTwo: selectedRequirement });
     }
   }
 
   connectCompliance(){
-    console.log('compliance 1', this.state.selectedComplianceOne);
-    console.log('compliance 2', this.state.selectedComplianceTwo);
+    const sourceReq = this.state.selectedComplianceOne;
+    const targetReq = this.state.selectedComplianceTwo;
+
+    if (sourceReq !== null && targetReq !== null){
+      let graph = ProjectModel.getGraph();
+
+      GraphConnector.linkRequirement2Requirement(graph, sourceReq, targetReq);
+      ProjectModel.setGraph(graph);
+    }
   }
 
-
   renderComplianceSelectorOne(no){
-    let option = this.state.complianceFilterOne.requirement;
-    let value = this.state.selectedComplianceOne;
+    const option = this.state.complianceFilterOne.requirement;
+    const value = this.state.selectedComplianceOne;
 
     return (
       <div>
         <section className="container-compliance">
           <div className="compliance-view-selector">
-            <ListBox style={{width: '98%'}} optionLabel="id" value={value} options={option}  onChange={(e) => this.selectCompliance(no, e.value)} filter={true}/>
+            <ListBox style={{ height: '98%', width: '98%' }} optionLabel="id" value={value} options={option} onChange={e => this.selectCompliance(no, e.value)} filter />
           </div>
           <div className="compliance-view-text">
-            <InputTextarea style={{width: '100%', height:'98%'}} cols={60} value={this.state.complianceTextOne} autoResize={false} />
+            <InputTextarea readOnly style={{ width: '100%', height: '98%' }} cols={60} value={this.state.complianceTextOne} autoResize={false} />
           </div>
         </section>
       </div>
@@ -87,17 +81,17 @@ export default class StepComplianceCompliance extends Component {
   }
 
   renderComplianceSelectorTwo(no){
-    let option = this.state.complianceFilterTwo.requirement;
-    let value = this.state.selectedComplianceTwo;
+    const option = this.state.complianceFilterTwo.requirement;
+    const value = this.state.selectedComplianceTwo;
 
     return (
       <div>
         <section className="container-compliance">
           <div className="compliance-view-selector">
-            <ListBox style={{width: '98%'}} optionLabel="id" value={value} options={option} onChange={(e) => this.selectCompliance(no, e.value)} filter={true}/>
+            <ListBox style={{ height: '98%', width: '98%' }} optionLabel="id" value={value} options={option} onChange={e => this.selectCompliance(no, e.value)} filter />
           </div>
           <div className="compliance-view-text">
-            <InputTextarea style={{width: '100%', height:'98%'}} cols={60} value={this.state.complianceTextTwo} autoResize={false} />
+            <InputTextarea readOnly style={{ width: '100%', height: '98%' }} cols={60} value={this.state.complianceTextTwo} autoResize={false} />
           </div>
         </section>
       </div>
@@ -116,9 +110,9 @@ export default class StepComplianceCompliance extends Component {
           </div>
         </section>
         <Button
-            label="connect"
-            onClick={this.connectCompliance}
-            tooltip="connect compliance requirements"
+          label="connect"
+          onClick={this.connectCompliance}
+          tooltip="connect compliance requirements"
         />
       </div>
     );

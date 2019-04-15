@@ -301,11 +301,11 @@ export function drawAnalyze(graph) {
 }
 
 export function colorNodes(graph){
-  let nodes = graph.nodes();
+  const nodes = graph.nodes();
 
   for (let i = 0; i < nodes.length; i++) {
-    let node = nodes[i];
-    let nodeType = node.data('nodetype');
+    const node = nodes[i];
+    const nodeType = node.data('nodetype');
 
     if (nodeType === 'businessprocess') {
       node.style('border-color', 'green');

@@ -48,6 +48,11 @@ export default class StepProcIT extends Component {
       height: '350px',
     });
 
+    this.onMount();
+    this.hookBpmnEventBus();
+  }
+
+  onMount(){
     if (ProjectModel.getBpmnXml() !== null) {
       this.renderBpmn(ProjectModel.getBpmnXml());
     }
@@ -58,8 +63,6 @@ export default class StepProcIT extends Component {
         this.renderInfra(infra);
       });
     }
-
-    this.hookBpmnEventBus();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -103,7 +106,7 @@ export default class StepProcIT extends Component {
   updateProjectModel(businessObject){
     const modeler = this.bpmnModeler;
     const bpmnXml = FileIO.getXmlFromViewer(modeler);
-    let graph = ProjectModel.getGraph();
+    const graph = ProjectModel.getGraph();
     GraphConnector.updateFlowelement(modeler, graph, businessObject);
 
     ProjectModel.setBpmnXml(bpmnXml);
@@ -135,8 +138,8 @@ export default class StepProcIT extends Component {
   setComplianceProcess(e) {
     if (this.state.selectedBpmnElement !== null) {
       const modeler = this.bpmnModeler;
-      let element = this.state.selectedBpmnElement;
-      let { businessObject } = element;
+      const element = this.state.selectedBpmnElement;
+      const { businessObject } = element;
 
       if (e.checked) {
         this.setState({ isCompliance: true }, () => this.renderBpmnProps(element));
@@ -201,7 +204,7 @@ export default class StepProcIT extends Component {
     GraphCreator.createGraphFromInfra(graph, infra);
     const layout = graph.layout({ name: 'breadthfirst' }); // more options http://js.cytoscape.org/#layouts
     layout.run();
-    graph.autolock(false); //elements can not be moved by the user
+    graph.autolock(false); // elements can not be moved by the user
     GraphRenderer.resizeGraph(graph);
 
     this.setState({ infra });

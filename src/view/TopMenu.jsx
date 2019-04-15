@@ -4,7 +4,7 @@ import { Dialog } from 'primereact/dialog';
 import { Link } from 'react-router-dom';
 import { ListBox } from 'primereact/listbox';
 import ProjectModel from './../models/ProjectModel';
-import * as GraphRenderer from "../controller/graph/GraphRenderer";
+import * as GraphRenderer from '../controller/graph/GraphRenderer';
 
 export default class TopMenu extends Component {
   constructor(props) {
@@ -36,17 +36,24 @@ export default class TopMenu extends Component {
 
   renderGraphProps(node){
     if (node !== null) {
-      this.setState({ nodeId: node.data('id')});
+      this.setState({ nodeId: node.data('id') });
       this.setState({ nodeName: node.data('name') });
       this.setState({ nodeType: node.data('nodetype') });
       this.setState({ modelType: node.data('modeltype') });
-      this.setState({ nodeProps: node.data('props') });
+
+      const nodeType = node.data('nodetype');
+      if (nodeType !== 'compliance'){
+        this.setState({ nodeProps: node.data('props')});
+      } else {
+        this.setState({ nodeProps: [] });
+      }
+
     } else {
       this.setState({ nodeId: null });
       this.setState({ nodeName: null });
       this.setState({ nodeType: null });
       this.setState({ modelType: null });
-      this.setState({ nodeProps: []});
+      this.setState({ nodeProps: [] });
     }
   }
 
@@ -71,7 +78,7 @@ export default class TopMenu extends Component {
   renderGraphView(){
     this.setState({ visibleGraph: true }, () => {
       const container = document.getElementById('graph-container');
-      let graph = ProjectModel.getGraph();
+      const graph = ProjectModel.getGraph();
       graph.mount(container);
 
       const layout = graph.layout({ name: 'breadthfirst' }); // more options http://js.cytoscape.org/#layouts
@@ -103,8 +110,8 @@ export default class TopMenu extends Component {
         </div>
         <div>
           <ListBox
-              options={this.state.nodeProps}
-              optionLabel="name"
+            options={this.state.nodeProps}
+            optionLabel="name"
           />
         </div>
       </div>
@@ -126,12 +133,12 @@ export default class TopMenu extends Component {
 
   renderAboutDialog(){
     return (
-        <div className="content-section implementation">
-          <Dialog header="About BCIT 2.0" visible={this.state.visibleAbout} style={{ width: '50vw' }} onHide={this.onHide} maximizable>
+      <div className="content-section implementation">
+        <Dialog header="About BCIT 2.0" visible={this.state.visibleAbout} style={{ width: '50vw' }} onHide={this.onHide} maximizable>
             About
             ...
-          </Dialog>
-        </div>
+        </Dialog>
+      </div>
     );
   }
 

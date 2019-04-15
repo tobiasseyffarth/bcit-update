@@ -1,3 +1,4 @@
+import cytoscape from 'cytoscape';
 import { Component } from 'react';
 import {
   BrowserRouter as Router,
@@ -10,7 +11,6 @@ import './App.css';
 import TopMenu from './view/TopMenu';
 import ConnectWizard from './view/Wizard';
 import ProjectModel from './models/ProjectModel';
-import cytoscape from "cytoscape";
 
 export default class App extends Component {
   constructor(props){
@@ -51,7 +51,6 @@ export default class App extends Component {
       });
       ProjectModel.setGraph(graph);
     }
-
   }
 
   render() {

@@ -226,6 +226,29 @@ export function updateITDisplayName(graph_view, graph_infra, element) {
   }
 }
 
+// todo: sometimes error because leaves[0] is undefined
+function removePred(predecessors) {
+  const leaves = predecessors.leaves('node');
+  const node = leaves[0];
+  const dir_succ = querygraph.getDirectSuccessor(node);
+
+  if (dir_succ.length === 0) {
+    const dir_pred = querygraph.getDirectPredecessor(node);
+    if (dir_pred.length === 0) {
+      node.remove();
+    } else {
+      const pred = node.predecessors().filter('node');
+
+      for (let i = 0; i < dir_pred.length; i++) {
+        const edge = querygraph.getEdge(dir_pred[i], node);
+        edge.remove();
+      }
+      node.remove();
+      removePred(pred);
+    }
+  }
+}
+
 // final
 function removeComplianceNodes(node) { // only necessary for node of type 'compliance'
   const modeltype = node.data('modeltype');
@@ -305,6 +328,16 @@ export function updateNeighborsBasedOnProps(graph, element) { //
   }
 }
 
+// final
+function linkNodes(graph, source, target) {
+  const sequence_id = `${source.id()}_${target.id()}`;
+
+  graph.add({
+    group: 'edges',
+    data: { id: sequence_id, source: source.id(), target: target.id() },
+  });
+}
+
 // final?
 export function updateComplianceNode(graph, flowelement) { // change edge direction in case of enable/disable a complianceprocess
   const node = graph.getElementById(flowelement.id);
@@ -333,39 +366,6 @@ export function updateComplianceNode(graph, flowelement) { // change edge direct
       }
     }
   }
-}
-
-// todo: sometimes error because leaves[0] is undefined
-function removePred(predecessors) {
-  const leaves = predecessors.leaves('node');
-  const node = leaves[0];
-  const dir_succ = querygraph.getDirectSuccessor(node);
-
-  if (dir_succ.length === 0) {
-    const dir_pred = querygraph.getDirectPredecessor(node);
-    if (dir_pred.length === 0) {
-      node.remove();
-    } else {
-      const pred = node.predecessors().filter('node');
-
-      for (let i = 0; i < dir_pred.length; i++) {
-        const edge = querygraph.getEdge(dir_pred[i], node);
-        edge.remove();
-      }
-      node.remove();
-      removePred(pred);
-    }
-  }
-}
-
-// final
-function linkNodes(graph, source, target) {
-  const sequence_id = `${source.id()}_${target.id()}`;
-
-  graph.add({
-    group: 'edges',
-    data: { id: sequence_id, source: source.id(), target: target.id() },
-  });
 }
 
 // final
@@ -425,17 +425,17 @@ export function addNodes(graph, option) {
   let source_node;
   let target_node;
 
-  if (requirement !== null && requirement_2 !== null) { // link requirement-requirement
+  if (requirement !== undefined && requirement_2 !== undefined) { // link requirement-requirement
     source_node = addUniqueNode(graph, { element: requirement });
     target_node = addUniqueNode(graph, { element: requirement_2 });
   }
 
-  if (requirement !== null && itcomponent !== null) { // link requirement-itcomponent
+  if (requirement !== undefined && itcomponent !== undefined) { // link requirement-itcomponent
     source_node = addUniqueNode(graph, { element: requirement });
     target_node = graph.getElementById(itcomponent.id);
   }
 
-  if (requirement !== null && flowelement !== null) { // link requirement-flowelement
+  if (requirement !== undefined && flowelement !== undefined) { // link requirement-flowelement
     if (queryprocess.isCompliance(flowelement)) {
       source_node = graph.getElementById(flowelement.id);
       target_node = addUniqueNode(graph, { element: requirement });
@@ -445,7 +445,7 @@ export function addNodes(graph, option) {
     }
   }
 
-  if (itcomponent !== null && flowelement !== null) { // link itcomponent-flowelement
+  if (itcomponent !== undefined && flowelement !== undefined) { // link itcomponent-flowelement
     source_node = graph.getElementById(itcomponent.id);
     target_node = graph.getElementById(flowelement.id);
   }
