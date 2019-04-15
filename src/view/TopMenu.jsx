@@ -136,19 +136,21 @@ export default class TopMenu extends Component {
             onClick={this.removeNode}
             tooltip="remove node"
           />
-          <Button
-              label="close"
-              onClick={this.onHide}
-          />
         </div>
       </div>
     );
   }
 
   renderGraphDialog(){
+    const footer = (
+        <div>
+          <Button label="close" icon="pi pi-check" onClick={this.onHide} />
+        </div>
+    );
+
     return (
       <div className="content-section implementation">
-        <Dialog header="Graph" visible={this.state.visibleGraph} style={{ width: '80vw' }} onHide={this.onHide} maximizable>
+        <Dialog header="Graph" footer={footer} visible={this.state.visibleGraph} style={{ width: '80vw' }} onHide={this.onHide} maximizable>
           <section className="container-graph">
             <div className="viewer" id="graph-container" />
             {this.renderGraphPropsPanel()}
