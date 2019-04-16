@@ -76,11 +76,6 @@ export default class StepProcIT extends Component {
       if (err) {
         console.log('error rendering', err);
       } else {
-        const process = ProcessQuery.getProcess(this.bpmnModeler);
-        ProjectModel.setViewer(this.bpmnModeler);
-        ProjectModel.setProcess(process);
-        GraphConnector.addSubGraphs({ process });
-
         const canvas = this.bpmnModeler.get('canvas');
         canvas.zoom('fit-viewport');
       }
@@ -229,7 +224,6 @@ export default class StepProcIT extends Component {
 
     this.setState({ infra });
     this.setState({ infraGraph: graph }, () => this.hookInfraOnClick(graph));
-    GraphConnector.addSubGraphs({ infra });
   }
 
   renderInfraProps(nodeInfra){

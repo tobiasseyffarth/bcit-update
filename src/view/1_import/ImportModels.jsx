@@ -6,11 +6,14 @@ import * as fileio from './../../controller/helpers/fileio';
 import * as infraimporter from '../../controller/infra/InfraImporter';
 import * as infraquery from '../../controller/infra/InfraQuery';
 import * as complianceimporter from '../../controller/compliance/ComplianceImporter';
+import * as GraphConnector from './../../controller/graph/GraphConnector';
 import bpmnXml from './../../models/processmodel';
 import infraXml from './../../models/inframodel';
 import complianceJson from '../../models/compliancemodel';
 import ProjectModel from './../../models/ProjectModel';
 import './../../App.css';
+import BpmnModeler from "bpmn-js/dist/bpmn-modeler.development";
+import * as ProcessQuery from "../../controller/process/ProcessQuery";
 
 export default class ImportModels extends Component {
   constructor(props) {
@@ -42,6 +45,7 @@ export default class ImportModels extends Component {
 
     if (result.infra !== undefined){
       ProjectModel.setInfra(result.infra);
+      GraphConnector.addSubGraphs({ infra: result.infra }); // add infra to graph
       const metadata = infraquery.getMetadata(result.infra);
       this.growl.show({ severity: 'info', summary: 'Infrastructure imported', detail: metadata.name });
     } else {
@@ -53,6 +57,19 @@ export default class ImportModels extends Component {
     const file = await fileio.getFile('.bpmn');
     const input = await fileio.readFile(file);
     ProjectModel.setBpmnXml(input);
+
+    let bpmnModeler = new BpmnModeler({}); // create process object and add to graph
+
+    bpmnModeler.importXML(input, (err) => {
+      if (err) {
+        console.log('error rendering', err);
+      } else {
+        const process = ProcessQuery.getProcess(bpmnModeler);
+        ProjectModel.setProcess(process);
+        GraphConnector.addSubGraphs({ process });
+      }
+    });
+
     this.growl.show({ severity: 'info', summary: 'BPMN successfull imported', detail: 'detail...' });
   }
 
@@ -67,10 +84,22 @@ export default class ImportModels extends Component {
 
     if (ProjectModel.getInfra() === null){
       ProjectModel.setInfra(infra.infra);
+      GraphConnector.addSubGraphs({ infra: infra.infra });
     }
 
     if (ProjectModel.getBpmnXml() === null){
-      ProjectModel.setBpmnXml(bpmnXml);
+      let bpmnModeler = new BpmnModeler({});
+
+      bpmnModeler.importXML(bpmnXml, (err) => { // create process object and add to graph
+        if (err) {
+          console.log('error rendering', err);
+        } else {
+          const process = ProcessQuery.getProcess(bpmnModeler);
+          ProjectModel.setProcess(process);
+          GraphConnector.addSubGraphs({ process });
+          ProjectModel.setBpmnXml(bpmnXml);
+        }
+      });
     }
   }
 
