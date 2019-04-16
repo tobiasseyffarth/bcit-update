@@ -23,8 +23,8 @@ export default class StepProcIT extends Component {
       bpmnId: null,
       bpmnName: null,
       bpmnProps: [],
-      selectedBpmnProp: null,
-      selectedBpmnElement: null,
+      bpmnProp: null,
+      bpmnShape: null,
       isCompliance: false,
       infra: null,
       infraGraph: null,
@@ -115,16 +115,16 @@ export default class StepProcIT extends Component {
   }
 
   removeBpmnProp() {
-    if (this.state.selectedBpmnElement !== null) {
+    if (this.state.bpmnShape !== null) {
       const modeler = this.bpmnModeler;
-      const element = this.state.selectedBpmnElement;
+      const element = this.state.bpmnShape;
       const { businessObject } = element;
 
       ProcessEditor.removeExt(businessObject.extensionElements, {
-        name: this.state.selectedBpmnProp._name,
-        value: this.state.selectedBpmnProp._value,
+        name: this.state.bpmnProp._name,
+        value: this.state.bpmnProp._value,
       });
-      this.setState({ selectedBpmnElement: element }, () => {
+      this.setState({ bpmnShape: element }, () => {
         this.renderBpmnProps(element);
         const isCPP = ProcessQuery.isCompliance(businessObject);
         ProcessRenderer.renderComplianceProcess(this.bpmnModeler, element, isCPP);
@@ -136,9 +136,9 @@ export default class StepProcIT extends Component {
   }
 
   setComplianceProcess(e) {
-    if (this.state.selectedBpmnElement !== null) {
+    if (this.state.bpmnShape !== null) {
       const modeler = this.bpmnModeler;
-      const element = this.state.selectedBpmnElement;
+      const element = this.state.bpmnShape;
       const { businessObject } = element;
 
       if (e.checked) {
@@ -159,10 +159,10 @@ export default class StepProcIT extends Component {
     const { element } = e;
     if (ProcessQuery.isTaskOrSubprocess(element)) {
       this.renderBpmnProps(element);
-      this.setState({ selectedBpmnElement: element });
+      this.setState({ bpmnShape: element });
     } else {
       this.renderBpmnProps(null);
-      this.setState({ selectedBpmnElement: null });
+      this.setState({ bpmnShape: null });
     }
   }
 
@@ -273,7 +273,7 @@ export default class StepProcIT extends Component {
         <div>
           <ListBox
             options={this.state.bpmnProps}
-            onChange={e => this.setState({ selectedBpmnProp: e.value })}
+            onChange={e => this.setState({ bpmnProp: e.value })}
             optionLabel="name"
           />
           <Button
