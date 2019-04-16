@@ -5,7 +5,7 @@ export function getDirectPredecessor(node, nodetype) {
   let exclude;
   let _nodetype;
 
-  if (nodetype !== undefined && nodetype.includes('!')) { // todo: Aenderung von null auf undefined testen
+  if (nodetype !== undefined && nodetype.includes('!')) { // todo: Aenderung von null auf undefined testen -> scheint zu funktionieren
     exclude = true;
     _nodetype = nodetype.replace('!', ''); // remove ! for checking the nodetypes
   } else {
@@ -15,15 +15,15 @@ export function getDirectPredecessor(node, nodetype) {
 
   for (let i = 0; i < helper.length; i++) {
     if (helper[i].isNode()) {
-      if (nodetype === null) {
+      if (nodetype === undefined) {
         predecessors.push(helper[i]);
       }
 
-      if (nodetype !== null && exclude === false) {
+      if (nodetype !== undefined && exclude === false) {
         if (helper[i].data('nodetype') === _nodetype) {
           predecessors.push(helper[i]);
         }
-      } else if (nodetype !== null && exclude === true) {
+      } else if (nodetype !== undefined && exclude === true) {
         if (helper[i].data('nodetype') !== _nodetype) {
           predecessors.push(helper[i]);
         }
@@ -34,14 +34,12 @@ export function getDirectPredecessor(node, nodetype) {
 }
 
 export function getDirectSuccessor(node, nodetype) {
-  // let helper = [];
   const successor = [];
-  // helper = node.outgoers();
   const helper = node.outgoers();
   let _nodetype;
   let exclude;
 
-  if (nodetype != null && nodetype.includes('!')) {
+  if (nodetype !== undefined && nodetype.includes('!')) {
     exclude = true;
     _nodetype = nodetype.replace('!', ''); // remove ! for checking the nodetypes
   } else {
@@ -51,15 +49,15 @@ export function getDirectSuccessor(node, nodetype) {
 
   for (let i = 0; i < helper.length; i++) {
     if (helper[i].isNode()) {
-      if (nodetype == null) {
+      if (nodetype === undefined) {
         successor.push(helper[i]);
       }
 
-      if (nodetype != null && exclude === false) {
+      if (nodetype !== undefined && exclude === false) {
         if (helper[i].data('nodetype') === _nodetype) {
           successor.push(helper[i]);
         }
-      } else if (nodetype != null && exclude === true) {
+      } else if (nodetype !== undefined && exclude === true) {
         if (helper[i].data('nodetype') !== _nodetype) {
           successor.push(helper[i]);
         }
@@ -67,7 +65,7 @@ export function getDirectSuccessor(node, nodetype) {
     }
   }
   return successor;
-}
+} // todo: Aenderung von null auf undefined testen
 
 export function filterNodesByType(nodes, type) {
   const result = [];

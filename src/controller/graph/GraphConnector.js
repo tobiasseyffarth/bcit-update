@@ -69,17 +69,18 @@ export function linkRequirement2Process(bpmnViewer, viewer, graph, flowelement, 
   }
 }
 
-export function linkInfra2Process(bpmnViewer, viewer, graph, flowelement, shape, itcomponent) {
-  if (flowelement != null && itcomponent != null && !flowelement.$type.toLowerCase().includes('data')) {
-    const extension = ProcessEditor.createExtensionElement('infra', itcomponent.id);
-    const isUniqueExt = ProcessQuery.isUniqueExtension(viewer, flowelement, extension);
+export function linkInfra2Process(viewer, graph, shape, itComponent) {
+  let { businessObject } = shape;
+
+  if (!businessObject.$type.toLowerCase().includes('data')) {
+    const extension = ProcessEditor.createExtensionElement('infra', itComponent.id);
+    const isUniqueExt = ProcessQuery.isUniqueExtension(viewer, businessObject, extension);
 
     if (isUniqueExt) {
-      ProcessEditor.addExtension(viewer, flowelement, extension); // 1. zu props flowelement hinzufügen
-      bpmnViewer.renderProcessProps(); // 2. processprops neu rendern
-      GraphCreator.updateFlownodeProperty(graph, flowelement); // 3. graph in graphviewer updaten
-      GraphCreator.addNodes(graph, { itcomponent, flowelement }); // 4. create and link nodes
-      ProcessRenderer.addExtensionShape(viewer, shape, { infra: itcomponent }, extension); // 5. add DataObject to process model
+      ProcessEditor.addExtension(viewer, businessObject, extension); // 1. zu props flowelement hinzufügen
+      GraphCreator.updateFlownodeProperty(graph, businessObject); // 2. graph in graphviewer updaten
+      GraphCreator.addNodes(graph, { itComponent, businessObject }); // 3. create and link nodes
+      ProcessRenderer.addExtensionShape(viewer, shape, { infra: itComponent }, extension); // 4. add DataObject to process model
     }
   }
 }

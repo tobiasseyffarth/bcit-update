@@ -311,7 +311,7 @@ export function updateNeighborsBasedOnProps(graph, element) { //
             node_help = null;
           }
         }
-        if (node_help != null) {
+        if (node_help !== null) {
           node_remove.push(node_help);
           node_help = null;
         }
@@ -438,8 +438,8 @@ export function addUniqueNode(graph, input, nodestyle) { // adds a single node t
 export function addNodes(graph, option) {
   const { requirement } = option;
   const { requirement_2 } = option;
-  const { flowelement } = option;
-  const { itcomponent } = option;
+  const { businessObject } = option;
+  const { itComponent } = option;
   let source_node;
   let target_node;
 
@@ -448,24 +448,24 @@ export function addNodes(graph, option) {
     target_node = addUniqueNode(graph, { element: requirement_2 });
   }
 
-  if (requirement !== undefined && itcomponent !== undefined) { // link requirement-itcomponent
+  if (requirement !== undefined && itComponent !== undefined) { // link requirement-itcomponent
     source_node = addUniqueNode(graph, { element: requirement });
     target_node = graph.getElementById(itcomponent.id);
   }
 
-  if (requirement !== undefined && flowelement !== undefined) { // link requirement-flowelement
+  if (requirement !== undefined && businessObject !== undefined) { // link requirement-flowelement
     if (queryprocess.isCompliance(flowelement)) {
-      source_node = graph.getElementById(flowelement.id);
+      source_node = graph.getElementById(businessObject.id);
       target_node = addUniqueNode(graph, { element: requirement });
     } else {
       source_node = addUniqueNode(graph, { element: requirement });
-      target_node = graph.getElementById(flowelement.id);
+      target_node = graph.getElementById(businessObject.id);
     }
   }
 
-  if (itcomponent !== undefined && flowelement !== undefined) { // link itcomponent-flowelement
-    source_node = graph.getElementById(itcomponent.id);
-    target_node = graph.getElementById(flowelement.id);
+  if (itComponent !== undefined && businessObject !== undefined) { // link itcomponent-flowelement
+    source_node = graph.getElementById(itComponent.id);
+    target_node = graph.getElementById(businessObject.id);
   }
 
   linkNodes(graph, source_node, target_node);

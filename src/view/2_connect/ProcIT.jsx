@@ -14,7 +14,6 @@ import * as GraphRenderer from '../../controller/graph/GraphRenderer';
 import * as InfraQuery from '../../controller/infra/InfraQuery';
 import * as FileIO from '../../controller/helpers/fileio';
 import ProjectModel from '../../models/ProjectModel';
-// import './../../App.css';
 
 export default class StepProcIT extends Component {
   constructor(props) {
@@ -40,6 +39,7 @@ export default class StepProcIT extends Component {
     this.removeBpmnProp = this.removeBpmnProp.bind(this);
     this.setComplianceProcess = this.setComplianceProcess.bind(this);
     this.showBpmnModeler = this.showBpmnModeler.bind(this);
+    this.connectElements = this.connectElements.bind(this);
   }
 
   componentDidMount() {
@@ -105,7 +105,7 @@ export default class StepProcIT extends Component {
 
   updateBusinessObject(businessObject){
     const modeler = this.bpmnModeler;
-    const graph = ProjectModel.getGraph();
+    let graph = ProjectModel.getGraph();
     GraphConnector.updateFlowelement(modeler, graph, businessObject);
     ProjectModel.setGraph(graph);
   }
@@ -119,7 +119,6 @@ export default class StepProcIT extends Component {
 
   removeBpmnProp() {
     if (this.state.bpmnShape !== null && this.state.bpmnProp !== null) {
-      const modeler = this.bpmnModeler;
       const element = this.state.bpmnShape;
       const { businessObject } = element;
 
@@ -176,6 +175,22 @@ export default class StepProcIT extends Component {
     eventBus.on('element.click', e => this.hookBpmnOnClick(e));
   }
 
+  connectElements(){
+    let shape = this.state.bpmnShape;
+    let itComponent = this.state.infraElement;
+
+    if (shape !== null && itComponent !== null) {
+      const viewer = this.bpmnModeler;
+      let graph = ProjectModel.getGraph();
+      let businessObject = this.state.bpmnShape.businessObject;
+
+      GraphConnector.linkInfra2Process(viewer, graph, shape, itComponent);
+      this.renderBpmnProps(shape);
+      ProjectModel.setGraph(graph);
+      this.updateBpmnXml();
+    }
+  }
+
   renderInfra(infra) {
     const container = document.getElementById('infra-container');
     const graph = cytoscape({
@@ -217,12 +232,16 @@ export default class StepProcIT extends Component {
     GraphConnector.addSubGraphs({ infra });
   }
 
-  renderInfraProps(element){
-    if (element !== null) {
+  renderInfraProps(nodeInfra){
+    if (nodeInfra !== null) {
+      const infra = this.state.infra;
+      const id = nodeInfra.data('id');
+      const element = InfraQuery.getElementById(infra, id);
+
       this.setState({ infraElement: element });
-      this.setState({ infraElementId: element.data('id') });
-      this.setState({ infraElementName: element.data('display_name') });
-      this.setState({ infraElementProps: element.data('props') });
+      this.setState({ infraElementId: nodeInfra.data('id') });
+      this.setState({ infraElementName: nodeInfra.data('display_name') });
+      this.setState({ infraElementProps: nodeInfra.data('props') });
     } else {
       this.setState({ infraElement: null });
       this.setState({ infraElementId: null });
@@ -307,6 +326,13 @@ export default class StepProcIT extends Component {
   renderInfraPropsPanel() {
     return (
       <div className="property-panel">
+        <div>
+          <Button
+              label="connect"
+              onClick={this.connectElements}
+              tooltip="connect elements"
+          />
+        </div>
         <div>
           <label>ID: {this.state.infraElementId}</label>
         </div>
