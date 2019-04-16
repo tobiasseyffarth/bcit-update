@@ -103,15 +103,18 @@ export default class StepProcIT extends Component {
     }
   }
 
-  updateProjectModel(businessObject){
+  updateBusinessObject(businessObject){
     const modeler = this.bpmnModeler;
-    const bpmnXml = FileIO.getXmlFromViewer(modeler);
     const graph = ProjectModel.getGraph();
     GraphConnector.updateFlowelement(modeler, graph, businessObject);
+    ProjectModel.setGraph(graph);
+  }
 
+  updateBpmnXml(){
+    const modeler = this.bpmnModeler;
+    const bpmnXml = FileIO.getXmlFromViewer(modeler);
     ProjectModel.setBpmnXml(bpmnXml);
     ProjectModel.setViewer(modeler);
-    ProjectModel.setGraph(graph);
   }
 
   removeBpmnProp() {
@@ -131,7 +134,8 @@ export default class StepProcIT extends Component {
       },
       );
 
-      this.updateProjectModel(businessObject);
+      this.updateBusinessObject(businessObject);
+      this.updateBpmnXml();
     }
   }
 
@@ -151,7 +155,8 @@ export default class StepProcIT extends Component {
         ProcessRenderer.renderComplianceProcess(modeler, element, false);
       }
 
-      this.updateProjectModel(businessObject);
+      this.updateBusinessObject(businessObject);
+      this.updateBpmnXml();
     }
   }
 
