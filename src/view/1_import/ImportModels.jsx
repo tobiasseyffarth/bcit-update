@@ -61,9 +61,17 @@ export default class ImportModels extends Component {
     const infra = infraimporter.getInfra(infraXml);
     const compliance = complianceimporter.getJSON(complianceJson);
 
-    ProjectModel.setBpmnXml(bpmnXml);
-    ProjectModel.setInfra(infra.infra);
-    ProjectModel.setCompliance(compliance);
+    if (ProjectModel.getCompliance() === null){
+      ProjectModel.setCompliance(compliance);
+    }
+
+    if (ProjectModel.getInfra() === null){
+      ProjectModel.setInfra(infra.infra);
+    }
+
+    if (ProjectModel.getBpmnXml() === null){
+      ProjectModel.setBpmnXml(bpmnXml);
+    }
   }
 
   render() {
