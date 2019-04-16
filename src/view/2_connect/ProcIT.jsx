@@ -115,7 +115,7 @@ export default class StepProcIT extends Component {
   }
 
   removeBpmnProp() {
-    if (this.state.bpmnShape !== null) {
+    if (this.state.bpmnShape !== null && this.state.bpmnProp !== null) {
       const modeler = this.bpmnModeler;
       const element = this.state.bpmnShape;
       const { businessObject } = element;

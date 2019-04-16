@@ -115,19 +115,20 @@ export function getExtensionOfElement(businessObject) {
   let _value;
 
   if (businessObject.extensionElements !== undefined) {
-    extensionElements = businessObject.extensionElements.values;
-
-    for (let i = 0; i < extensionElements.length; i++) {
-      if (extensionElements[i].$children !== undefined) { // get camunda extension
-        for (let j = 0; j < extensionElements[i].$children.length; j++) {
-          _name = extensionElements[i].$children[j].name;
-          _value = extensionElements[i].$children[j].value;
-          result.push({ name: `${_name} ${_value}`, _name, _value });
+    if (businessObject.extensionElements.values !== undefined) {
+      extensionElements = businessObject.extensionElements.values;
+      for (let i = 0; i < extensionElements.length; i++) {
+        if (extensionElements[i].$children !== undefined) { // get camunda extension
+          for (let j = 0; j < extensionElements[i].$children.length; j++) {
+            _name = extensionElements[i].$children[j].name;
+            _value = extensionElements[i].$children[j].value;
+            result.push({name: `${_name} ${_value}`, _name, _value});
+          }
+        } else { // get own extension
+          _name = extensionElements[i].name;
+          _value = extensionElements[i].value;
+          result.push({name: `${_name} ${_value}`, _name, _value});
         }
-      } else { // get own extension
-        _name = extensionElements[i].name;
-        _value = extensionElements[i].value;
-        result.push({ name: `${_name} ${_value}`, _name, _value });
       }
     }
   }
