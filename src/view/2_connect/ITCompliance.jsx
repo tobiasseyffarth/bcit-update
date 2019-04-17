@@ -75,7 +75,7 @@ export default class StepITCompliance extends Component {
         const detail = 'connect';
         this.growl.show({ severity: 'info', summary: 'elements connected', detail });
       } else {
-        const detail = 'connect';
+        const detail = '';
         this.growl.show({ severity: 'error', summary: 'elements already connected', detail });
       }
 

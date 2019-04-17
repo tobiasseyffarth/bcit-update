@@ -164,15 +164,21 @@ export default class StepProcCompliance extends Component {
       const viewer = this.bpmnModeler;
       const graph = ProjectModel.getGraph();
 
-      GraphConnector.linkRequirement2Process(viewer, graph, shape, compliance);
+      const isUnique = GraphConnector.linkRequirement2Process(viewer, graph, shape, compliance);
 
-      this.renderBpmnProps(shape);
-      ProjectModel.setGraph(graph);
-      this.fitBpmnView();
-      this.updateBpmnXml();
+      if (isUnique){
+        this.renderBpmnProps(shape);
+        ProjectModel.setGraph(graph);
+        this.fitBpmnView();
+        this.updateBpmnXml();
 
-      const detail = `connect ${this.state.bpmnName} and ${this.state.selectedCompliance.id}`;
-      this.growl.show({ severity: 'info', summary: 'elements connected', detail });
+        const detail = `connect ${this.state.bpmnName} and ${this.state.selectedCompliance.id}`;
+        this.growl.show({ severity: 'info', summary: 'elements connected', detail });
+      } else {
+        const detail = '';
+        this.growl.show({ severity: 'error', summary: 'elements already connected', detail });
+      }
+
     }
   }
 

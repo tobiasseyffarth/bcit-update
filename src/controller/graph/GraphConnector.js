@@ -65,6 +65,8 @@ export function linkRequirement2Process(viewer, graph, shape, requirement) {
     GraphCreator.addNodes(graph, { requirement, businessObject }); // 4. create and link nodes
     ProcessRenderer.addExtensionShape(viewer, shape, { compliance: requirement }, extension); // 5. add DataObject to process model
   }
+
+  return isUniqueExt;
 }
 
 export function linkInfra2Process(viewer, graph, shape, itComponent) {
