@@ -92,13 +92,6 @@ export default class StepProcIT extends Component {
     }
   }
 
-  updateBusinessObject(businessObject){
-    const modeler = this.bpmnModeler;
-    const graph = ProjectModel.getGraph();
-    GraphConnector.updateFlowelement(modeler, graph, businessObject);
-    ProjectModel.setGraph(graph);
-  }
-
   updateBpmnXml(){
     const modeler = this.bpmnModeler;
     const bpmnXml = FileIO.getXmlFromViewer(modeler);
@@ -145,6 +138,13 @@ export default class StepProcIT extends Component {
       this.updateBusinessObject(businessObject);
       this.updateBpmnXml();
     }
+  }
+
+  updateBusinessObject(businessObject){
+    const modeler = this.bpmnModeler;
+    const graph = ProjectModel.getGraph();
+    GraphConnector.updateFlowelement(modeler, graph, businessObject);
+    ProjectModel.setGraph(graph);
   }
 
   fitBpmnView(){
@@ -227,7 +227,7 @@ export default class StepProcIT extends Component {
     this.setState({ infraGraph: graph }, () => this.hookInfraOnClick(graph));
   }
 
-  renderInfraProps(nodeInfra){
+  renderInfraProps(nodeInfra){ // todo: wie bei ITCompliance auf itComponent umstellen
     if (nodeInfra !== null) {
       const { infra } = this.state;
       const id = nodeInfra.data('id');
@@ -272,12 +272,14 @@ export default class StepProcIT extends Component {
     const elementId = this.state.infraElementId;
     const element = InfraQuery.getElementById(infra, elementId);
     const prop = this.state.infraElementProp;
+    let graph = ProjectModel.getGraph();
+    let infraGraph = this.state.infraGraph;
 
+    GraphConnector.updateITComponent(graph, infraGraph, element);
     InfraQuery.removeITProps(element, prop);
-    ProjectModel.setInfra(infra);
 
-    // todo: Graph anpassen
-    // todo: Links im Graph anpassen
+    ProjectModel.setInfra(infra);
+    ProjectModel.setGraph(graph);
   }
 
   renderBpmnPropsPanel() {

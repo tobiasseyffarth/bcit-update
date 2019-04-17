@@ -87,29 +87,22 @@ export function linkRequirement2Requirement(graph, source_requirement, target_re
   GraphCreator.addNodes(graph, { requirement: source_requirement, requirement_2: target_requirement });
 }
 
-export function linkRequirement2Infra(graph_viewer, infraViewer, requirement, itcomponent) {
-  const graph_infra = infraViewer.graph;
+export function linkRequirement2Infra(graph, graphInfra, requirement, itComponent) {
 
-  if (itcomponent != null) {
-    const isUniqueProp = InfraQuery.isUniqueProp(itcomponent, { requirement });
+  if (itComponent != null) {
+    const isUniqueProp = InfraQuery.isUniqueProp(itComponent, { requirement });
     if (isUniqueProp) { // if new Props are added
-      InfraQuery.updateITProps(itcomponent, { requirement });// 1. zu props infra hinzufügen
-      GraphCreator.updateITComponentProperty(graph_infra, itcomponent);// 2. Graph in infraviewer updaten
-      infraViewer.renderITProps(); // 3. infraprops neu rendern
-      GraphCreator.updateITComponentProperty(graph_viewer, itcomponent); // 4. graph in graphviewer updaten
-      GraphCreator.addNodes(graph_viewer, { requirement, itcomponent }); // 5. create and link nodes
-      GraphCreator.updateITDisplayName(graph_viewer, graph_infra, itcomponent); // 6. update Displayname IT Component
+      GraphCreator.updateITComponentProperty(graph, itComponent); // 4. graph in graphviewer updaten
+      GraphCreator.addNodes(graph, { requirement, itComponent }); // 5. create and link nodes
+      GraphCreator.updateITDisplayName(graph, graphInfra, itComponent); // 6. update Displayname IT Component
     }
   }
 }
 
-export function updateITComponent(graph, itComponent) {
-  const graphViewer = graph.graph_viewer;
-  const graphInfra = graph.graph_infra;
-
-  GraphCreator.updateITComponentProperty(graphViewer, itComponent); // update node.data('props')
-  GraphCreator.updateNeighborsBasedOnProps(graphViewer, itComponent); // remove edges
-  GraphCreator.updateITDisplayName(graphViewer, graphInfra, itComponent); // update Displayname IT Component
+export function updateITComponent(graph, graphInfra, itComponent) {
+  GraphCreator.updateITComponentProperty(graph, itComponent); // update node.data('props')
+  GraphCreator.updateNeighborsBasedOnProps(graph, itComponent); // remove edges
+  GraphCreator.updateITDisplayName(graph, graphInfra, itComponent); // update Displayname IT Component
 }
 
 export function updateFlowelement(viewer, graph, flowelement) {

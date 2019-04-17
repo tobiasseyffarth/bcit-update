@@ -81,13 +81,6 @@ export default class StepProcCompliance extends Component {
     }
   }
 
-  updateBusinessObject(businessObject){
-    const modeler = this.bpmnModeler;
-    const graph = ProjectModel.getGraph();
-    GraphConnector.updateFlowelement(modeler, graph, businessObject);
-    ProjectModel.setGraph(graph);
-  }
-
   updateBpmnXml(){
     const modeler = this.bpmnModeler;
     const bpmnXml = FileIO.getXmlFromViewer(modeler);
@@ -133,6 +126,13 @@ export default class StepProcCompliance extends Component {
       this.updateBusinessObject(businessObject);
       this.updateBpmnXml();
     }
+  }
+
+  updateBusinessObject(businessObject){
+    const modeler = this.bpmnModeler;
+    const graph = ProjectModel.getGraph();
+    GraphConnector.updateFlowelement(modeler, graph, businessObject);
+    ProjectModel.setGraph(graph);
   }
 
   fitBpmnView(){

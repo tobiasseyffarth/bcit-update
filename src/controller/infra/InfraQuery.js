@@ -74,7 +74,7 @@ export function updateITProps(element, property) {
   let updateProps = true;
   const key = 'compliance';
 
-  if (requirement != null) {
+  if (requirement !== null) {
     for (let i = 0; i < props.length; i++) {
       if (props[i].key === key && props[i].value === requirement.id) {
         updateProps = false;
@@ -84,8 +84,8 @@ export function updateITProps(element, property) {
 
     if (updateProps) { // avoid to insert a duplicate
       props.push({ key, value: requirement.id, name: key + requirement.id });
+      return updateProps;
     }
-    return updateProps;
   }
   return false;
 }
