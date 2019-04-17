@@ -1,22 +1,249 @@
 import { Component } from 'react';
+import { ListBox } from 'primereact/listbox';
+import { Checkbox } from 'primereact/checkbox';
+import { Button } from 'primereact/button';
+import { InputTextarea } from 'primereact/inputtextarea';
+import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
+import cytoscape from 'cytoscape';
+import * as ProcessQuery from '../../controller/process/ProcessQuery';
+import * as ProcessEditor from '../../controller/process/ProcessEditor';
+import * as ProcessRenderer from '../../controller/process/ProcessRenderer';
+import * as GraphCreator from '../../controller/graph/GraphEditor';
+import * as GraphConnector from '../../controller/graph/GraphConnector';
+import * as GraphRenderer from '../../controller/graph/GraphRenderer';
+import * as InfraQuery from '../../controller/infra/InfraQuery';
+import * as FileIO from '../../controller/helpers/fileio';
 import ProjectModel from '../../models/ProjectModel';
-import ComplianceView from '../container/ComplianceView';
+import * as ComplianceQuery from "../../controller/compliance/ComplianceQuery";
 
 export default class StepProcCompliance extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
-    ProjectModel.setName('New Name');
+    this.state = {
+      bpmnId: null,
+      bpmnName: null,
+      bpmnProps: [],
+      bpmnProp: null,
+      bpmnShape: null,
+      isCompliance: false,
+      compliance: [], // whole compliance from ProjectModel
+      complianceFilter: [], // compliance elements for ListBox 1
+      complianceText: '', // Text for TextArea
+      selectedCompliance: null, // selected element in the listbox
+    };
+
+    this.renderBpmnProps = this.renderBpmnProps.bind(this);
+    this.removeBpmnProp = this.removeBpmnProp.bind(this);
+    this.setComplianceProcess = this.setComplianceProcess.bind(this);
+    this.connectElements = this.connectElements.bind(this);
+  }
+
+  componentDidMount() {
+    this.bpmnModeler = new BpmnModeler({
+      container: '#canvas',
+      height: '350px',
+    });
+
+    this.onMount();
+    this.hookBpmnEventBus();
+  }
+
+  onMount(){
+    if (ProjectModel.getBpmnXml() !== null) {
+      this.renderBpmn(ProjectModel.getBpmnXml());
+    }
+
+    const compliance = ProjectModel.getCompliance();
+    this.setState({ compliance });
+    this.setState({ complianceFilter: compliance });
+  }
+
+  renderBpmn = (xml) => {
+    this.bpmnModeler.importXML(xml, (err) => {
+      if (err) {
+        console.log('error rendering', err);
+      } else {
+        const canvas = this.bpmnModeler.get('canvas');
+        canvas.zoom('fit-viewport');
+      }
+    });
+  };
+
+  renderBpmnProps(element) {
+    if (element !== null) {
+      const { businessObject } = element;
+
+      this.setState({ bpmnId: businessObject.id });
+      this.setState({ bpmnName: businessObject.name });
+      this.setState({ isCompliance: ProcessQuery.isCompliance(businessObject) });
+      this.setState({ bpmnProps: ProcessQuery.getExtensionOfElement(businessObject) });
+    } else {
+      this.setState({ bpmnId: null });
+      this.setState({ bpmnName: null });
+      this.setState({ isCompliance: false });
+      this.setState({ bpmnProps: [] });
+    }
+  }
+
+  updateBusinessObject(businessObject){
+    const modeler = this.bpmnModeler;
+    let graph = ProjectModel.getGraph();
+    GraphConnector.updateFlowelement(modeler, graph, businessObject);
+    ProjectModel.setGraph(graph);
+  }
+
+  updateBpmnXml(){
+    const modeler = this.bpmnModeler;
+    const bpmnXml = FileIO.getXmlFromViewer(modeler);
+    ProjectModel.setBpmnXml(bpmnXml);
+    ProjectModel.setViewer(modeler);
+  }
+
+  removeBpmnProp() {
+    if (this.state.bpmnShape !== null && this.state.bpmnProp !== null) {
+      const element = this.state.bpmnShape;
+      const { businessObject } = element;
+
+      ProcessEditor.removeExt(businessObject.extensionElements, {
+        name: this.state.bpmnProp._name,
+        value: this.state.bpmnProp._value,
+      });
+      this.setState({ bpmnShape: element }, () => {
+            this.renderBpmnProps(element);
+            const isCPP = ProcessQuery.isCompliance(businessObject);
+            ProcessRenderer.renderComplianceProcess(this.bpmnModeler, element, isCPP);
+          },
+      );
+
+      this.updateBusinessObject(businessObject);
+      this.updateBpmnXml();
+    }
+  }
+
+  setComplianceProcess(e) {
+    if (this.state.bpmnShape !== null) {
+      const modeler = this.bpmnModeler;
+      const element = this.state.bpmnShape;
+      const { businessObject } = element;
+
+      if (e.checked) {
+        this.setState({ isCompliance: true }, () => this.renderBpmnProps(element));
+        ProcessEditor.defineAsComplianceProcess(modeler, businessObject, true);
+        ProcessRenderer.renderComplianceProcess(modeler, element, true);
+      } else {
+        this.setState({ isCompliance: false }, () => this.renderBpmnProps(element));
+        ProcessEditor.defineAsComplianceProcess(modeler, businessObject, false);
+        ProcessRenderer.renderComplianceProcess(modeler, element, false);
+      }
+
+      this.updateBusinessObject(businessObject);
+      this.updateBpmnXml();
+    }
+  }
+
+  hookBpmnOnClick(e) {
+    const { element } = e;
+    if (ProcessQuery.isTaskOrSubprocess(element)) {
+      this.renderBpmnProps(element);
+      this.setState({ bpmnShape: element });
+    } else {
+      this.renderBpmnProps(null);
+      this.setState({ bpmnShape: null });
+    }
+  }
+
+  hookBpmnEventBus() {
+    const eventBus = this.bpmnModeler.get('eventBus');
+    eventBus.on('element.click', e => this.hookBpmnOnClick(e));
+  }
+
+  connectElements(){
+    let shape = this.state.bpmnShape;
+
+  }
+
+  selectCompliance(selectedRequirement){
+    const compliance = this.state.compliance.requirement;
+    const id = selectedRequirement.id;
+    const reqText = ComplianceQuery.toString(compliance, id);
+
+    this.setState({ complianceText: reqText });
+    this.setState({ selectedCompliance: selectedRequirement });
+  }
+
+  renderBpmnPropsPanel() {
+    return (
+        <div className="property-panel">
+          <div>
+            <label>ID: {this.state.bpmnId} </label>
+          </div>
+          <div>
+            <label>Name: {this.state.bpmnName} </label>
+          </div>
+          <div>
+            <ListBox
+                options={this.state.bpmnProps}
+                onChange={e => this.setState({ bpmnProp: e.value })}
+                optionLabel="name"
+            />
+            <Button
+                label="remove"
+                onClick={this.removeBpmnProp}
+                tooltip="remove property"
+            />
+          </div>
+          <div>
+            <Checkbox
+                inputId="cb"
+                onChange={e => this.setComplianceProcess(e)}
+                checked={this.state.isCompliance}
+            />
+            <label htmlFor="cb">is Compliance Process </label>
+          </div>
+        </div>
+    );
+  }
+
+  renderComplianceSelector(no){
+    const option = this.state.complianceFilter.requirement;
+    const value = this.state.selectedCompliance;
+
+    return (
+        <div className="compliance-view">
+          <div>
+            <section className="container-compliance">
+              <div className="compliance-view-selector">
+                <ListBox style={{ height: '98%', width: '98%' }} optionLabel="id" value={value} options={option} onChange={e => this.selectCompliance(e.value)} filter />
+              </div>
+              <div className="compliance-view-text">
+                <InputTextarea readOnly style={{ width: '100%', height: '98%' }} cols={60} value={this.state.complianceText} autoResize={false} />
+              </div>
+            </section>
+          </div>
+        </div>
+    );
   }
 
   render() {
     return (
-      <div>
-        <section className="container-process" />
-        <section className="container-compliance">
-          <ComplianceView />
-        </section>
-      </div>
+        <div>
+          <section className="container-process">
+            <div className="viewer">
+              <div id="canvas" />
+            </div>
+            {this.renderBpmnPropsPanel()}
+          </section>
+          <section className="container-compliance">
+            {this.renderComplianceSelector()}
+            <div className="property-panel">
+              <Button
+                  label="connect"
+                  onClick={this.removeBpmnProp}
+                  tooltip="connect compliance and process"
+              />
+            </div>
+          </section>
+        </div>
     );
   }
 }

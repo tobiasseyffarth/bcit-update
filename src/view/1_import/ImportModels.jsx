@@ -75,14 +75,13 @@ export default class ImportModels extends Component {
 
   // temporary
   openModels(){
-    const infra = infraimporter.getInfra(infraXml);
-    const compliance = complianceimporter.getJSON(complianceJson);
-
     if (ProjectModel.getCompliance() === null){
+      const compliance = complianceimporter.getJSON(complianceJson);
       ProjectModel.setCompliance(compliance);
     }
 
     if (ProjectModel.getInfra() === null){
+      const infra = infraimporter.getInfra(infraXml);
       ProjectModel.setInfra(infra.infra);
       GraphConnector.addSubGraphs({ infra: infra.infra });
     }
