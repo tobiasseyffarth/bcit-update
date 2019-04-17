@@ -255,7 +255,7 @@ export function isDataObjectRef(option) {
 }
 
 // final
-export function isUniqueExtension(viewer, businessObject, extension) {
+export function isUniqueExtension(businessObject, extension) {
   if (businessObject.extensionElements === undefined) {
     return true;
   }

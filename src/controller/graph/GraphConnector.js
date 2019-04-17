@@ -57,7 +57,7 @@ export function addSubGraphs(options) {
 export function linkRequirement2Process(viewer, graph, shape, requirement) {
   const { businessObject } = shape;
   const extension = ProcessEditor.createExtensionElement('compliance', requirement.id);
-  const isUniqueExt = ProcessQuery.isUniqueExtension(viewer, businessObject, extension);
+  const isUniqueExt = ProcessQuery.isUniqueExtension(businessObject, extension);
 
   if (isUniqueExt) {
     ProcessEditor.addExtension(viewer, businessObject, extension); // 1. zu props flowelement hinzufügen
@@ -72,7 +72,7 @@ export function linkInfra2Process(viewer, graph, shape, itComponent) {
 
   if (!businessObject.$type.toLowerCase().includes('data')) {
     const extension = ProcessEditor.createExtensionElement('infra', itComponent.id);
-    const isUniqueExt = ProcessQuery.isUniqueExtension(viewer, businessObject, extension);
+    const isUniqueExt = ProcessQuery.isUniqueExtension(businessObject, extension);
 
     if (isUniqueExt) {
       ProcessEditor.addExtension(viewer, businessObject, extension); // 1. zu props flowelement hinzufügen
