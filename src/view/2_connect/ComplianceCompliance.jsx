@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button } from 'primereact/button';
 import { ListBox } from 'primereact/listbox';
 import { InputTextarea } from 'primereact/inputtextarea';
+import { Growl } from 'primereact/growl';
 import PropTypes from 'prop-types';
 import ProjectModel from '../../models/ProjectModel'; // ES6
 import * as ComplianceQuery from './../../controller/compliance/ComplianceQuery';
@@ -59,6 +60,12 @@ export default class StepComplianceCompliance extends Component {
 
       GraphConnector.linkRequirement2Requirement(graph, sourceReq, targetReq);
       ProjectModel.setGraph(graph);
+
+      const detail = 'connect ' + this.state.selectedComplianceOne.id + ' and ' + this.state.selectedComplianceTwo.id;
+      this.growl.show({ severity: 'info', summary: 'elements connected', detail: detail });
+
+      this.setState({selectedComplianceOne: null});
+      this.setState({selectedComplianceTwo: null});
     }
   }
 
@@ -101,20 +108,23 @@ export default class StepComplianceCompliance extends Component {
   render() {
     return (
       <div>
-        <section className="container-compliance">
-          <div className="compliance-view">
-            {this.renderComplianceSelectorOne(1)}
-          </div>
-          <div className="compliance-view">
-            {this.renderComplianceSelectorTwo(2)}
-          </div>
-        </section>
-        <Button
-          className="p-button-warning"
-          label="connect"
-          onClick={this.connectCompliance}
-          tooltip="connect compliance requirements"
-        />
+        <Growl ref={(el) => { this.growl = el; }} position="topright" />
+        <div>
+          <section className="container-compliance">
+            <div className="compliance-view">
+              {this.renderComplianceSelectorOne(1)}
+            </div>
+            <div className="compliance-view">
+              {this.renderComplianceSelectorTwo(2)}
+            </div>
+          </section>
+          <Button
+            className="p-button-warning"
+            label="connect"
+            onClick={this.connectCompliance}
+            tooltip="connect compliance requirements"
+          />
+        </div>
       </div>
     );
   }

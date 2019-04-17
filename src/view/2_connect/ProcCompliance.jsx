@@ -3,6 +3,7 @@ import { ListBox } from 'primereact/listbox';
 import { Checkbox } from 'primereact/checkbox';
 import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
+import { Growl } from 'primereact/growl';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import cytoscape from 'cytoscape';
 import * as ProcessQuery from '../../controller/process/ProcessQuery';
@@ -159,7 +160,12 @@ export default class StepProcCompliance extends Component {
 
   connectElements(){
     let shape = this.state.bpmnShape;
+    let compliance = this.state.selectedCompliance;
 
+    if(shape !== null && compliance !== null){
+      const detail = 'connect ' + this.state.bpmnName + ' and ' + this.state.selectedCompliance.id;
+      this.growl.show({ severity: 'info', summary: 'elements connected', detail: detail });
+    }
   }
 
   selectCompliance(selectedRequirement){
@@ -230,23 +236,26 @@ export default class StepProcCompliance extends Component {
   render() {
     return (
         <div>
-          <section className="container-process">
-            <div className="viewer">
-              <div id="canvas" />
-            </div>
-            {this.renderBpmnPropsPanel()}
-          </section>
-          <section className="container-compliance">
-            {this.renderComplianceSelector()}
-            <div className="property-panel">
-              <Button
-                  className="p-button-warning"
-                  label="connect"
-                  onClick={this.removeBpmnProp}
-                  tooltip="connect compliance and process"
-              />
-            </div>
-          </section>
+          <Growl ref={(el) => { this.growl = el; }} position="topright" />
+          <div>
+            <section className="container-process">
+              <div className="viewer">
+                <div id="canvas" />
+              </div>
+              {this.renderBpmnPropsPanel()}
+            </section>
+            <section className="container-compliance">
+              {this.renderComplianceSelector()}
+              <div className="property-panel">
+                <Button
+                    className="p-button-warning"
+                    label="connect"
+                    onClick={this.connectElements}
+                    tooltip="connect compliance and process"
+                />
+              </div>
+            </section>
+          </div>
         </div>
     );
   }

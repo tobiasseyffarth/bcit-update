@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { ListBox } from 'primereact/listbox';
 import { Checkbox } from 'primereact/checkbox';
 import { Button } from 'primereact/button';
+import { Growl } from 'primereact/growl';
 import PropTypes from 'prop-types';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import cytoscape from 'cytoscape';
@@ -183,6 +184,9 @@ export default class StepProcIT extends Component {
       this.renderBpmnProps(shape);
       ProjectModel.setGraph(graph);
       this.updateBpmnXml();
+
+      const detail = 'connect ' + this.state.infraElementName + ' and ' + this.state.bpmnName;
+      this.growl.show({ severity: 'info', summary: 'elements connected', detail: detail });
     }
   }
 
@@ -360,16 +364,19 @@ export default class StepProcIT extends Component {
   render() {
     return (
       <div>
-        <section className="container-process">
-          <div className="viewer">
-            <div id="canvas" />
-          </div>
-          {this.renderBpmnPropsPanel()}
-        </section>
-        <section className="container-infra">
-          <div className="viewer" id="infra-container" />
-          {this.renderInfraPropsPanel()}
-        </section>
+        <Growl ref={(el) => { this.growl = el; }} position="topright" />
+        <div>
+          <section className="container-process">
+            <div className="viewer">
+              <div id="canvas" />
+            </div>
+            {this.renderBpmnPropsPanel()}
+          </section>
+          <section className="container-infra">
+            <div className="viewer" id="infra-container" />
+            {this.renderInfraPropsPanel()}
+          </section>
+        </div>
       </div>
     );
   }
