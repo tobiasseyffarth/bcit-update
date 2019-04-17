@@ -306,8 +306,9 @@ export function updateNeighborsBasedOnProps(graph, element) { //
     for (let i = 0; i < dir_pred.length; i++) {
       if (dir_pred[i].data('modeltype') !== node.data('modeltype')) {
         node_help = dir_pred[i];
-        for (let j = 0; i < props.length; j++) {
-          if (props[j].value === dir_pred[i].id()) {
+        for (let j = 0; j < props.length; j++) {
+
+          if (props[j]._value === dir_pred[i].id()) {
             node_help = null;
           }
         }
@@ -324,7 +325,7 @@ export function updateNeighborsBasedOnProps(graph, element) { //
       if (dir_suc[i].data('modeltype') !== node.data('modeltype')) {
         node_help = dir_suc[i];
         for (let j = 0; j < props.length; j++) {
-          if (props[j].value === dir_suc[i].id()) {
+          if (props[j]._value === dir_suc[i].id()) {
             node_help = null;
           }
         }
@@ -365,8 +366,6 @@ export function updateComplianceNode(graph, flowelement) { // change edge direct
 
     for (let i = 0; i < dir_pred.length; i++) {
       if (dir_pred[i].data('modeltype') === 'compliance') {
-        console.log('Compliance', dir_pred[i]);
-        console.log('node', node);
         const edge = querygraph.getEdge(dir_pred[i], node);
         edge.remove();
         linkNodes(graph, node, dir_pred[i]);
@@ -377,7 +376,6 @@ export function updateComplianceNode(graph, flowelement) { // change edge direct
 
     for (let i = 0; i < dir_suc.length; i++) {
       if (dir_suc[i].data('modeltype') === 'compliance') {
-        console.log(dir_suc[i]);
         const edge = querygraph.getEdge(node, dir_suc[i]);
         edge.remove();
         linkNodes(graph, dir_suc[i], node);

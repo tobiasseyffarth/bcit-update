@@ -6,7 +6,7 @@ import { ListBox } from 'primereact/listbox';
 import { Button } from 'primereact/button';
 import ProjectModel from './../models/ProjectModel';
 import * as GraphRenderer from '../controller/graph/GraphRenderer';
-import * as GraphEditor from '../controller/graph/GraphEditor';
+// import * as GraphEditor from '../controller/graph/GraphEditor';
 
 export default class TopMenu extends Component {
   constructor(props) {
@@ -82,6 +82,7 @@ export default class TopMenu extends Component {
   }
 
   removeNode(){
+    /*
     let graph = ProjectModel.getGraph();
     let node = graph.getElementById(this.state.nodeId);
 
@@ -92,6 +93,7 @@ export default class TopMenu extends Component {
         ProjectModel.setGraph(graph);
       }
     }
+    */
   }
 
   renderGraphView(){
