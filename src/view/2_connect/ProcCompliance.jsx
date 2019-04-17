@@ -177,15 +177,18 @@ export default class StepProcCompliance extends Component {
           <div>
             <label>ID: {this.state.bpmnId} </label>
           </div>
+          <br />
           <div>
             <label>Name: {this.state.bpmnName} </label>
           </div>
+          <br />
           <div>
             <ListBox
                 options={this.state.bpmnProps}
                 onChange={e => this.setState({ bpmnProp: e.value })}
                 optionLabel="name"
             />
+            <br />
             <Button
                 label="remove"
                 onClick={this.removeBpmnProp}

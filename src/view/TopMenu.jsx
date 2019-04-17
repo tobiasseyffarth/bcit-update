@@ -118,26 +118,31 @@ export default class TopMenu extends Component {
         <div>
           <label>ID: {this.state.nodeId}</label>
         </div>
+        <br />
         <div>
           <label>Name: {this.state.nodeName}</label>
         </div>
+        <br />
         <div>
           <label>Node Type: {this.state.nodeType}</label>
         </div>
+        <br />
         <div>
           <label>Model Type: {this.state.modelType}</label>
         </div>
+        <br />
         <div>
           <ListBox
             options={this.state.nodeProps}
             optionLabel="name"
           />
         </div>
+        <br />
         <div>
           <Button
-            label="remove"
+            label="remove compliance node"
             onClick={this.removeNode}
-            tooltip="remove node"
+            tooltip="remove compliance node"
             disabled={this.state.removeDisabled}
           />
         </div>

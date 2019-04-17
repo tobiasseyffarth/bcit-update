@@ -285,15 +285,18 @@ export default class StepProcIT extends Component {
         <div>
           <label>ID: {this.state.bpmnId} </label>
         </div>
+        <br />
         <div>
           <label>Name: {this.state.bpmnName} </label>
         </div>
+        <br />
         <div>
           <ListBox
             options={this.state.bpmnProps}
             onChange={e => this.setState({ bpmnProp: e.value })}
             optionLabel="name"
           />
+          <br />
           <Button
             label="remove"
             onClick={this.removeBpmnProp}
@@ -328,18 +331,22 @@ export default class StepProcIT extends Component {
               tooltip="connect elements"
           />
         </div>
+        <br />
         <div>
           <label>ID: {this.state.infraElementId}</label>
         </div>
+        <br />
         <div>
           <label>Name: {this.state.infraElementName}</label>
         </div>
+        <br />
         <div>
           <ListBox
             options={this.state.infraElementProps}
             onChange={e => this.setState({ infraElementProp: e.value })}
             optionLabel="name"
           />
+          <br />
           <Button
             label="remove"
             onClick={this.removeInfraProp}
