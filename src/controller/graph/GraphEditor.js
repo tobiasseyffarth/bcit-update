@@ -307,7 +307,6 @@ export function updateNeighborsBasedOnProps(graph, element) { //
       if (dir_pred[i].data('modeltype') !== node.data('modeltype')) {
         node_help = dir_pred[i];
         for (let j = 0; j < props.length; j++) {
-
           if (props[j]._value === dir_pred[i].id()) {
             node_help = null;
           }
@@ -387,7 +386,7 @@ export function updateComplianceNode(graph, flowelement) { // change edge direct
 // final
 export function addUniqueNode(graph, input, nodestyle) { // adds a single node to the graph if not available
   const { element } = input;
-  const node = input.node;
+  const { node } = input;
   const nodes = graph.nodes();
   let isUnique = true;
 
@@ -448,7 +447,7 @@ export function addNodes(graph, option) {
 
   if (requirement !== undefined && itComponent !== undefined) { // link requirement-itcomponent
     source_node = addUniqueNode(graph, { element: requirement });
-    target_node = graph.getElementById(itcomponent.id);
+    target_node = graph.getElementById(itComponent.id);
   }
 
   if (requirement !== undefined && businessObject !== undefined) { // link requirement-flowelement

@@ -2,18 +2,18 @@ import React, { Component } from 'react';
 import { Button } from 'primereact/button';
 import { Growl } from 'primereact/growl';
 import PropTypes from 'prop-types';
+import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import * as fileio from './../../controller/helpers/fileio';
 import * as infraimporter from '../../controller/infra/InfraImporter';
 import * as infraquery from '../../controller/infra/InfraQuery';
 import * as complianceimporter from '../../controller/compliance/ComplianceImporter';
 import * as GraphConnector from './../../controller/graph/GraphConnector';
+import * as ProcessQuery from '../../controller/process/ProcessQuery';
 import bpmnXml from './../../models/processmodel';
 import infraXml from './../../models/inframodel';
 import complianceJson from '../../models/compliancemodel';
 import ProjectModel from './../../models/ProjectModel';
 import './../../App.css';
-import BpmnModeler from "bpmn-js/dist/bpmn-modeler.development";
-import * as ProcessQuery from "../../controller/process/ProcessQuery";
 
 export default class ImportModels extends Component {
   constructor(props) {
@@ -58,7 +58,7 @@ export default class ImportModels extends Component {
     const input = await fileio.readFile(file);
     ProjectModel.setBpmnXml(input);
 
-    let bpmnModeler = new BpmnModeler({}); // create process object and add to graph
+    const bpmnModeler = new BpmnModeler({}); // create process object and add to graph
 
     bpmnModeler.importXML(input, (err) => {
       if (err) {
@@ -87,7 +87,7 @@ export default class ImportModels extends Component {
     }
 
     if (ProjectModel.getBpmnXml() === null){
-      let bpmnModeler = new BpmnModeler({});
+      const bpmnModeler = new BpmnModeler({});
 
       bpmnModeler.importXML(bpmnXml, (err) => { // create process object and add to graph
         if (err) {

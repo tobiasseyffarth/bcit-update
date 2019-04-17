@@ -55,7 +55,7 @@ export function addSubGraphs(options) {
 }
 
 export function linkRequirement2Process(viewer, graph, shape, requirement) {
-  let { businessObject } = shape;
+  const { businessObject } = shape;
   const extension = ProcessEditor.createExtensionElement('compliance', requirement.id);
   const isUniqueExt = ProcessQuery.isUniqueExtension(viewer, businessObject, extension);
 
@@ -68,7 +68,7 @@ export function linkRequirement2Process(viewer, graph, shape, requirement) {
 }
 
 export function linkInfra2Process(viewer, graph, shape, itComponent) {
-  let { businessObject } = shape;
+  const { businessObject } = shape;
 
   if (!businessObject.$type.toLowerCase().includes('data')) {
     const extension = ProcessEditor.createExtensionElement('infra', itComponent.id);

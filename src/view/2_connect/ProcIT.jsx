@@ -66,12 +66,6 @@ export default class StepProcIT extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.view !== this.props.view) {
-      console.log('bhjbdhs');
-    }
-  }
-
   renderBpmn = (xml) => {
     this.bpmnModeler.importXML(xml, (err) => {
       if (err) {
@@ -98,14 +92,9 @@ export default class StepProcIT extends Component {
     }
   }
 
-  fitBpmnView(){
-    const canvas = this.bpmnModeler.get('canvas');
-    canvas.zoom('fit-viewport');
-  }
-
   updateBusinessObject(businessObject){
     const modeler = this.bpmnModeler;
-    let graph = ProjectModel.getGraph();
+    const graph = ProjectModel.getGraph();
     GraphConnector.updateFlowelement(modeler, graph, businessObject);
     ProjectModel.setGraph(graph);
   }
@@ -158,6 +147,11 @@ export default class StepProcIT extends Component {
     }
   }
 
+  fitBpmnView(){
+    const canvas = this.bpmnModeler.get('canvas');
+    canvas.zoom('fit-viewport');
+  }
+
   hookBpmnOnClick(e) {
     const { element } = e;
     if (ProcessQuery.isTaskOrSubprocess(element)) {
@@ -175,12 +169,12 @@ export default class StepProcIT extends Component {
   }
 
   connectElements(){
-    let shape = this.state.bpmnShape;
-    let itComponent = this.state.infraElement;
+    const shape = this.state.bpmnShape;
+    const itComponent = this.state.infraElement;
 
     if (shape !== null && itComponent !== null) {
       const viewer = this.bpmnModeler;
-      let graph = ProjectModel.getGraph();
+      const graph = ProjectModel.getGraph();
 
       GraphConnector.linkInfra2Process(viewer, graph, shape, itComponent);
       this.renderBpmnProps(shape);
@@ -188,8 +182,8 @@ export default class StepProcIT extends Component {
       this.updateBpmnXml();
       ProjectModel.setGraph(graph);
 
-      const detail = 'connect ' + this.state.infraElementName + ' and ' + this.state.bpmnName;
-      this.growl.show({ severity: 'info', summary: 'elements connected', detail: detail });
+      const detail = `connect ${this.state.infraElementName} and ${this.state.bpmnName}`;
+      this.growl.show({ severity: 'info', summary: 'elements connected', detail });
     }
   }
 
@@ -235,7 +229,7 @@ export default class StepProcIT extends Component {
 
   renderInfraProps(nodeInfra){
     if (nodeInfra !== null) {
-      const infra = this.state.infra;
+      const { infra } = this.state;
       const id = nodeInfra.data('id');
       const element = InfraQuery.getElementById(infra, id);
 
@@ -333,10 +327,10 @@ export default class StepProcIT extends Component {
       <div className="property-panel">
         <div>
           <Button
-              className="p-button-warning"
-              label="connect"
-              onClick={this.connectElements}
-              tooltip="connect elements"
+            className="p-button-warning"
+            label="connect"
+            onClick={this.connectElements}
+            tooltip="connect elements"
           />
         </div>
         <br />

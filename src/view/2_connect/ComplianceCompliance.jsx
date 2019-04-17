@@ -39,7 +39,7 @@ export default class StepComplianceCompliance extends Component {
 
   selectCompliance(no, selectedRequirement){
     const compliance = this.state.compliance.requirement;
-    const id = selectedRequirement.id;
+    const { id } = selectedRequirement;
     const reqText = ComplianceQuery.toString(compliance, id);
 
     if (no === 1) {
@@ -56,16 +56,16 @@ export default class StepComplianceCompliance extends Component {
     const targetReq = this.state.selectedComplianceTwo;
 
     if (sourceReq !== null && targetReq !== null){
-      let graph = ProjectModel.getGraph();
+      const graph = ProjectModel.getGraph();
 
       GraphConnector.linkRequirement2Requirement(graph, sourceReq, targetReq);
       ProjectModel.setGraph(graph);
 
-      const detail = 'connect ' + this.state.selectedComplianceOne.id + ' and ' + this.state.selectedComplianceTwo.id;
-      this.growl.show({ severity: 'info', summary: 'elements connected', detail: detail });
+      const detail = `connect ${this.state.selectedComplianceOne.id} and ${this.state.selectedComplianceTwo.id}`;
+      this.growl.show({ severity: 'info', summary: 'elements connected', detail });
 
-      this.setState({selectedComplianceOne: null});
-      this.setState({selectedComplianceTwo: null});
+      this.setState({ selectedComplianceOne: null });
+      this.setState({ selectedComplianceTwo: null });
     }
   }
 

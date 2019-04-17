@@ -19,7 +19,7 @@ export default class TopMenu extends Component {
       nodeType: null,
       modelType: null,
       nodeProps: [],
-      removeDisabled: true
+      removeDisabled: true,
     };
 
     this.exportBpmn = this.exportBpmn.bind(this);
@@ -36,31 +36,6 @@ export default class TopMenu extends Component {
 
   showAboutDialog() {
     this.setState({ visibleAbout: true });
-  }
-
-  renderGraphProps(node){
-    if (node !== null) {
-      this.setState({ nodeId: node.data('id') });
-      this.setState({ nodeName: node.data('name') });
-      this.setState({ nodeType: node.data('nodetype') });
-      this.setState({ modelType: node.data('modeltype') });
-
-      const nodeType = node.data('nodetype');
-      if (nodeType !== 'compliance'){ //non compliance nodes
-        this.setState({ nodeProps: node.data('props')});
-      } else { // compliance nodes
-        this.setState({ nodeProps: [] });
-        this.setState({ removeDisabled: false });
-      }
-
-    } else {
-      this.setState({ nodeId: null });
-      this.setState({ nodeName: null });
-      this.setState({ nodeType: null });
-      this.setState({ modelType: null });
-      this.setState({ nodeProps: [] });
-      this.setState({ removeDisabled: true });
-    }
   }
 
   hookGraphOnClick(graph){
@@ -114,6 +89,30 @@ export default class TopMenu extends Component {
     console.log(ProjectModel.getViewer());
   }
 
+  renderGraphProps(node){
+    if (node !== null) {
+      this.setState({ nodeId: node.data('id') });
+      this.setState({ nodeName: node.data('name') });
+      this.setState({ nodeType: node.data('nodetype') });
+      this.setState({ modelType: node.data('modeltype') });
+
+      const nodeType = node.data('nodetype');
+      if (nodeType !== 'compliance'){ // non compliance nodes
+        this.setState({ nodeProps: node.data('props') });
+      } else { // compliance nodes
+        this.setState({ nodeProps: [] });
+        this.setState({ removeDisabled: false });
+      }
+    } else {
+      this.setState({ nodeId: null });
+      this.setState({ nodeName: null });
+      this.setState({ nodeType: null });
+      this.setState({ modelType: null });
+      this.setState({ nodeProps: [] });
+      this.setState({ removeDisabled: true });
+    }
+  }
+
   renderGraphPropsPanel() {
     return (
       <div className="property-panel">
@@ -155,9 +154,9 @@ export default class TopMenu extends Component {
 
   renderGraphDialog(){
     const footer = (
-        <div>
-          <Button label="close" icon="pi pi-check" onClick={this.onHide} />
-        </div>
+      <div>
+        <Button label="close" icon="pi pi-check" onClick={this.onHide} />
+      </div>
     );
 
     return (

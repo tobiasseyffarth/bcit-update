@@ -11,7 +11,7 @@ import * as ProcessRenderer from '../../controller/process/ProcessRenderer';
 import * as GraphConnector from '../../controller/graph/GraphConnector';
 import * as FileIO from '../../controller/helpers/fileio';
 import ProjectModel from '../../models/ProjectModel';
-import * as ComplianceQuery from "../../controller/compliance/ComplianceQuery";
+import * as ComplianceQuery from '../../controller/compliance/ComplianceQuery';
 
 export default class StepProcCompliance extends Component {
   constructor(props) {
@@ -65,11 +65,6 @@ export default class StepProcCompliance extends Component {
     });
   };
 
-  fitBpmnView(){
-    const canvas = this.bpmnModeler.get('canvas');
-    canvas.zoom('fit-viewport');
-  }
-
   renderBpmnProps(element) {
     if (element !== null) {
       const { businessObject } = element;
@@ -88,7 +83,7 @@ export default class StepProcCompliance extends Component {
 
   updateBusinessObject(businessObject){
     const modeler = this.bpmnModeler;
-    let graph = ProjectModel.getGraph();
+    const graph = ProjectModel.getGraph();
     GraphConnector.updateFlowelement(modeler, graph, businessObject);
     ProjectModel.setGraph(graph);
   }
@@ -140,6 +135,11 @@ export default class StepProcCompliance extends Component {
     }
   }
 
+  fitBpmnView(){
+    const canvas = this.bpmnModeler.get('canvas');
+    canvas.zoom('fit-viewport');
+  }
+
   hookBpmnOnClick(e) {
     const { element } = e;
     if (ProcessQuery.isTaskOrSubprocess(element)) {
@@ -157,12 +157,12 @@ export default class StepProcCompliance extends Component {
   }
 
   connectElements(){
-    let shape = this.state.bpmnShape;
-    let compliance = this.state.selectedCompliance;
+    const shape = this.state.bpmnShape;
+    const compliance = this.state.selectedCompliance;
 
-    if(shape !== null && compliance !== null){
+    if (shape !== null && compliance !== null){
       const viewer = this.bpmnModeler;
-      let graph = ProjectModel.getGraph();
+      const graph = ProjectModel.getGraph();
 
       GraphConnector.linkRequirement2Process(viewer, graph, shape, compliance);
 
@@ -171,14 +171,14 @@ export default class StepProcCompliance extends Component {
       this.fitBpmnView();
       this.updateBpmnXml();
 
-      const detail = 'connect ' + this.state.bpmnName + ' and ' + this.state.selectedCompliance.id;
-      this.growl.show({ severity: 'info', summary: 'elements connected', detail: detail });
+      const detail = `connect ${this.state.bpmnName} and ${this.state.selectedCompliance.id}`;
+      this.growl.show({ severity: 'info', summary: 'elements connected', detail });
     }
   }
 
   selectCompliance(selectedRequirement){
     const compliance = this.state.compliance.requirement;
-    const id = selectedRequirement.id;
+    const { id } = selectedRequirement;
     const reqText = ComplianceQuery.toString(compliance, id);
 
     this.setState({ complianceText: reqText });
@@ -187,85 +187,85 @@ export default class StepProcCompliance extends Component {
 
   renderBpmnPropsPanel() {
     return (
-        <div className="property-panel">
-          <div>
-            <label>ID: {this.state.bpmnId} </label>
-          </div>
-          <br />
-          <div>
-            <label>Name: {this.state.bpmnName} </label>
-          </div>
-          <br />
-          <div>
-            <ListBox
-                options={this.state.bpmnProps}
-                onChange={e => this.setState({ bpmnProp: e.value })}
-                optionLabel="name"
-                style={{ width: '100%' }}
-            />
-            <br />
-            <Button
-                label="remove"
-                onClick={this.removeBpmnProp}
-                tooltip="remove property"
-            />
-          </div>
-          <div>
-            <Checkbox
-                inputId="cb"
-                onChange={e => this.setComplianceProcess(e)}
-                checked={this.state.isCompliance}
-            />
-            <label htmlFor="cb">is Compliance Process </label>
-          </div>
+      <div className="property-panel">
+        <div>
+          <label>ID: {this.state.bpmnId} </label>
         </div>
+        <br />
+        <div>
+          <label>Name: {this.state.bpmnName} </label>
+        </div>
+        <br />
+        <div>
+          <ListBox
+            options={this.state.bpmnProps}
+            onChange={e => this.setState({ bpmnProp: e.value })}
+            optionLabel="name"
+            style={{ width: '100%' }}
+          />
+          <br />
+          <Button
+            label="remove"
+            onClick={this.removeBpmnProp}
+            tooltip="remove property"
+          />
+        </div>
+        <div>
+          <Checkbox
+            inputId="cb"
+            onChange={e => this.setComplianceProcess(e)}
+            checked={this.state.isCompliance}
+          />
+          <label htmlFor="cb">is Compliance Process </label>
+        </div>
+      </div>
     );
   }
 
-  renderComplianceSelector(no){
+  renderComplianceSelector(){
     const option = this.state.complianceFilter.requirement;
     const value = this.state.selectedCompliance;
 
     return (
-        <div className="viewer">
-          <div>
-            <section className="container-compliance">
-              <div className="compliance-view-selector">
-                <ListBox style={{ height: '98%', width: '98%' }} optionLabel="id" value={value} options={option} onChange={e => this.selectCompliance(e.value)} filter />
-              </div>
-              <div className="compliance-view-text">
-                <InputTextarea readOnly style={{ width: '100%', height: '98%' }} cols={60} value={this.state.complianceText} autoResize={false} />
-              </div>
-            </section>
-          </div>
+      <div className="viewer">
+        <div>
+          <section className="container-compliance">
+            <div className="compliance-view-selector">
+              <ListBox style={{ height: '98%', width: '98%' }} optionLabel="id" value={value} options={option} onChange={e => this.selectCompliance(e.value)} filter />
+            </div>
+            <div className="compliance-view-text">
+              <InputTextarea readOnly style={{ width: '100%', height: '98%' }} cols={60} value={this.state.complianceText} autoResize={false} />
+            </div>
+          </section>
         </div>
+      </div>
     );
   }
 
   render() {
     return (
+      <div>
+        <Growl ref={(el) => { this.growl = el; }} position="topright" />
         <div>
-          <Growl ref={(el) => { this.growl = el; }} position="topright" />
-          <div>
-            <section className="container-process">
-              <div className="viewer">
-                <div id="canvas" />
-              </div>
-              {this.renderBpmnPropsPanel()}
-            </section>
-            <section className="container-compliance">
-              {this.renderComplianceSelector()}
-              <div className="property-panel">
-                <Button
-                    className="p-button-warning"
-                    label="connect"
-                    onClick={this.connectElements}
-                    tooltip="connect compliance and process"
-                />
-              </div>
-            </section>
-          </div>
+          <section className="container-process">
+            <div className="viewer">
+              <div id="canvas" />
+            </div>
+            {this.renderBpmnPropsPanel()}
+          </section>
+          <section className="container-compliance">
+            {this.renderComplianceSelector()}
+            <div className="property-panel">
+              <Button
+                className="p-button-warning"
+                label="connect"
+                onClick={this.connectElements}
+                tooltip="connect compliance and process"
+              />
+            </div>
+          </section>
         </div>
+      </div>
     );
   }
 }
