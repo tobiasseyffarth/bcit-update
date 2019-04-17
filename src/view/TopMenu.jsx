@@ -19,6 +19,7 @@ export default class TopMenu extends Component {
       nodeType: null,
       modelType: null,
       nodeProps: [],
+      removeDisabled: true
     };
 
     this.exportBpmn = this.exportBpmn.bind(this);
@@ -45,10 +46,11 @@ export default class TopMenu extends Component {
       this.setState({ modelType: node.data('modeltype') });
 
       const nodeType = node.data('nodetype');
-      if (nodeType !== 'compliance'){
+      if (nodeType !== 'compliance'){ //non compliance nodes
         this.setState({ nodeProps: node.data('props')});
-      } else {
+      } else { // compliance nodes
         this.setState({ nodeProps: [] });
+        this.setState({ removeDisabled: false });
       }
 
     } else {
@@ -57,6 +59,7 @@ export default class TopMenu extends Component {
       this.setState({ nodeType: null });
       this.setState({ modelType: null });
       this.setState({ nodeProps: [] });
+      this.setState({ removeDisabled: true });
     }
   }
 
@@ -135,6 +138,7 @@ export default class TopMenu extends Component {
             label="remove"
             onClick={this.removeNode}
             tooltip="remove node"
+            disabled={this.state.removeDisabled}
           />
         </div>
       </div>

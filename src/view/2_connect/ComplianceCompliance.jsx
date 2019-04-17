@@ -110,6 +110,7 @@ export default class StepComplianceCompliance extends Component {
           </div>
         </section>
         <Button
+          className="p-button-warning"
           label="connect"
           onClick={this.connectCompliance}
           tooltip="connect compliance requirements"

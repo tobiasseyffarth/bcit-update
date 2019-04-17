@@ -209,7 +209,7 @@ export default class StepProcCompliance extends Component {
     const value = this.state.selectedCompliance;
 
     return (
-        <div className="compliance-view">
+        <div className="viewer">
           <div>
             <section className="container-compliance">
               <div className="compliance-view-selector">
@@ -237,6 +237,7 @@ export default class StepProcCompliance extends Component {
             {this.renderComplianceSelector()}
             <div className="property-panel">
               <Button
+                  className="p-button-warning"
                   label="connect"
                   onClick={this.removeBpmnProp}
                   tooltip="connect compliance and process"

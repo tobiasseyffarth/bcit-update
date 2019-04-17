@@ -322,6 +322,7 @@ export default class StepProcIT extends Component {
       <div className="property-panel">
         <div>
           <Button
+              className="p-button-warning"
               label="connect"
               onClick={this.connectElements}
               tooltip="connect elements"
