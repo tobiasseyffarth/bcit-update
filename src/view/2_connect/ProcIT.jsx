@@ -77,8 +77,7 @@ export default class StepProcIT extends Component {
       if (err) {
         console.log('error rendering', err);
       } else {
-        const canvas = this.bpmnModeler.get('canvas');
-        canvas.zoom('fit-viewport');
+        this.fitBpmnView();
       }
     });
   };
@@ -97,6 +96,11 @@ export default class StepProcIT extends Component {
       this.setState({ isCompliance: false });
       this.setState({ bpmnProps: [] });
     }
+  }
+
+  fitBpmnView(){
+    const canvas = this.bpmnModeler.get('canvas');
+    canvas.zoom('fit-viewport');
   }
 
   updateBusinessObject(businessObject){
@@ -122,14 +126,13 @@ export default class StepProcIT extends Component {
         name: this.state.bpmnProp._name,
         value: this.state.bpmnProp._value,
       });
-      this.setState({ bpmnShape: element }, () => {
-        this.renderBpmnProps(element);
-        const isCPP = ProcessQuery.isCompliance(businessObject);
-        ProcessRenderer.renderComplianceProcess(this.bpmnModeler, element, isCPP);
-      },
-      );
+      this.setState({ bpmnShape: element });
+      this.renderBpmnProps(element);
+      const isCPP = ProcessQuery.isCompliance(businessObject);
+      ProcessRenderer.renderComplianceProcess(this.bpmnModeler, element, isCPP);
 
       this.updateBusinessObject(businessObject);
+      this.fitBpmnView();
       this.updateBpmnXml();
     }
   }
@@ -181,8 +184,9 @@ export default class StepProcIT extends Component {
 
       GraphConnector.linkInfra2Process(viewer, graph, shape, itComponent);
       this.renderBpmnProps(shape);
-      ProjectModel.setGraph(graph);
+      this.fitBpmnView();
       this.updateBpmnXml();
+      ProjectModel.setGraph(graph);
 
       const detail = 'connect ' + this.state.infraElementName + ' and ' + this.state.bpmnName;
       this.growl.show({ severity: 'info', summary: 'elements connected', detail: detail });
@@ -298,6 +302,7 @@ export default class StepProcIT extends Component {
             options={this.state.bpmnProps}
             onChange={e => this.setState({ bpmnProp: e.value })}
             optionLabel="name"
+            style={{ width: '100%' }}
           />
           <br />
           <Button
@@ -348,6 +353,7 @@ export default class StepProcIT extends Component {
             options={this.state.infraElementProps}
             onChange={e => this.setState({ infraElementProp: e.value })}
             optionLabel="name"
+            style={{ width: '100%' }}
           />
           <br />
           <Button

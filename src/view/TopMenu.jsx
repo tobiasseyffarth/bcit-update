@@ -135,6 +135,7 @@ export default class TopMenu extends Component {
         <br />
         <div>
           <ListBox
+            style={{ width: '100%' }}
             options={this.state.nodeProps}
             optionLabel="name"
           />

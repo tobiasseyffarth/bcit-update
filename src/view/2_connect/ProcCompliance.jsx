@@ -60,11 +60,15 @@ export default class StepProcCompliance extends Component {
       if (err) {
         console.log('error rendering', err);
       } else {
-        const canvas = this.bpmnModeler.get('canvas');
-        canvas.zoom('fit-viewport');
+        this.fitBpmnView();
       }
     });
   };
+
+  fitBpmnView(){
+    const canvas = this.bpmnModeler.get('canvas');
+    canvas.zoom('fit-viewport');
+  }
 
   renderBpmnProps(element) {
     if (element !== null) {
@@ -105,14 +109,12 @@ export default class StepProcCompliance extends Component {
         name: this.state.bpmnProp._name,
         value: this.state.bpmnProp._value,
       });
-      this.setState({ bpmnShape: element }, () => {
-            this.renderBpmnProps(element);
-            const isCPP = ProcessQuery.isCompliance(businessObject);
-            ProcessRenderer.renderComplianceProcess(this.bpmnModeler, element, isCPP);
-          },
-      );
-
+      this.setState({ bpmnShape: element });
+      this.renderBpmnProps(element);
+      const isCPP = ProcessQuery.isCompliance(businessObject);
+      ProcessRenderer.renderComplianceProcess(this.bpmnModeler, element, isCPP);
       this.updateBusinessObject(businessObject);
+      this.fitBpmnView();
       this.updateBpmnXml();
     }
   }
@@ -166,6 +168,7 @@ export default class StepProcCompliance extends Component {
 
       this.renderBpmnProps(shape);
       ProjectModel.setGraph(graph);
+      this.fitBpmnView();
       this.updateBpmnXml();
 
       const detail = 'connect ' + this.state.bpmnName + ' and ' + this.state.selectedCompliance.id;
@@ -198,6 +201,7 @@ export default class StepProcCompliance extends Component {
                 options={this.state.bpmnProps}
                 onChange={e => this.setState({ bpmnProp: e.value })}
                 optionLabel="name"
+                style={{ width: '100%' }}
             />
             <br />
             <Button
