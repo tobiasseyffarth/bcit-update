@@ -454,7 +454,7 @@ export function addNodes(graph, option) {
   }
 
   if (requirement !== undefined && businessObject !== undefined) { // link requirement-flowelement
-    if (queryprocess.isCompliance(flowelement)) {
+    if (queryprocess.isCompliance(businessObject)) {
       source_node = graph.getElementById(businessObject.id);
       target_node = addUniqueNode(graph, { element: requirement });
     } else {

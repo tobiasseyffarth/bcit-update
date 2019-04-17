@@ -178,7 +178,6 @@ export default class StepProcIT extends Component {
     if (shape !== null && itComponent !== null) {
       const viewer = this.bpmnModeler;
       let graph = ProjectModel.getGraph();
-      let businessObject = this.state.bpmnShape.businessObject;
 
       GraphConnector.linkInfra2Process(viewer, graph, shape, itComponent);
       this.renderBpmnProps(shape);

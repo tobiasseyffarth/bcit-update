@@ -54,18 +54,16 @@ export function addSubGraphs(options) {
   ProjectModel.setGraph(graph);
 }
 
-export function linkRequirement2Process(bpmnViewer, viewer, graph, flowelement, shape, requirement) {
-  if (flowelement != null && requirement != null) {
-    const extension = ProcessEditor.createExtensionElement('compliance', requirement.id);
-    const isUniqueExt = ProcessQuery.isUniqueExtension(viewer, flowelement, extension);
+export function linkRequirement2Process(viewer, graph, shape, requirement) {
+  let { businessObject } = shape;
+  const extension = ProcessEditor.createExtensionElement('compliance', requirement.id);
+  const isUniqueExt = ProcessQuery.isUniqueExtension(viewer, businessObject, extension);
 
-    if (isUniqueExt) {
-      ProcessEditor.addExtension(viewer, flowelement, extension); // 1. zu props flowelement hinzufügen
-      bpmnViewer.renderProcessProps(); // 2. processprops neu rendern
-      GraphCreator.updateFlownodeProperty(graph, flowelement); // 3. graph in graphviewer updaten
-      GraphCreator.addNodes(graph, { requirement, flowelement }); // 4. create and link nodes
-      ProcessRenderer.addExtensionShape(viewer, shape, { compliance: requirement }, extension); // 5. add DataObject to process model
-    }
+  if (isUniqueExt) {
+    ProcessEditor.addExtension(viewer, businessObject, extension); // 1. zu props flowelement hinzufügen
+    GraphCreator.updateFlownodeProperty(graph, businessObject); // 3. graph in graphviewer updaten
+    GraphCreator.addNodes(graph, { requirement, businessObject }); // 4. create and link nodes
+    ProcessRenderer.addExtensionShape(viewer, shape, { compliance: requirement }, extension); // 5. add DataObject to process model
   }
 }
 
