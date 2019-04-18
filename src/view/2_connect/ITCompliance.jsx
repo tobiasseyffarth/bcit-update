@@ -3,7 +3,6 @@ import { ListBox } from 'primereact/listbox';
 import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Growl } from 'primereact/growl';
-import PropTypes from 'prop-types';
 import cytoscape from 'cytoscape';
 import './../../App.css';
 import ProjectModel from '../../models/ProjectModel';
@@ -11,7 +10,7 @@ import * as InfraQuery from '../../controller/infra/InfraQuery';
 import * as GraphConnector from '../../controller/graph/GraphConnector';
 import * as GraphCreator from '../../controller/graph/GraphEditor';
 import * as GraphRenderer from '../../controller/graph/GraphRenderer';
-import * as ComplianceQuery from "../../controller/compliance/ComplianceQuery";
+import * as ComplianceQuery from '../../controller/compliance/ComplianceQuery';
 
 // import ProjectModel from '../../models/ProjectModel';
 

@@ -3,7 +3,6 @@ import * as creategraph from "./../graph/GraphEditor";
 import * as analyzehelper from "./AnalyzeHelper";
 import * as rendergraph from "./../graph/GraphRenderer";
 
-
 //final?
 export function getGraphReplaceITComponent(graph, node) {
   let result_graph = cytoscape({/* options */});
