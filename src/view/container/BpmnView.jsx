@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
-import {Dialog} from 'primereact/dialog';
-import {ListBox} from 'primereact/listbox';
-import {Button} from 'primereact/button';
-import {TabView, TabPanel} from 'primereact/tabview';
+import React, { Component } from 'react';
+import { Dialog } from 'primereact/dialog';
+import { ListBox } from 'primereact/listbox';
+import { Button } from 'primereact/button';
+import { TabView, TabPanel } from 'primereact/tabview';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import ProjectModel from '../../models/ProjectModel';
-import * as processquery from '../../controller/process/ProcessQuery';
+import * as ProcessQuery from '../../controller/process/ProcessQuery';
 
 class BpmnView extends Component {
   constructor(props) {
@@ -13,8 +13,8 @@ class BpmnView extends Component {
     this.state = {
       bpmnShape: null,
       alternativeProcess: [
-          {name: 'alternaive 1'},
-          {name: 'alternaive 1'},
+          {name: 'alternative 1'},
+          {name: 'alternative 2'},
         ],
       visibleAnalyze: false
     };
@@ -50,7 +50,7 @@ class BpmnView extends Component {
 
   hookOnClick(e) {
     const {element} = e;
-    const isTaskOrSubprocess = processquery.isTaskOrSubprocess(element);
+    const isTaskOrSubprocess = ProcessQuery.isTaskOrSubprocess(element);
 
     if (isTaskOrSubprocess) {
       this.setState({bpmnShape: element});
@@ -64,7 +64,7 @@ class BpmnView extends Component {
         console.log('error rendering', err);
       } else {
         ProjectModel.setViewer(this.bpmnModeler);
-        const process = processquery.getProcess(this.bpmnModeler);
+        const process = ProcessQuery.getProcess(this.bpmnModeler);
         ProjectModel.setProcess(process);
         const canvas = this.bpmnModeler.get('canvas');
         canvas.zoom('fit-viewport');
