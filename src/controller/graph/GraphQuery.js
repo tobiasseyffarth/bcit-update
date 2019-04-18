@@ -262,3 +262,19 @@ export function getLeavesOfType(node, modeltype) {
 
   return leaves;
 }
+
+export function getViolatedComplianceProcess(graph){
+  let nodes = graph.nodes();
+  let result = [];
+
+  for (let i = 0; i < nodes.length; i++) {
+    let node = nodes[i];
+    let nodestyle = node.data('nodestyle');
+    let nodetype = node.data('nodetype');
+
+    if (nodestyle === 'violated' && nodetype === 'complianceprocess'){
+      result.push(node);
+    }
+  }
+  return result;
+}
