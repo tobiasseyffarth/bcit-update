@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { Dialog } from 'primereact/dialog';
+import { ListBox } from 'primereact/listbox';
+import { Button } from 'primereact/button';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import ProjectModel from '../../models/ProjectModel';
 import * as processquery from '../../controller/process/ProcessQuery';
@@ -6,7 +9,12 @@ import * as processquery from '../../controller/process/ProcessQuery';
 class BpmnView extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      bpmnShape: null,
+      visibleAnalyze: false
+    };
+
+    this.onHide = this.onHide.bind(this);
   }
 
   componentDidMount() {
@@ -22,10 +30,12 @@ class BpmnView extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.view !== this.props.view) {
-      console.log('bhjbdhs');
-    }
+  onHide(){
+    this.setState({ visibleAnalyze: false });
+  }
+
+  renderAnalyzeView(){
+    this.setState({ visibleAnalyze: true });
   }
 
   hookEventBus() {
@@ -35,11 +45,15 @@ class BpmnView extends Component {
 
   hookOnClick(e) {
     const { element } = e;
-    this.setState({ element });
 
-    if (this.props.view === 'analyzeProcess') {
-      console.log('analyze process', element);
+    const isTaskOrSubprocess = processquery.isTaskOrSubprocess(element);
+
+    if (isTaskOrSubprocess){
+      this.setState({ bpmnShape: element });
+      this.renderAnalyzeView();
     }
+
+
   }
 
   renderDiagram = (xml) => {
@@ -56,10 +70,62 @@ class BpmnView extends Component {
     });
   };
 
+  renderGraphPropsPanel() {
+    return (
+        <div className="property-panel">
+          <div>
+            <label>ID: {this.state.nodeId}</label>
+          </div>
+          <br />
+          <div>
+            <label>Name: {this.state.nodeName}</label>
+          </div>
+          <br />
+          <div>
+            <label>Node Type: {this.state.nodeType}</label>
+          </div>
+          <br />
+          <div>
+            <label>Model Type: {this.state.modelType}</label>
+          </div>
+          <br />
+          <div>
+            <ListBox
+                style={{ width: '100%' }}
+                options={this.state.nodeProps}
+                optionLabel="name"
+            />
+          </div>
+        </div>
+    );
+  }
+
+  renderAnalyzeDialog(){
+    const footer = (
+        <div>
+          <Button label="close" icon="pi pi-check" onClick={this.onHide} />
+        </div>
+    );
+
+    return (
+        <div className="content-section implementation">
+          <Dialog header="Analyze" footer={footer} visible={this.state.visibleAnalyze} style={{ width: '80vw' }} onHide={this.onHide} maximizable>
+            <section className="container-graph">
+              <div className="viewer" id="graph-container" />
+              {this.renderGraphPropsPanel()}
+            </section>
+          </Dialog>
+        </div>
+    );
+  }
+
   render() {
     return (
-      <div className="viewer">
-        <div id="canvas" />
+      <div>
+        {this.renderAnalyzeDialog()}
+        <div className="viewer">
+          <div id="canvas" />
+        </div>
       </div>
     );
   }
