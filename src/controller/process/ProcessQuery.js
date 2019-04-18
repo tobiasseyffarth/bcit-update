@@ -169,7 +169,7 @@ export function isCompliance(element) {
 export function hasExtensionName(businessObject, name) {
   const props = getExtensionOfElement(businessObject);
   for (let i = 0; i < props.length; i++) { // check if the element has an extension of name
-    if (props[i].name === name) {
+    if (props[i]._name === name) {
       return true;
     }
   }
@@ -233,7 +233,7 @@ export function isUniqueExtension(businessObject, extension) {
   }
   const ext = businessObject.extensionElements.get('values');
   for (let i = 0; i < ext.length; i++) {
-    if (ext[i].name === extension.name && ext[i].value === extension.value) {
+    if (ext[i]._name === extension.name && ext[i]._value === extension.value) {
       return false;
     }
   }
@@ -246,11 +246,23 @@ export function getIdFromExtensionShape(element) {
   const { businessObject } = element;
   const shapeExtension = getExtensionOfElement(businessObject);
 
+  /*
   for (let i = 0; i < shapeExtension.length; i++) {
     const { name } = shapeExtension[i];
     const { value } = shapeExtension[i];
     if (name !== 'flowelement') {
+      console.log(value);
       return value;
+    }
+  }
+  */
+
+  for (let i = 0; i < shapeExtension.length; i++) {
+    const { _name } = shapeExtension[i];
+    const { _value } = shapeExtension[i];
+    if (_name !== 'flowelement') {
+      console.log(_value);
+      return _value;
     }
   }
 

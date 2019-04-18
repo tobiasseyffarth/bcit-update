@@ -73,13 +73,13 @@ class BpmnView extends Component {
       graphDelete = AnalyzeChange.getGraphDeleteBusinessActivity(graph, node);
     } else if (isInfra) {
       const id = ProcessQuery.getIdFromExtensionShape(shape);
-      console.log(businessObject);
+      console.log(shape);
       node = graph.getElementById(id);
       console.log(node);
       graphDelete = AnalyzeChange.getGraphDeleteITComponent(graph, node);
     } else if (isReq) {
       const id = ProcessQuery.getIdFromExtensionShape(shape);
-      console.log(businessObject);
+      console.log(shape);
       node = graph.getElementById(id);
       console.log(node);
       graphDelete = AnalyzeChange.getGraphDeleteRequirement(graph, node);
