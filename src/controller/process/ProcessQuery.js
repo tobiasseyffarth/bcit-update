@@ -200,40 +200,12 @@ export function isFlowElement(option) { // identify flowNodes
 }
 
 // final
-export function isDataObject(option) { // identify Database or Document
-  const { element } = option;
-  const { shape } = option;
-  let { type } = null;
-
-  if (element != null) {
-    type = element.$type;
-  }
-
-  if (shape != null) {
-    type = shape;
-  }
-
-  type = type.toLowerCase();
-
-  return (type.includes('data'));
+export function isDataObject(businessObject) { // identify Database or Document
+  return (businessObject.$type.includes('DataObject'));
 }
 
-export function isDataStore(option) {
-  const { element } = option;
-  const { shape } = option;
-  let { type } = null;
-
-  if (element != null) {
-    type = element.$type;
-  }
-
-  if (shape != null) {
-    type = shape;
-  }
-
-  type = type.toLowerCase();
-
-  return (type.includes('datastore'));
+export function isDataStore(businessObject) {
+  return (businessObject.$type.includes('DataStore'));
 }
 
 export function isDataObjectRef(option) {

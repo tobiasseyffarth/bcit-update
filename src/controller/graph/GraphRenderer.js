@@ -318,3 +318,75 @@ export function colorNodes(graph){
     }
   }
 }
+
+export function copyGraphElements(graphView, graphData) {
+  let nodes = graphData.nodes();
+  let edges = graphData.edges();
+
+  for (let i = 0; i < nodes.length; i++) {
+    graphView.add(nodes[i]);
+  }
+
+  for (let i = 0; i < edges.length; i++) {
+    graphView.add(edges[i]);
+  }
+}
+
+export function removeElements(graph) {
+  let nodes = graph.nodes();
+  let edges = graph.edges();
+
+  for (let i = 0; i < edges.length; i++) { //first remove edges
+    edges[i].remove();
+  }
+
+  for (let i = 0; i < nodes.length; i++) { //second remove nodes
+    nodes[i].remove();
+  }
+}
+
+export function styleNodesAnalyzeGraph(graph) {
+  let nodes = graph.nodes();
+
+  for (let i = 0; i < nodes.length; i++) {
+    let node = nodes[i];
+    let nodestyle = node.data('nodestyle');
+    let nodetype = node.data('nodetype');
+
+    if (nodestyle === 'directdemand') {
+      node.style('border-color', 'green');
+    } else if (nodestyle === 'indirectdemand') {
+      node.style('border-color', 'green');
+    } else if (nodestyle === 'obsolete') {
+      node.style('border-color', 'blue');
+    } else if (nodestyle === 'violated') {
+      node.style('border-color', 'red');
+    } else if (nodestyle === 'changedElement') {
+      node.style('border-color', 'orange');
+    } else if (nodestyle === 'between') {
+      node.style('border-color', 'grey');
+    }
+
+    if (nodetype === 'infra') {
+      node.style('shape', 'triangle');
+    } else if (nodetype === 'businessprocess') {
+      node.style('shape', 'roundrectangle');
+    } else if (nodetype === 'compliance') {
+      node.style('shape', 'rectangle');
+    } else if (nodetype === 'complianceprocess') {
+      node.style('shape', 'roundrectangle');
+      node.style('background-color', 'grey');
+    }
+  }
+}
+
+export function styleEdgesAnalyzeGraph(graph) {
+  let edges = graph.edges();
+
+  for (let i = 0; i < edges.length; i++) {
+    let edge = edges[i];
+    if (edge.data('edgestyle') == 'direct') {
+      edge.style('line-style', 'solid');
+    }
+  }
+}
