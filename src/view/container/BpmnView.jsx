@@ -73,22 +73,17 @@ class BpmnView extends Component {
       graphDelete = AnalyzeChange.getGraphDeleteBusinessActivity(graph, node);
     } else if (isInfra) {
       const id = ProcessQuery.getIdFromExtensionShape(shape);
-      console.log(shape);
       node = graph.getElementById(id);
-      console.log(node);
       graphDelete = AnalyzeChange.getGraphDeleteITComponent(graph, node);
     } else if (isReq) {
       const id = ProcessQuery.getIdFromExtensionShape(shape);
-      console.log(shape);
       node = graph.getElementById(id);
-      console.log(node);
       graphDelete = AnalyzeChange.getGraphDeleteRequirement(graph, node);
-      console.log('is req');
     } else {
       this.growl.show({severity: 'warn', summary: 'Can not analyze element', detail: 'Can not analyze this element.'});
     }
 
-    if (graphDelete !== null){
+    if (graphDelete !== null && graphDelete.nodes().length > 1){
       this.setState({visibleAnalyze: true}, () => {
             this.renderDeleteGraph(graphDelete);
           }

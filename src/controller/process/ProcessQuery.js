@@ -261,11 +261,9 @@ export function getIdFromExtensionShape(element) {
     const { _name } = shapeExtension[i];
     const { _value } = shapeExtension[i];
     if (_name !== 'flowelement') {
-      console.log(_value);
       return _value;
     }
   }
-
   return null;
 }
 

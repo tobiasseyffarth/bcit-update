@@ -179,7 +179,7 @@ export function removeExtensionShape(viewer, flowelement) {
       extShapes.push(shape);
     }
   }
-  console.log(extShapes);
+  // console.log(extShapes);
 
   // 2. get value Extension of flowelement
   const ext = queryprocess.getExtensionOfElement(flowelement);
@@ -190,7 +190,7 @@ export function removeExtensionShape(viewer, flowelement) {
     const { _value } = ext[i];
     valueFlowelement.push(_value);
   }
-  console.log('valueFlowElements', valueFlowelement);
+  // console.log('valueFlowElements', valueFlowelement);
 
   // 3. get ID of Requirement or ITComponent stored in the ShapeExtension
   for (let i = 0; i < extShapes.length; i++) {
@@ -198,7 +198,7 @@ export function removeExtensionShape(viewer, flowelement) {
     const id = queryprocess.getIdFromExtensionShape(shape);
     valueShape.push({ shape, value: id });
   }
-  console.log('valueShape',valueShape);
+  // console.log('valueShape',valueShape);
 
   // 4a check wheather flowelement has no extension
   if (valueFlowelement.length === 0) {
@@ -233,12 +233,10 @@ export function removeExtensionShape(viewer, flowelement) {
   }
 
   // 5. delete shapes
-  console.log('shapes to remove', shapesToRemove);
+  // console.log('shapes to remove', shapesToRemove);
   for (let i = 0; i < shapesToRemove.length; i++) {
     const shape = shapesToRemove[i];
-
-    console.log('remove shape', shape);
-
+    // console.log('remove shape', shape);
     removeShape(viewer, shape);
   }
 }
