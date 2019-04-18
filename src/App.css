@@ -76,3 +76,7 @@ html {
 .button-import {
     width: 350px;
 }
+
+.djs-bendpoints {
+    display: none;
+}
