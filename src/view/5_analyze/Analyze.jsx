@@ -15,17 +15,17 @@ export default class Analyze extends Component {
       <div>
         <div className="content-section implementation">
           <TabView>
-            <TabPanel header="View process model" leftIcon="pi pi-calendar" contentStyle={{}}>
+            <TabPanel header="View process model" contentStyle={{}}>
               <section className="container-process">
                 <BpmnView />
               </section>
             </TabPanel>
-            <TabPanel header="View infrastructure model" leftIcon="pi pi-calendar" contentStyle={{}}>
+            <TabPanel header="View infrastructure model" contentStyle={{}}>
               <section className="container-process">
                 <InfraView />
               </section>
             </TabPanel>
-            <TabPanel header="View compliance requirements" leftIcon="pi pi-calendar" contentStyle={{}}>
+            <TabPanel header="View compliance requirements" contentStyle={{}}>
               <section className="container-process">
                 <ComplianceView />
               </section>

@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
-import { Dialog } from 'primereact/dialog';
-import { ListBox } from 'primereact/listbox';
-import { Button } from 'primereact/button';
+import React, {Component} from 'react';
+import {Dialog} from 'primereact/dialog';
+import {ListBox} from 'primereact/listbox';
+import {Button} from 'primereact/button';
+import {TabView, TabPanel} from 'primereact/tabview';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import ProjectModel from '../../models/ProjectModel';
 import * as processquery from '../../controller/process/ProcessQuery';
@@ -11,6 +12,10 @@ class BpmnView extends Component {
     super(props);
     this.state = {
       bpmnShape: null,
+      alternativeProcess: [
+          {name: 'alternaive 1'},
+          {name: 'alternaive 1'},
+        ],
       visibleAnalyze: false
     };
 
@@ -20,7 +25,7 @@ class BpmnView extends Component {
   componentDidMount() {
     this.bpmnModeler = new BpmnModeler({
       container: '#canvas',
-      height: '350px',
+      height: '400px'
     });
 
     this.hookEventBus();
@@ -30,12 +35,12 @@ class BpmnView extends Component {
     }
   }
 
-  onHide(){
-    this.setState({ visibleAnalyze: false });
+  onHide() {
+    this.setState({visibleAnalyze: false});
   }
 
-  renderAnalyzeView(){
-    this.setState({ visibleAnalyze: true });
+  renderAnalyzeView() {
+    this.setState({visibleAnalyze: true});
   }
 
   hookEventBus() {
@@ -44,16 +49,13 @@ class BpmnView extends Component {
   }
 
   hookOnClick(e) {
-    const { element } = e;
-
+    const {element} = e;
     const isTaskOrSubprocess = processquery.isTaskOrSubprocess(element);
 
-    if (isTaskOrSubprocess){
-      this.setState({ bpmnShape: element });
+    if (isTaskOrSubprocess) {
+      this.setState({bpmnShape: element});
       this.renderAnalyzeView();
     }
-
-
   }
 
   renderDiagram = (xml) => {
@@ -76,22 +78,22 @@ class BpmnView extends Component {
           <div>
             <label>ID: {this.state.nodeId}</label>
           </div>
-          <br />
+          <br/>
           <div>
             <label>Name: {this.state.nodeName}</label>
           </div>
-          <br />
+          <br/>
           <div>
             <label>Node Type: {this.state.nodeType}</label>
           </div>
-          <br />
+          <br/>
           <div>
             <label>Model Type: {this.state.modelType}</label>
           </div>
-          <br />
+          <br/>
           <div>
             <ListBox
-                style={{ width: '100%' }}
+                style={{width: '100%'}}
                 options={this.state.nodeProps}
                 optionLabel="name"
             />
@@ -100,22 +102,58 @@ class BpmnView extends Component {
     );
   }
 
-  renderAnalyzeDialog(){
-    const footer = (
+  renderAlternativeProcess(option){
+    console.log(option);
+  }
+
+  renderAlternativeSelector() {
+    return (
+      <div className="property-panel">
         <div>
-          <Button label="close" icon="pi pi-check" onClick={this.onHide} />
+          <ListBox
+              style={{width: '100%'}}
+              options={this.state.alternativeProcess}
+              optionLabel="name"
+              onChange={e => this.renderAlternativeProcess(e.value)}
+          />
         </div>
+      </div>
+    );
+}
+
+  renderAnalyzeDialog() {
+    const footer = (
+      <div>
+        <Button label="close" onClick={this.onHide}/>
+      </div>
     );
 
     return (
-        <div className="content-section implementation">
-          <Dialog header="Analyze" footer={footer} visible={this.state.visibleAnalyze} style={{ width: '80vw' }} onHide={this.onHide} maximizable>
-            <section className="container-graph">
-              <div className="viewer" id="graph-container" />
-              {this.renderGraphPropsPanel()}
-            </section>
-          </Dialog>
-        </div>
+      <div className="content-section implementation">
+        <Dialog header="Analyze" footer={footer} visible={this.state.visibleAnalyze} style={{width: '80vw'}}
+                onHide={this.onHide} maximizable>
+          <TabView>
+            <TabPanel header="Remove element" contentStyle={{}}>
+              <section className="container-graph">
+                <div className="viewer" id="graph-container-remove"/>
+                {this.renderGraphPropsPanel()}
+              </section>
+            </TabPanel>
+            <TabPanel header="Delete element" contentStyle={{}}>
+              <section className="container-graph">
+                <div className="viewer" id="graph-container-delete"/>
+                {this.renderGraphPropsPanel()}
+              </section>
+            </TabPanel>
+            <TabPanel header="Alternatives" contentStyle={{}}>
+              <section className="container-graph">
+                <div className="viewer" id="canvas-alternative"/>
+                {this.renderAlternativeSelector()}
+              </section>
+            </TabPanel>
+          </TabView>
+        </Dialog>
+      </div>
     );
   }
 
@@ -124,7 +162,7 @@ class BpmnView extends Component {
       <div>
         {this.renderAnalyzeDialog()}
         <div className="viewer">
-          <div id="canvas" />
+          <div id="canvas"/>
         </div>
       </div>
     );
