@@ -4,7 +4,6 @@ import cytoscape from "cytoscape";
 import * as GraphCreator from "../../controller/graph/GraphEditor";
 import * as GraphRenderer from "../../controller/graph/GraphRenderer";
 import ProjectModel from "../../models/ProjectModel";
-// import ProjectModel from './../models/ProjectModel';
 
 class InfraView extends Component {
   constructor(props) {

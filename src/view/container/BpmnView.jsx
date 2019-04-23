@@ -24,7 +24,12 @@ class BpmnView extends Component {
       ],
       visibleRemove: false,
       visibleChange: false,
-      visibleAlternative: false
+      visibleAlternative: false,
+      nodeId: null,
+      nodeName: null,
+      nodeType: null,
+      modelType: null,
+      nodeProps: []
     };
 
     this.onHide = this.onHide.bind(this);
@@ -36,7 +41,7 @@ class BpmnView extends Component {
       height: '400px'
     });
 
-    this.hookEventBus();
+    this.hookBpmnEventBus();
 
     if (ProjectModel.getBpmnXml() !== null) {
       this.renderDiagram(ProjectModel.getBpmnXml());
@@ -48,12 +53,12 @@ class BpmnView extends Component {
     this.setState({visibleChange: false});
   }
 
-  hookEventBus() {
+  hookBpmnEventBus() {
     const eventBus = this.bpmnModeler.get('eventBus');
-    eventBus.on('element.click', e => this.hookOnClick(e));
+    eventBus.on('element.click', e => this.hookBpmnOnClick(e));
   }
 
-  hookOnClick(e) {
+  hookBpmnOnClick(e) {
     const pressCrtl = e.originalEvent.ctrlKey;
 
     if (pressCrtl){
@@ -61,6 +66,21 @@ class BpmnView extends Component {
     } else {
       this.getRemoveGraph(e)
     }
+  }
+
+  hookGraphOnClick(graph){
+    const _this = this;
+
+    graph.on('click', (evt) => { // http://js.cytoscape.org/#core/events
+      const element = evt.target;
+      if (element === graph) { // background
+        _this.renderGraphProps(null);
+      } else {
+        if (element.isNode()) { // edge
+          _this.renderGraphProps(element);
+        }
+      }
+    });
   }
 
   getRemoveGraph(e){
@@ -186,6 +206,7 @@ class BpmnView extends Component {
     GraphRenderer.removeElements(graphDelete);
     GraphRenderer.copyGraphElements(graphDelete, graph);
     GraphRenderer.renderAnalyzeGraph(graphDelete);
+    this.hookGraphOnClick(graphDelete);
   }
 
   renderChangeGraph(graph) {
@@ -227,6 +248,7 @@ class BpmnView extends Component {
     GraphRenderer.removeElements(graphChange);
     GraphRenderer.copyGraphElements(graphChange, graph);
     GraphRenderer.renderAnalyzeGraph(graphChange);
+    this.hookGraphOnClick(graphChange);
   }
 
   renderDiagram = (xml) => {
@@ -271,6 +293,28 @@ class BpmnView extends Component {
           </div>
         </div>
     );
+  }
+
+  renderGraphProps(node){
+    if (node !== null) {
+      this.setState({ nodeId: node.data('id') });
+      this.setState({ nodeName: node.data('name') });
+      this.setState({ nodeType: node.data('nodetype') });
+      this.setState({ modelType: node.data('modeltype') });
+
+      const nodeType = node.data('nodetype');
+      if (nodeType !== 'compliance'){ // non compliance nodes
+        this.setState({ nodeProps: node.data('props') });
+      } else { // compliance nodes
+        this.setState({ nodeProps: [] });
+      }
+    } else {
+      this.setState({ nodeId: null });
+      this.setState({ nodeName: null });
+      this.setState({ nodeType: null });
+      this.setState({ modelType: null });
+      this.setState({ nodeProps: [] });
+    }
   }
 
   renderAlternativeProcess(option) {
