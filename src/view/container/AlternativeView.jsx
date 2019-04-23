@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
 import { ListBox } from 'primereact/listbox';
 import '../../App.css';
-import ProjectModel from "../../models/ProjectModel";
+import ProjectModel from '../../models/ProjectModel';
 import BpmnViewer from 'bpmn-js';
-import * as ProcessQuery from "../../controller/process/ProcessQuery";
 
 class AlternativeView extends Component {
   constructor(props) {
     super(props);
     this.state = {
       alternativeProcess: [
-        {name: 'alternative 1'},
-        {name: 'alternative 2'},
-        ]
-      };
+        { name: 'alternative 1' },
+        { name: 'alternative 2' },
+      ],
+    };
     this.renderAlternativeProcess = this.renderAlternativeProcess.bind(this);
   }
 
@@ -22,9 +21,9 @@ class AlternativeView extends Component {
   }
 
   onMount() {
-
     if (ProjectModel.getBpmnXml() !== null) {
-      this.viewer = new BpmnViewer({container: '#alternative'});
+      this.viewer = new BpmnViewer({ container: '#alternative' });
+      // console.log(this.viewer);
       this.renderDiagram(ProjectModel.getBpmnXml());
     }
   }
@@ -34,8 +33,9 @@ class AlternativeView extends Component {
       if (err) {
         console.log('error rendering', err);
       } else {
-        // const canvas = this.viewer.get('canvas');
-        // canvas.zoom('fit-viewport');
+        const canvas = this.viewer.get('canvas');
+        console.log('canvas', canvas);
+        // canvas.zoom('fit-viewport'); // todo den aktiven Viewer finden, oder wie 2 viewer auf einer Seite anzeigen?
       }
     });
   };
@@ -47,12 +47,12 @@ class AlternativeView extends Component {
   render() {
     return (
       <section className="container-process">
-        <div className="viewer" style={{width:'60vw', height:'400px'}}>
+        <div className="viewer" style={{ width: '60vw', height: '400px' }}>
           <div id="alternative" />
         </div>
         <div className="property-panel">
           <ListBox
-            style={{width: '100%'}}
+            style={{ width: '100%' }}
             options={this.state.alternativeProcess}
             optionLabel="name"
             onChange={e => this.renderAlternativeProcess(e.value)}

@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import {Button} from 'primereact/button';
+import { Button } from 'primereact/button';
 import '../../App.css';
-import cytoscape from "cytoscape";
-import * as GraphCreator from "../../controller/graph/GraphEditor";
-import * as GraphRenderer from "../../controller/graph/GraphRenderer";
-import ProjectModel from "../../models/ProjectModel";
+import cytoscape from 'cytoscape';
+import * as GraphCreator from '../../controller/graph/GraphEditor';
+import * as GraphRenderer from '../../controller/graph/GraphRenderer';
+import ProjectModel from '../../models/ProjectModel';
 
 class AnalyzeView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      infra: null
+      infra: null,
     };
 
     this.mountGraph = this.mountGraph.bind(this);
@@ -26,7 +26,6 @@ class AnalyzeView extends Component {
       this.graph = null;
       const graph = ProjectModel.getAnalyzeDelete();
       this.renderGraph(graph);
-
     }
   }
 
@@ -35,7 +34,7 @@ class AnalyzeView extends Component {
       const prop = this.props.show;
       console.log(prop);
       this.onMount();
-    } else{
+    } else {
       console.log('same props');
     }
   }
@@ -54,7 +53,7 @@ class AnalyzeView extends Component {
   }
 
   renderGraph(graph){
-    let graphDelete = cytoscape({
+    const graphDelete = cytoscape({
       style: [ // the stylesheet for the graph
         {
           selector: 'node',
@@ -63,33 +62,33 @@ class AnalyzeView extends Component {
             'border-style': 'solid',
             'border-color': 'black',
             'border-width': 1,
-            'label': 'data(display_name)',
+            label: 'data(display_name)',
             'font-size': 10,
             'text-wrap': 'wrap',
             'text-max-width': 20,
-            'shape': 'rectangle'
-          }
+            shape: 'rectangle',
+          },
         },
         {
           selector: 'edge',
           style: {
-            'width': 1,
+            width: 1,
             'line-color': '#666',
             'mid-target-arrow-color': '#666',
             'mid-target-arrow-shape': 'triangle',
-            'line-style': 'dotted'
-          }
-        }
+            'line-style': 'dotted',
+          },
+        },
       ],
       layout: {
         name: 'grid',
-        rows: 1
-      }
+        rows: 1,
+      },
     });
 
     GraphRenderer.removeElements(graphDelete);
     GraphRenderer.copyGraphElements(graphDelete, graph);
-/*
+    /*
    // graphDelete.mount(container);
     GraphRenderer.styleEdgesAnalyzeGraph(graphDelete);
     GraphRenderer.styleNodesAnalyzeGraph(graphDelete);
@@ -101,40 +100,40 @@ class AnalyzeView extends Component {
 
   renderGraphPropsPanel() {
     return (
-        <div className="property-panel">
-          <div>
-            <label>ID: {this.state.nodeId}</label>
-          </div>
-          <br/>
-          <div>
-            <label>Name: {this.state.nodeName}</label>
-          </div>
-          <br/>
-          <div>
-            <label>Node Type: {this.state.nodeType}</label>
-          </div>
-          <br/>
-          <div>
-            <label>Model Type: {this.state.modelType}</label>
-          </div>
-          <br/>
-          <div>
-            <ListBox
-                style={{width: '100%'}}
-                options={this.state.nodeProps}
-                optionLabel="name"
-            />
-          </div>
+      <div className="property-panel">
+        <div>
+          <label>ID: {this.state.nodeId}</label>
         </div>
+        <br />
+        <div>
+          <label>Name: {this.state.nodeName}</label>
+        </div>
+        <br />
+        <div>
+          <label>Node Type: {this.state.nodeType}</label>
+        </div>
+        <br />
+        <div>
+          <label>Model Type: {this.state.modelType}</label>
+        </div>
+        <br />
+        <div>
+          <ListBox
+            style={{ width: '100%' }}
+            options={this.state.nodeProps}
+            optionLabel="name"
+          />
+        </div>
+      </div>
     );
   }
 
   render() {
     return (
       <section className="container-graph">
-        <div className="viewer" style={{width:'100%'}} id="infra-container-delete" />
+        <div className="viewer" style={{ width: '100%' }} id="infra-container-delete" />
         <div className="property-panel">
-          <Button label="close" onClick={this.mountGraph}/>
+          <Button label="close" onClick={this.mountGraph} />
         </div>
       </section>
     );

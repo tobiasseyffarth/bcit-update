@@ -320,8 +320,8 @@ export function colorNodes(graph){
 }
 
 export function copyGraphElements(graphView, graphData) {
-  let nodes = graphData.nodes();
-  let edges = graphData.edges();
+  const nodes = graphData.nodes();
+  const edges = graphData.edges();
 
   for (let i = 0; i < nodes.length; i++) {
     graphView.add(nodes[i]);
@@ -333,25 +333,25 @@ export function copyGraphElements(graphView, graphData) {
 }
 
 export function removeElements(graph) {
-  let nodes = graph.nodes();
-  let edges = graph.edges();
+  const nodes = graph.nodes();
+  const edges = graph.edges();
 
-  for (let i = 0; i < edges.length; i++) { //first remove edges
+  for (let i = 0; i < edges.length; i++) { // first remove edges
     edges[i].remove();
   }
 
-  for (let i = 0; i < nodes.length; i++) { //second remove nodes
+  for (let i = 0; i < nodes.length; i++) { // second remove nodes
     nodes[i].remove();
   }
 }
 
 export function styleNodesAnalyzeGraph(graph) {
-  let nodes = graph.nodes();
+  const nodes = graph.nodes();
 
   for (let i = 0; i < nodes.length; i++) {
-    let node = nodes[i];
-    let nodestyle = node.data('nodestyle');
-    let nodetype = node.data('nodetype');
+    const node = nodes[i];
+    const nodestyle = node.data('nodestyle');
+    const nodetype = node.data('nodetype');
 
     if (nodestyle === 'directdemand') {
       node.style('border-color', 'green');
@@ -381,10 +381,10 @@ export function styleNodesAnalyzeGraph(graph) {
 }
 
 export function styleEdgesAnalyzeGraph(graph) {
-  let edges = graph.edges();
+  const edges = graph.edges();
 
   for (let i = 0; i < edges.length; i++) {
-    let edge = edges[i];
+    const edge = edges[i];
     if (edge.data('edgestyle') == 'direct') {
       edge.style('line-style', 'solid');
     }

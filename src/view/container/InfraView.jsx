@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import '../../App.css';
-import cytoscape from "cytoscape";
-import * as GraphCreator from "../../controller/graph/GraphEditor";
-import * as GraphRenderer from "../../controller/graph/GraphRenderer";
-import ProjectModel from "../../models/ProjectModel";
+import cytoscape from 'cytoscape';
+import * as GraphCreator from '../../controller/graph/GraphEditor';
+import * as GraphRenderer from '../../controller/graph/GraphRenderer';
+import ProjectModel from '../../models/ProjectModel';
 
 class InfraView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      infra: null
+      infra: null,
     };
   }
 
@@ -20,7 +20,7 @@ class InfraView extends Component {
   onMount() {
     if (ProjectModel.getInfra() !== null) {
       const infra = ProjectModel.getInfra();
-      this.setState({infra}, () => {
+      this.setState({ infra }, () => {
         this.renderInfra(infra);
       });
     }

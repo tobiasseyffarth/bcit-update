@@ -272,8 +272,8 @@ export default class StepProcIT extends Component {
     const elementId = this.state.infraElementId;
     const element = InfraQuery.getElementById(infra, elementId);
     const prop = this.state.infraElementProp;
-    let graph = ProjectModel.getGraph();
-    let infraGraph = this.state.infraGraph;
+    const graph = ProjectModel.getGraph();
+    const infraGraph = this.state.infraGraph;
 
     GraphConnector.updateITComponent(graph, infraGraph, element);
     InfraQuery.removeITProps(element, prop);

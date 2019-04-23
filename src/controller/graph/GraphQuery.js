@@ -268,13 +268,13 @@ export function filterNodes(graph, filter){
   // type: infra, businessprocess, complianceprocess, compliance
   const { style } = filter;
   const { type } = filter;
-  let result = [];
+  const result = [];
   const nodes = graph.nodes();
 
   for (let i = 0; i < nodes.length; i++) {
-    let node = nodes[i];
-    let nodeStyle = node.data('nodestyle');
-    let nodeType = node.data('nodetype');
+    const node = nodes[i];
+    const nodeStyle = node.data('nodestyle');
+    const nodeType = node.data('nodetype');
 
     if (nodeStyle === style && nodeType === type){
       result.push(node);

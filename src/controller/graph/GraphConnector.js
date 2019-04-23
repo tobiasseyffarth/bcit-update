@@ -90,7 +90,6 @@ export function linkRequirement2Requirement(graph, source_requirement, target_re
 }
 
 export function linkRequirement2Infra(graph, graphInfra, requirement, itComponent) {
-
   if (itComponent != null) {
     const isUniqueProp = InfraQuery.isUniqueProp(itComponent, { requirement });
     if (isUniqueProp) { // if new Props are added

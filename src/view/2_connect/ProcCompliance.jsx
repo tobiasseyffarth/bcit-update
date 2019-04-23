@@ -178,7 +178,6 @@ export default class StepProcCompliance extends Component {
         const detail = '';
         this.growl.show({ severity: 'error', summary: 'elements already connected', detail });
       }
-
     }
   }
 

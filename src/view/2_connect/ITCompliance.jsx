@@ -59,9 +59,9 @@ export default class StepITCompliance extends Component {
     const compliance = this.state.selectedCompliance;
 
     if (itComponent !== null && compliance !== null) {
-      let graph = ProjectModel.getGraph();
-      let infraGraph = this.state.infraGraph;
-      let infra = this.state.infra;
+      const graph = ProjectModel.getGraph();
+      const infraGraph = this.state.infraGraph;
+      const infra = this.state.infra;
       const isUnique = InfraQuery.updateITProps(itComponent, { requirement: compliance });
 
       if (isUnique !== false){
@@ -77,7 +77,6 @@ export default class StepITCompliance extends Component {
         const detail = 'erro';
         this.growl.show({ severity: 'error', summary: 'elements already connected', detail });
       }
-
     }
   }
 
@@ -161,8 +160,8 @@ export default class StepITCompliance extends Component {
     const elementId = this.state.infraElementId;
     const element = InfraQuery.getElementById(infra, elementId);
     const prop = this.state.infraElementProp;
-    let graph = ProjectModel.getGraph();
-    let infraGraph = this.state.infraGraph;
+    const graph = ProjectModel.getGraph();
+    const infraGraph = this.state.infraGraph;
 
     GraphConnector.updateITComponent(graph, infraGraph, element);
     GraphCreator.updateITComponentProperty(infraGraph, element);
