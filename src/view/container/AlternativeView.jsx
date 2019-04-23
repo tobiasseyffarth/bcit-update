@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { ListBox } from 'primereact/listbox';
+import BpmnViewer from 'bpmn-js';
 import '../../App.css';
 import ProjectModel from '../../models/ProjectModel';
-import BpmnViewer from 'bpmn-js';
 
 class AlternativeView extends Component {
   constructor(props) {

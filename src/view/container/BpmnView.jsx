@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import { Dialog } from 'primereact/dialog';
 import { ListBox } from 'primereact/listbox';
 import { Button } from 'primereact/button';
-import { TabView, TabPanel } from 'primereact/tabview';
 import { Growl } from 'primereact/growl';
-import AlternativeView from './AlternativeView';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import cytoscape from 'cytoscape';
+import AlternativeView from './AlternativeView';
 import ProjectModel from '../../models/ProjectModel';
-import AnalyzeView from './AnalyzeView';
 import * as ProcessQuery from '../../controller/process/ProcessQuery';
 import * as AnalyzeChange from './../../controller/analyze/AnalyzeChange';
 import * as GraphRenderer from './../../controller/graph/GraphRenderer';
@@ -90,7 +88,7 @@ class BpmnView extends Component {
 
   getRemoveGraph(e){
     const shape = e.element;
-    const businessObject = shape.businessObject;
+    const { businessObject } = shape;
     const graph = ProjectModel.getGraph();
     let node = graph.getElementById(businessObject.id);
     let graphDelete = null;
@@ -133,7 +131,7 @@ class BpmnView extends Component {
 
   getChangeGraph(e){
     const shape = e.element;
-    const businessObject = shape.businessObject;
+    const { businessObject } = shape;
     const graph = ProjectModel.getGraph();
     let node = graph.getElementById(businessObject.id);
     let graphChange = null;

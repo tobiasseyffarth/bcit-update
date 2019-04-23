@@ -60,8 +60,8 @@ export default class StepITCompliance extends Component {
 
     if (itComponent !== null && compliance !== null) {
       const graph = ProjectModel.getGraph();
-      const infraGraph = this.state.infraGraph;
-      const infra = this.state.infra;
+      const { infraGraph } = this.state;
+      const { infra } = this.state;
       const isUnique = InfraQuery.updateITProps(itComponent, { requirement: compliance });
 
       if (isUnique !== false){
@@ -78,6 +78,15 @@ export default class StepITCompliance extends Component {
         this.growl.show({ severity: 'error', summary: 'elements already connected', detail });
       }
     }
+  }
+
+  selectCompliance(selectedRequirement){
+    const compliance = this.state.compliance.requirement;
+    const { id } = selectedRequirement;
+    const reqText = ComplianceQuery.toString(compliance, id);
+
+    this.setState({ complianceText: reqText });
+    this.setState({ selectedCompliance: selectedRequirement });
   }
 
   renderInfra(infra) {
@@ -161,7 +170,7 @@ export default class StepITCompliance extends Component {
     const element = InfraQuery.getElementById(infra, elementId);
     const prop = this.state.infraElementProp;
     const graph = ProjectModel.getGraph();
-    const infraGraph = this.state.infraGraph;
+    const { infraGraph } = this.state;
 
     GraphConnector.updateITComponent(graph, infraGraph, element);
     GraphCreator.updateITComponentProperty(infraGraph, element);
@@ -171,15 +180,6 @@ export default class StepITCompliance extends Component {
 
     ProjectModel.setInfra(infra);
     ProjectModel.setGraph(graph);
-  }
-
-  selectCompliance(selectedRequirement){
-    const compliance = this.state.compliance.requirement;
-    const { id } = selectedRequirement;
-    const reqText = ComplianceQuery.toString(compliance, id);
-
-    this.setState({ complianceText: reqText });
-    this.setState({ selectedCompliance: selectedRequirement });
   }
 
   renderInfraPropsPanel() {

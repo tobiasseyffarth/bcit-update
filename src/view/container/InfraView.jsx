@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import '../../App.css';
 import cytoscape from 'cytoscape';
+import '../../App.css';
 import * as GraphCreator from '../../controller/graph/GraphEditor';
 import * as GraphRenderer from '../../controller/graph/GraphRenderer';
 import ProjectModel from '../../models/ProjectModel';

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'; // ES6
+import PropTypes from 'prop-types';
 import { TabView, TabPanel } from 'primereact/tabview';
-import { Button } from 'primereact/button';
 import InfraView from '../container/InfraView';
 import ComplianceView from '../container/ComplianceView';
 import BpmnView from '../container/BpmnView';
