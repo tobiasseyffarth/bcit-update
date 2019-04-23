@@ -243,33 +243,3 @@ class BpmnView extends Component {
 }
 
 export default BpmnView;
-
-
-// todo: wie kann auf ein Div in einem Tabpanel zugegriffen werden?
-/*
- <div className="content-section implementation">
-          <Dialog header="Analyze" footer={footer} visible={this.state.visibleAnalyze} style={{width: '80vw'}}
-                  onHide={this.onHide} maximizable>
-            <TabView>
-              <TabPanel header="Change element">
-                <section className="container-graph">
-                  <div className="viewer" id="graph-container-change"/>
-                  {this.renderGraphPropsPanel()}
-                </section>
-              </TabPanel>
-              <TabPanel header="Delete element">
-                <section className="container-graph">
-                  <div className="viewer" id="graph-container-delete"/>
-                  {this.renderGraphPropsPanel()}
-                </section>
-              </TabPanel>
-              <TabPanel header="Alternatives">
-                <section className="container-graph">
-                  <div className="viewer" id="canvas-alternative"/>
-                  {this.renderAlternativeSelector()}
-                </section>
-              </TabPanel>
-            </TabView>
-          </Dialog>
-        </div>
- */
