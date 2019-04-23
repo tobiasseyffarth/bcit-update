@@ -89,7 +89,7 @@ class BpmnView extends Component {
             this.renderDeleteGraph(graphDelete);
           }
       );
-      console.log('violated cp', GraphQuery.getViolatedComplianceProcess(graphDelete));
+      console.log('violated req', GraphQuery.filterNodes(graphDelete, {style:'violated', type:'compliance'}));
     }
 
     if (graphDelete !== null && graphDelete.nodes().length >= 0){

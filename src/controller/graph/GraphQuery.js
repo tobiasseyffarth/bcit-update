@@ -78,7 +78,7 @@ export function filterNodesByType(nodes, type) {
   return result;
 }
 
-export function filterNodes(eles) {
+function filterNodes(eles) {
   const nodes = [];
 
   for (let i = 0; i < eles.length; i++) {
@@ -263,16 +263,20 @@ export function getLeavesOfType(node, modeltype) {
   return leaves;
 }
 
-export function getViolatedComplianceProcess(graph){
-  let nodes = graph.nodes();
+export function filterNodes(graph, filter){
+  // style: directdemand, indirectdemand, obsolete, violated, changedElement, between
+  // type: infra, businessprocess, complianceprocess, compliance
+  const { style } = filter;
+  const { type } = filter;
   let result = [];
+  const nodes = graph.nodes();
 
   for (let i = 0; i < nodes.length; i++) {
     let node = nodes[i];
-    let nodestyle = node.data('nodestyle');
-    let nodetype = node.data('nodetype');
+    let nodeStyle = node.data('nodestyle');
+    let nodeType = node.data('nodetype');
 
-    if (nodestyle === 'violated' && nodetype === 'complianceprocess'){
+    if (nodeStyle === style && nodeType === type){
       result.push(node);
     }
   }
