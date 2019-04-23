@@ -1,9 +1,10 @@
-import React, {Component} from 'react';
-import {Dialog} from 'primereact/dialog';
-import {ListBox} from 'primereact/listbox';
-import {Button} from 'primereact/button';
+import React, { Component } from 'react';
+import { Dialog } from 'primereact/dialog';
+import { ListBox } from 'primereact/listbox';
+import { Button } from 'primereact/button';
 import {TabView, TabPanel} from 'primereact/tabview';
-import {Growl} from 'primereact/growl';
+import { Growl } from 'primereact/growl';
+import AlternativeView from './AlternativeView';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import cytoscape from "cytoscape";
 import ProjectModel from '../../models/ProjectModel';
@@ -56,7 +57,6 @@ class BpmnView extends Component {
   }
 
   showAlternativeDialog(){
-    console.log('show alternative');
     this.setState({visibleAlternative: true});
   }
 
@@ -332,19 +332,19 @@ class BpmnView extends Component {
     );
 
     return (
-        <div className="content-section implementation">
-          <Dialog
-              header="Graph Remove"
-              footer={footer}
-              visible={this.state.visibleAlternative}
-              style={{width: '80vw'}}
-              onHide={this.onHide}
-              maximizable>
-            <section className="container-graph">
-              alternative
-            </section>
-          </Dialog>
-        </div>
+      <div className="content-section implementation">
+        <Dialog
+            header="Graph Remove"
+            footer={footer}
+            visible={this.state.visibleAlternative}
+            style={{width: '80vw'}}
+            onHide={this.onHide}
+            maximizable>
+          <section className="container-graph">
+            <AlternativeView />
+          </section>
+        </Dialog>
+      </div>
     );
   }
 
@@ -405,19 +405,19 @@ class BpmnView extends Component {
 
   render() {
     return (
+      <div>
+        <Growl ref={(el) => {
+          this.growl = el;
+        }} position="topright"/>
         <div>
-          <Growl ref={(el) => {
-            this.growl = el;
-          }} position="topright"/>
-          <div>
-            {this.renderRemoveDialog()}
-            {this.renderChangeDialog()}
-            {this.renderAlternativeDialog()}
-            <div className="viewer">
-              <div id="canvas"/>
-            </div>
+          {this.renderRemoveDialog()}
+          {this.renderChangeDialog()}
+          {this.renderAlternativeDialog()}
+          <div className="viewer">
+            <div id="canvas"/>
           </div>
         </div>
+      </div>
     );
   }
 }

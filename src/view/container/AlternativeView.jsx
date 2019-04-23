@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Button } from 'primereact/button';
 import { ListBox } from 'primereact/listbox';
 import '../../App.css';
 import ProjectModel from "../../models/ProjectModel";
+import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import * as ProcessQuery from "../../controller/process/ProcessQuery";
 
 class AlternativeView extends Component {
@@ -18,23 +18,27 @@ class AlternativeView extends Component {
   }
 
   componentDidMount() {
-    this.onMount();
+    // this.onMount();
   }
 
   onMount() {
     if (ProjectModel.getBpmnXml() !== null) {
+      this.alternativeModeler = new BpmnModeler({
+        container: '#alternative-process',
+        height: '400px'
+      });
+
       this.renderDiagram(ProjectModel.getBpmnXml());
     }
   }
 
   renderDiagram = (xml) => {
-    this.bpmnModeler.importXML(xml, (err) => {
+    this.alternativeModeler.importXML(xml, (err) => {
       if (err) {
         console.log('error rendering', err);
       } else {
-        const process = ProcessQuery.getProcess(this.bpmnModeler);
-        const canvas = this.bpmnModeler.get('alternative-process');
-        canvas.zoom('fit-viewport');
+        // const canvas = this.alternativeModeler.get('canvas');
+        // canvas.zoom('fit-viewport');
       }
     });
   };
@@ -46,7 +50,9 @@ class AlternativeView extends Component {
   render() {
     return (
       <section className="container-process">
-        <div className="viewer" style={{width:'100%'}} id="alternative-process" />
+        <div className="viewer" style={{width:'60vw'}}>
+          <div id="alternative-process" />
+        </div>
         <div className="property-panel">
           <ListBox
             style={{width: '100%'}}
