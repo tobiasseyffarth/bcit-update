@@ -17,9 +17,9 @@ function renderGraph(g) {
 }
 */
 
-export function resizeGraph(graph) {
+export function resizeGraph(graph, option) {
   graph.reset();// Groesse anpassen
-  graph.fit();// alle KNoten werden im Container angzeigt
+  // graph.fit();// alle KNoten werden im Container angzeigt
   graph.resize(); // Komplette Container nutzen
 }
 
@@ -389,4 +389,11 @@ export function styleEdgesAnalyzeGraph(graph) {
       edge.style('line-style', 'solid');
     }
   }
+}
+
+export function renderAnalyzeGraph(graph){
+  styleEdgesAnalyzeGraph(graph);
+  styleNodesAnalyzeGraph(graph);
+  drawAnalyze(graph);
+  resizeGraph(graph);
 }
