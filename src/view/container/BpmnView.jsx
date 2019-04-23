@@ -33,6 +33,7 @@ class BpmnView extends Component {
     };
 
     this.onHide = this.onHide.bind(this);
+    this.showAlternativeDialog = this.showAlternativeDialog.bind(this);
   }
 
   componentDidMount() {
@@ -51,6 +52,12 @@ class BpmnView extends Component {
   onHide() {
     this.setState({visibleRemove: false});
     this.setState({visibleChange: false});
+    this.setState({visibleAlternative: false});
+  }
+
+  showAlternativeDialog(){
+    console.log('show alternative');
+    this.setState({visibleAlternative: true});
   }
 
   hookBpmnEventBus() {
@@ -317,21 +324,26 @@ class BpmnView extends Component {
     }
   }
 
-  renderAlternativeProcess(option) {
-    console.log(option);
-  }
+  renderAlternativeDialog(){
+    const footer = (
+        <div>
+          <Button label="close" onClick={this.onHide}/>
+        </div>
+    );
 
-  renderAlternativeSelector() {
     return (
-        <div className="property-panel">
-          <div>
-            <ListBox
-                style={{width: '100%'}}
-                options={this.state.alternativeProcess}
-                optionLabel="name"
-                onChange={e => this.renderAlternativeProcess(e.value)}
-            />
-          </div>
+        <div className="content-section implementation">
+          <Dialog
+              header="Graph Remove"
+              footer={footer}
+              visible={this.state.visibleAlternative}
+              style={{width: '80vw'}}
+              onHide={this.onHide}
+              maximizable>
+            <section className="container-graph">
+              alternative
+            </section>
+          </Dialog>
         </div>
     );
   }
@@ -339,7 +351,7 @@ class BpmnView extends Component {
   renderRemoveDialog() {
     const footer = (
       <div>
-        <Button label="show alternatives"/>
+        <Button label="show alternatives" onClick={this.showAlternativeDialog}/>
         <Button label="close" onClick={this.onHide}/>
       </div>
     );
@@ -387,6 +399,10 @@ class BpmnView extends Component {
     );
   }
 
+  renderTabView(){
+
+  }
+
   render() {
     return (
         <div>
@@ -396,6 +412,7 @@ class BpmnView extends Component {
           <div>
             {this.renderRemoveDialog()}
             {this.renderChangeDialog()}
+            {this.renderAlternativeDialog()}
             <div className="viewer">
               <div id="canvas"/>
             </div>
