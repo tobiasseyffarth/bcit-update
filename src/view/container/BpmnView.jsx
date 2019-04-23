@@ -92,6 +92,10 @@ class BpmnView extends Component {
       console.log('violated cp', GraphQuery.getViolatedComplianceProcess(graphDelete));
     }
 
+    if (graphDelete !== null && graphDelete.nodes().length >= 0){
+      const detail = 'no violations found';
+      this.growl.show({severity: 'info', summary: 'No compliance violation', detail: detail});
+    }
   }
 
   renderDeleteGraph(graph) {
