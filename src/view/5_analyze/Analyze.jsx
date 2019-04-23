@@ -16,14 +16,14 @@ export default class Analyze extends Component {
     return (
       <div>
         <div className="content-section implementation">
-          <TabView id ='test' renderActiveOnly={false}>
+          <TabView >
             <TabPanel header="View process model" >
               <section className="container-process">
                 <BpmnView />
               </section>
             </TabPanel>
             <TabPanel header="View infrastructure model" >
-              <section className="container-process" id = 'test4'>
+              <section className="container-process">
                 <InfraView />
               </section>
             </TabPanel>

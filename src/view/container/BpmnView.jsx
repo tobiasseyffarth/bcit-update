@@ -7,6 +7,7 @@ import {Growl} from 'primereact/growl';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import cytoscape from "cytoscape";
 import ProjectModel from '../../models/ProjectModel';
+import AnalyzeView from './AnalyzeView';
 import * as ProcessQuery from '../../controller/process/ProcessQuery';
 import * as AnalyzeChange from './../../controller/analyze/AnalyzeChange';
 import * as GraphRenderer from './../../controller/graph/GraphRenderer';
@@ -85,23 +86,25 @@ class BpmnView extends Component {
     }
 
     if (graphDelete !== null && graphDelete.nodes().length > 1){
+      ProjectModel.setAnalyzeDelete(graphDelete);
       this.setState({visibleAnalyze: true}, () => {
-            this.renderDeleteGraph(graphDelete);
-          }
+          this.renderDeleteGraph(graphDelete);
+        }
       );
       console.log('violated req', GraphQuery.filterNodes(graphDelete, {style:'violated', type:'compliance'}));
     }
 
-    if (graphDelete !== null && graphDelete.nodes().length >= 0){
+    if (graphDelete !== null && graphDelete.nodes().length <= 1){
       const detail = 'no violations found';
       this.growl.show({severity: 'info', summary: 'No compliance violation', detail: detail});
     }
   }
 
   renderDeleteGraph(graph) {
-    const container = document.getElementById('graph-container-delete');
+    const containerChange = document.getElementById('graph-container-change');
+
     let graphDelete = cytoscape({
-      container,
+      container: containerChange,
       style: [ // the stylesheet for the graph
         {
           selector: 'node',
@@ -140,6 +143,8 @@ class BpmnView extends Component {
     GraphRenderer.styleNodesAnalyzeGraph(graphDelete);
     GraphRenderer.drawAnalyze(graphDelete);
     GraphRenderer.resizeGraph(graphDelete);
+
+    console.log(graphDelete);
   }
 
   renderDiagram = (xml) => {
@@ -207,21 +212,26 @@ class BpmnView extends Component {
 
   renderAnalyzeDialog() {
     const footer = (
-        <div>
-          <Button label="close" onClick={this.onHide}/>
-        </div>
+      <div>
+        <Button label="close" onClick={this.onHide}/>
+      </div>
     );
 
     return (
-        <div className="content-section implementation">
-          <Dialog header="Graph" footer={footer} visible={this.state.visibleAnalyze} style={{width: '80vw'}}
-                  onHide={this.onHide} maximizable>
+      <div className="content-section implementation">
+        <Dialog
+          header="Graph"
+          footer={footer}
+          visible={this.state.visibleAnalyze}
+          style={{width: '80vw'}}
+          onHide={this.onHide}
+          maximizable>
             <section className="container-graph">
-              <div className="viewer" id="graph-container-delete"/>
+              <div className="viewer" id="graph-container-change"/>
               {this.renderGraphPropsPanel()}
             </section>
-          </Dialog>
-        </div>
+        </Dialog>
+      </div>
     );
   }
 
@@ -243,3 +253,8 @@ class BpmnView extends Component {
 }
 
 export default BpmnView;
+
+/*
+<div className="viewer" id="graph-container-change"/>
+                {this.renderGraphPropsPanel()}
+ */
