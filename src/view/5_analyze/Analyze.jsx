@@ -32,9 +32,7 @@ export default class Analyze extends Component {
                 <InfraView setWidth={this.state.tabWidth}/>
             </TabPanel>
             <TabPanel header="View compliance requirements" >
-              <section className="container-process">
-                <ComplianceView />
-              </section>
+              <ComplianceView />
             </TabPanel>
           </TabView>
         </div>

@@ -4,7 +4,7 @@ import { ListBox } from 'primereact/listbox';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Growl } from 'primereact/growl';
 import PropTypes from 'prop-types';
-import ProjectModel from '../../models/ProjectModel'; // ES6
+import ProjectModel from '../../models/ProjectModel';
 import * as ComplianceQuery from './../../controller/compliance/ComplianceQuery';
 import * as GraphConnector from './../../controller/graph/GraphConnector';
 
@@ -77,10 +77,21 @@ export default class StepComplianceCompliance extends Component {
       <div>
         <section className="container-compliance">
           <div className="compliance-view-selector">
-            <ListBox style={{ height: '98%', width: '98%' }} optionLabel="id" value={value} options={option} onChange={e => this.selectCompliance(no, e.value)} filter />
+            <ListBox
+              style={{ height: '98%', width: '98%' }}
+              optionLabel="id"
+              value={value}
+              options={option}
+              onChange={e => this.selectCompliance(no, e.value)}
+              filter />
           </div>
           <div className="compliance-view-text">
-            <InputTextarea readOnly style={{ width: '100%', height: '98%' }} cols={60} value={this.state.complianceTextOne} autoResize={false} />
+            <InputTextarea
+              readOnly
+              style={{ width: '100%', height: '98%' }}
+              cols={60}
+              value={this.state.complianceTextOne}
+              autoResize={false} />
           </div>
         </section>
       </div>
@@ -95,10 +106,21 @@ export default class StepComplianceCompliance extends Component {
       <div>
         <section className="container-compliance">
           <div className="compliance-view-selector">
-            <ListBox style={{ height: '98%', width: '98%' }} optionLabel="id" value={value} options={option} onChange={e => this.selectCompliance(no, e.value)} filter />
+            <ListBox
+              style={{ height: '98%', width: '98%' }}
+              optionLabel="id"
+              value={value}
+              options={option}
+              onChange={e => this.selectCompliance(no, e.value)}
+              filter />
           </div>
           <div className="compliance-view-text">
-            <InputTextarea readOnly style={{ width: '100%', height: '98%' }} cols={60} value={this.state.complianceTextTwo} autoResize={false} />
+            <InputTextarea
+              readOnly
+              style={{ width: '100%', height: '98%' }}
+              cols={60}
+              value={this.state.complianceTextTwo}
+              autoResize={false} />
           </div>
         </section>
       </div>

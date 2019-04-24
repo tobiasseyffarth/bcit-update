@@ -145,7 +145,6 @@ class InfraView extends Component {
             this.renderRemoveGraph(deleteGraph)
           },
         );
-        console.log('violated req', GraphQuery.filterNodes(deleteGraph, { style: 'violated', type: 'compliance' }));
       }
       if (deleteGraph !== null && deleteGraph.nodes().length <= 1){
         const detail = 'no violations found';

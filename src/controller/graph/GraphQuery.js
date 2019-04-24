@@ -271,14 +271,41 @@ export function filterNodes(graph, filter){
   const result = [];
   const nodes = graph.nodes();
 
-  for (let i = 0; i < nodes.length; i++) {
-    const node = nodes[i];
-    const nodeStyle = node.data('nodestyle');
-    const nodeType = node.data('nodetype');
+  if (style !== undefined && type !== undefined) {
+    for (let i = 0; i < nodes.length; i++) {
+      const node = nodes[i];
+      const nodeStyle = node.data('nodestyle');
+      const nodeType = node.data('nodetype');
 
-    if (nodeStyle === style && nodeType === type){
-      result.push(node);
+      if (nodeStyle === style && nodeType === type) {
+        result.push(node);
+      }
     }
+    return result;
   }
-  return result;
+
+  if (style === undefined && type !== undefined) {
+    for (let i = 0; i < nodes.length; i++) {
+      const node = nodes[i];
+      const nodeType = node.data('nodetype');
+
+      if (nodeType === type) {
+        result.push(node);
+      }
+    }
+    return result;
+  }
+
+  if (style !== undefined && type === undefined) {
+    for (let i = 0; i < nodes.length; i++) {
+      const node = nodes[i];
+      const nodeStyle = node.data('nodestyle');
+
+      if (nodeStyle === style) {
+        result.push(node);
+      }
+    }
+    return result;
+  }
+
 }

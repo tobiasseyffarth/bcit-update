@@ -218,10 +218,21 @@ export default class StepITCompliance extends Component {
         <div>
           <section className="container-compliance">
             <div className="compliance-view-selector">
-              <ListBox style={{ height: '98%', width: '98%' }} optionLabel="id" value={value} options={option} onChange={e => this.selectCompliance(e.value)} filter />
+              <ListBox
+                style={{ height: '98%', width: '98%' }}
+                optionLabel="id"
+                value={value}
+                options={option}
+                onChange={e => this.selectCompliance(e.value)}
+                filter />
             </div>
             <div className="compliance-view-text">
-              <InputTextarea readOnly style={{ width: '100%', height: '98%' }} cols={60} value={this.state.complianceText} autoResize={false} />
+              <InputTextarea
+                readOnly
+                style={{ width: '100%', height: '98%' }}
+                cols={60}
+                value={this.state.complianceText}
+                autoResize={false} />
             </div>
           </section>
         </div>

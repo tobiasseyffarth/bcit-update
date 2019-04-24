@@ -34,8 +34,8 @@ class AlternativeView extends Component {
         console.log('error rendering', err);
       } else {
         const canvas = this.viewer.get('canvas');
-        // console.log('canvas', canvas);
-        // canvas.zoom('fit-viewport'); // todo den aktiven Viewer finden, oder wie 2 viewer auf einer Seite anzeigen?
+        console.log('canvas', canvas);
+        canvas.zoom('fit-viewport'); // todo den aktiven Viewer finden, oder wie 2 viewer auf einer Seite anzeigen?
       }
     });
   };
