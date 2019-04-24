@@ -288,21 +288,21 @@ class ComplianceView extends Component {
     );
 
     return (
-        <div className="content-section implementation">
-          <Dialog
-              header="Graph Change"
-              footer={footer}
-              visible={this.state.visibleChange}
-              style={{ width: '80vw' }}
-              onHide={this.onHide}
-              maximizable
-          >
-            <section className="container-graph">
-              <div className="viewer" id="graph-container-change" />
-              {this.renderGraphPropsPanel()}
-            </section>
-          </Dialog>
-        </div>
+      <div className="content-section implementation">
+        <Dialog
+          header="Graph Change"
+          footer={footer}
+          visible={this.state.visibleChange}
+          style={{ width: '80vw' }}
+          onHide={this.onHide}
+          maximizable
+        >
+          <section className="container-graph">
+            <div className="viewer" id="graph-container-change" />
+            {this.renderGraphPropsPanel()}
+          </section>
+        </Dialog>
+      </div>
     );
   }
 

@@ -99,6 +99,10 @@ export default class ImportModels extends Component {
         }
       });
     }
+
+    if (ProjectModel.getAltGraph() === null){
+
+    }
   }
 
   render() {

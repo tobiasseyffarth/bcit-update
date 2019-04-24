@@ -1,5 +1,3 @@
-// import cytoscape from 'cytoscape';
-
 class Project {
   constructor() {
     this.project = null; // Project File
@@ -10,6 +8,8 @@ class Project {
     this.infra = null; // infrastructure
     this.compliance = null; // compliance
     this.graph = null; // create an empty graph and define its style
+
+    this.altGraph = null; // contains relations between req, cp-pattern and cp
   }
 
   setName = (name) => {
@@ -41,6 +41,11 @@ class Project {
     this.graph = graph;
   };
   getGraph = () => this.graph;
+
+  setAltGraph = (altGraph) => {
+    this.altGraph = altGraph;
+  };
+  getAltGraph = () => this.altGraph;
 }
 
 const ProjectModel = new Project();
