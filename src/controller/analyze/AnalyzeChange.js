@@ -2,6 +2,7 @@ import cytoscape from 'cytoscape';
 import * as creategraph from './../graph/GraphEditor';
 import * as analyzehelper from './AnalyzeHelper';
 import * as rendergraph from './../graph/GraphRenderer';
+import * as ProcessQuery from "../process/ProcessQuery";
 
 // final?
 export function getGraphReplaceITComponent(graph, node) {
@@ -98,4 +99,86 @@ export function getGraphDeleteComplianceProcess(graph, node) {
   analyzehelper.deleteComplianceProcessViolation(graph, _node, result_graph);
 
   return result_graph;
+}
+
+export function getChangeGraph(input, graph){
+  const { shape } = input;
+  const { itComponent } = input;
+  const { req } = input;
+  let changeGraph = null;
+
+  if (shape !== undefined || shape !== null){
+    const { businessObject } = shape;
+    let node = graph.getElementById(businessObject.id);
+    const isCP = ProcessQuery.isCompliance(businessObject);
+    const isTaskOrSubprocess = ProcessQuery.isTaskOrSubprocess(shape);
+    const isInfra = ProcessQuery.isDataStore(businessObject) && ProcessQuery.isExtensionShape(shape); //
+    const isReq = ProcessQuery.isDataObject(businessObject) && ProcessQuery.isExtensionShape(shape); //
+
+    if (isCP) {
+      changeGraph = getGraphReplaceComplianceProcess(graph, node);
+    } else if (isTaskOrSubprocess) {
+      changeGraph = getGraphReplaceBusinessActivity(graph, node);
+    } else if (isInfra) {
+      const id = ProcessQuery.getIdFromExtensionShape(shape);
+      node = graph.getElementById(id);
+      changeGraph = getGraphReplaceITComponent(graph, node);
+    } else if (isReq) {
+      const id = ProcessQuery.getIdFromExtensionShape(shape);
+      node = graph.getElementById(id);
+      changeGraph = getGraphReplaceRequirement(graph, node);
+    } else{
+      return false;
+    }
+  }
+
+  if (itComponent !== undefined || itComponent !== null){
+
+  }
+
+  if (req !== undefined || req !== null){
+
+  }
+
+  return changeGraph;
+}
+
+export function getDeleteGraph(input, graph){
+  const { shape } = input;
+  const { itComponent } = input;
+  const { req } = input;
+  let deleteGraph = null;
+
+  if (shape !== undefined || shape !== null){
+    const { businessObject } = shape;
+    let node = graph.getElementById(businessObject.id);
+    const isCP = ProcessQuery.isCompliance(businessObject);
+    const isTaskOrSubprocess = ProcessQuery.isTaskOrSubprocess(shape);
+    const isInfra = ProcessQuery.isDataStore(businessObject) && ProcessQuery.isExtensionShape(shape); //
+    const isReq = ProcessQuery.isDataObject(businessObject) && ProcessQuery.isExtensionShape(shape); //
+
+    if (isCP) {
+      deleteGraph = getGraphDeleteComplianceProcess(graph, node);
+    } else if (isTaskOrSubprocess) {
+      deleteGraph = getGraphDeleteBusinessActivity(graph, node);
+    } else if (isInfra) {
+      const id = ProcessQuery.getIdFromExtensionShape(shape);
+      node = graph.getElementById(id);
+      deleteGraph = getGraphDeleteITComponent(graph, node);
+    } else if (isReq) {
+      const id = ProcessQuery.getIdFromExtensionShape(shape);
+      node = graph.getElementById(id);
+      deleteGraph = getGraphDeleteRequirement(graph, node);
+    }
+  }
+
+  if (itComponent !== undefined || itComponent !== null){
+
+  }
+
+  if (req !== undefined || req !== null){
+
+  }
+
+  return deleteGraph;
 }

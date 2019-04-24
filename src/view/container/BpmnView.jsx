@@ -88,85 +88,44 @@ class BpmnView extends Component {
 
   getRemoveGraph(e){
     const shape = e.element;
-    const { businessObject } = shape;
     const graph = ProjectModel.getGraph();
-    let node = graph.getElementById(businessObject.id);
-    let graphDelete = null;
+    let deleteGraph = AnalyzeChange.getDeleteGraph({shape: shape}, graph);
 
-    const isCP = ProcessQuery.isCompliance(businessObject);
-    const isTaskOrSubprocess = ProcessQuery.isTaskOrSubprocess(shape);
-    const isInfra = ProcessQuery.isDataStore(businessObject) && ProcessQuery.isExtensionShape(shape); //
-    const isReq = ProcessQuery.isDataObject(businessObject) && ProcessQuery.isExtensionShape(shape); //
-
-    if (isCP) {
-      graphDelete = AnalyzeChange.getGraphDeleteComplianceProcess(graph, node);
-    } else if (isTaskOrSubprocess) {
-      graphDelete = AnalyzeChange.getGraphDeleteBusinessActivity(graph, node);
-    } else if (isInfra) {
-      const id = ProcessQuery.getIdFromExtensionShape(shape);
-      node = graph.getElementById(id);
-      graphDelete = AnalyzeChange.getGraphDeleteITComponent(graph, node);
-    } else if (isReq) {
-      const id = ProcessQuery.getIdFromExtensionShape(shape);
-      node = graph.getElementById(id);
-      graphDelete = AnalyzeChange.getGraphDeleteRequirement(graph, node);
-    } else {
+    if(!deleteGraph){
       this.growl.show({ severity: 'warn', summary: 'Can not analyze element', detail: 'Can not analyze this element.' });
-    }
-
-    if (graphDelete !== null && graphDelete.nodes().length > 1){
-      ProjectModel.setAnalyzeDelete(graphDelete);
-      this.setState({ visibleRemove: true }, () => {
-        this.renderRemoveGraph(graphDelete);
-      },
-      );
-      console.log('violated req', GraphQuery.filterNodes(graphDelete, { style: 'violated', type: 'compliance' }));
-    }
-
-    if (graphDelete !== null && graphDelete.nodes().length <= 1){
-      const detail = 'no violations found';
-      this.growl.show({ severity: 'info', summary: 'No compliance violation', detail });
+    } else {
+      if (deleteGraph !== null && deleteGraph.nodes().length > 1){
+        this.setState({ visibleRemove: true }, () => {
+              this.renderRemoveGraph(deleteGraph)
+            },
+        );
+        console.log('violated req', GraphQuery.filterNodes(deleteGraph, { style: 'violated', type: 'compliance' }));
+      }
+      if (deleteGraph !== null && deleteGraph.nodes().length <= 1){
+        const detail = 'no violations found';
+        this.growl.show({ severity: 'info', summary: 'No compliance violation', detail });
+      }
     }
   }
 
   getChangeGraph(e){
     const shape = e.element;
-    const { businessObject } = shape;
     const graph = ProjectModel.getGraph();
-    let node = graph.getElementById(businessObject.id);
-    let graphChange = null;
+    let changeGraph = AnalyzeChange.getChangeGraph({shape: shape}, graph);
 
-    const isCP = ProcessQuery.isCompliance(businessObject);
-    const isTaskOrSubprocess = ProcessQuery.isTaskOrSubprocess(shape);
-    const isInfra = ProcessQuery.isDataStore(businessObject) && ProcessQuery.isExtensionShape(shape); //
-    const isReq = ProcessQuery.isDataObject(businessObject) && ProcessQuery.isExtensionShape(shape); //
-
-    if (isCP) {
-      graphChange = AnalyzeChange.getGraphReplaceComplianceProcess(graph, node);
-    } else if (isTaskOrSubprocess) {
-      graphChange = AnalyzeChange.getGraphReplaceBusinessActivity(graph, node);
-    } else if (isInfra) {
-      const id = ProcessQuery.getIdFromExtensionShape(shape);
-      node = graph.getElementById(id);
-      graphChange = AnalyzeChange.getGraphReplaceITComponent(graph, node);
-    } else if (isReq) {
-      const id = ProcessQuery.getIdFromExtensionShape(shape);
-      node = graph.getElementById(id);
-      graphChange = AnalyzeChange.getGraphReplaceRequirement(graph, node);
-    } else {
+    if(!changeGraph){
       this.growl.show({ severity: 'warn', summary: 'Can not analyze element', detail: 'Can not analyze this element.' });
-    }
-
-    if (graphChange !== null && graphChange.nodes().length > 1){
-      this.setState({ visibleChange: true }, () => {
-        this.renderChangeGraph(graphChange);
-      },
-      );
-    }
-
-    if (graphChange !== null && graphChange.nodes().length <= 1){
-      const detail = 'no demands found';
-      this.growl.show({ severity: 'info', summary: 'No compliance violation', detail });
+    } else {
+      if (changeGraph !== null && changeGraph.nodes().length > 1){
+        this.setState({ visibleChange: true }, () => {
+              this.renderChangeGraph(changeGraph);
+            },
+        );
+      }
+      if (changeGraph !== null && changeGraph.nodes().length <= 1){
+        const detail = 'no demands found';
+        this.growl.show({ severity: 'info', summary: 'No compliance violation', detail });
+      }
     }
   }
 
