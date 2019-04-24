@@ -107,7 +107,7 @@ export function getChangeGraph(input, graph){
   const { req } = input;
   let changeGraph = null;
 
-  if (shape !== undefined || shape !== null){
+  if (shape !== undefined){
     const { businessObject } = shape;
     let node = graph.getElementById(businessObject.id);
     const isCP = ProcessQuery.isCompliance(businessObject);
@@ -132,12 +132,14 @@ export function getChangeGraph(input, graph){
     }
   }
 
-  if (itComponent !== undefined || itComponent !== null){
-
+  if (itComponent !== undefined){
+    const id = itComponent.id;
+    const node = graph.getElementById(id);
+    changeGraph = getGraphReplaceITComponent(graph, node);
   }
 
-  if (req !== undefined || req !== null){
-
+  if (req !== undefined){
+    console.log('analyze req');
   }
 
   return changeGraph;
@@ -149,7 +151,7 @@ export function getDeleteGraph(input, graph){
   const { req } = input;
   let deleteGraph = null;
 
-  if (shape !== undefined || shape !== null){
+  if (shape !== undefined){
     const { businessObject } = shape;
     let node = graph.getElementById(businessObject.id);
     const isCP = ProcessQuery.isCompliance(businessObject);
@@ -172,11 +174,13 @@ export function getDeleteGraph(input, graph){
     }
   }
 
-  if (itComponent !== undefined || itComponent !== null){
-
+  if (itComponent !== undefined){
+    const id = itComponent.id;
+    const node = graph.getElementById(id);
+    deleteGraph = getGraphDeleteITComponent(graph, node);
   }
 
-  if (req !== undefined || req !== null){
+  if (req !== undefined){
 
   }
 

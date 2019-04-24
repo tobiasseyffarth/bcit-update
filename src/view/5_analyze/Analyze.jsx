@@ -8,7 +8,14 @@ import BpmnView from '../container/BpmnView';
 export default class Analyze extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      tabWidth: 0
+    };
+  }
+
+  componentDidMount(){
+    const tabPanel = document.getElementById('tab-container');
+    this.setState({tabWidth: tabPanel.offsetWidth});
   }
 
   render() {
@@ -16,15 +23,13 @@ export default class Analyze extends Component {
       <div>
         <div className="content-section implementation">
           <TabView >
-            <TabPanel header="View process model" >
-              <section className="container-process">
+            <TabPanel header="View process model" id="tabPanel">
+              <section className="container-process" id="tab-container">
                 <BpmnView />
               </section>
             </TabPanel>
             <TabPanel header="View infrastructure model" >
-              <section className="container-process">
-                <InfraView />
-              </section>
+                <InfraView setWidth={this.state.tabWidth}/>
             </TabPanel>
             <TabPanel header="View compliance requirements" >
               <section className="container-process">
