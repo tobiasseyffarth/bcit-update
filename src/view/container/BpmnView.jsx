@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Dialog } from 'primereact/dialog';
 import { ListBox } from 'primereact/listbox';
 import { Button } from 'primereact/button';
+import { Checkbox } from 'primereact/checkbox';
 import { Growl } from 'primereact/growl';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import cytoscape from 'cytoscape';
@@ -17,6 +18,9 @@ class BpmnView extends Component {
     super(props);
     this.state = {
       bpmnShape: null,
+      bpmnId: null,
+      bpmnName: null,
+      isCompliance: false,
       alternativeProcess: [
         { name: 'alternative 1' },
         { name: 'alternative 2' },
@@ -33,6 +37,8 @@ class BpmnView extends Component {
 
     this.onHide = this.onHide.bind(this);
     this.showAlternativeDialog = this.showAlternativeDialog.bind(this);
+    this.getChangeGraph = this.getChangeGraph.bind(this);
+    this.getRemoveGraph = this.getRemoveGraph.bind(this);
   }
 
   componentDidMount() {
@@ -64,13 +70,7 @@ class BpmnView extends Component {
   }
 
   hookBpmnOnClick(e) {
-    const pressCrtl = e.originalEvent.ctrlKey;
-
-    if (pressCrtl){
-      this.getChangeGraph(e);
-    } else {
-      this.getRemoveGraph(e);
-    }
+    this.renderBpmnProps(e.element);
   }
 
   hookGraphOnClick(graph){
@@ -86,8 +86,8 @@ class BpmnView extends Component {
     });
   }
 
-  getRemoveGraph(e){
-    const shape = e.element;
+  getRemoveGraph(){
+    const shape = this.state.bpmnShape;
     const graph = ProjectModel.getGraph();
     let deleteGraph = AnalyzeChange.getDeleteGraph({shape: shape}, graph);
 
@@ -108,8 +108,8 @@ class BpmnView extends Component {
     }
   }
 
-  getChangeGraph(e){
-    const shape = e.element;
+  getChangeGraph(){
+    const shape = this.state.bpmnShape;
     const graph = ProjectModel.getGraph();
     let changeGraph = AnalyzeChange.getChangeGraph({shape: shape}, graph);
 
@@ -275,6 +275,21 @@ class BpmnView extends Component {
     }
   }
 
+  renderBpmnProps(shape){
+    if (shape !== null) {
+      const { businessObject } = shape;
+      this.setState({ bpmnShape: shape });
+      this.setState({ bpmnId: businessObject.id });
+      this.setState({ bpmnName: businessObject.name });
+      this.setState({ isCompliance: ProcessQuery.isCompliance(businessObject) });
+    } else {
+      this.setState({ bpmnShape: null });
+      this.setState({ bpmnId: null });
+      this.setState({ bpmnName: null });
+      this.setState({ isCompliance: false });
+    }
+  }
+
   renderAlternativeDialog(){
     const footer = (
       <div>
@@ -353,8 +368,39 @@ class BpmnView extends Component {
     );
   }
 
-  renderTabView(){
-
+  renderBpmnPropsPanel() {
+    return (
+      <div className="property-panel">
+        <div>
+          <label>ID: {this.state.bpmnId} </label>
+        </div>
+        <br />
+        <div>
+          <label>Name: {this.state.bpmnName} </label>
+        </div>
+        <br />
+        <div>
+          <Checkbox
+            inputId="cb"
+            checked={this.state.isCompliance}
+          />
+          <label htmlFor="cb">is Compliance Process </label>
+        </div>
+        <br />
+        <Button
+            label="show result when remove"
+            onClick={this.getRemoveGraph}
+            tooltip="remove property"
+        />
+        <br />
+        <br />
+        <Button
+            label="show result when change"
+            onClick={this.getChangeGraph}
+            tooltip="remove property"
+        />
+      </div>
+    );
   }
 
   render() {
@@ -370,9 +416,12 @@ class BpmnView extends Component {
           {this.renderRemoveDialog()}
           {this.renderChangeDialog()}
           {this.renderAlternativeDialog()}
-          <div className="viewer">
-            <div id="canvas" />
-          </div>
+          <section className="container-process">
+            <div className="viewer">
+              <div id="canvas" />
+            </div>
+            {this.renderBpmnPropsPanel()}
+          </section>
         </div>
       </div>
     );
