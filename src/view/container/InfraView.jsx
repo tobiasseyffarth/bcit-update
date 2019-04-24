@@ -26,9 +26,6 @@ class InfraView extends Component {
     }
   }
 
-  componentWillReceiveProps() {
-
-  }
 
   renderInfra(infra){
     const container = document.getElementById('infra-container');

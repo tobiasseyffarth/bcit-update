@@ -275,21 +275,6 @@ class BpmnView extends Component {
     }
   }
 
-  renderBpmnProps(shape){
-    if (shape !== null) {
-      const { businessObject } = shape;
-      this.setState({ bpmnShape: shape });
-      this.setState({ bpmnId: businessObject.id });
-      this.setState({ bpmnName: businessObject.name });
-      this.setState({ isCompliance: ProcessQuery.isCompliance(businessObject) });
-    } else {
-      this.setState({ bpmnShape: null });
-      this.setState({ bpmnId: null });
-      this.setState({ bpmnName: null });
-      this.setState({ isCompliance: false });
-    }
-  }
-
   renderAlternativeDialog(){
     const footer = (
       <div>
@@ -390,17 +375,32 @@ class BpmnView extends Component {
         <Button
             label="show result when remove"
             onClick={this.getRemoveGraph}
-            tooltip="remove property"
+            tooltip="show compliance violation when removing these element"
         />
         <br />
         <br />
         <Button
             label="show result when change"
             onClick={this.getChangeGraph}
-            tooltip="remove property"
+            tooltip="show demands by compliance requirements when changing these element"
         />
       </div>
     );
+  }
+
+  renderBpmnProps(shape){
+    if (shape !== null) {
+      const { businessObject } = shape;
+      this.setState({ bpmnShape: shape });
+      this.setState({ bpmnId: businessObject.id });
+      this.setState({ bpmnName: businessObject.name });
+      this.setState({ isCompliance: ProcessQuery.isCompliance(businessObject) });
+    } else {
+      this.setState({ bpmnShape: null });
+      this.setState({ bpmnId: null });
+      this.setState({ bpmnName: null });
+      this.setState({ isCompliance: false });
+    }
   }
 
   render() {
