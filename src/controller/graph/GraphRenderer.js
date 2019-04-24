@@ -204,10 +204,9 @@ function updateBusinessProcess(node) {
 }
 
 function updateCompliance(node) {
-  console.log('update compliance');
+  // console.log('update compliance');
 
   const changedNode = node;
-
   changedNode.position({ x: 270, y: 150 });
   const xChanged = changedNode.position('x');
   const yChanged = changedNode.position('y');
@@ -289,7 +288,7 @@ export function drawAnalyze(graph) {
   }
 
   if (nodetype === 'compliance') {
-    console.log('update compliance');
+    // console.log('update compliance');
     updateCompliance(changed_node);
   }
 

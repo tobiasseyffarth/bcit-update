@@ -221,7 +221,7 @@ export function deleteComplianceObsolete(graph, node, result_graph, obsolete) {
     obsolete_compliance = obsolete;
   }
 
-  console.log(obsolete_compliance);
+  // console.log(obsolete_compliance);
 
   // consider successors
   const sucs = querygraph.getSuccessors(node, 'compliance');
