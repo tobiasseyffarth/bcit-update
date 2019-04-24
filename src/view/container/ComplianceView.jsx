@@ -4,13 +4,13 @@ import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Growl } from 'primereact/growl';
 import { Dialog } from 'primereact/dialog';
+import cytoscape from 'cytoscape';
 import '../../App.css';
 import ProjectModel from '../../models/ProjectModel';
 import * as GraphQuery from '../../controller/graph/GraphQuery';
 import * as ComplianceQuery from './../../controller/compliance/ComplianceQuery';
-import * as AnalyzeChange from "../../controller/analyze/AnalyzeChange";
-import * as GraphRenderer from "../../controller/graph/GraphRenderer";
-import cytoscape from "cytoscape";
+import * as AnalyzeChange from '../../controller/analyze/AnalyzeChange';
+import * as GraphRenderer from '../../controller/graph/GraphRenderer';
 
 class ComplianceView extends Component {
   constructor(props) {
@@ -61,15 +61,15 @@ class ComplianceView extends Component {
   getRemoveGraph(){
     const req = this.state.selectedCompliance;
     const graph = ProjectModel.getGraph();
-    let deleteGraph = AnalyzeChange.getDeleteGraph({req: req}, graph);
+    const deleteGraph = AnalyzeChange.getDeleteGraph({ req }, graph);
 
-    if(!deleteGraph){
+    if (!deleteGraph){
       this.growl.show({ severity: 'warn', summary: 'Can not analyze element', detail: 'Can not analyze this element.' });
     } else {
       if (deleteGraph !== null && deleteGraph.nodes().length > 1){
         this.setState({ visibleRemove: true }, () => {
-              this.renderRemoveGraph(deleteGraph)
-            },
+          this.renderRemoveGraph(deleteGraph);
+        },
         );
       }
       if (deleteGraph !== null && deleteGraph.nodes().length <= 1){
@@ -82,15 +82,15 @@ class ComplianceView extends Component {
   getChangeGraph(){
     const req = this.state.selectedCompliance;
     const graph = ProjectModel.getGraph();
-    let changeGraph = AnalyzeChange.getChangeGraph({req: req}, graph);
+    const changeGraph = AnalyzeChange.getChangeGraph({ req }, graph);
 
-    if(!changeGraph){
+    if (!changeGraph){
       this.growl.show({ severity: 'warn', summary: 'Can not analyze element', detail: 'Can not analyze this element.' });
     } else {
       if (changeGraph !== null && changeGraph.nodes().length > 1){
         this.setState({ visibleChange: true }, () => {
-              this.renderChangeGraph(changeGraph);
-            },
+          this.renderChangeGraph(changeGraph);
+        },
         );
       }
       if (changeGraph !== null && changeGraph.nodes().length <= 1){
@@ -103,23 +103,23 @@ class ComplianceView extends Component {
   filterCompliance(){
     const graph = ProjectModel.getGraph();
     const compliance = ProjectModel.getCompliance();
-    const complianceNodes = GraphQuery.filterNodes(graph, {type: 'compliance'});
-    let complianceFilter =[];
+    const complianceNodes = GraphQuery.filterNodes(graph, { type: 'compliance' });
+    const complianceFilter = [];
 
     for (let i = 0; i < complianceNodes.length; i++){
       const id = complianceNodes[i].data('id');
       const req = ComplianceQuery.getRequirementById(compliance.requirement, id);
       complianceFilter.push(req);
     }
-    this.setState({complianceFilter: complianceFilter});
+    this.setState({ complianceFilter });
   }
 
   selectCompliance(selectedCompliance){
     const compliance = ProjectModel.getCompliance();
     const { id } = selectedCompliance;
     const reqText = ComplianceQuery.toString(compliance.requirement, id);
-    this.setState({selectedCompliance: selectedCompliance});
-    this.setState({complianceText: reqText});
+    this.setState({ selectedCompliance });
+    this.setState({ complianceText: reqText });
   }
 
   renderRemoveGraph(graph) {
@@ -204,31 +204,31 @@ class ComplianceView extends Component {
 
   renderGraphPropsPanel() {
     return (
-        <div className="property-panel">
-          <div>
-            <label>ID: {this.state.nodeId}</label>
-          </div>
-          <br />
-          <div>
-            <label>Name: {this.state.nodeName}</label>
-          </div>
-          <br />
-          <div>
-            <label>Node Type: {this.state.nodeType}</label>
-          </div>
-          <br />
-          <div>
-            <label>Model Type: {this.state.modelType}</label>
-          </div>
-          <br />
-          <div>
-            <ListBox
-                style={{ width: '100%' }}
-                options={this.state.nodeProps}
-                optionLabel="name"
-            />
-          </div>
+      <div className="property-panel">
+        <div>
+          <label>ID: {this.state.nodeId}</label>
         </div>
+        <br />
+        <div>
+          <label>Name: {this.state.nodeName}</label>
+        </div>
+        <br />
+        <div>
+          <label>Node Type: {this.state.nodeType}</label>
+        </div>
+        <br />
+        <div>
+          <label>Model Type: {this.state.modelType}</label>
+        </div>
+        <br />
+        <div>
+          <ListBox
+            style={{ width: '100%' }}
+            options={this.state.nodeProps}
+            optionLabel="name"
+          />
+        </div>
+      </div>
     );
   }
 
@@ -256,35 +256,35 @@ class ComplianceView extends Component {
 
   renderRemoveDialog() {
     const footer = (
-        <div>
-          <Button label="close" onClick={this.onHide} />
-        </div>
+      <div>
+        <Button label="close" onClick={this.onHide} />
+      </div>
     );
 
     return (
-        <div className="content-section implementation">
-          <Dialog
-              header="Graph Remove"
-              footer={footer}
-              visible={this.state.visibleRemove}
-              style={{ width: '80vw' }}
-              onHide={this.onHide}
-              maximizable
-          >
-            <section className="container-graph">
-              <div className="viewer" id="graph-container-remove" />
-              {this.renderGraphPropsPanel()}
-            </section>
-          </Dialog>
-        </div>
+      <div className="content-section implementation">
+        <Dialog
+          header="Graph Remove"
+          footer={footer}
+          visible={this.state.visibleRemove}
+          style={{ width: '80vw' }}
+          onHide={this.onHide}
+          maximizable
+        >
+          <section className="container-graph">
+            <div className="viewer" id="graph-container-remove" />
+            {this.renderGraphPropsPanel()}
+          </section>
+        </Dialog>
+      </div>
     );
   }
 
   renderChangeDialog() {
     const footer = (
-        <div>
-          <Button label="close" onClick={this.onHide} />
-        </div>
+      <div>
+        <Button label="close" onClick={this.onHide} />
+      </div>
     );
 
     return (
@@ -321,7 +321,8 @@ class ComplianceView extends Component {
                 value={value}
                 options={option}
                 onChange={e => this.selectCompliance(e.value)}
-                filter />
+                filter
+              />
             </div>
             <div className="compliance-view-text">
               <InputTextarea
@@ -329,7 +330,8 @@ class ComplianceView extends Component {
                 style={{ width: '100%', height: '98%' }}
                 cols={60}
                 value={this.state.complianceText}
-                autoResize={false} />
+                autoResize={false}
+              />
             </div>
           </section>
         </div>
@@ -338,7 +340,7 @@ class ComplianceView extends Component {
   }
 
   renderCompliancePropsPanel(){
-    return(
+    return (
       <div className="property-panel">
         <Button
           label="show result when remove"
@@ -353,7 +355,7 @@ class ComplianceView extends Component {
           tooltip="show demands by compliance requirements when changing these element"
         />
       </div>
-    )
+    );
   }
 
   render() {

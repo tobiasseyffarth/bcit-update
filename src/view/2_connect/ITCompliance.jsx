@@ -87,46 +87,6 @@ export default class StepITCompliance extends Component {
     this.setState({ selectedCompliance: selectedRequirement });
   }
 
-  renderInfra(infra) {
-    const container = document.getElementById('infra-container');
-    const graph = cytoscape({
-      container,
-      style: [ // the stylesheet for the graph
-        {
-          selector: 'node',
-          style: {
-            label: 'data(display_name)',
-            shape: 'triangle',
-            'background-color': '#ffffff',
-            'border-style': 'solid',
-            'border-color': '#666666',
-            'border-width': 1,
-          },
-        },
-
-        {
-          selector: 'edge',
-          style: {
-            width: 1,
-            'line-color': '#1c2966',
-            'mid-target-arrow-color': '#3040b7',
-            'mid-target-arrow-shape': 'triangle',
-            'line-style': 'dotted',
-          },
-        },
-      ],
-    });
-
-    GraphCreator.createGraphFromInfra(graph, infra);
-    const layout = graph.layout({ name: 'breadthfirst' }); // more options http://js.cytoscape.org/#layouts
-    layout.run();
-    graph.autolock(false); // elements can not be moved by the user
-    GraphRenderer.resizeGraph(graph);
-
-    this.setState({ infra });
-    this.setState({ infraGraph: graph }, () => this.hookInfraOnClick(graph));
-  }
-
   renderInfraProps(element){
     if (element !== null) {
       this.setState({ infraElement: element });
@@ -180,6 +140,46 @@ export default class StepITCompliance extends Component {
     ProjectModel.setGraph(graph);
   }
 
+  renderInfra(infra) {
+    const container = document.getElementById('infra-container');
+    const graph = cytoscape({
+      container,
+      style: [ // the stylesheet for the graph
+        {
+          selector: 'node',
+          style: {
+            label: 'data(display_name)',
+            shape: 'triangle',
+            'background-color': '#ffffff',
+            'border-style': 'solid',
+            'border-color': '#666666',
+            'border-width': 1,
+          },
+        },
+
+        {
+          selector: 'edge',
+          style: {
+            width: 1,
+            'line-color': '#1c2966',
+            'mid-target-arrow-color': '#3040b7',
+            'mid-target-arrow-shape': 'triangle',
+            'line-style': 'dotted',
+          },
+        },
+      ],
+    });
+
+    GraphCreator.createGraphFromInfra(graph, infra);
+    const layout = graph.layout({ name: 'breadthfirst' }); // more options http://js.cytoscape.org/#layouts
+    layout.run();
+    graph.autolock(false); // elements can not be moved by the user
+    GraphRenderer.resizeGraph(graph);
+
+    this.setState({ infra });
+    this.setState({ infraGraph: graph }, () => this.hookInfraOnClick(graph));
+  }
+
   renderInfraPropsPanel() {
     return (
       <div className="property-panel">
@@ -224,7 +224,8 @@ export default class StepITCompliance extends Component {
                 value={value}
                 options={option}
                 onChange={e => this.selectCompliance(e.value)}
-                filter />
+                filter
+              />
             </div>
             <div className="compliance-view-text">
               <InputTextarea
@@ -232,7 +233,8 @@ export default class StepITCompliance extends Component {
                 style={{ width: '100%', height: '98%' }}
                 cols={60}
                 value={this.state.complianceText}
-                autoResize={false} />
+                autoResize={false}
+              />
             </div>
           </section>
         </div>

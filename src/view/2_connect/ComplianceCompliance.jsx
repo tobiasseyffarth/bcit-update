@@ -83,7 +83,8 @@ export default class StepComplianceCompliance extends Component {
               value={value}
               options={option}
               onChange={e => this.selectCompliance(no, e.value)}
-              filter />
+              filter
+            />
           </div>
           <div className="compliance-view-text">
             <InputTextarea
@@ -91,7 +92,8 @@ export default class StepComplianceCompliance extends Component {
               style={{ width: '100%', height: '98%' }}
               cols={60}
               value={this.state.complianceTextOne}
-              autoResize={false} />
+              autoResize={false}
+            />
           </div>
         </section>
       </div>
@@ -112,7 +114,8 @@ export default class StepComplianceCompliance extends Component {
               value={value}
               options={option}
               onChange={e => this.selectCompliance(no, e.value)}
-              filter />
+              filter
+            />
           </div>
           <div className="compliance-view-text">
             <InputTextarea
@@ -120,7 +123,8 @@ export default class StepComplianceCompliance extends Component {
               style={{ width: '100%', height: '98%' }}
               cols={60}
               value={this.state.complianceTextTwo}
-              autoResize={false} />
+              autoResize={false}
+            />
           </div>
         </section>
       </div>

@@ -9,13 +9,17 @@ export default class Analyze extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tabWidth: 0
+      tabWidth: 0,
     };
   }
 
   componentDidMount(){
+    this.onMount();
+  }
+
+  onMount(){
     const tabPanel = document.getElementById('tab-container');
-    this.setState({tabWidth: tabPanel.offsetWidth});
+    this.setState({ tabWidth: tabPanel.offsetWidth });
   }
 
   render() {
@@ -29,7 +33,7 @@ export default class Analyze extends Component {
               </section>
             </TabPanel>
             <TabPanel header="View infrastructure model" >
-                <InfraView setWidth={this.state.tabWidth}/>
+              <InfraView setWidth={this.state.tabWidth} />
             </TabPanel>
             <TabPanel header="View compliance requirements" >
               <ComplianceView />

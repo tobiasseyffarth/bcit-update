@@ -2,7 +2,7 @@ import cytoscape from 'cytoscape';
 import * as creategraph from './../graph/GraphEditor';
 import * as analyzehelper from './AnalyzeHelper';
 import * as rendergraph from './../graph/GraphRenderer';
-import * as ProcessQuery from "../process/ProcessQuery";
+import * as ProcessQuery from '../process/ProcessQuery';
 
 // final?
 export function getGraphReplaceITComponent(graph, node) {
@@ -127,19 +127,19 @@ export function getChangeGraph(input, graph){
       const id = ProcessQuery.getIdFromExtensionShape(shape);
       node = graph.getElementById(id);
       changeGraph = getGraphReplaceRequirement(graph, node);
-    } else{
+    } else {
       return false;
     }
   }
 
   if (itComponent !== undefined){
-    const id = itComponent.id;
+    const { id } = itComponent;
     const node = graph.getElementById(id);
     changeGraph = getGraphReplaceITComponent(graph, node);
   }
 
   if (req !== undefined){
-    const id = req.id;
+    const { id } = req;
     const node = graph.getElementById(id);
     changeGraph = getGraphReplaceRequirement(graph, node);
   }
@@ -177,13 +177,13 @@ export function getDeleteGraph(input, graph){
   }
 
   if (itComponent !== undefined){
-    const id = itComponent.id;
+    const { id } = itComponent;
     const node = graph.getElementById(id);
     deleteGraph = getGraphDeleteITComponent(graph, node);
   }
 
   if (req !== undefined){
-    const id = req.id;
+    const { id } = req;
     const node = graph.getElementById(id);
     deleteGraph = getGraphDeleteRequirement(graph, node);
   }

@@ -66,16 +66,6 @@ export default class StepProcIT extends Component {
     }
   }
 
-  renderBpmn = (xml) => {
-    this.bpmnModeler.importXML(xml, (err) => {
-      if (err) {
-        console.log('error rendering', err);
-      } else {
-        this.fitBpmnView();
-      }
-    });
-  };
-
   renderBpmnProps(element) {
     if (element !== null) {
       const { businessObject } = element;
@@ -281,6 +271,16 @@ export default class StepProcIT extends Component {
     ProjectModel.setInfra(infra);
     ProjectModel.setGraph(graph);
   }
+
+  renderBpmn = (xml) => {
+    this.bpmnModeler.importXML(xml, (err) => {
+      if (err) {
+        console.log('error rendering', err);
+      } else {
+        this.fitBpmnView();
+      }
+    });
+  };
 
   renderBpmnPropsPanel() {
     return (

@@ -78,6 +78,7 @@ export function filterNodesByType(nodes, type) {
   return result;
 }
 
+/*
 function filterNodes(eles) {
   const nodes = [];
 
@@ -89,6 +90,7 @@ function filterNodes(eles) {
 
   return nodes;
 }
+*/
 
 export function getEdge(source, target) {
   const sourceEdge = source.connectedEdges();
@@ -263,6 +265,7 @@ export function getLeavesOfType(node, modeltype) {
   return leaves;
 }
 
+
 export function filterNodes(graph, filter){
   // style: directdemand, indirectdemand, obsolete, violated, changedElement, between
   // type: infra, businessprocess, complianceprocess, compliance
@@ -307,5 +310,5 @@ export function filterNodes(graph, filter){
     }
     return result;
   }
-
+  return null;
 }

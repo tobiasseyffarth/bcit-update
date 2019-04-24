@@ -81,13 +81,6 @@ export default class StepProcCompliance extends Component {
     }
   }
 
-  updateBpmnXml(){
-    const modeler = this.bpmnModeler;
-    const bpmnXml = FileIO.getXmlFromViewer(modeler);
-    ProjectModel.setBpmnXml(bpmnXml);
-    ProjectModel.setViewer(modeler);
-  }
-
   removeBpmnProp() {
     if (this.state.bpmnShape !== null && this.state.bpmnProp !== null) {
       const element = this.state.bpmnShape;
@@ -126,6 +119,13 @@ export default class StepProcCompliance extends Component {
       this.updateBusinessObject(businessObject);
       this.updateBpmnXml();
     }
+  }
+
+  updateBpmnXml(){
+    const modeler = this.bpmnModeler;
+    const bpmnXml = FileIO.getXmlFromViewer(modeler);
+    ProjectModel.setBpmnXml(bpmnXml);
+    ProjectModel.setViewer(modeler);
   }
 
   updateBusinessObject(businessObject){

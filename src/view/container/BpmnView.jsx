@@ -60,10 +60,6 @@ class BpmnView extends Component {
     this.setState({ visibleAlternative: false });
   }
 
-  showAlternativeDialog(){
-    this.setState({ visibleAlternative: true });
-  }
-
   hookBpmnEventBus() {
     const eventBus = this.bpmnModeler.get('eventBus');
     eventBus.on('element.click', e => this.hookBpmnOnClick(e));
@@ -89,15 +85,15 @@ class BpmnView extends Component {
   getRemoveGraph(){
     const shape = this.state.bpmnShape;
     const graph = ProjectModel.getGraph();
-    let deleteGraph = AnalyzeChange.getDeleteGraph({shape: shape}, graph);
+    const deleteGraph = AnalyzeChange.getDeleteGraph({ shape }, graph);
 
-    if(!deleteGraph){
+    if (!deleteGraph){
       this.growl.show({ severity: 'warn', summary: 'Can not analyze element', detail: 'Can not analyze this element.' });
     } else {
       if (deleteGraph !== null && deleteGraph.nodes().length > 1){
         this.setState({ visibleRemove: true }, () => {
-              this.renderRemoveGraph(deleteGraph)
-            },
+          this.renderRemoveGraph(deleteGraph);
+        },
         );
         console.log('violated req', GraphQuery.filterNodes(deleteGraph, { style: 'violated', type: 'compliance' }));
       }
@@ -111,15 +107,15 @@ class BpmnView extends Component {
   getChangeGraph(){
     const shape = this.state.bpmnShape;
     const graph = ProjectModel.getGraph();
-    let changeGraph = AnalyzeChange.getChangeGraph({shape: shape}, graph);
+    const changeGraph = AnalyzeChange.getChangeGraph({ shape }, graph);
 
-    if(!changeGraph){
+    if (!changeGraph){
       this.growl.show({ severity: 'warn', summary: 'Can not analyze element', detail: 'Can not analyze this element.' });
     } else {
       if (changeGraph !== null && changeGraph.nodes().length > 1){
         this.setState({ visibleChange: true }, () => {
-              this.renderChangeGraph(changeGraph);
-            },
+          this.renderChangeGraph(changeGraph);
+        },
         );
       }
       if (changeGraph !== null && changeGraph.nodes().length <= 1){
@@ -215,12 +211,15 @@ class BpmnView extends Component {
         console.log('error rendering', err);
       } else {
         ProjectModel.setViewer(this.bpmnModeler);
-        const process = ProcessQuery.getProcess(this.bpmnModeler);
         const canvas = this.bpmnModeler.get('canvas');
         canvas.zoom('fit-viewport');
       }
     });
   };
+
+  showAlternativeDialog(){
+    this.setState({ visibleAlternative: true });
+  }
 
   renderGraphPropsPanel() {
     return (
@@ -379,9 +378,9 @@ class BpmnView extends Component {
         <br />
         <br />
         <Button
-            label="show result when change"
-            onClick={this.getChangeGraph}
-            tooltip="show demands by compliance requirements when changing these element"
+          label="show result when change"
+          onClick={this.getChangeGraph}
+          tooltip="show demands by compliance requirements when changing these element"
         />
       </div>
     );

@@ -8,8 +8,8 @@ import AlternativeView from './AlternativeView';
 import '../../App.css';
 import * as GraphCreator from '../../controller/graph/GraphEditor';
 import * as GraphRenderer from '../../controller/graph/GraphRenderer';
-import * as AnalyzeChange from "../../controller/analyze/AnalyzeChange";
-import * as InfraQuery from "../../controller/infra/InfraQuery";
+import * as AnalyzeChange from '../../controller/analyze/AnalyzeChange';
+import * as InfraQuery from '../../controller/infra/InfraQuery';
 import ProjectModel from '../../models/ProjectModel';
 
 class InfraView extends Component {
@@ -27,7 +27,7 @@ class InfraView extends Component {
       nodeId: null,
       nodeName: null,
       nodeType: null,
-      modelType: null
+      modelType: null,
     };
 
     this.onHide = this.onHide.bind(this);
@@ -57,10 +57,6 @@ class InfraView extends Component {
     this.setState({ visibleRemove: false });
     this.setState({ visibleChange: false });
     this.setState({ visibleAlternative: false });
-  }
-
-  showAlternativeDialog(){
-    this.setState({ visibleAlternative: true });
   }
 
   renderInfra(infra){
@@ -108,14 +104,54 @@ class InfraView extends Component {
       const element = evt.target;
       if (element === graph) { // background
         _this.renderInfraProps(null);
-      } else {
-        if (element.isNode()) { // edge
-          const id = element.data('id');
-          const itComponent = InfraQuery.getElementById(infra, id);
-          _this.renderInfraProps(itComponent);
-        }
+      } else if (element.isNode()) { // edge
+        const id = element.data('id');
+        const itComponent = InfraQuery.getElementById(infra, id);
+        _this.renderInfraProps(itComponent);
       }
     });
+  }
+
+  getRemoveGraph(){
+    const { itComponent } = this.state;
+    const graph = ProjectModel.getGraph();
+    const deleteGraph = AnalyzeChange.getDeleteGraph({ itComponent }, graph);
+
+    if (!deleteGraph){
+      this.growl.show({ severity: 'warn', summary: 'Can not analyze element', detail: 'Can not analyze this element.' });
+    } else {
+      if (deleteGraph !== null && deleteGraph.nodes().length > 1){
+        this.setState({ visibleRemove: true }, () => {
+          this.renderRemoveGraph(deleteGraph);
+        },
+        );
+      }
+      if (deleteGraph !== null && deleteGraph.nodes().length <= 1){
+        const detail = 'no violations found';
+        this.growl.show({ severity: 'info', summary: 'No compliance violation', detail });
+      }
+    }
+  }
+
+  getChangeGraph(){
+    const { itComponent } = this.state;
+    const graph = ProjectModel.getGraph();
+    const changeGraph = AnalyzeChange.getChangeGraph({ itComponent }, graph);
+
+    if (!changeGraph){
+      this.growl.show({ severity: 'warn', summary: 'Can not analyze element', detail: 'Can not analyze this element.' });
+    } else {
+      if (changeGraph !== null && changeGraph.nodes().length > 1){
+        this.setState({ visibleChange: true }, () => {
+          this.renderChangeGraph(changeGraph);
+        },
+        );
+      }
+      if (changeGraph !== null && changeGraph.nodes().length <= 1){
+        const detail = 'no demands found';
+        this.growl.show({ severity: 'info', summary: 'No compliance violation', detail });
+      }
+    }
   }
 
   hookGraphOnClick(graph){
@@ -131,46 +167,8 @@ class InfraView extends Component {
     });
   }
 
-  getRemoveGraph(){
-    const itComponent = this.state.itComponent;
-    const graph = ProjectModel.getGraph();
-    let deleteGraph = AnalyzeChange.getDeleteGraph({itComponent: itComponent}, graph);
-
-    if(!deleteGraph){
-      this.growl.show({ severity: 'warn', summary: 'Can not analyze element', detail: 'Can not analyze this element.' });
-    } else {
-      if (deleteGraph !== null && deleteGraph.nodes().length > 1){
-        this.setState({ visibleRemove: true }, () => {
-            this.renderRemoveGraph(deleteGraph)
-          },
-        );
-      }
-      if (deleteGraph !== null && deleteGraph.nodes().length <= 1){
-        const detail = 'no violations found';
-        this.growl.show({ severity: 'info', summary: 'No compliance violation', detail });
-      }
-    }
-  }
-
-  getChangeGraph(){
-    const itComponent = this.state.itComponent;
-    const graph = ProjectModel.getGraph();
-    let changeGraph = AnalyzeChange.getChangeGraph({itComponent: itComponent}, graph);
-
-    if(!changeGraph){
-      this.growl.show({ severity: 'warn', summary: 'Can not analyze element', detail: 'Can not analyze this element.' });
-    } else {
-      if (changeGraph !== null && changeGraph.nodes().length > 1){
-        this.setState({ visibleChange: true }, () => {
-              this.renderChangeGraph(changeGraph);
-            },
-        );
-      }
-      if (changeGraph !== null && changeGraph.nodes().length <= 1){
-        const detail = 'no demands found';
-        this.growl.show({ severity: 'info', summary: 'No compliance violation', detail });
-      }
-    }
+  showAlternativeDialog(){
+    this.setState({ visibleAlternative: true });
   }
 
   renderRemoveGraph(graph) {
@@ -255,7 +253,7 @@ class InfraView extends Component {
 
   renderInfraProps(itComponent){
     if (itComponent !== null) {
-      this.setState({ itComponent: itComponent });
+      this.setState({ itComponent });
       this.setState({ itComponentId: itComponent.id });
       this.setState({ itComponentName: itComponent.name });
     } else {
@@ -317,109 +315,109 @@ class InfraView extends Component {
 
   renderGraphPropsPanel() {
     return (
-        <div className="property-panel">
-          <div>
-            <label>ID: {this.state.nodeId}</label>
-          </div>
-          <br />
-          <div>
-            <label>Name: {this.state.nodeName}</label>
-          </div>
-          <br />
-          <div>
-            <label>Node Type: {this.state.nodeType}</label>
-          </div>
-          <br />
-          <div>
-            <label>Model Type: {this.state.modelType}</label>
-          </div>
-          <br />
-          <div>
-            <ListBox
-                style={{ width: '100%' }}
-                options={this.state.nodeProps}
-                optionLabel="name"
-            />
-          </div>
+      <div className="property-panel">
+        <div>
+          <label>ID: {this.state.nodeId}</label>
         </div>
+        <br />
+        <div>
+          <label>Name: {this.state.nodeName}</label>
+        </div>
+        <br />
+        <div>
+          <label>Node Type: {this.state.nodeType}</label>
+        </div>
+        <br />
+        <div>
+          <label>Model Type: {this.state.modelType}</label>
+        </div>
+        <br />
+        <div>
+          <ListBox
+            style={{ width: '100%' }}
+            options={this.state.nodeProps}
+            optionLabel="name"
+          />
+        </div>
+      </div>
     );
   }
 
   renderAlternativeDialog(){
     const footer = (
-        <div>
-          <Button label="close" onClick={this.onHide} />
-        </div>
+      <div>
+        <Button label="close" onClick={this.onHide} />
+      </div>
     );
 
     return (
-        <div className="content-section implementation">
-          <Dialog
-              header="Graph Remove"
-              footer={footer}
-              visible={this.state.visibleAlternative}
-              style={{ width: '80vw' }}
-              onHide={this.onHide}
-              maximizable
-          >
-            <section className="container-graph">
-              <AlternativeView />
-            </section>
-          </Dialog>
-        </div>
+      <div className="content-section implementation">
+        <Dialog
+          header="Graph Remove"
+          footer={footer}
+          visible={this.state.visibleAlternative}
+          style={{ width: '80vw' }}
+          onHide={this.onHide}
+          maximizable
+        >
+          <section className="container-graph">
+            <AlternativeView />
+          </section>
+        </Dialog>
+      </div>
     );
   }
 
   renderRemoveDialog() {
     const footer = (
-        <div>
-          <Button label="show alternatives" onClick={this.showAlternativeDialog} />
-          <Button label="close" onClick={this.onHide} />
-        </div>
+      <div>
+        <Button label="show alternatives" onClick={this.showAlternativeDialog} />
+        <Button label="close" onClick={this.onHide} />
+      </div>
     );
 
     return (
-        <div className="content-section implementation">
-          <Dialog
-              header="Graph Remove"
-              footer={footer}
-              visible={this.state.visibleRemove}
-              style={{ width: '80vw' }}
-              onHide={this.onHide}
-              maximizable
-          >
-            <section className="container-graph">
-              <div className="viewer" id="graph-container-remove" />
-              {this.renderGraphPropsPanel()}
-            </section>
-          </Dialog>
-        </div>
+      <div className="content-section implementation">
+        <Dialog
+          header="Graph Remove"
+          footer={footer}
+          visible={this.state.visibleRemove}
+          style={{ width: '80vw' }}
+          onHide={this.onHide}
+          maximizable
+        >
+          <section className="container-graph">
+            <div className="viewer" id="graph-container-remove" />
+            {this.renderGraphPropsPanel()}
+          </section>
+        </Dialog>
+      </div>
     );
   }
 
   renderChangeDialog() {
     const footer = (
-        <div>
-          <Button label="close" onClick={this.onHide} />
-        </div>
+      <div>
+        <Button label="close" onClick={this.onHide} />
+      </div>
     );
 
     return (
-        <div className="content-section implementation">
-          <Dialog
-              header="Graph Change"
-              footer={footer}
-              visible={this.state.visibleChange}
-              style={{ width: '80vw' }}
-              onHide={this.onHide}
-              maximizable
-          >
-            <section className="container-graph">
-              <div className="viewer" id="graph-container-change" />
-              {this.renderGraphPropsPanel()}
-            </section>
-          </Dialog>
-        </div>
+      <div className="content-section implementation">
+        <Dialog
+          header="Graph Change"
+          footer={footer}
+          visible={this.state.visibleChange}
+          style={{ width: '80vw' }}
+          onHide={this.onHide}
+          maximizable
+        >
+          <section className="container-graph">
+            <div className="viewer" id="graph-container-change" />
+            {this.renderGraphPropsPanel()}
+          </section>
+        </Dialog>
+      </div>
     );
   }
 
@@ -427,17 +425,17 @@ class InfraView extends Component {
     return (
       <div>
         <Growl
-            ref={(el) => {
+          ref={(el) => {
               this.growl = el;
             }}
-            position="topright"
+          position="topright"
         />
         <div>
           {this.renderRemoveDialog()}
           {this.renderChangeDialog()}
           {this.renderAlternativeDialog()}
           <section className="container-infra">
-            <div className="viewer" id="infra-container" style={{width:this.state.width}}/>
+            <div className="viewer" id="infra-container" style={{ width: this.state.width }} />
             {this.renderInfraPropsPanel()}
           </section>
         </div>
