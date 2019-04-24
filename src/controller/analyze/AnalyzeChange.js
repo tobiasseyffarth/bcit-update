@@ -139,7 +139,9 @@ export function getChangeGraph(input, graph){
   }
 
   if (req !== undefined){
-    console.log('analyze req');
+    const id = req.id;
+    const node = graph.getElementById(id);
+    changeGraph = getGraphReplaceRequirement(graph, node);
   }
 
   return changeGraph;
@@ -181,7 +183,9 @@ export function getDeleteGraph(input, graph){
   }
 
   if (req !== undefined){
-
+    const id = req.id;
+    const node = graph.getElementById(id);
+    deleteGraph = getGraphDeleteRequirement(graph, node);
   }
 
   return deleteGraph;

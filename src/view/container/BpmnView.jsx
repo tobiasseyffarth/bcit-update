@@ -373,9 +373,9 @@ class BpmnView extends Component {
         </div>
         <br />
         <Button
-            label="show result when remove"
-            onClick={this.getRemoveGraph}
-            tooltip="show compliance violation when removing these element"
+          label="show result when remove"
+          onClick={this.getRemoveGraph}
+          tooltip="show compliance violation when removing these element"
         />
         <br />
         <br />
