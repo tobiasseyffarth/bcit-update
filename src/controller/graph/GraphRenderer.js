@@ -385,13 +385,15 @@ export function styleEdgesAnalyzeGraph(graph) {
 
   for (let i = 0; i < edges.length; i++) {
     const edge = edges[i];
-    if (edge.data('edgestyle') == 'direct') {
+    if (edge.data('edgestyle') === 'direct') {
       edge.style('line-style', 'solid');
     }
   }
 }
 
-export function renderAnalyzeGraph(graph){
+export function renderAnalyzeGraph(graph, graphAnalyze){
+  removeElements(graph);
+  copyGraphElements(graph, graphAnalyze);
   styleEdgesAnalyzeGraph(graph);
   styleNodesAnalyzeGraph(graph);
   drawAnalyze(graph);

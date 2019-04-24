@@ -206,9 +206,7 @@ class BpmnView extends Component {
       },
     });
 
-    GraphRenderer.removeElements(graphDelete);
-    GraphRenderer.copyGraphElements(graphDelete, graph);
-    GraphRenderer.renderAnalyzeGraph(graphDelete);
+    GraphRenderer.renderAnalyzeGraph(graphDelete, graph);
     this.hookGraphOnClick(graphDelete);
   }
 
@@ -248,9 +246,7 @@ class BpmnView extends Component {
       },
     });
 
-    GraphRenderer.removeElements(graphChange);
-    GraphRenderer.copyGraphElements(graphChange, graph);
-    GraphRenderer.renderAnalyzeGraph(graphChange);
+    GraphRenderer.renderAnalyzeGraph(graphChange, graph);
     this.hookGraphOnClick(graphChange);
   }
 

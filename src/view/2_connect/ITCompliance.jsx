@@ -12,8 +12,6 @@ import * as GraphCreator from '../../controller/graph/GraphEditor';
 import * as GraphRenderer from '../../controller/graph/GraphRenderer';
 import * as ComplianceQuery from '../../controller/compliance/ComplianceQuery';
 
-// import ProjectModel from '../../models/ProjectModel';
-
 export default class StepITCompliance extends Component {
   constructor(props) {
     super(props);
