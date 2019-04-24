@@ -5,7 +5,6 @@ class Project {
     this.project = null; // Project File
 
     this.BpmnXml = null; // content as String
-    this.process = null; // process file
     this.viewer = null; // Bpmn viewer
 
     this.infra = null; // infrastructure
@@ -23,11 +22,6 @@ class Project {
     this.BpmnXml = BpmnXml;
   };
   getBpmnXml = () => this.BpmnXml;
-
-  setProcess = (process) => {
-    this.process = process;
-  };
-  getProcess = () => this.process;
 
   setViewer = (viewer) => {
     this.viewer = viewer;

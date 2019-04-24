@@ -216,7 +216,6 @@ class BpmnView extends Component {
       } else {
         ProjectModel.setViewer(this.bpmnModeler);
         const process = ProcessQuery.getProcess(this.bpmnModeler);
-        ProjectModel.setProcess(process);
         const canvas = this.bpmnModeler.get('canvas');
         canvas.zoom('fit-viewport');
       }
