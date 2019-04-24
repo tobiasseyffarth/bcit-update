@@ -8,7 +8,6 @@ import AlternativeView from './AlternativeView';
 import '../../App.css';
 import * as GraphCreator from '../../controller/graph/GraphEditor';
 import * as GraphRenderer from '../../controller/graph/GraphRenderer';
-import * as GraphQuery from "../../controller/graph/GraphQuery";
 import * as AnalyzeChange from "../../controller/analyze/AnalyzeChange";
 import * as InfraQuery from "../../controller/infra/InfraQuery";
 import ProjectModel from '../../models/ProjectModel';
