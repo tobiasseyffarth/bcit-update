@@ -265,7 +265,6 @@ export function getLeavesOfType(node, modeltype) {
   return leaves;
 }
 
-
 export function filterNodes(graph, filter){
   // style: directdemand, indirectdemand, obsolete, violated, changedElement, between
   // type: infra, businessprocess, complianceprocess, compliance
@@ -311,4 +310,21 @@ export function filterNodes(graph, filter){
     return result;
   }
   return null;
+}
+
+export function isUniqueNode(graph, input){
+  let { id } = input;
+  const { node } = input;
+  const nodes = graph.nodes();
+
+  if (node !== undefined){
+    id = node.data('id');
+  }
+
+  for (let i = 0; i < nodes.length; i++){
+    if (nodes[i].id() === id) {
+      return false;
+    }
+  }
+  return true;
 }

@@ -161,7 +161,12 @@ export default class TopMenu extends Component {
 
     return (
       <div className="content-section implementation">
-        <Dialog header="Graph" footer={footer} visible={this.state.visibleGraph} style={{ width: '80vw' }} onHide={this.onHide} maximizable>
+        <Dialog header="Graph"
+            footer={footer}
+            visible={this.state.visibleGraph}
+            style={{ width: '80vw' }}
+            onHide={this.onHide}
+            maximizable>
           <section className="container-graph">
             <div className="viewer" id="graph-container" />
             {this.renderGraphPropsPanel()}

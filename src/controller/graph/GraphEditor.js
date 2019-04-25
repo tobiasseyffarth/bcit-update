@@ -1,6 +1,7 @@
 import * as queryinfra from './../infra/InfraQuery';
 import * as queryprocess from './../process/ProcessQuery';
 import * as querygraph from './GraphQuery';
+import cytoscape from "cytoscape";
 
 // final
 export function removeModeltypeFromGraph(graph, modeltype) {
@@ -390,7 +391,7 @@ export function addUniqueNode(graph, input, nodestyle) { // adds a single node t
   const nodes = graph.nodes();
   let isUnique = true;
 
-  if (element != null) {
+  if (element !== undefined) { // element != null
     for (let i = 0; i < nodes.length; i++) { // determine whether an node with this id already exists
       if (nodes[i].id() === element.id) {
         isUnique = false;
@@ -409,7 +410,7 @@ export function addUniqueNode(graph, input, nodestyle) { // adds a single node t
           nodetype: 'compliance',
           modeltype: 'compliance',
           display_name: element.id,
-          nodestyle,
+          nodestyle: nodestyle,
         },
       });
     }
@@ -417,7 +418,7 @@ export function addUniqueNode(graph, input, nodestyle) { // adds a single node t
     return graph.getElementById(element.id);
   }
 
-  if (node != null) {
+  if (node !== undefined) { // node != null
     for (let i = 0; i < nodes.length; i++) { // determine whether an node with this id already exists
       if (nodes[i] === node) {
         isUnique = false;
@@ -515,6 +516,88 @@ export function removeSingleNodes(graph) {
 
     if (incomer.length === 0 && outgoer.length === 0) {
       node.remove();
+    }
+  }
+}
+
+export function getEmptyGraph(){
+  const graph = cytoscape({
+    style: [ // the stylesheet for the graph
+      {
+        selector: 'node',
+        style: {
+          'background-color': '#ffffff',
+          'border-style': 'solid',
+          'border-color': '#666',
+          'border-width': 1,
+          label: 'data(id)',
+          'font-size': 10,
+          'text-wrap': 'wrap',
+          'text-max-width': 20,
+        },
+      },
+      {
+        selector: 'edge',
+        style: {
+          width: 1,
+          'line-color': '#666',
+          'mid-target-arrow-color': '#666',
+          'mid-target-arrow-shape': 'triangle',
+          'line-style': 'dotted',
+        },
+      },
+    ],
+    layout: {
+      name: 'grid',
+      rows: 1,
+    },
+  });
+
+  return graph;
+}
+
+export function addNode(graph, input){
+  const { req } = input;
+  const { comProcess } = input;
+  let id;
+  let isUnique;
+
+  if (req !== undefined){
+    id = req.id;
+    isUnique = querygraph.isUniqueNode(graph, {id: id});
+
+    if (isUnique) {
+      graph.add({
+        group: 'nodes',
+        data: {
+          id: id,
+          display_name: id,
+          nodetype: 'compliance',
+          modeltype: 'compliance',
+          text: req.text,
+          title: req.title,
+          props: req.source
+        },
+      });
+    }
+  }
+
+  if (comProcess !== undefined){
+    id = comProcess.id;
+    isUnique = querygraph.isUniqueNode(graph, {id: id});
+
+    if (isUnique){
+      graph.add({
+        group: 'nodes',
+        data: {
+          id: id,
+          display_name: id,
+          nodetype: 'complianceprocess',
+          modeltype: 'complianceprocess',
+          props: comProcess.props,
+          rule: comProcess.rule
+        },
+      });
     }
   }
 }
