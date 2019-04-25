@@ -13,37 +13,42 @@ export default class Alternatives extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      altGraph: null,
       nodeId: null,
       nodeName: null,
       nodeType: null,
       modelType: null,
       nodeProps: [],
+      selectedCompliance: null,
     };
 
+    this.addComplianceRequirement = this.addComplianceRequirement.bind(this);
+    this.addComplianceProcess = this.addComplianceProcess.bind(this);
+    this.addComplianceProcessPattern = this.addComplianceProcessPattern.bind(this);
     this.removeNode = this.removeNode.bind(this);
-    this.addNode = this.addNode.bind(this);
   }
 
   componentDidMount(){
     this.onMount();
   }
 
+  componentWillUnmount(){
+    ProjectModel.setAltGraph(this.graph);
+  }
+
   onMount(){
     const container = document.getElementById('alt-graph-container');
-    let graph = ProjectModel.getAltGraph();
+    this.graph = ProjectModel.getAltGraph();
 
-    if (graph === null){
-      graph = GraphEditor.getEmptyGraph();
-      ProjectModel.setAltGraph(graph);
+    if (this.graph === null){
+      this.graph = GraphEditor.getEmptyGraph();
     }
 
-    graph.mount(container);
-    const layout = graph.layout({ name: 'breadthfirst' }); // more options http://js.cytoscape.org/#layouts
+    this.graph.mount(container);
+    const layout = this.graph.layout({ name: 'breadthfirst' }); // more options http://js.cytoscape.org/#layouts
     layout.run(); // graph.autolock(false); //elements can not be moved by the user
-    GraphRenderer.resizeGraph(graph);
-    GraphRenderer.colorNodes(graph);
-    this.hookGraphOnClick(graph);
+    GraphRenderer.resizeGraph(this.graph);
+    GraphRenderer.colorNodes(this.graph);
+    this.hookGraphOnClick(this.graph);
   }
 
   hookGraphOnClick(graph){
@@ -84,46 +89,110 @@ export default class Alternatives extends Component {
 
   }
 
-  addNode(){
-    let graph = ProjectModel.getAltGraph();
-    let req = {
-      id: 12,
-      name: 'test'
-    };
-    GraphEditor.addNode(graph, { req: req });
-    ProjectModel.setAltGraph(graph);
+  addComplianceRequirement(){
+    const req = this.state.selectedCompliance;
+
+    if (req !== null){
+      const isUnique = GraphEditor.addNode(this.graph, { req: req });
+      if (!isUnique){
+        this.growl.show({ severity: 'warn', summary: 'Compliance requirement already in the graph.', detail:'' });
+      }
+    } else {
+      this.growl.show({ severity: 'warn', summary: 'Please select an compliance requirement from the list.', detail:'' });
+    }
+  }
+
+  addComplianceProcess(){
+
+  }
+
+  addComplianceProcessPattern(){
+    if (this.state.nodeType === null) {
+      this.growl.show({ severity: 'warn', summary: 'Please select an compliance requirement from the graph.', detail:'' });
+    } else if (this.state.nodeType !== 'compliance') {
+      this.growl.show({ severity: 'warn', summary: 'Please select an compliance requirement from the graph.', detail:'' });
+    } else {
+
+    }
+  }
+
+  selectCompliance(selectedRequirement){
+    this.setState({ selectedCompliance: selectedRequirement });
   }
 
   removeNode(){
-    let graph = ProjectModel.getAltGraph();
     const id = this.state.nodeId;
-    let node = graph.getElementById(id);
+    let node = this.graph.getElementById(id);
 
     if (node !== null){
       GraphEditor.removeNode(node);
+      this.renderGraphProps(null);
+    } else {
+      this.growl.show({ severity: 'warn', summary: 'Please select a node from the graph.', detail:'' });
     }
-
-    ProjectModel.setAltGraph(graph);
   }
 
   renderGraphPropsPanel(){
     return(
       <div className="property-panel">
         <div>
-          props panel
+          <label>ID: {this.state.nodeId}</label>
+        </div>
+        <br />
+        <div>
+          <label>Name: {this.state.nodeName}</label>
+        </div>
+        <br />
+        <div>
+          <label>Node Type: {this.state.nodeType}</label>
+        </div>
+        <br />
+        <div>
+          <label>Model Type: {this.state.modelType}</label>
+        </div>
+        <br />
+        <div>
+          <ListBox
+              style={{ width: '100%' }}
+              options={this.state.nodeProps}
+              optionLabel="name"
+          />
+        </div>
+        <div>
+          <Button label="remove node" onClick={this.removeNode} />
         </div>
       </div>
     )
   }
 
   renderGraphEditPanel(){
+    const value = this.state.selectedCompliance;
+    const compliance = ProjectModel.getCompliance();
+    let option;
+    if (compliance === null){
+      option = [];
+    } else{
+      option = compliance.requirement;
+    }
+
     return(
       <div className="property-panel">
         <div>
-          <Button label="add node" onClick={this.addNode} />
+          <ListBox
+              style={{ height: '98%', width: '98%' }}
+              optionLabel="id"
+              value={value}
+              options={option}
+              onChange={e => this.selectCompliance(e.value)}
+              filter
+          />
+          <Button label="add req" onClick={this.addComplianceRequirement} />
           <br />
           <br />
-          <Button label="remove node" onClick={this.removeNode} />
+          <Button label="add pattern" onClick={this.addComplianceProcessPattern} />
+          <br />
+          <br />
+          <Button label="add compliance process" onClick={this.addComplianceProcess} />
         </div>
       </div>
     )
@@ -132,11 +201,19 @@ export default class Alternatives extends Component {
   render() {
     return (
       <div>
-        <section className="container-graph">
-          {this.renderGraphEditPanel()}
-          <div className="viewer" id="alt-graph-container" />
-          {this.renderGraphPropsPanel()}
-        </section>
+        <Growl
+            ref={(el) => {
+              this.growl = el;
+            }}
+            position="topright"
+        />
+        <div>
+          <section className="container-graph">
+            {this.renderGraphEditPanel()}
+            <div className="viewer" id="alt-graph-container" />
+            {this.renderGraphPropsPanel()}
+          </section>
+        </div>
       </div>
     );
   }

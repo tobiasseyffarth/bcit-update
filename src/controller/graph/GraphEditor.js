@@ -559,6 +559,7 @@ export function getEmptyGraph(){
 export function addNode(graph, input){
   const { req } = input;
   const { comProcess } = input;
+  const { comProcessPattern } = input;
   let id;
   let isUnique;
 
@@ -580,6 +581,8 @@ export function addNode(graph, input){
         },
       });
     }
+
+    return isUnique;
   }
 
   if (comProcess !== undefined){
@@ -596,6 +599,25 @@ export function addNode(graph, input){
           modeltype: 'complianceprocess',
           props: comProcess.props,
           rule: comProcess.rule
+        },
+      });
+    }
+  }
+
+  if (comProcessPattern !== undefined){
+    id = comProcess.id;
+    isUnique = querygraph.isUniqueNode(graph, {id: id});
+
+    if (isUnique){
+      graph.add({
+        group: 'nodes',
+        data: {
+          id: id,
+          display_name: id,
+          nodetype: 'complianceprocesspattern',
+          modeltype: 'complianceprocesspattern',
+          props: comProcessPattern.props,
+          rule: comProcessPattern.rule
         },
       });
     }
