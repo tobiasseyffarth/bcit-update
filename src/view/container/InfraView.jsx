@@ -114,42 +114,60 @@ class InfraView extends Component {
 
   getRemoveGraph(){
     const { itComponent } = this.state;
-    const graph = ProjectModel.getGraph();
-    const deleteGraph = AnalyzeChange.getDeleteGraph({ itComponent }, graph);
 
-    if (!deleteGraph){
-      this.growl.show({ severity: 'warn', summary: 'Can not analyze element', detail: 'Can not analyze this element.' });
+    if (itComponent === null){
+      this.growl.show({ severity: 'warn', summary: 'Please select an element.', detail:'' });
     } else {
-      if (deleteGraph !== null && deleteGraph.nodes().length > 1){
-        this.setState({ visibleRemove: true }, () => {
-          this.renderRemoveGraph(deleteGraph);
-        },
-        );
-      }
-      if (deleteGraph !== null && deleteGraph.nodes().length <= 1){
-        const detail = 'no violations found';
-        this.growl.show({ severity: 'info', summary: 'No compliance violation', detail });
+      const graph = ProjectModel.getGraph();
+      const deleteGraph = AnalyzeChange.getDeleteGraph({itComponent}, graph);
+
+      if (!deleteGraph) {
+        this.growl.show({
+          severity: 'warn',
+          summary: 'Can not analyze element',
+          detail: 'Can not analyze this element.'
+        });
+      } else {
+        if (deleteGraph !== null && deleteGraph.nodes().length > 1) {
+          this.setState({visibleRemove: true}, () => {
+                this.renderRemoveGraph(deleteGraph);
+              },
+          );
+        }
+        if (deleteGraph !== null && deleteGraph.nodes().length <= 1) {
+          const detail = 'no violations found';
+          this.growl.show({severity: 'info', summary: 'No compliance violation', detail});
+        }
       }
     }
   }
 
   getChangeGraph(){
     const { itComponent } = this.state;
-    const graph = ProjectModel.getGraph();
-    const changeGraph = AnalyzeChange.getChangeGraph({ itComponent }, graph);
 
-    if (!changeGraph){
-      this.growl.show({ severity: 'warn', summary: 'Can not analyze element', detail: 'Can not analyze this element.' });
+    if (itComponent === null){
+      this.growl.show({ severity: 'warn', summary: 'Please select an element.', detail:'' });
     } else {
-      if (changeGraph !== null && changeGraph.nodes().length > 1){
-        this.setState({ visibleChange: true }, () => {
-          this.renderChangeGraph(changeGraph);
-        },
-        );
-      }
-      if (changeGraph !== null && changeGraph.nodes().length <= 1){
-        const detail = 'no demands found';
-        this.growl.show({ severity: 'info', summary: 'No compliance violation', detail });
+      const graph = ProjectModel.getGraph();
+      const changeGraph = AnalyzeChange.getChangeGraph({itComponent}, graph);
+
+      if (!changeGraph) {
+        this.growl.show({
+          severity: 'warn',
+          summary: 'Can not analyze element',
+          detail: 'Can not analyze this element.'
+        });
+      } else {
+        if (changeGraph !== null && changeGraph.nodes().length > 1) {
+          this.setState({visibleChange: true}, () => {
+                this.renderChangeGraph(changeGraph);
+              },
+          );
+        }
+        if (changeGraph !== null && changeGraph.nodes().length <= 1) {
+          const detail = 'no demands found';
+          this.growl.show({severity: 'info', summary: 'No compliance violation', detail});
+        }
       }
     }
   }
