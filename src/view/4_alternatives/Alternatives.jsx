@@ -103,7 +103,13 @@ export default class Alternatives extends Component {
   }
 
   addComplianceProcess(){
+    if (this.state.nodeType === null) {
+      this.growl.show({ severity: 'warn', summary: 'Please select an compliance requirement from the graph.', detail:'' });
+    } else if (this.state.nodeType === 'complianceprocess') {
+      this.growl.show({ severity: 'warn', summary: 'Please select an compliance requirement from the graph.', detail:'' });
+    } else {
 
+    }
   }
 
   addComplianceProcessPattern(){

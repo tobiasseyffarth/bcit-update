@@ -191,7 +191,6 @@ export default class TopMenu extends Component {
     const items = [
       {
         label: 'File',
-        icon: 'pi pi-fw pi-file',
         items: [
           {
             label: 'New Project',
@@ -222,11 +221,7 @@ export default class TopMenu extends Component {
         {this.renderAboutDialog()}
         {this.renderGraphDialog()}
         <Menubar model={items}>
-          <p className="p-menuitem">
-            <Link href="/about" to="/about" className="p-menuitem-link" onClick={this.showAboutDialog}>
-              <span className="p-menuitem-text">About</span>
-            </Link>
-          </p>
+            <p className="p-menuitem p-menuitem-link" onClick={this.showAboutDialog}>About</p>
         </Menubar>
       </div>
     );
