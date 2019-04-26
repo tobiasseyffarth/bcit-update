@@ -228,9 +228,9 @@ class BpmnView extends Component {
       if (err) {
         console.log('error rendering', err);
       } else {
-        ProjectModel.setViewer(this.bpmnModeler);
-        const canvas = this.bpmnModeler.get('canvas');
-        canvas.zoom('fit-viewport');
+        // ProjectModel.setViewer(this.bpmnModeler);
+        // const canvas = this.bpmnModeler.get('canvas');
+        // canvas.zoom('fit-viewport');
       }
     });
   };

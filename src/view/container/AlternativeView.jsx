@@ -3,6 +3,7 @@ import { ListBox } from 'primereact/listbox';
 import BpmnViewer from 'bpmn-js';
 import '../../App.css';
 import ProjectModel from '../../models/ProjectModel';
+import BpmnModeler from "bpmn-js/dist/bpmn-modeler.development";
 
 class AlternativeView extends Component {
   constructor(props) {
@@ -16,29 +17,33 @@ class AlternativeView extends Component {
     this.renderAlternativeProcess = this.renderAlternativeProcess.bind(this);
   }
 
+  /*
   componentDidMount() {
+    this.bpmnAltModeler = new BpmnModeler({
+      container: '#alternative',
+      height: '350px',
+    });
+
     this.onMount();
   }
+  */
 
   onMount() {
     if (ProjectModel.getBpmnXml() !== null) {
-      this.viewer = new BpmnViewer({ container: '#alternative' });
-      // console.log(this.viewer);
-      this.renderDiagram(ProjectModel.getBpmnXml());
+      this.renderBpmn(ProjectModel.getBpmnXml());
     }
   }
 
-  renderDiagram = (xml) => {
-    this.viewer.importXML(xml, (err) => {
+  renderBpmn = (xml) => {
+    this.bpmnAltModeler.importXML(xml, (err) => {
       if (err) {
         console.log('error rendering', err);
       } else {
-        const canvas = this.viewer.get('canvas');
-        console.log('canvas', canvas);
-        canvas.zoom('fit-viewport'); // todo den aktiven Viewer finden, oder wie 2 viewer auf einer Seite anzeigen?
+        // this.fitBpmnView();
       }
     });
   };
+
 
   renderAlternativeProcess(option) {
     console.log(option);

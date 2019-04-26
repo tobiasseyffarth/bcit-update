@@ -22,7 +22,7 @@ export default class ConnectWizard extends Component {
     { label: 'Process/IT' },
     { label: 'Process/Compliance' },
     { label: 'IT/Compliance' },
-    { label: 'Compliance Rules' },
+    { label: 'Edit Process (test)' },
     { label: 'Alternatives' },
     { label: 'Analyze' },
   ];
@@ -35,36 +35,36 @@ export default class ConnectWizard extends Component {
           activeIndex={this.state.activeIndex}
           readOnly={false}
           onSelect={(e) => {
-                this.setState({ activeIndex: e.index });
-                switch (e.index) {
-                  case 0:
-                    this.props.history.push('/import');
-                    break;
-                  case 1:
-                    this.props.history.push('/ComplianceCompliance');
-                    break;
-                  case 2:
-                    this.props.history.push('/ProcIT');
-                    break;
-                  case 3:
-                    this.props.history.push('/ProcCompliance');
-                    break;
-                  case 4:
-                    this.props.history.push('/ITCompliance');
-                    break;
-                  case 5:
-                    this.props.history.push('/rule');
-                    break;
-                  case 6:
-                    this.props.history.push('/alternatives');
-                    break;
-                  case 7:
-                    this.props.history.push('/analyze');
-                    break;
-                  default:
-                    this.props.history.push('/import');
-                    break;
-                }
+            this.setState({ activeIndex: e.index });
+            switch (e.index) {
+              case 0:
+                this.props.history.push('/import');
+                break;
+              case 1:
+                this.props.history.push('/ComplianceCompliance');
+                break;
+              case 2:
+                this.props.history.push('/ProcIT');
+                break;
+              case 3:
+                this.props.history.push('/ProcCompliance');
+                break;
+              case 4:
+                this.props.history.push('/ITCompliance');
+                break;
+              case 5:
+                this.props.history.push('/rule');
+                break;
+              case 6:
+                this.props.history.push('/alternatives');
+                break;
+              case 7:
+                this.props.history.push('/analyze');
+                break;
+              default:
+                this.props.history.push('/import');
+                break;
+            }
               }}
         />
         <Switch>
