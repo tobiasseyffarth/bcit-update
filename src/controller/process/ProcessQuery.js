@@ -231,9 +231,14 @@ export function isUniqueExtension(businessObject, extension) {
   if (businessObject.extensionElements === undefined) {
     return true;
   }
+
+  console.log(businessObject.extensionElements);
+
   const ext = businessObject.extensionElements.get('values');
+
+  console.log(ext);
   for (let i = 0; i < ext.length; i++) {
-    if (ext[i]._name === extension.name && ext[i]._value === extension.value) {
+    if (ext[i].name === extension.name && ext[i].value === extension.value) { // change back to ._name, ._value??
       return false;
     }
   }

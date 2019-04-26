@@ -349,12 +349,15 @@ export function updateNeighborsBasedOnProps(graph, element) { //
 
 // final
 function linkNodes(graph, source, target) {
-  const sequence_id = `${source.id()}_${target.id()}`;
+  const edgeID = `${source.id()}_${target.id()}`;
+  const exist = graph.getElementById(edgeID);
 
-  graph.add({
-    group: 'edges',
-    data: { id: sequence_id, source: source.id(), target: target.id() },
-  });
+  if(exist.length === 0) {
+    graph.add({
+      group: 'edges',
+      data: {id: edgeID, source: source.id(), target: target.id()},
+    });
+  }
 }
 
 // final?

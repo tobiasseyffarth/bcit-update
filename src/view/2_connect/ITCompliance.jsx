@@ -62,7 +62,7 @@ export default class StepITCompliance extends Component {
       const { infra } = this.state;
       const isUnique = InfraQuery.updateITProps(itComponent, { requirement: compliance });
 
-      if (isUnique !== false){
+      if (isUnique){
         GraphConnector.linkRequirement2Infra(graph, infraGraph, compliance, itComponent);
         this.renderInfraProps(itComponent);
 

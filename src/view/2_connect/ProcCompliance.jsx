@@ -166,7 +166,7 @@ export default class StepProcCompliance extends Component {
 
       const isUnique = GraphConnector.linkRequirement2Process(viewer, graph, shape, compliance);
 
-      if (isUnique){
+      if (isUnique !== false){
         this.renderBpmnProps(shape);
         ProjectModel.setGraph(graph);
         this.fitBpmnView();

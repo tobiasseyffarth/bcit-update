@@ -74,13 +74,20 @@ export function linkInfra2Process(viewer, graph, shape, itComponent) {
 
   if (!businessObject.$type.toLowerCase().includes('data')) {
     const extension = ProcessEditor.createExtensionElement('infra', itComponent.id);
+
+    console.log(businessObject);
+
     const isUniqueExt = ProcessQuery.isUniqueExtension(businessObject, extension);
+
+    console.log(isUniqueExt);
 
     if (isUniqueExt) {
       ProcessEditor.addExtension(viewer, businessObject, extension); // 1. zu props flowelement hinzufügen
       GraphCreator.updateFlownodeProperty(graph, businessObject); // 2. graph in graphviewer updaten
       GraphCreator.addNodes(graph, { itComponent, businessObject }); // 3. create and link nodes
       ProcessRenderer.addExtensionShape(viewer, shape, { infra: itComponent }, extension); // 4. add DataObject to process model
+    } else{
+      return false;
     }
   }
 }

@@ -166,14 +166,20 @@ export default class StepProcIT extends Component {
       const viewer = this.bpmnModeler;
       const graph = ProjectModel.getGraph();
 
-      GraphConnector.linkInfra2Process(viewer, graph, shape, itComponent);
-      this.renderBpmnProps(shape);
-      this.fitBpmnView();
-      this.updateBpmnXml();
-      ProjectModel.setGraph(graph);
+      const isUnique = GraphConnector.linkInfra2Process(viewer, graph, shape, itComponent);
+      console.log(isUnique);
+      if (isUnique !== false){
+        this.renderBpmnProps(shape);
+        this.fitBpmnView();
+        this.updateBpmnXml();
+        ProjectModel.setGraph(graph);
 
-      const detail = `connect ${this.state.infraElementName} and ${this.state.bpmnName}`;
-      this.growl.show({ severity: 'info', summary: 'elements connected', detail });
+        const detail = `connect ${this.state.infraElementName} and ${this.state.bpmnName}`;
+        this.growl.show({ severity: 'info', summary: 'elements connected', detail });
+      } else{
+        const detail = 'erro';
+        this.growl.show({ severity: 'error', summary: 'elements already connected', detail });
+      }
     }
   }
 

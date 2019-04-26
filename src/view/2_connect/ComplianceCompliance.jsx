@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import ProjectModel from '../../models/ProjectModel';
 import * as ComplianceQuery from './../../controller/compliance/ComplianceQuery';
 import * as GraphConnector from './../../controller/graph/GraphConnector';
+import * as GraphQuery from './../../controller/graph/GraphQuery';
 
 export default class StepComplianceCompliance extends Component {
   constructor(props) {
@@ -56,16 +57,29 @@ export default class StepComplianceCompliance extends Component {
     const targetReq = this.state.selectedComplianceTwo;
 
     if (sourceReq !== null && targetReq !== null){
-      const graph = ProjectModel.getGraph();
+      if (sourceReq === targetReq){
+        const detail = '';
+        this.growl.show({ severity: 'warn', summary: 'Can not connect same elements.', detail });
+      }else {
+        const graph = ProjectModel.getGraph();
 
-      GraphConnector.linkRequirement2Requirement(graph, sourceReq, targetReq);
-      ProjectModel.setGraph(graph);
+        // check whether the connection already exist
+        const exist = GraphQuery.edgeExist(graph, sourceReq.id, targetReq.id);
 
-      const detail = `connect ${this.state.selectedComplianceOne.id} and ${this.state.selectedComplianceTwo.id}`;
-      this.growl.show({ severity: 'info', summary: 'elements connected', detail });
+        if (!exist) {
+          GraphConnector.linkRequirement2Requirement(graph, sourceReq, targetReq);
+          ProjectModel.setGraph(graph);
 
-      this.setState({ selectedComplianceOne: null });
-      this.setState({ selectedComplianceTwo: null });
+          const detail = `connect ${this.state.selectedComplianceOne.id} and ${this.state.selectedComplianceTwo.id}`;
+          this.growl.show({severity: 'info', summary: 'elements connected', detail});
+
+          this.setState({selectedComplianceOne: null});
+          this.setState({selectedComplianceTwo: null});
+        } else{
+          const detail = 'Connection already exists.'
+          this.growl.show({severity: 'warn', summary: 'Can not connect same elements.', detail});
+        }
+      }
     }
   }
 

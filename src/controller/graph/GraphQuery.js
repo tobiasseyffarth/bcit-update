@@ -328,3 +328,14 @@ export function isUniqueNode(graph, input){
   }
   return true;
 }
+
+export function edgeExist(graph, sourceID, targetID){
+  const edgeID = `${sourceID}_${targetID}`;
+  const exist = graph.getElementById(edgeID);
+
+  if (exist.length > 0){
+    return true;
+  }else{
+    return false;
+  }
+}
