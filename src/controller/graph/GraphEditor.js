@@ -530,7 +530,7 @@ export function getEmptyGraph(){
           'border-style': 'solid',
           'border-color': '#666',
           'border-width': 1,
-          label: 'data(id)',
+          label: 'data(display_name)',
           'font-size': 10,
           'text-wrap': 'wrap',
           'text-max-width': 20,
@@ -558,7 +558,7 @@ export function getEmptyGraph(){
 
 export function addNode(graph, input){
   const { req } = input;
-  const { comProcess } = input;
+  const { complianceProcess } = input;
   const { comProcessPattern } = input;
   let id;
   let isUnique;
@@ -585,20 +585,21 @@ export function addNode(graph, input){
     return isUnique;
   }
 
-  if (comProcess !== undefined){
-    id = comProcess.id;
+  if (complianceProcess !== undefined){
+    id = complianceProcess.id;
     isUnique = querygraph.isUniqueNode(graph, {id: id});
 
     if (isUnique){
-      graph.add({
+      return graph.add({
         group: 'nodes',
         data: {
-          id: id,
-          display_name: id,
+          id: complianceProcess.id,
+          display_name: complianceProcess.name,
+          name: complianceProcess.name,
           nodetype: 'complianceprocess',
           modeltype: 'complianceprocess',
-          props: comProcess.props,
-          rule: comProcess.rule
+          props: complianceProcess.props,
+          rule: complianceProcess.rule
         },
       });
     }
@@ -613,7 +614,8 @@ export function addNode(graph, input){
         group: 'nodes',
         data: {
           id: id,
-          display_name: id,
+          display_name: name,
+          name: comProcessPattern.name,
           nodetype: 'complianceprocesspattern',
           modeltype: 'complianceprocesspattern',
           props: comProcessPattern.props,
@@ -622,4 +624,10 @@ export function addNode(graph, input){
       });
     }
   }
+}
+
+export function linkNodesAltGraph(graph, node, newNode){
+
+  linkNodes(graph, newNode, node);
+
 }
