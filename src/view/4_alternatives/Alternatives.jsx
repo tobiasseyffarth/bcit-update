@@ -31,8 +31,8 @@ export default class Alternatives extends Component {
     this.addComplianceRequirement = this.addComplianceRequirement.bind(this);
     this.addComplianceProcess= this.addComplianceProcess.bind(this);
     // this.addComplianceProcessPattern= this.addComplianceProcessPattern.bind(this);
-    this.showComplianceProcessAddDialog = this.showComplianceProcessAddDialog.bind(this);
-    this.showComplianceProcessPatternAddDialog = this.showComplianceProcessPatternAddDialog.bind(this);
+    this.showComplianceProcessDialog = this.showComplianceProcessDialog.bind(this);
+    this.showComplianceProcessPatternDialog = this.showComplianceProcessPatternDialog.bind(this);
     this.removeNode = this.removeNode.bind(this);
   }
 
@@ -67,7 +67,7 @@ export default class Alternatives extends Component {
   hookGraphOnClick(graph){
     const _this = this;
 
-    graph.on('click', (evt) => { // http://js.cytoscape.org/#core/events
+    graph.on('click', (evt) => {
       const element = evt.target;
       if (element === graph) { // background
         _this.renderGraphProps(null);
@@ -99,7 +99,6 @@ export default class Alternatives extends Component {
       this.setState({ modelType: null });
       this.setState({ nodeProps: [] });
     }
-
   }
 
   addComplianceRequirement(){
@@ -108,10 +107,16 @@ export default class Alternatives extends Component {
     if (req !== null){
       const isUnique = GraphEditor.addNode(this.graph, { req: req });
       if (!isUnique){
-        this.growl.show({ severity: 'warn', summary: 'Compliance requirement already in the graph.', detail:'' });
+        this.growl.show({
+          severity: 'warn',
+          summary: 'Compliance requirement already in the graph.',
+          detail:'' });
       }
     } else {
-      this.growl.show({ severity: 'warn', summary: 'Please select an compliance requirement from the list.', detail:'' });
+      this.growl.show({
+        severity: 'warn',
+        summary: 'Please select an compliance requirement from the list.',
+        detail:'' });
     }
   }
 
@@ -124,16 +129,13 @@ export default class Alternatives extends Component {
     };
     const newNode = GraphEditor.addNode(this.graph, { complianceProcess: complianceProcess });
     const node = this.graph.getElementById(this.state.nodeId);
-    console.log('selected req', this.state.nodeId);
-    console.log('new node', newNode);
 
     GraphEditor.linkNodesAltGraph(this.graph, node, newNode);
     GraphRenderer.colorNodes(this.graph);
     this.onHide();
   }
 
-
-  showComplianceProcessAddDialog(){
+  showComplianceProcessDialog(){
     const type = this.state.nodeType;
 
     if (type === null) {
@@ -151,7 +153,7 @@ export default class Alternatives extends Component {
     }
   }
 
-  showComplianceProcessPatternAddDialog(){
+  showComplianceProcessPatternDialog(){
     const type = this.state.nodeType;
 
     if (type === null) {
@@ -166,7 +168,6 @@ export default class Alternatives extends Component {
         detail:'' });
     } else {
       this.setState({ visibleComplianceProcessDialog: true });
-      console.log('visibe dialog');
     }
   }
 
@@ -249,8 +250,11 @@ export default class Alternatives extends Component {
               optionLabel="name"
           />
         </div>
+        <br />
         <div>
-          <Button label="remove node" onClick={this.removeNode} />
+          <Button
+            label="remove node"
+            onClick={this.removeNode} />
         </div>
       </div>
     )
@@ -270,20 +274,27 @@ export default class Alternatives extends Component {
       <div className="property-panel">
         <div>
           <ListBox
-              style={{ height: '98%', width: '98%' }}
-              optionLabel="id"
-              value={value}
-              options={option}
-              onChange={e => this.selectCompliance(e.value)}
-              filter
+            style={{ height: '98%', width: '98%' }}
+            optionLabel="id"
+            value={value}
+            options={option}
+            onChange={e => this.selectCompliance(e.value)}
+            filter
           />
-          <Button label="add req" onClick={this.addComplianceRequirement} />
+          <br />
+          <Button
+            label="add req"
+            onClick={this.addComplianceRequirement} />
           <br />
           <br />
-          <Button label="add pattern" onClick={this.showComplianceProcessPatternAddDialog} />
+          <Button
+            label="add pattern"
+            onClick={this.showComplianceProcessPatternDialog} />
           <br />
           <br />
-          <Button label="add compliance process" onClick={this.showComplianceProcessAddDialog} />
+          <Button
+            label="add compliance process"
+            onClick={this.showComplianceProcessDialog} />
         </div>
       </div>
     )
