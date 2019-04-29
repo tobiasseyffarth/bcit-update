@@ -4,8 +4,8 @@ import { Dialog } from 'primereact/dialog';
 import { ListBox } from 'primereact/listbox';
 import { Button } from 'primereact/button';
 import ProjectModel from './../models/ProjectModel';
+import AboutDialog from './dialog/AboutDialog';
 import * as GraphRenderer from '../controller/graph/GraphRenderer';
-// import * as GraphEditor from '../controller/graph/GraphEditor';
 
 export default class TopMenu extends Component {
   constructor(props) {
@@ -175,17 +175,6 @@ export default class TopMenu extends Component {
     );
   }
 
-  renderAboutDialog(){
-    return (
-      <div className="content-section implementation">
-        <Dialog header="About BCIT 2.0" visible={this.state.visibleAbout} style={{ width: '50vw' }} onHide={this.onHide} maximizable>
-            About
-            ...
-        </Dialog>
-      </div>
-    );
-  }
-
   render() {
     const items = [
       {
@@ -217,7 +206,7 @@ export default class TopMenu extends Component {
 
     return (
       <div>
-        {this.renderAboutDialog()}
+        <AboutDialog showAboutDialog={this.state.visibleAbout} close={this.onHide}/>
         {this.renderGraphDialog()}
         <Menubar model={items}>
             <p className="p-menuitem p-menuitem-link" onClick={this.showAboutDialog}>About</p>
