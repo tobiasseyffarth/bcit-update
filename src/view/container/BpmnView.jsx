@@ -64,9 +64,6 @@ class BpmnView extends Component {
     this.setState({ visibleAlternative: false });
   }
 
-  test(){
-    console.log('test');
-  }
 
   onShow(){
     if (ProjectModel.getBpmnXml() !== null) {
