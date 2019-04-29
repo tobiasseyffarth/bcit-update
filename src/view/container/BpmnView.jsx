@@ -7,11 +7,14 @@ import { Growl } from 'primereact/growl';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import cytoscape from 'cytoscape';
 import AlternativeView from './AlternativeView';
+import RemoveDialog from './../dialog/RemoveDialog';
+import ChangeDialog from './../dialog/ChangeDialog';
 import ProjectModel from '../../models/ProjectModel';
 import * as ProcessQuery from '../../controller/process/ProcessQuery';
 import * as AnalyzeChange from './../../controller/analyze/AnalyzeChange';
 import * as GraphRenderer from './../../controller/graph/GraphRenderer';
 import * as GraphQuery from './../../controller/graph/GraphQuery';
+import Alternatives from "../4_alternatives/Alternatives";
 
 class BpmnView extends Component {
   constructor(props) {
@@ -36,9 +39,9 @@ class BpmnView extends Component {
     };
 
     this.onHide = this.onHide.bind(this);
-    this.showAlternativeDialog = this.showAlternativeDialog.bind(this);
     this.getChangeGraph = this.getChangeGraph.bind(this);
     this.getRemoveGraph = this.getRemoveGraph.bind(this);
+    this.showAlternativeDialog = this.showAlternativeDialog.bind(this);
   }
 
   componentDidMount() {
@@ -119,8 +122,9 @@ class BpmnView extends Component {
         });
       } else {
         if (deleteGraph !== null && deleteGraph.nodes().length > 1) {
+          ProjectModel.setRemoveGraph(deleteGraph);
           this.setState({visibleRemove: true}, () => {
-                this.renderRemoveGraph(deleteGraph);
+            this.renderRemoveGraph(deleteGraph);
               },
           );
           console.log('violated req', GraphQuery.filterNodes(deleteGraph, {style: 'violated', type: 'compliance'}));
@@ -150,6 +154,7 @@ class BpmnView extends Component {
         });
       } else {
         if (changeGraph !== null && changeGraph.nodes().length > 1) {
+          // ProjectModel.setChangeGraph(changeGraph);
           this.setState({visibleChange: true}, () => {
                 this.renderChangeGraph(changeGraph);
               },
@@ -256,7 +261,7 @@ class BpmnView extends Component {
 
   showAlternativeDialog(){
     this.setState({ visibleAlternative: true });
-  }
+}
 
   renderGraphPropsPanel() {
     return (
@@ -308,40 +313,6 @@ class BpmnView extends Component {
       this.setState({ modelType: null });
       this.setState({ nodeProps: [] });
     }
-  }
-
-  renderAlternativeDialog(){
-    const footer = (
-      <div>
-        <Button label="close" onClick={this.onHide} />
-      </div>
-    );
-
-    return (
-      <div className="content-section implementation">
-        <Dialog
-          header="Alternative Processes"
-          footer={footer}
-          visible={this.state.visibleAlternative}
-          style={{ width: '80vw' }}
-          onHide={this.onHide}
-          onShow={() => this.onShow()}
-          maximizable
-        >
-          <section className="container-process">
-            <div className="viewer" style={{ width: '60vw', height: '400px' }}>
-              <div id="alternative" />
-            </div>
-            <div className="property-panel">
-              <ListBox
-                style={{ width: '100%' }}
-
-              />
-            </div>
-          </section>
-        </Dialog>
-      </div>
-    );
   }
 
   renderRemoveDialog() {
@@ -459,9 +430,9 @@ class BpmnView extends Component {
         <div>
           {this.renderRemoveDialog()}
           {this.renderChangeDialog()}
-          {this.renderAlternativeDialog()}
+          <AlternativeView showAlternative={this.state.visibleAlternative}/>
           <section className="container-process">
-            <div className="viewer">
+            <div className="viewer" style={{width: '1545px'}}>
               <div id="canvas" />
             </div>
             {this.renderBpmnPropsPanel()}

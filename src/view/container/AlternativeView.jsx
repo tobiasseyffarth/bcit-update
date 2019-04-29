@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import { ListBox } from 'primereact/listbox';
+import { Dialog } from 'primereact/dialog';
+import { Button } from 'primereact/button';
+import { Checkbox } from 'primereact/checkbox';
+import { Growl } from 'primereact/growl';
 import BpmnViewer from 'bpmn-js';
 import '../../App.css';
 import ProjectModel from '../../models/ProjectModel';
@@ -10,25 +14,31 @@ class AlternativeView extends Component {
     super(props);
     this.state = {
       alternativeProcess: [
-        { name: 'alternative 1' },
-        { name: 'alternative 2' },
+        {name: 'alternative 1'},
+        {name: 'alternative 2'},
       ],
+      visibleAlternative: false,
     };
     this.renderAlternativeProcess = this.renderAlternativeProcess.bind(this);
+    this.onHide = this.onHide.bind(this);
   }
 
-
   componentDidMount() {
-    this.bpmnAltModeler = new BpmnViewer({
+    this.bpmnAltModeler = new BpmnModeler({
       container: '#alternative',
       height: '350px',
     });
-
-    this.onMount();
   }
 
+  componentWillReceiveProps(nextProps){
+    this.setState({visibleAlternative: nextProps.showAlternative});
+  }
 
-  onMount() {
+  onHide() {
+    this.setState({visibleAlternative: false});
+  }
+
+  onShow() {
     if (ProjectModel.getBpmnXml() !== null) {
       this.renderBpmn(ProjectModel.getBpmnXml());
     }
@@ -50,20 +60,36 @@ class AlternativeView extends Component {
   }
 
   render() {
+    const footer = (
+        <div>
+          <Button label="close" onClick={this.onHide}/>
+        </div>
+    );
+
     return (
-      <section className="container-process">
-        <div className="viewer" style={{ width: '60vw', height: '400px' }}>
-          <div id="alternative" />
+        <div className="content-section implementation">
+          <Dialog
+              header="Alternative Processes"
+              footer={footer}
+              visible={this.state.visibleAlternative}
+              style={{width: '80vw'}}
+              onHide={this.onHide}
+              onShow={() => this.onShow()}
+              maximizable
+          >
+            <section className="container-process">
+              <div className="viewer" style={{width: '60vw', height: '400px'}}>
+                <div id="alternative"/>
+              </div>
+              <div className="property-panel">
+                <ListBox
+                    style={{width: '100%'}}
+
+                />
+              </div>
+            </section>
+          </Dialog>
         </div>
-        <div className="property-panel">
-          <ListBox
-            style={{ width: '100%' }}
-            options={this.state.alternativeProcess}
-            optionLabel="name"
-            onChange={e => this.renderAlternativeProcess(e.value)}
-          />
-        </div>
-      </section>
     );
   }
 }

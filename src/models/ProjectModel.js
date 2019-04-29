@@ -9,6 +9,8 @@ class Project {
     this.compliance = null; // compliance
     this.graph = null; // create an empty graph and define its style
 
+    this.removeGraph = null; // contains the interelations when removing an element
+    this.changeGraph = null; // contains the interelations when changing an element
     this.altGraph = null; // contains relations between req, cp-pattern and cp
   }
 
@@ -41,6 +43,16 @@ class Project {
     this.graph = graph;
   };
   getGraph = () => this.graph;
+
+  setRemoveGraph = (removeGraph) => {
+    this.removeGraph = removeGraph;
+  };
+  getRemoveGraph = () => this.removeGraph;
+
+  setChangeGraph = (changeGraph) => {
+    this.changeGraph = changeGraph;
+  };
+  getChangeGraph = () => this.changeGraph;
 
   setAltGraph = (altGraph) => {
     this.altGraph = altGraph;
