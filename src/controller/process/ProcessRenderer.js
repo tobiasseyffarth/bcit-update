@@ -10,7 +10,7 @@ function colorShape(viewer, element, coloroption) {
   modeling.setColor(element, { stroke: _stroke, fill: _fill });
 }
 
-function createShape(viewer, option) {
+export function createShape(viewer, option) {
   const canvas = viewer.get('canvas');
   const elementFactory = viewer.get('elementFactory');
   const modeler = viewer.get('modeling');
@@ -45,7 +45,7 @@ function createShape(viewer, option) {
 }
 
 // final
-function removeShape(viewer, element) {
+export function removeShape(viewer, element) {
   const modeler = viewer.get('modeling');
 
   try {
