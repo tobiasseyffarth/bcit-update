@@ -5,6 +5,8 @@ import { ListBox } from 'primereact/listbox';
 import { Dialog } from 'primereact/dialog';
 import cytoscape from 'cytoscape';
 import AlternativeView from './AlternativeView';
+import RemoveDialog from './../dialog/RemoveDialog';
+import ChangeDialog from './../dialog/ChangeDialog';
 import '../../App.css';
 import * as GraphCreator from '../../controller/graph/GraphEditor';
 import * as GraphRenderer from '../../controller/graph/GraphRenderer';
@@ -23,7 +25,6 @@ class InfraView extends Component {
       width: 0,
       visibleRemove: false,
       visibleChange: false,
-      visibleAlternative: false,
       nodeId: null,
       nodeName: null,
       nodeType: null,
@@ -31,7 +32,6 @@ class InfraView extends Component {
     };
 
     this.onHide = this.onHide.bind(this);
-    this.showAlternativeDialog = this.showAlternativeDialog.bind(this);
     this.getChangeGraph = this.getChangeGraph.bind(this);
     this.getRemoveGraph = this.getRemoveGraph.bind(this);
   }
@@ -129,8 +129,9 @@ class InfraView extends Component {
         });
       } else {
         if (deleteGraph !== null && deleteGraph.nodes().length > 1) {
+          ProjectModel.setRemoveGraph(deleteGraph);
           this.setState({visibleRemove: true}, () => {
-                this.renderRemoveGraph(deleteGraph);
+                // this.renderRemoveGraph(deleteGraph);
               },
           );
         }
@@ -159,8 +160,9 @@ class InfraView extends Component {
         });
       } else {
         if (changeGraph !== null && changeGraph.nodes().length > 1) {
+          ProjectModel.setChangeGraph(changeGraph);
           this.setState({visibleChange: true}, () => {
-                this.renderChangeGraph(changeGraph);
+                // this.renderChangeGraph(changeGraph);
               },
           );
         }
@@ -183,10 +185,6 @@ class InfraView extends Component {
         _this.renderGraphProps(element);
       }
     });
-  }
-
-  showAlternativeDialog(){
-    this.setState({ visibleAlternative: true });
   }
 
   renderRemoveGraph(graph) {
@@ -449,9 +447,8 @@ class InfraView extends Component {
           position="topright"
         />
         <div>
-          {this.renderRemoveDialog()}
-          {this.renderChangeDialog()}
-          {this.renderAlternativeDialog()}
+          <RemoveDialog showRemoveDialog={this.state.visibleRemove} close={this.onHide}/>
+          <ChangeDialog showChangeDialog={this.state.visibleChange} close={this.onHide}/>
           <section className="container-infra">
             <div className="viewer" id="infra-container" style={{ width: this.state.width }} />
             {this.renderInfraPropsPanel()}
@@ -463,3 +460,8 @@ class InfraView extends Component {
 }
 
 export default InfraView;
+
+/*
+{this.renderRemoveDialog()}
+{this.renderChangeDialog()}
+ */
