@@ -1,19 +1,14 @@
 import React, { Component } from 'react';
-import { Dialog } from 'primereact/dialog';
-import { ListBox } from 'primereact/listbox';
 import { Button } from 'primereact/button';
 import { Checkbox } from 'primereact/checkbox';
 import { Growl } from 'primereact/growl';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
-import cytoscape from 'cytoscape';
 import RemoveDialog from './../dialog/RemoveDialog';
 import ChangeDialog from './../dialog/ChangeDialog';
 import ProjectModel from '../../models/ProjectModel';
 import * as ProcessQuery from '../../controller/process/ProcessQuery';
 import * as AnalyzeChange from './../../controller/analyze/AnalyzeChange';
-import * as GraphRenderer from './../../controller/graph/GraphRenderer';
 import * as GraphQuery from './../../controller/graph/GraphQuery';
-import Alternatives from "../4_alternatives/Alternatives";
 
 class BpmnView extends Component {
   constructor(props) {
@@ -23,23 +18,13 @@ class BpmnView extends Component {
       bpmnId: null,
       bpmnName: null,
       isCompliance: false,
-      alternativeProcess: [
-        { name: 'alternative 1' },
-        { name: 'alternative 2' },
-      ],
       visibleRemove: false,
       visibleChange: false,
-      nodeId: null,
-      nodeName: null,
-      nodeType: null,
-      modelType: null,
-      nodeProps: [],
     };
 
     this.onHide = this.onHide.bind(this);
     this.getChangeGraph = this.getChangeGraph.bind(this);
     this.getRemoveGraph = this.getRemoveGraph.bind(this);
-    this.showAlternativeDialog = this.showAlternativeDialog.bind(this);
   }
 
   componentDidMount() {
@@ -61,26 +46,7 @@ class BpmnView extends Component {
   onHide() {
     this.setState({ visibleRemove: false });
     this.setState({ visibleChange: false });
-    this.setState({ visibleAlternative: false });
   }
-
-
-  onShow(){
-    if (ProjectModel.getBpmnXml() !== null) {
-      this.renderBpmnAlt(ProjectModel.getBpmnXml());
-    }
-  }
-
-  renderBpmnAlt = (xml) => {
-    this.bpmnAltModeler.importXML(xml, (err) => {
-      if (err) {
-        console.log('error rendering', err);
-      } else {
-        const canvas = this.bpmnAltModeler.get('canvas');
-        canvas.zoom('fit-viewport');
-      }
-    });
-  };
 
   hookBpmnEventBus() {
     const eventBus = this.bpmnModeler.get('eventBus');
@@ -89,19 +55,6 @@ class BpmnView extends Component {
 
   hookBpmnOnClick(e) {
     this.renderBpmnProps(e.element);
-  }
-
-  hookGraphOnClick(graph){
-    const _this = this;
-
-    graph.on('click', (evt) => { // http://js.cytoscape.org/#core/events
-      const element = evt.target;
-      if (element === graph) { // background
-        _this.renderGraphProps(null);
-      } else if (element.isNode()) { // edge
-        _this.renderGraphProps(element);
-      }
-    });
   }
 
   getRemoveGraph(){
@@ -122,10 +75,7 @@ class BpmnView extends Component {
       } else {
         if (deleteGraph !== null && deleteGraph.nodes().length > 1) {
           ProjectModel.setRemoveGraph(deleteGraph);
-          this.setState({visibleRemove: true}, () => {
-            // this.renderRemoveGraph(deleteGraph);
-              },
-          );
+          this.setState({visibleRemove: true});
           console.log('violated req', GraphQuery.filterNodes(deleteGraph, {style: 'violated', type: 'compliance'}));
         }
         if (deleteGraph !== null && deleteGraph.nodes().length <= 1) {
@@ -154,10 +104,7 @@ class BpmnView extends Component {
       } else {
         if (changeGraph !== null && changeGraph.nodes().length > 1) {
           ProjectModel.setChangeGraph(changeGraph);
-          this.setState({visibleChange: true}, () => {
-                // this.renderChangeGraph(changeGraph);
-              },
-          );
+          this.setState({visibleChange: true});
         }
         if (changeGraph !== null && changeGraph.nodes().length <= 1) {
           const detail = 'no demands found';
@@ -165,86 +112,6 @@ class BpmnView extends Component {
         }
       }
     }
-  }
-
-  renderRemoveGraph(graph) {
-    const containerRemove = document.getElementById('graph-container-remove');
-    const graphDelete = cytoscape({
-      container: containerRemove,
-      style: [ // the stylesheet for the graph
-        {
-          selector: 'node',
-          style: {
-            'background-color': 'white',
-            'border-style': 'solid',
-            'border-color': 'black',
-            'border-width': 1,
-            label: 'data(display_name)',
-            'font-size': 10,
-            'text-wrap': 'wrap',
-            'text-max-width': 20,
-            shape: 'rectangle',
-          },
-        },
-        {
-          selector: 'edge',
-          style: {
-            width: 1,
-            'line-color': '#666',
-            'mid-target-arrow-color': '#666',
-            'mid-target-arrow-shape': 'triangle',
-            'line-style': 'dotted',
-          },
-        },
-      ],
-      layout: {
-        name: 'grid',
-        rows: 1,
-      },
-    });
-
-    GraphRenderer.renderAnalyzeGraph(graphDelete, graph);
-    this.hookGraphOnClick(graphDelete);
-  }
-
-  renderChangeGraph(graph) {
-    const containerChange = document.getElementById('graph-container-change');
-    const graphChange = cytoscape({
-      container: containerChange,
-      style: [ // the stylesheet for the graph
-        {
-          selector: 'node',
-          style: {
-            'background-color': 'white',
-            'border-style': 'solid',
-            'border-color': 'black',
-            'border-width': 1,
-            label: 'data(display_name)',
-            'font-size': 10,
-            'text-wrap': 'wrap',
-            'text-max-width': 20,
-            shape: 'rectangle',
-          },
-        },
-        {
-          selector: 'edge',
-          style: {
-            width: 1,
-            'line-color': '#666',
-            'mid-target-arrow-color': '#666',
-            'mid-target-arrow-shape': 'triangle',
-            'line-style': 'dotted',
-          },
-        },
-      ],
-      layout: {
-        name: 'grid',
-        rows: 1,
-      },
-    });
-
-    GraphRenderer.renderAnalyzeGraph(graphChange, graph);
-    this.hookGraphOnClick(graphChange);
   }
 
   renderDiagram = (xml) => {
@@ -257,115 +124,6 @@ class BpmnView extends Component {
       }
     });
   };
-
-  showAlternativeDialog(){
-    this.setState({ visibleAlternative: true });
-}
-
-  renderGraphPropsPanel() {
-    return (
-      <div className="property-panel">
-        <div>
-          <label>ID: {this.state.nodeId}</label>
-        </div>
-        <br />
-        <div>
-          <label>Name: {this.state.nodeName}</label>
-        </div>
-        <br />
-        <div>
-          <label>Node Type: {this.state.nodeType}</label>
-        </div>
-        <br />
-        <div>
-          <label>Model Type: {this.state.modelType}</label>
-        </div>
-        <br />
-        <div>
-          <ListBox
-            style={{ width: '100%' }}
-            options={this.state.nodeProps}
-            optionLabel="name"
-          />
-        </div>
-      </div>
-    );
-  }
-
-  renderGraphProps(node){
-    if (node !== null) {
-      this.setState({ nodeId: node.data('id') });
-      this.setState({ nodeName: node.data('name') });
-      this.setState({ nodeType: node.data('nodetype') });
-      this.setState({ modelType: node.data('modeltype') });
-
-      const nodeType = node.data('nodetype');
-      if (nodeType !== 'compliance'){ // non compliance nodes
-        this.setState({ nodeProps: node.data('props') });
-      } else { // compliance nodes
-        this.setState({ nodeProps: [] });
-      }
-    } else {
-      this.setState({ nodeId: null });
-      this.setState({ nodeName: null });
-      this.setState({ nodeType: null });
-      this.setState({ modelType: null });
-      this.setState({ nodeProps: [] });
-    }
-  }
-
-  renderRemoveDialog() {
-    const footer = (
-      <div>
-        <Button label="show alternatives" onClick={this.showAlternativeDialog} />
-        <Button label="close" onClick={this.onHide} />
-      </div>
-    );
-
-    return (
-      <div className="content-section implementation">
-        <Dialog
-          header="Graph Remove"
-          footer={footer}
-          visible={this.state.visibleRemove}
-          style={{ width: '80vw' }}
-          onHide={this.onHide}
-          maximizable
-        >
-          <section className="container-graph">
-            <div className="viewer" id="graph-container-remove" />
-            {this.renderGraphPropsPanel()}
-          </section>
-        </Dialog>
-      </div>
-    );
-  }
-
-  renderChangeDialog() {
-    const footer = (
-      <div>
-        <Button label="close" onClick={this.onHide} />
-      </div>
-    );
-
-    return (
-      <div className="content-section implementation">
-        <Dialog
-          header="Graph Change"
-          footer={footer}
-          visible={this.state.visibleChange}
-          style={{ width: '80vw' }}
-          onHide={this.onHide}
-          maximizable
-        >
-          <section className="container-graph">
-            <div className="viewer" id="graph-container-change" />
-            {this.renderGraphPropsPanel()}
-          </section>
-        </Dialog>
-      </div>
-    );
-  }
 
   renderBpmnPropsPanel() {
     return (
