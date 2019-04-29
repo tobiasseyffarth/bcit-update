@@ -5,6 +5,8 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import { Growl } from 'primereact/growl';
 import { Dialog } from 'primereact/dialog';
 import cytoscape from 'cytoscape';
+import RemoveDialog from './../dialog/RemoveDialog';
+import ChangeDialog from './../dialog/ChangeDialog';
 import '../../App.css';
 import ProjectModel from '../../models/ProjectModel';
 import * as GraphQuery from '../../controller/graph/GraphQuery';
@@ -22,7 +24,6 @@ class ComplianceView extends Component {
       selectedCompliance: null, // selected element in the listbox
       visibleRemove: false,
       visibleChange: false,
-      visibleAlternative: false,
       nodeId: null,
       nodeName: null,
       nodeType: null,
@@ -42,7 +43,6 @@ class ComplianceView extends Component {
   onHide() {
     this.setState({ visibleRemove: false });
     this.setState({ visibleChange: false });
-    this.setState({ visibleAlternative: false });
   }
 
   hookGraphOnClick(graph){
@@ -75,8 +75,9 @@ class ComplianceView extends Component {
         });
       } else {
         if (deleteGraph !== null && deleteGraph.nodes().length > 1) {
+          ProjectModel.setRemoveGraph(deleteGraph);
           this.setState({visibleRemove: true}, () => {
-                this.renderRemoveGraph(deleteGraph);
+                // this.renderRemoveGraph(deleteGraph);
               },
           );
         }
@@ -105,8 +106,9 @@ class ComplianceView extends Component {
         });
       } else {
         if (changeGraph !== null && changeGraph.nodes().length > 1) {
+          ProjectModel.setChangeGraph(changeGraph);
           this.setState({visibleChange: true}, () => {
-                this.renderChangeGraph(changeGraph);
+                // this.renderChangeGraph(changeGraph);
               },
           );
         }
@@ -379,8 +381,8 @@ class ComplianceView extends Component {
   render() {
     return (
       <div>
-        {this.renderRemoveDialog()}
-        {this.renderChangeDialog()}
+        <RemoveDialog showRemoveDialog={this.state.visibleRemove} close={this.onHide}/>
+        <ChangeDialog showChangeDialog={this.state.visibleChange} close={this.onHide}/>
         <Growl ref={(el) => { this.growl = el; }} position="topright" />
         <div>
           <section className="container-compliance">
@@ -394,3 +396,8 @@ class ComplianceView extends Component {
 }
 
 export default ComplianceView;
+
+/*
+{this.renderRemoveDialog()}
+{this.renderChangeDialog()}
+*/

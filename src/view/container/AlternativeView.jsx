@@ -35,6 +35,7 @@ class AlternativeView extends Component {
   }
 
   onHide() {
+    this.props.close();
     this.setState({visibleAlternative: false});
   }
 
@@ -69,13 +70,13 @@ class AlternativeView extends Component {
     return (
         <div className="content-section implementation">
           <Dialog
-              header="Alternative Processes"
-              footer={footer}
-              visible={this.state.visibleAlternative}
-              style={{width: '80vw'}}
-              onHide={this.onHide}
-              onShow={() => this.onShow()}
-              maximizable
+            header="Alternative Processes"
+            footer={footer}
+            visible={this.state.visibleAlternative}
+            style={{width: '80vw'}}
+            onHide={this.onHide}
+            onShow={() => this.onShow()}
+            maximizable
           >
             <section className="container-process">
               <div className="viewer" style={{width: '60vw', height: '400px'}}>

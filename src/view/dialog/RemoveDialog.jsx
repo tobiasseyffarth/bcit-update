@@ -17,6 +17,7 @@ class RemoveDialog extends Component {
     };
     this.onHide = this.onHide.bind(this);
     this.showAlternativeDialog = this.showAlternativeDialog.bind(this);
+    this.closeAlternativeView = this.closeAlternativeView.bind(this);
   }
 
   componentWillReceiveProps(nextProps){
@@ -24,7 +25,12 @@ class RemoveDialog extends Component {
   }
 
   onHide() {
+    this.props.close();
     this.setState({visibleDialog: false});
+  }
+
+  closeAlternativeView(){
+    this.setState({visibleAlternative: false});
   }
 
   onShow() {
@@ -144,36 +150,36 @@ class RemoveDialog extends Component {
 
   renderRemoveDialog() {
     const footer = (
-        <div>
-          <Button label="show alternatives" onClick={this.showAlternativeDialog} />
-          <Button label="close" onClick={this.onHide} />
-        </div>
+      <div>
+        <Button label="show alternatives" onClick={this.showAlternativeDialog} />
+        <Button label="close" onClick={this.onHide} />
+      </div>
     );
 
     return (
-        <div className="content-section implementation">
-          <Dialog
-              header="Graph Remove"
-              footer={footer}
-              visible={this.state.visibleDialog}
-              style={{ width: '80vw' }}
-              onHide={this.onHide}
-              onShow={() => this.onShow()}
-              maximizable
-          >
-            <section className="container-graph">
-              <div className="viewer" id="graph-container-remove" />
-              {this.renderGraphPropsPanel()}
-            </section>
-          </Dialog>
-        </div>
+      <div className="content-section implementation">
+        <Dialog
+            header="Graph Remove"
+            footer={footer}
+            visible={this.state.visibleDialog}
+            style={{ width: '80vw' }}
+            onHide={this.onHide}
+            onShow={() => this.onShow()}
+            maximizable
+        >
+          <section className="container-graph">
+            <div className="viewer" id="graph-container-remove" />
+            {this.renderGraphPropsPanel()}
+          </section>
+        </Dialog>
+      </div>
     );
   }
 
   render() {
     return (
       <div>
-        <AlternativeView showAlternative={this.state.visibleAlternative}/>
+        <AlternativeView showAlternative={this.state.visibleAlternative} close={this.closeAlternativeView}/>
         <div>
           {this.renderRemoveDialog()}
         </div>

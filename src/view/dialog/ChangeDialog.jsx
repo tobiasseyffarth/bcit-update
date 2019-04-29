@@ -22,6 +22,7 @@ class ChangeDialog extends Component {
   }
 
   onHide() {
+    this.props.close();
     this.setState({visibleDialog: false});
   }
 

@@ -167,7 +167,6 @@ export default class StepProcIT extends Component {
       const graph = ProjectModel.getGraph();
 
       const isUnique = GraphConnector.linkInfra2Process(viewer, graph, shape, itComponent);
-      console.log(isUnique);
       if (isUnique !== false){
         this.renderBpmnProps(shape);
         this.fitBpmnView();

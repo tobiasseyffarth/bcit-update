@@ -6,7 +6,6 @@ import { Checkbox } from 'primereact/checkbox';
 import { Growl } from 'primereact/growl';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import cytoscape from 'cytoscape';
-import AlternativeView from './AlternativeView';
 import RemoveDialog from './../dialog/RemoveDialog';
 import ChangeDialog from './../dialog/ChangeDialog';
 import ProjectModel from '../../models/ProjectModel';
@@ -30,7 +29,6 @@ class BpmnView extends Component {
       ],
       visibleRemove: false,
       visibleChange: false,
-      visibleAlternative: false,
       nodeId: null,
       nodeName: null,
       nodeType: null,
@@ -64,6 +62,10 @@ class BpmnView extends Component {
     this.setState({ visibleRemove: false });
     this.setState({ visibleChange: false });
     this.setState({ visibleAlternative: false });
+  }
+
+  test(){
+    console.log('test');
   }
 
   onShow(){
@@ -124,7 +126,7 @@ class BpmnView extends Component {
         if (deleteGraph !== null && deleteGraph.nodes().length > 1) {
           ProjectModel.setRemoveGraph(deleteGraph);
           this.setState({visibleRemove: true}, () => {
-            this.renderRemoveGraph(deleteGraph);
+            // this.renderRemoveGraph(deleteGraph);
               },
           );
           console.log('violated req', GraphQuery.filterNodes(deleteGraph, {style: 'violated', type: 'compliance'}));
@@ -154,9 +156,9 @@ class BpmnView extends Component {
         });
       } else {
         if (changeGraph !== null && changeGraph.nodes().length > 1) {
-          // ProjectModel.setChangeGraph(changeGraph);
+          ProjectModel.setChangeGraph(changeGraph);
           this.setState({visibleChange: true}, () => {
-                this.renderChangeGraph(changeGraph);
+                // this.renderChangeGraph(changeGraph);
               },
           );
         }
@@ -428,9 +430,8 @@ class BpmnView extends Component {
           position="topright"
         />
         <div>
-          {this.renderRemoveDialog()}
-          {this.renderChangeDialog()}
-          <AlternativeView showAlternative={this.state.visibleAlternative}/>
+          <RemoveDialog showRemoveDialog={this.state.visibleRemove} close={this.onHide}/>
+          <ChangeDialog showChangeDialog={this.state.visibleChange} close={this.onHide}/>
           <section className="container-process">
             <div className="viewer" style={{width: '1545px'}}>
               <div id="canvas" />
