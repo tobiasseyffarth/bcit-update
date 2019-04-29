@@ -17,16 +17,16 @@ class AlternativeView extends Component {
     this.renderAlternativeProcess = this.renderAlternativeProcess.bind(this);
   }
 
-  /*
+
   componentDidMount() {
-    this.bpmnAltModeler = new BpmnModeler({
+    this.bpmnAltModeler = new BpmnViewer({
       container: '#alternative',
       height: '350px',
     });
 
     this.onMount();
   }
-  */
+
 
   onMount() {
     if (ProjectModel.getBpmnXml() !== null) {
@@ -39,11 +39,11 @@ class AlternativeView extends Component {
       if (err) {
         console.log('error rendering', err);
       } else {
-        // this.fitBpmnView();
+        const canvas = this.bpmnAltModeler.get('canvas');
+        canvas.zoom('fit-viewport');
       }
     });
   };
-
 
   renderAlternativeProcess(option) {
     console.log(option);

@@ -46,7 +46,10 @@ class BpmnView extends Component {
       container: '#canvas',
       height: '400px',
     });
-
+    this.bpmnAltModeler = new BpmnModeler({
+      container: '#alternative',
+      height: '350px',
+    });
     this.hookBpmnEventBus();
 
     if (ProjectModel.getBpmnXml() !== null) {
@@ -59,6 +62,23 @@ class BpmnView extends Component {
     this.setState({ visibleChange: false });
     this.setState({ visibleAlternative: false });
   }
+
+  onShow(){
+    if (ProjectModel.getBpmnXml() !== null) {
+      this.renderBpmnAlt(ProjectModel.getBpmnXml());
+    }
+  }
+
+  renderBpmnAlt = (xml) => {
+    this.bpmnAltModeler.importXML(xml, (err) => {
+      if (err) {
+        console.log('error rendering', err);
+      } else {
+        const canvas = this.bpmnAltModeler.get('canvas');
+        canvas.zoom('fit-viewport');
+      }
+    });
+  };
 
   hookBpmnEventBus() {
     const eventBus = this.bpmnModeler.get('eventBus');
@@ -228,7 +248,6 @@ class BpmnView extends Component {
       if (err) {
         console.log('error rendering', err);
       } else {
-        // ProjectModel.setViewer(this.bpmnModeler);
         const canvas = this.bpmnModeler.get('canvas');
         canvas.zoom('fit-viewport');
       }
@@ -301,15 +320,24 @@ class BpmnView extends Component {
     return (
       <div className="content-section implementation">
         <Dialog
-          header="Graph Remove"
+          header="Alternative Processes"
           footer={footer}
           visible={this.state.visibleAlternative}
           style={{ width: '80vw' }}
           onHide={this.onHide}
+          onShow={() => this.onShow()}
           maximizable
         >
-          <section className="container-graph">
-            <AlternativeView />
+          <section className="container-process">
+            <div className="viewer" style={{ width: '60vw', height: '400px' }}>
+              <div id="alternative" />
+            </div>
+            <div className="property-panel">
+              <ListBox
+                style={{ width: '100%' }}
+
+              />
+            </div>
           </section>
         </Dialog>
       </div>

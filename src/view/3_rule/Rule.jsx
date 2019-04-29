@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ProjectModel from "../../models/ProjectModel";
 import BpmnModeler from "bpmn-js/dist/bpmn-modeler.development"; // ES6
+import BpmnViewer from "bpmn-js/dist/bpmn-viewer.development";
 
 export default class Rule extends Component {
   state = {
@@ -9,12 +10,12 @@ export default class Rule extends Component {
   };
 
   componentDidMount(){
-    this.bpmnModelerA = new BpmnModeler({
+    this.bpmnModelerA = new BpmnViewer({
       container: '#canvasa',
       height: '350px',
     });
 
-    this.bpmnModelerB = new BpmnModeler({
+    this.bpmnModelerB = new BpmnViewer({
       container: '#canvasb',
       height: '350px',
     });
@@ -37,7 +38,8 @@ export default class Rule extends Component {
       if (err) {
         console.log('error rendering', err);
       } else {
-        // this.fitBpmnView();
+        const canvas = this.bpmnModelerA.get('canvas');
+        canvas.zoom('fit-viewport');
       }
     });
   };
@@ -47,7 +49,8 @@ export default class Rule extends Component {
       if (err) {
         console.log('error rendering', err);
       } else {
-        // this.fitBpmnView();
+        const canvas = this.bpmnModelerB.get('canvas');
+        canvas.zoom('fit-viewport');
       }
     });
   };
