@@ -609,7 +609,7 @@ export function addNode(graph, input){
   }
 
   if (comProcessPattern !== undefined){
-    id = comProcess.id;
+    id = comProcessPattern.id;
     isUnique = querygraph.isUniqueNode(graph, {id: id});
 
     if (isUnique){
@@ -617,7 +617,7 @@ export function addNode(graph, input){
         group: 'nodes',
         data: {
           id: id,
-          display_name: name,
+          display_name: comProcessPattern.name,
           name: comProcessPattern.name,
           nodetype: 'complianceprocesspattern',
           modeltype: 'complianceprocesspattern',

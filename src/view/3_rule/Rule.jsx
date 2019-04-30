@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Button } from 'primereact/button';
 import PropTypes from 'prop-types';
-import ProjectModel from '../../models/ProjectModel';
 import BpmnModeler from "bpmn-js/dist/bpmn-modeler.development";
 import BpmnViewer from 'bpmn-js/dist/bpmn-viewer.development';
 import * as ProcessQuery from '../../controller/process/ProcessQuery';
 import * as ProcessRenderer from './../../controller/process/ProcessRenderer';
+import ProjectModel from '../../models/ProjectModel';
 
 export default class Rule extends Component {
   constructor(props) {
@@ -44,6 +44,10 @@ export default class Rule extends Component {
 
   hookBpmnOnClick(e) {
     const { element } = e;
+    console.log(element);
+
+
+    /*
     if (ProcessQuery.isTaskOrSubprocess(element)) {
       this.renderBpmnProps(element);
       this.setState({ bpmnShape: element });
@@ -51,6 +55,9 @@ export default class Rule extends Component {
       this.renderBpmnProps(null);
       this.setState({ bpmnShape: null });
     }
+    */
+    this.renderBpmnProps(element);
+    this.setState({ bpmnShape: element });
   }
 
   hookBpmnEventBus() {
@@ -106,13 +113,31 @@ export default class Rule extends Component {
   }
 
   insertShape(){
-    if (this.state.selectedShape !== null) {
-      console.log('insert shape');
+    const shape = this.state.selectedShape;
 
-      let activity = ProcessRenderer.createShape(this.bpmnModelerA, {posX: 50, posY: 50, type: 'bpmn:Task', name:'do something'});
-      console.log(activity);
+    if (shape !== null) {
+      const viewer = this.bpmnModelerA;
+      const posX = shape.x + 50;
+      const posY = shape.y + shape.height + 150;
+
+      let newShape = ProcessRenderer.createShape(viewer, {x: posX, y: posY, type: 'bpmn:Task', name: 'new task'});
+      ProcessRenderer.integrateShapeSequential(viewer, newShape, shape, 'after');
+      console.log(newShape);
+
+      /*
+      const posX = shape.x + 50;
+      const posY = shape.y + shape.height + 150;
+
+      const name = 'do something';
+      let newShape = ProcessRenderer.createShape(this.bpmnModelerA, {x: posX, y: posY, type: 'bpmn:Task', name: name});
+      console.log('new activity', newShape);
 
       //todo: alle Nachfolger in der Position verschieben
+      const dirSucs = ProcessQuery.getDirectSucessors(shape.businessObject);
+      console.log(dirSucs);
+
+      ProcessRenderer.connectShapes(this.bpmnModelerA, shape, newShape);
+      */
     }
   }
 

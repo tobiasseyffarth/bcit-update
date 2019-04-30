@@ -1,4 +1,3 @@
-// import cytoscape from "cytoscape";
 import * as querygraph from './GraphQuery';
 import * as creategraph from './GraphEditor';
 

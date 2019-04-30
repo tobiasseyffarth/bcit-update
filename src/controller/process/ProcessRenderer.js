@@ -45,11 +45,11 @@ export function createShape(viewer, option) {
 }
 
 // final
-export function removeShape(viewer, element) {
+export function removeShape(viewer, shape) {
   const modeler = viewer.get('modeling');
 
   try {
-    modeler.removeShape(element);
+    modeler.removeShape(shape);
   } catch (err) {
     console.log(err);
   }
@@ -68,7 +68,7 @@ function updateShape(viewer, element, option) {
 */
 
 // final
-function connectShapes(viewer, source, target) {
+export function connectShapes(viewer, source, target) {
   const modeler = viewer.get('modeling');
   return modeler.connect(source, target);
 }
@@ -257,4 +257,33 @@ export function renderComplianceProcess(viewer, element, isCompliance) {
   } else {
     colorShape(viewer, element, { fill: 'white' });
   }
+}
+
+export function integrateShapeSequential(viewer, newShape, oldShape, position){
+  if (position === 'before'){
+    const dirPreds = queryprocess.getDirectPredecessors(oldShape.businessObject);
+    console.log('direkte Vorgänger', dirPreds);
+
+
+    for (let i = 0; i < dirPreds.length; i++){
+      const pred = dirPreds[i];
+      console.log(pred);
+    }
+
+    connectShapes(viewer, newShape, oldShape); // connect old shape and new shape
+
+  } else if (position === 'after'){
+    const dirSucs = queryprocess.getDirectSucessors(oldShape.businessObject);
+    for (let i = 0; i < dirSucs.length; i++){
+      const suc = dirSucs[i];
+      const shapeSuc = queryprocess.getShapeOfRegistry(viewer, suc.id);
+      connectShapes(viewer, newShape, shapeSuc); // connect shape with suc of old shape
+
+      const sf = queryprocess.getSequenceFlow(oldShape, shapeSuc);
+      const sfShape = queryprocess.getShapeOfRegistry(viewer, sf.id);
+      removeShape(viewer, sfShape);
+    }
+    connectShapes(viewer, oldShape, newShape); // connect old shape and new shape
+  }
+
 }

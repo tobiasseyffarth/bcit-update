@@ -27,12 +27,37 @@ export function getProcess(viewer, e) {
   return process;
 }
 
+export function getProcessNew(businessObject){
+  return businessObject.$parent
+}
+
 // final
 export function getElementOfRegistry(viewer, id) {
   const elementRegistry = viewer.get('elementRegistry');
   const element = elementRegistry.get(id);
 
   return element.businessObject;
+}
+
+export function getShapeOfRegistry(viewer, id){
+  const elementRegistry = viewer.get('elementRegistry');
+  return elementRegistry.get(id);
+}
+
+export function getSequenceFlow(sourceShape, targetShape){
+  const process = sourceShape.businessObject.$parent;
+  const sequenceFlows = getSequenceFlowsofProcess(process);
+
+  for (let i = 0; i < sequenceFlows.length; i++){
+    const sequenceFlow = sequenceFlows[i];
+    const sourceID = sequenceFlow.sourceRef.id;
+    const targetID = sequenceFlow.targetRef.id;
+
+    if (sourceID === sourceShape.id && targetID === targetShape.id){
+      return sequenceFlow;
+    }
+  }
+  return null;
 }
 
 // final
@@ -153,7 +178,6 @@ export function hasExtension(businessObject, name, value) {
       }
     }
   }
-
   return false;
 }
 
@@ -232,11 +256,8 @@ export function isUniqueExtension(businessObject, extension) {
     return true;
   }
 
-  console.log(businessObject.extensionElements);
-
   const ext = businessObject.extensionElements.get('values');
 
-  console.log(ext);
   for (let i = 0; i < ext.length; i++) {
     if (ext[i].name === extension.name && ext[i].value === extension.value) { // change back to ._name, ._value??
       return false;
@@ -279,11 +300,11 @@ export function isTaskOrSubprocess(input) {
 }
 
 // final
-function getSucessors(flownode) {
+export function getDirectSucessors(businessObject) {
   const result = [];
 
-  if (flownode.outgoing !== undefined) {
-    const { outgoing } = flownode;
+  if (businessObject.outgoing !== undefined) {
+    const { outgoing } = businessObject;
 
     for (let i = 0; i < outgoing.length; i++) {
       result.push(outgoing[i].targetRef);
@@ -293,12 +314,22 @@ function getSucessors(flownode) {
   return null;
 }
 
+export function getSucessors(businessObject){
+  // getTraces
+  // find bo in resultarray --> alles was danach kommt ist Nachfolger
+}
+
+function searchSucessors(){
+
+
+}
+
 // testen
-function getPredecessors(flownode) {
+export function getDirectPredecessors(businessObject) {
   const result = [];
 
-  if (flownode.incoming !== undefined) {
-    const { incoming } = flownode;
+  if (businessObject.incoming !== undefined) {
+    const { incoming } = businessObject;
 
     for (let i = 0; i < incoming.length; i++) {
       result.push(incoming[i].sourceRef);
@@ -308,10 +339,9 @@ function getPredecessors(flownode) {
   return null;
 }
 
-/*
 // todo: testen mit Parallelitäten in Parallität und Exklusivität
 function getParallelTrace(node, parallelTrace) {
-  const sucs = getSucessors(node);
+  const sucs = getDirectSucessors(node);
 
   if (parallelTrace === undefined) {
     const _parallelTrace = [];
@@ -336,14 +366,14 @@ function getParallelTrace(node, parallelTrace) {
 
       if (_trace.sequence.length === 0) {
         _node = node;
-        suc = getSucessors(_node)[i];
+        suc = getDirectSucessors(_node)[i];
       } else {
         _node = _trace.sequence[_trace.sequence.length - 1];
-        suc = getSucessors(_node)[0];
+        suc = getDirectSucessors(_node)[0];
       }
 
       if (suc.$type === 'bpmn:ParallelGateway') {
-        if (getSucessors(node).length === getPredecessors(suc).length) {
+        if (getDirectSucessors(node).length === getDirectPredecessors(suc).length) {
           _trace.status = 'closed';
         } else {
           // let trace = getParallelTrace(_node);
@@ -372,7 +402,7 @@ function searchTrace(openTraces, finalTraces, endNode) {
   for (let i = 0; i < openTraces.length; i++) {
     const openTrace = openTraces[i];
     const node = openTrace[openTrace.length - 1];
-    const sucs = getSucessors(node);
+    const sucs = getDirectSucessors(node);
 
     if ((node.$type === 'bpmn:ExclusiveGateway')) {
       for (let j = 0; j < sucs.length; j++) {
@@ -387,9 +417,9 @@ function searchTrace(openTraces, finalTraces, endNode) {
         Array.prototype.push.apply(openTrace, parallelTrace);
       }
 
-      const closingParallel = getSucessors(openTrace[openTrace.length - 1].sequence[0])[0];
+      const closingParallel = getDirectSucessors(openTrace[openTrace.length - 1].sequence[0])[0];
       openTrace.push(closingParallel);
-      const suc = getSucessors(closingParallel)[0];
+      const suc = getDirectSucessors(closingParallel)[0];
       openTrace.push(suc);
       help.push(openTrace);
     } else if (node === endNode) {
@@ -409,7 +439,7 @@ function searchTrace(openTraces, finalTraces, endNode) {
 }
 
 // todo: testen
-function getTraces(process) {
+export function getTraces(process) {
   const finalTraces = [];
   const openTraces = [];
   const trace = [];
@@ -422,28 +452,4 @@ function getTraces(process) {
 
   return searchTrace(openTraces, finalTraces, endNode);
 }
-*/
 
-/*
-module.exports = {
-  getElement,
-  getProcess,
-  getElementOfRegistry,
-  getFlowElementsOfProcess,
-  getFlowNodesOfProcess,
-  getSequenceFlowsofProcess,
-  getFlowElementById,
-  getExtensionOfElement,
-  isCompliance,
-  hasExtensionName,
-  hasExtension,
-  isUniqueExtension,
-  isFlowElement,
-  isDataObject,
-  isExtensionShape,
-  getIdFromExtensionShape,
-  isDataObjectRef,
-  isDataStore,
-  isTaskOrSubprocess,
-};
-*/
