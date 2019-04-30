@@ -118,11 +118,13 @@ export default class Rule extends Component {
     if (shape !== null) {
       const viewer = this.bpmnModelerA;
       const posX = shape.x + 50;
-      const posY = shape.y + shape.height + 150;
+      const posY = shape.y;
 
       let newShape = ProcessRenderer.createShape(viewer, {x: posX, y: posY, type: 'bpmn:Task', name: 'new task'});
       ProcessRenderer.integrateShapeSequential(viewer, newShape, shape, 'before');
-      console.log(newShape);
+
+      const sucs = ProcessQuery.getSucessors(viewer, newShape);
+      console.log(sucs);
 
       /*
       //todo: alle Nachfolger in der Position verschieben

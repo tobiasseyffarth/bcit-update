@@ -1,9 +1,5 @@
-/*
-// final
-function getElement(viewer, e) {
-  return e.element;
-}
-*/
+import * as GraphEditor from './../graph/GraphEditor';
+import * as GraphQuery from './../graph/GraphQuery';
 
 export function getProcess(viewer, e) {
   let process;
@@ -25,10 +21,6 @@ export function getProcess(viewer, e) {
   }
 
   return process;
-}
-
-export function getProcessNew(businessObject){
-  return businessObject.$parent
 }
 
 // final
@@ -314,9 +306,29 @@ export function getDirectSucessors(businessObject) {
   return null;
 }
 
-export function getSucessors(businessObject){
-  // getTraces
-  // find bo in resultarray --> alles was danach kommt ist Nachfolger
+export function getSucessors(viewer, shape){
+  const process = shape.businessObject.$parent;
+  let graph = GraphEditor.getEmptyGraph();
+  GraphEditor.createGraphFromProcess(graph, process);
+
+  const node = graph.getElementById(shape.id);
+  const sucsBP = GraphQuery.getSuccessors(node, 'businessprocess');
+  const sucsCP = GraphQuery.getSuccessors(node, 'complianceprocess');
+  let result = [];
+
+  for (let i = 0; i < sucsBP.length; i++){
+    const node = sucsBP[i];
+    const shape = getShapeOfRegistry(viewer, node.id());
+    result.push(shape);
+  }
+
+  for (let i = 0; i < sucsCP.length; i++){
+    const node = sucsCP[i];
+    const shape = getShapeOfRegistry(viewer, node.id());
+    result.push(shape);
+  }
+
+  return result;
 }
 
 function searchSucessors(){

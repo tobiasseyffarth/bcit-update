@@ -286,5 +286,8 @@ export function integrateShapeSequential(viewer, newShape, oldShape, position){
     }
     connectShapes(viewer, oldShape, newShape); // connect old shape and new shape
   }
+}
+
+export function moveShapes(shapes){
 
 }
