@@ -4,7 +4,6 @@ import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import '../../App.css';
 import ProjectModel from '../../models/ProjectModel';
-import BpmnModeler from "bpmn-js/dist/bpmn-modeler.development";
 import * as GraphRenderer from "../../controller/graph/GraphRenderer";
 
 class GraphDialog extends Component {

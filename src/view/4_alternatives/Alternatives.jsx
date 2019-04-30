@@ -22,6 +22,7 @@ export default class Alternatives extends Component {
       nodeProps: [],
       selectedCompliance: null,
       visibleComplianceProcessDialog: false,
+      visibleComplianceProcessPatternDialog: false,
       processName: '',
       processRule: '',
       processProps: []
@@ -135,6 +136,14 @@ export default class Alternatives extends Component {
     this.onHide();
   }
 
+  addComplianceProcessPattern(){
+
+  }
+
+  connectNodes(){
+
+  }
+
   showComplianceProcessDialog(){
     const type = this.state.nodeType;
 
@@ -221,6 +230,43 @@ export default class Alternatives extends Component {
           </div>
         </Dialog>
       </div>
+    );
+  }
+
+  renderComplianceProcessPatternDialog() {
+    const footer = (
+        <div>
+          <Button label="Add" onClick={this.addComplianceProcess} />
+          <Button label="Abort" onClick={this.onHide} />
+        </div>
+    );
+
+    return (
+        <div className="content-section implementation">
+          <Dialog
+              header="Create new compliance process pattern"
+              footer={footer}
+              visible={this.state.visibleComplianceProcessPatternDialog}
+              style={{ width: '80vw' }}
+              onHide={this.onHide}
+              maximizable
+          >
+            <div>
+              <label htmlFor="processName">Name</label>
+              <InputText
+                  id="processName"
+                  value={this.state.processName}
+                  onChange={(e) => this.setState({processName: e.target.value})}/>
+            </div>
+            <div>
+              <label htmlFor="processRule">Rule</label>
+              <InputText
+                  id="processRule"
+                  value={this.state.processRule}
+                  onChange={(e) => this.setState({processRule: e.target.value})}/>
+            </div>
+          </Dialog>
+        </div>
     );
   }
 

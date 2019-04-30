@@ -59,35 +59,35 @@ class AlternativeView extends Component {
 
   render() {
     const footer = (
-        <div>
-          <Button label="close" onClick={this.onHide}/>
-        </div>
+      <div>
+        <Button label="close" onClick={this.onHide}/>
+      </div>
     );
 
     return (
-        <div className="content-section implementation">
-          <Dialog
-            header="Alternative Processes"
-            footer={footer}
-            visible={this.state.visibleAlternative}
-            style={{width: '80vw'}}
-            onHide={this.onHide}
-            onShow={() => this.onShow()}
-            maximizable
-          >
-            <section className="container-process">
-              <div className="viewer" style={{width: '60vw', height: '400px'}}>
-                <div id="alternative"/>
-              </div>
-              <div className="property-panel">
-                <ListBox
-                    style={{width: '100%'}}
+      <div className="content-section implementation">
+        <Dialog
+          header="Alternative Processes"
+          footer={footer}
+          visible={this.state.visibleAlternative}
+          style={{width: '80vw'}}
+          onHide={this.onHide}
+          onShow={() => this.onShow()}
+          maximizable
+        >
+          <section className="container-process">
+            <div className="viewer" style={{width: '60vw', height: '400px'}}>
+              <div id="alternative"/>
+            </div>
+            <div className="property-panel">
+              <ListBox
+                  style={{width: '100%'}}
 
-                />
-              </div>
-            </section>
-          </Dialog>
-        </div>
+              />
+            </div>
+          </section>
+        </Dialog>
+      </div>
     );
   }
 }
