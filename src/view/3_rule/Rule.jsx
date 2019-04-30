@@ -121,17 +121,10 @@ export default class Rule extends Component {
       const posY = shape.y + shape.height + 150;
 
       let newShape = ProcessRenderer.createShape(viewer, {x: posX, y: posY, type: 'bpmn:Task', name: 'new task'});
-      ProcessRenderer.integrateShapeSequential(viewer, newShape, shape, 'after');
+      ProcessRenderer.integrateShapeSequential(viewer, newShape, shape, 'before');
       console.log(newShape);
 
       /*
-      const posX = shape.x + 50;
-      const posY = shape.y + shape.height + 150;
-
-      const name = 'do something';
-      let newShape = ProcessRenderer.createShape(this.bpmnModelerA, {x: posX, y: posY, type: 'bpmn:Task', name: name});
-      console.log('new activity', newShape);
-
       //todo: alle Nachfolger in der Position verschieben
       const dirSucs = ProcessQuery.getDirectSucessors(shape.businessObject);
       console.log(dirSucs);

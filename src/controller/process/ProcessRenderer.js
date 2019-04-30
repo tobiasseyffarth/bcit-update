@@ -262,14 +262,15 @@ export function renderComplianceProcess(viewer, element, isCompliance) {
 export function integrateShapeSequential(viewer, newShape, oldShape, position){
   if (position === 'before'){
     const dirPreds = queryprocess.getDirectPredecessors(oldShape.businessObject);
-    console.log('direkte Vorgänger', dirPreds);
-
-
     for (let i = 0; i < dirPreds.length; i++){
       const pred = dirPreds[i];
-      console.log(pred);
-    }
+      const shapePred = queryprocess.getShapeOfRegistry(viewer, pred.id);
+      connectShapes(viewer, shapePred, newShape); // connect shape with suc of old shape
 
+      const sf = queryprocess.getSequenceFlow(shapePred, oldShape);
+      const sfShape = queryprocess.getShapeOfRegistry(viewer, sf.id);
+      removeShape(viewer, sfShape);
+    }
     connectShapes(viewer, newShape, oldShape); // connect old shape and new shape
 
   } else if (position === 'after'){
