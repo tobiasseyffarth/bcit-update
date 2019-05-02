@@ -55,17 +55,29 @@ export function removeShape(viewer, shape) {
   }
 }
 
-/*
 // final
-function updateShape(viewer, element, option) {
+export function updateShape(viewer, element, option) {
   const modeler = viewer.get('modeling');
   const _option = option || { id: 'neueid' };
 
   modeler.updateProperties(element, _option);
-
   return element;
 }
-*/
+
+export function moveShape(viewer, shape) {
+  const modeler = viewer.get('modeling');
+
+  console.log('x-position', shape.x);
+  console.log('y-position', shape.y);
+
+  const xPos = (shape.x / 2 );
+  const yPos = (shape.y / 2) - 51;
+
+  console.log('x-position', xPos);
+  console.log('y-position', yPos);
+
+  modeler.moveShape(shape, { x: xPos, y: yPos }, false);
+}
 
 // final
 export function connectShapes(viewer, source, target) {
@@ -286,8 +298,4 @@ export function integrateShapeSequential(viewer, newShape, oldShape, position){
     }
     connectShapes(viewer, oldShape, newShape); // connect old shape and new shape
   }
-}
-
-export function moveShapes(shapes){
-
 }

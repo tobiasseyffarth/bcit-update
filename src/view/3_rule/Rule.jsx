@@ -44,10 +44,11 @@ export default class Rule extends Component {
 
   hookBpmnOnClick(e) {
     const { element } = e;
-    console.log(element);
 
 
-    /*
+    console.log('xPos', element.x);
+    console.log('yPos', element.y);
+
     if (ProcessQuery.isTaskOrSubprocess(element)) {
       this.renderBpmnProps(element);
       this.setState({ bpmnShape: element });
@@ -55,7 +56,7 @@ export default class Rule extends Component {
       this.renderBpmnProps(null);
       this.setState({ bpmnShape: null });
     }
-    */
+
     this.renderBpmnProps(element);
     this.setState({ bpmnShape: element });
   }
@@ -117,22 +118,16 @@ export default class Rule extends Component {
 
     if (shape !== null) {
       const viewer = this.bpmnModelerA;
-      const posX = shape.x + 50;
-      const posY = shape.y;
+      const posX = shape.x + 300;
+      const posY = shape.y * 1.5;
+      const sucs = ProcessQuery.getSucessors(viewer, shape);
+
+      for (let i = sucs.length - 1; i >= 0; i--){
+        ProcessRenderer.moveShape(viewer, sucs[i]);
+      }
 
       let newShape = ProcessRenderer.createShape(viewer, {x: posX, y: posY, type: 'bpmn:Task', name: 'new task'});
-      ProcessRenderer.integrateShapeSequential(viewer, newShape, shape, 'before');
-
-      const sucs = ProcessQuery.getSucessors(viewer, newShape);
-      console.log(sucs);
-
-      /*
-      //todo: alle Nachfolger in der Position verschieben
-      const dirSucs = ProcessQuery.getDirectSucessors(shape.businessObject);
-      console.log(dirSucs);
-
-      ProcessRenderer.connectShapes(this.bpmnModelerA, shape, newShape);
-      */
+      ProcessRenderer.integrateShapeSequential(viewer, newShape, shape, 'after');
     }
   }
 
