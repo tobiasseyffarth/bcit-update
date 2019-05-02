@@ -64,17 +64,16 @@ export function updateShape(viewer, element, option) {
   return element;
 }
 
-export function moveShape(viewer, shape) {
+export function moveShape(viewer, shape, direction) {
   const modeler = viewer.get('modeling');
-
-  console.log('x-position', shape.x);
-  console.log('y-position', shape.y);
-
-  const xPos = (shape.x / 2 );
+  let xPos;
   const yPos = (shape.y / 2) - 51;
 
-  console.log('x-position', xPos);
-  console.log('y-position', yPos);
+  if (direction === undefined) {
+    xPos = (shape.x / 2);
+  } else if (direction === 'left'){
+    xPos = (shape.x / 2) - 600;
+  }
 
   modeler.moveShape(shape, { x: xPos, y: yPos }, false);
 }

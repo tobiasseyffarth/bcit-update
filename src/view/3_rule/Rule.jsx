@@ -45,10 +45,6 @@ export default class Rule extends Component {
   hookBpmnOnClick(e) {
     const { element } = e;
 
-
-    console.log('xPos', element.x);
-    console.log('yPos', element.y);
-
     if (ProcessQuery.isTaskOrSubprocess(element)) {
       this.renderBpmnProps(element);
       this.setState({ bpmnShape: element });
@@ -104,13 +100,15 @@ export default class Rule extends Component {
 
   removeShape(){
     if (this.state.selectedShape !== null){
-      console.log('remove shape');
-      ProcessRenderer.removeShape(this.bpmnModelerA, this.state.selectedShape);
+      const viewer = this.bpmnModelerA;
+      const shape = this.state.selectedShape ;
+      const sucs = ProcessQuery.getSucessors(viewer, shape);
+      ProcessRenderer.removeShape(viewer, shape);
 
-      //todo: alle Nachfolger in der Position verschieben
-
+      for (let i = sucs.length - 1; i >= 0; i--){
+        ProcessRenderer.moveShape(viewer, sucs[i], 'left');
+      }
     }
-
   }
 
   insertShape(){
