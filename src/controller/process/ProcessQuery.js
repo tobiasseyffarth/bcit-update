@@ -291,6 +291,37 @@ export function isTaskOrSubprocess(input) {
   return (type.includes('task') || type.includes('subprocess'));
 }
 
+export function getDataInputShapes(viewer, shape){
+  let result = [];
+  let { businessObject } = shape;
+
+  if(businessObject.dataInputAssociations !== undefined){
+    for (let i = 0; i < businessObject.dataInputAssociations.length; i++){
+      const input = businessObject.dataInputAssociations[i];
+      const sourceId = input.sourceRef[0].id;
+      const shape = getShapeOfRegistry(viewer, sourceId);
+      result.push(shape);
+    }
+  }
+  return result;
+}
+
+export function getDataOutputShapes(viewer, shape){
+  let result = [];
+  let { businessObject } = shape;
+
+  if(businessObject.dataOutputAssociations !== undefined){
+    for (let i = 0; i < businessObject.dataOutputAssociations.length; i++){
+      const input = businessObject.dataOutputAssociations[i];
+      console.log(input);
+      const targetId = input.targetRef[0].id;
+      const shape = getShapeOfRegistry(viewer, targetId);
+      result.push(shape);
+    }
+  }
+  return result;
+}
+
 // final
 export function getDirectSucessors(businessObject) {
   const result = [];
@@ -312,28 +343,16 @@ export function getSucessors(viewer, shape){
   GraphEditor.createGraphFromProcess(graph, process);
 
   const node = graph.getElementById(shape.id);
-  const sucsBP = GraphQuery.getSuccessors(node, 'businessprocess');
-  const sucsCP = GraphQuery.getSuccessors(node, 'complianceprocess');
+  const sucs = GraphQuery.getSuccessors(node);
   let result = [];
 
-  for (let i = 0; i < sucsBP.length; i++){
-    const node = sucsBP[i];
-    const shape = getShapeOfRegistry(viewer, node.id());
-    result.push(shape);
-  }
-
-  for (let i = 0; i < sucsCP.length; i++){
-    const node = sucsCP[i];
+  for (let i = 0; i < sucs.length; i++){
+    const node = sucs[i];
     const shape = getShapeOfRegistry(viewer, node.id());
     result.push(shape);
   }
 
   return result;
-}
-
-function searchSucessors(){
-
-
 }
 
 // testen

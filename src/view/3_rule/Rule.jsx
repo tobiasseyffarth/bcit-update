@@ -103,6 +103,12 @@ export default class Rule extends Component {
       const viewer = this.bpmnModelerA;
       const shape = this.state.selectedShape ;
       const sucs = ProcessQuery.getSucessors(viewer, shape);
+
+      const dataInputShapes = ProcessQuery.getDataInputShapes(viewer, shape);
+      for (let i = 0; i < dataInputShapes.length; i++){
+        const dataInputShape = dataInputShapes[i];
+        ProcessRenderer.removeShape(viewer, dataInputShape);
+      }
       ProcessRenderer.removeShape(viewer, shape);
 
       for (let i = sucs.length - 1; i >= 0; i--){
