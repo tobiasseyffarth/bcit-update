@@ -67,7 +67,7 @@ export function updateShape(viewer, element, option) {
 export function moveShape(viewer, shape, direction) {
   const modeler = viewer.get('modeling');
   let xPos;
-  const yPos = (shape.y / 2) - 51;
+  let yPos = (shape.y / 2) - 51;
 
   if (direction === undefined) {
     xPos = (shape.x / 2);
@@ -76,6 +76,22 @@ export function moveShape(viewer, shape, direction) {
   }
 
   modeler.moveShape(shape, { x: xPos, y: yPos }, false);
+
+  // move DataInput of the activity
+  const dataInputs = queryprocess.getDataInputShapes(viewer, shape);
+  for (let i = 0; i < dataInputs.length; i++){
+    const dataInput = dataInputs[i];
+    yPos = (shape.y / 2) - 51;
+    modeler.moveShape(dataInput, { x: xPos, y: yPos }, false);
+  }
+
+  // move DataOutput of the activity
+  const dataOutputs = queryprocess.getDataOutputShapes(viewer, shape);
+  for (let i = 0; i < dataOutputs.length; i++){
+    const dataOutput = dataOutputs[i];
+    yPos = (shape.y / 2) - 51;
+    modeler.moveShape(dataOutput, { x: xPos, y: yPos }, false);
+  }
 }
 
 // final

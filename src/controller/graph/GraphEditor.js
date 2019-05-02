@@ -571,7 +571,7 @@ export function addNode(graph, input){
     isUnique = querygraph.isUniqueNode(graph, {id: id});
 
     if (isUnique) {
-      graph.add({
+      return graph.add({
         group: 'nodes',
         data: {
           id: id,
@@ -584,8 +584,6 @@ export function addNode(graph, input){
         },
       });
     }
-
-    return isUnique;
   }
 
   if (complianceProcess !== undefined){
@@ -613,7 +611,7 @@ export function addNode(graph, input){
     isUnique = querygraph.isUniqueNode(graph, {id: id});
 
     if (isUnique){
-      graph.add({
+      return graph.add({
         group: 'nodes',
         data: {
           id: id,
@@ -630,7 +628,5 @@ export function addNode(graph, input){
 }
 
 export function linkNodesAltGraph(graph, node, newNode){
-
   linkNodes(graph, newNode, node);
-
 }

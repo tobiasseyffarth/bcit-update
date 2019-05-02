@@ -397,3 +397,70 @@ export function renderAnalyzeGraph(graph, graphAnalyze){
   drawAnalyze(graph);
   resizeGraph(graph);
 }
+
+export function styleNodesAltGraph(graph) {
+  const nodes = graph.nodes();
+
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i];
+    const nodetype = node.data('nodetype');
+
+    if (nodetype === 'businessprocess') {
+      node.style('shape', 'roundrectangle');
+    } else if (nodetype === 'compliance') {
+      node.style('shape', 'rectangle');
+    } else if (nodetype === 'complianceprocess') {
+      node.style('shape', 'roundrectangle');
+      node.style('background-color', 'grey');
+    } else if (nodetype === 'complianceprocesspattern') {
+      node.style('shape', 'roundrectangle');
+    }
+  }
+}
+
+export function drawNodesAltGraph(graph){
+  const compliance = querygraph.filterNodes(graph, { type: 'compliance'});
+
+  for (let i = 0; i < compliance.length; i++){
+    const node = compliance[i];
+    const posX = 270 + (i * 120);
+    const posY = 150;
+    node.position({ x: posX, y: posY});
+
+    const dirPreds = querygraph.getDirectPredecessor(node);
+    for (let j = 0; j < dirPreds.length; j++){
+      const nodePred = dirPreds[j];
+      const predX = posX + (j * 120);
+      const predY = posY + 150;
+      nodePred.position({ x: predX, y: predY});
+    }
+    drawNodes(dirPreds);
+  }
+}
+
+function drawNodes(nodes){
+  let nextIteration = [];
+
+  for (let i = 0; i < nodes.length; i++){
+    const node = nodes[i];
+    const dirPreds = querygraph.getDirectPredecessor(node);
+    const posX = node.position('x');
+    const posY = node.position('y');
+    for (let j = 0; j < dirPreds.length; j++){
+      const nodePred = dirPreds[j];
+      const predX = posX + (j * 120);
+      const predY = posY + 150;
+      nodePred.position({ x: predX, y: predY});
+
+      if (querygraph.getDirectPredecessor(nodePred).length > 0){
+        nextIteration.push(nodePred);
+      }
+    }
+
+  }
+
+  if (nextIteration.length > 0){
+    drawNodes(nextIteration);
+  }
+
+}

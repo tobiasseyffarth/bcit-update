@@ -30,8 +30,8 @@ export default class Alternatives extends Component {
 
     this.onHide= this.onHide.bind(this);
     this.addComplianceRequirement = this.addComplianceRequirement.bind(this);
-    this.addComplianceProcess= this.addComplianceProcess.bind(this);
-    // this.addComplianceProcessPattern= this.addComplianceProcessPattern.bind(this);
+    this.addComplianceProcess = this.addComplianceProcess.bind(this);
+    this.addComplianceProcessPattern = this.addComplianceProcessPattern.bind(this);
     this.showComplianceProcessDialog = this.showComplianceProcessDialog.bind(this);
     this.showComplianceProcessPatternDialog = this.showComplianceProcessPatternDialog.bind(this);
     this.removeNode = this.removeNode.bind(this);
@@ -63,6 +63,7 @@ export default class Alternatives extends Component {
 
   onHide() {
     this.setState({ visibleComplianceProcessDialog: false });
+    this.setState({ visibleComplianceProcessPatternDialog: false });
   }
 
   hookGraphOnClick(graph){
@@ -102,11 +103,19 @@ export default class Alternatives extends Component {
     }
   }
 
+  linkNodes(graph, node, newNode){
+    GraphEditor.linkNodesAltGraph(graph, node, newNode);
+    GraphRenderer.styleNodesAltGraph(graph);
+    GraphRenderer.drawNodesAltGraph(graph);
+  }
+
   addComplianceRequirement(){
     const req = this.state.selectedCompliance;
 
     if (req !== null){
       const isUnique = GraphEditor.addNode(this.graph, { req: req });
+      GraphRenderer.styleNodesAltGraph(this.graph);
+      GraphRenderer.drawNodesAltGraph(this.graph);
       if (!isUnique){
         this.growl.show({
           severity: 'warn',
@@ -130,14 +139,21 @@ export default class Alternatives extends Component {
     };
     const newNode = GraphEditor.addNode(this.graph, { complianceProcess: complianceProcess });
     const node = this.graph.getElementById(this.state.nodeId);
-
-    GraphEditor.linkNodesAltGraph(this.graph, node, newNode);
-    GraphRenderer.colorNodes(this.graph);
+    this.linkNodes(this.graph, node, newNode);
     this.onHide();
   }
 
   addComplianceProcessPattern(){
+    const id = Date.now();
+    const comProcessPattern = {
+      id: Date.now(),
+      name: this.state.processName,
+    };
+    const newNode = GraphEditor.addNode(this.graph, { comProcessPattern: comProcessPattern });
+    const node = this.graph.getElementById(this.state.nodeId);
 
+    this.linkNodes(this.graph, node, newNode);
+    this.onHide();
   }
 
   connectNodes(){
@@ -176,7 +192,8 @@ export default class Alternatives extends Component {
         summary: 'Compliance process pattern can only be connected to compliance requirements and compliance process patterns.',
         detail:'' });
     } else {
-      this.setState({ visibleComplianceProcessDialog: true });
+      console.log('show pattern add');
+      this.setState({ visibleComplianceProcessPatternDialog: true });
     }
   }
 
@@ -236,7 +253,7 @@ export default class Alternatives extends Component {
   renderComplianceProcessPatternDialog() {
     const footer = (
         <div>
-          <Button label="Add" onClick={this.addComplianceProcess} />
+          <Button label="Add" onClick={this.addComplianceProcessPattern} />
           <Button label="Abort" onClick={this.onHide} />
         </div>
     );
@@ -244,26 +261,19 @@ export default class Alternatives extends Component {
     return (
         <div className="content-section implementation">
           <Dialog
-              header="Create new compliance process pattern"
-              footer={footer}
-              visible={this.state.visibleComplianceProcessPatternDialog}
-              style={{ width: '80vw' }}
-              onHide={this.onHide}
-              maximizable
+            header="Create new compliance process pattern"
+            footer={footer}
+            visible={this.state.visibleComplianceProcessPatternDialog}
+            style={{ width: '80vw' }}
+            onHide={this.onHide}
+            maximizable
           >
             <div>
               <label htmlFor="processName">Name</label>
               <InputText
-                  id="processName"
-                  value={this.state.processName}
-                  onChange={(e) => this.setState({processName: e.target.value})}/>
-            </div>
-            <div>
-              <label htmlFor="processRule">Rule</label>
-              <InputText
-                  id="processRule"
-                  value={this.state.processRule}
-                  onChange={(e) => this.setState({processRule: e.target.value})}/>
+                id="processName"
+                value={this.state.processName}
+                onChange={(e) => this.setState({processName: e.target.value})}/>
             </div>
           </Dialog>
         </div>
@@ -357,6 +367,7 @@ export default class Alternatives extends Component {
         />
         <div>
           {this.renderComplianceProcessDialog()}
+          {this.renderComplianceProcessPatternDialog()}
           <section className="container-graph">
             {this.renderGraphEditPanel()}
             <div className="viewer" id="alt-graph-container" />
