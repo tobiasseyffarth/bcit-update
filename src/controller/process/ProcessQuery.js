@@ -24,6 +24,22 @@ export function getProcess(viewer, e) {
 }
 
 // final
+export function getSequenceFlowsofProcess(process) {
+  const flowElements = getFlowElementsOfProcess(process);
+  const sequence = [];
+
+  if (flowElements != null) {
+    for (let i = 0; i < flowElements.length; i++) {
+      if (flowElements[i].$type.includes('SequenceFlow')) {
+        sequence.push(flowElements[i]);
+      }
+    }
+    return sequence;
+  }
+  return null;
+}
+
+// final
 export function getElementOfRegistry(viewer, id) {
   const elementRegistry = viewer.get('elementRegistry');
   const element = elementRegistry.get(id);
@@ -78,22 +94,6 @@ export function getFlowNodesOfProcess(process) {
       }
     }
     return nodes;
-  }
-  return null;
-}
-
-// final
-export function getSequenceFlowsofProcess(process) {
-  const flowElements = getFlowElementsOfProcess(process);
-  const sequence = [];
-
-  if (flowElements != null) {
-    for (let i = 0; i < flowElements.length; i++) {
-      if (flowElements[i].$type.includes('SequenceFlow')) {
-        sequence.push(flowElements[i]);
-      }
-    }
-    return sequence;
   }
   return null;
 }
@@ -299,8 +299,8 @@ export function getDataInputShapes(viewer, shape){
     for (let i = 0; i < businessObject.dataInputAssociations.length; i++){
       const input = businessObject.dataInputAssociations[i];
       const sourceId = input.sourceRef[0].id;
-      const shape = getShapeOfRegistry(viewer, sourceId);
-      result.push(shape);
+      const inputShape = getShapeOfRegistry(viewer, sourceId);
+      result.push(inputShape);
     }
   }
   return result;
@@ -315,8 +315,8 @@ export function getDataOutputShapes(viewer, shape){
       const input = businessObject.dataOutputAssociations[i];
       console.log(input);
       const targetId = input.targetRef[0].id;
-      const shape = getShapeOfRegistry(viewer, targetId);
-      result.push(shape);
+      const outputShape = getShapeOfRegistry(viewer, targetId);
+      result.push(outputShape);
     }
   }
   return result;
@@ -347,8 +347,8 @@ export function getSucessors(viewer, shape){
   const result = [];
 
   for (let i = 0; i < sucs.length; i++){
-    const node = sucs[i];
-    const shape = getShapeOfRegistry(viewer, node.id());
+    const suc = sucs[i];
+    const shape = getShapeOfRegistry(viewer, suc.id());
     result.push(shape);
   }
 
@@ -483,4 +483,3 @@ export function getTraces(process) {
 
   return searchTrace(openTraces, finalTraces, endNode);
 }
-

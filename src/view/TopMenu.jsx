@@ -1,8 +1,8 @@
 import { Menubar } from 'primereact/menubar';
 import React, { Component } from 'react';
-import ProjectModel from './../models/ProjectModel';
 import AboutDialog from './dialog/AboutDialog';
 import GraphDialog from './dialog/GraphDialog';
+import ProjectModel from './../models/ProjectModel';
 
 export default class TopMenu extends Component {
   constructor(props) {
@@ -12,7 +12,7 @@ export default class TopMenu extends Component {
       visibleGraph: false,
     };
 
-    // this.exportBpmn = this.exportBpmn.bind(this);
+    this.exportBpmn = this.exportBpmn.bind(this);
     this.showAboutDialog = this.showAboutDialog.bind(this);
     this.showGraphDialog = this.showGraphDialog.bind(this);
     this.onHide = this.onHide.bind(this);
@@ -31,11 +31,10 @@ export default class TopMenu extends Component {
     this.setState({ visibleGraph: true });
   }
 
-  /*
   exportBpmn(){
-    console.log(ProjectModel.getViewer());
+    console.log(ProjectModel.getBpmnXml());
   }
-  */
+
 
   render() {
     const items = [
@@ -60,7 +59,7 @@ export default class TopMenu extends Component {
           },
           {
             label: 'Export BPMN',
-            // command: () => { this.exportBpmn(); },
+            command: () => { this.exportBpmn(); },
           },
         ],
       },
@@ -71,11 +70,9 @@ export default class TopMenu extends Component {
         <AboutDialog showAboutDialog={this.state.visibleAbout} close={this.onHide} />
         <GraphDialog showGraphDialog={this.state.visibleGraph} close={this.onHide} />
         <Menubar model={items}>
-
+          <p className="p-menuitem p-menuitem-link" onClick={this.showAboutDialog}>About</p>
         </Menubar>
       </div>
     );
   }
 }
-
-// <p className="p-menuitem p-menuitem-link" onClick={this.showAboutDialog}>About</p>

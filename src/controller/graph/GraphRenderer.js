@@ -16,7 +16,7 @@ function renderGraph(g) {
 }
 */
 
-export function resizeGraph(graph, option) {
+export function resizeGraph(graph) {
   graph.reset();// Groesse anpassen
   // graph.fit();// alle KNoten werden im Container angzeigt
   graph.resize(); // Komplette Container nutzen
@@ -108,33 +108,33 @@ function updateInfraCP(node) {
   const preds = querygraph.getPredecessors(changed_node, '!compliance');
 
   for (let i = 0; i < preds.length; i++) {
-    const node = preds[i];
+    const predNode = preds[i];
     const x_node = x_changed;
     const y_node = y_changed + (i + 1) * 80;
-    node.position({ x: x_node, y: y_node });
+    predNode.position({ x: x_node, y: y_node });
 
-    const compliance_preds = querygraph.getPredecessors(node, 'compliance');
+    const compliance_preds = querygraph.getPredecessors(predNode, 'compliance');
 
-    drawCompliancePreds(node, compliance_preds);
+    drawCompliancePreds(predNode, compliance_preds);
   }
 
   // consider sucs
   const sucs = querygraph.getSuccessors(changed_node, '!compliance');
 
   for (let i = 0; i < sucs.length; i++) {
-    const node = sucs[i];
+    const nodeSuc = sucs[i];
     const x_node = x_changed;
     const y_node = y_changed - (i + 1) * 80;
-    node.position({ x: x_node, y: y_node });
+    nodeSuc.position({ x: x_node, y: y_node });
 
-    if (node.data('nodetype') !== 'complianceprocess') {
-      const compliance_preds = querygraph.getPredecessors(node, 'compliance');
-      drawCompliancePreds(node, compliance_preds);
+    if (nodeSuc.data('nodetype') !== 'complianceprocess') {
+      const compliance_preds = querygraph.getPredecessors(nodeSuc, 'compliance');
+      drawCompliancePreds(nodeSuc, compliance_preds);
     }
 
-    if (node.data('nodetype') === 'complianceprocess') {
+    if (nodeSuc.data('nodetype') === 'complianceprocess') {
       // consider compliance of compliance process
-      const dir_comp_sucs = querygraph.getDirectSuccessor(node, 'compliance');
+      const dir_comp_sucs = querygraph.getDirectSuccessor(nodeSuc, 'compliance');
       let x_compliance;
       let y_compliance;
 

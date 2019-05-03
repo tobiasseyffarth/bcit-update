@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
-import { Dialog } from 'primereact/dialog';
 import { ListBox } from 'primereact/listbox';
 import { Button } from 'primereact/button';
-import { Dropdown } from 'primereact/dropdown';
-import { Checkbox } from 'primereact/checkbox';
 import { Growl } from 'primereact/growl';
-import { InputText } from 'primereact/inputtext';
-import PropTypes from 'prop-types';
+import ProcessDialog from './ProcessDialog';
 import ProjectModel from '../../models/ProjectModel';
-import * as GraphRenderer from '../../controller/graph/GraphRenderer';
-import * as GraphEditor from '../../controller/graph/GraphEditor';
+
 
 export default class GraphEditPanel extends Component {
   constructor(props) {
@@ -22,6 +17,8 @@ export default class GraphEditPanel extends Component {
       visibleComplianceProcessPatternDialog: false,
     };
 
+    this.closeDialogs = this.closeDialogs.bind(this);
+    this.addProcess = this.addProcess.bind(this);
     this.addComplianceRequirement = this.addComplianceRequirement.bind(this);
     this.showComplianceProcessDialog = this.showComplianceProcessDialog.bind(this);
     this.showComplianceProcessPatternDialog = this.showComplianceProcessPatternDialog.bind(this);
@@ -32,7 +29,7 @@ export default class GraphEditPanel extends Component {
     this.setState({ nodeType: nextProps.nodeType });
   }
 
-  closeDialoges(){
+  closeDialogs(){
     this.setState({ visibleComplianceProcessDialog: false });
     this.setState({ visibleComplianceProcessPatternDialog: false });
   }
@@ -40,6 +37,11 @@ export default class GraphEditPanel extends Component {
   addComplianceRequirement(){
     const req = this.state.selectedCompliance;
     this.props.addComplianceRequirement(req);
+  }
+
+  addProcess(process){
+    console.log('process received edit panel');
+    this.props.addProcess(process);
   }
 
   selectCompliance(selectedRequirement) {
@@ -137,6 +139,11 @@ export default class GraphEditPanel extends Component {
               this.growl = el;
             }}
           position="topright"
+        />
+        <ProcessDialog
+          showComplianceProcessDialog={this.state.visibleComplianceProcessDialog}
+          close={this.closeDialogs}
+          addProcess={this.addProcess}
         />
         <div>
           {this.renderGraphEditPanel()}

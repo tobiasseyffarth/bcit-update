@@ -1,5 +1,5 @@
 import { Steps } from 'primereact/steps';
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ImportModels from './1_import/ImportModels';
@@ -12,9 +12,7 @@ import Alternatives from './4_alternatives/Alternatives';
 import Analyze from './5_analyze/Analyze';
 
 export default class ConnectWizard extends Component {
-  state = {
-    // name: 'zeugnis',
-  };
+  state ={};
 
   items = [
     { label: 'Import Models' },
@@ -82,8 +80,6 @@ export default class ConnectWizard extends Component {
     );
   }
 }
-
-//
 
 ConnectWizard.propTypes = {
   history: PropTypes.shape({

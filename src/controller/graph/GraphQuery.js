@@ -248,13 +248,13 @@ export function getLeavesOfType(node, modeltype) {
   for (let i = 0; i < suc.length; i++) {
     const node_check = suc[i];
     if (node_check.data('modeltype') === type) {
-      const dir_suc = getDirectSuccessor(node_check);
+      const dirSucNode = getDirectSuccessor(node_check);
 
-      if (dir_suc.length === 0) {
+      if (dirSucNode.length === 0) {
         leaves.push(node_check);
       } else {
-        for (let j = 0; j < dir_suc.length; j++) {
-          if (dir_suc[j].data('modeltype') !== type) {
+        for (let j = 0; j < dirSucNode.length; j++) {
+          if (dirSucNode[j].data('modeltype') !== type) {
             leaves.push(node_check);
           }
         }

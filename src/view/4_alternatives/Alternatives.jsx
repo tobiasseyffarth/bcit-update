@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { Dialog } from 'primereact/dialog';
-import { ListBox } from 'primereact/listbox';
 import { Button } from 'primereact/button';
-import { Dropdown } from 'primereact/dropdown';
-import { Checkbox } from 'primereact/checkbox';
 import { Growl } from 'primereact/growl';
 import { InputText } from 'primereact/inputtext';
 import PropTypes from 'prop-types';
@@ -27,6 +24,7 @@ export default class Alternatives extends Component {
       processProps: [],
     };
 
+    this.addProcess = this.addProcess.bind(this);
     this.onHide = this.onHide.bind(this);
     this.addComplianceRequirement = this.addComplianceRequirement.bind(this);
     this.addComplianceProcess = this.addComplianceProcess.bind(this);
@@ -75,28 +73,6 @@ export default class Alternatives extends Component {
     });
   }
 
-  renderGraphProps(node){
-    if (node !== null) {
-      this.setState({ nodeId: node.data('id') });
-      this.setState({ nodeName: node.data('name') });
-      this.setState({ nodeType: node.data('nodetype') });
-      this.setState({ modelType: node.data('modeltype') });
-
-      const nodeType = node.data('nodetype');
-      if (nodeType !== 'compliance'){ // non compliance nodes
-        this.setState({ nodeProps: node.data('props') });
-      } else { // compliance nodes
-        this.setState({ nodeProps: [] });
-      }
-    } else {
-      this.setState({ nodeId: null });
-      this.setState({ nodeName: null });
-      this.setState({ nodeType: null });
-      this.setState({ modelType: null });
-      this.setState({ nodeProps: [] });
-    }
-  }
-
   linkNodes(graph, node, newNode){
     GraphEditor.linkNodesAltGraph(graph, node, newNode);
     GraphRenderer.styleNodesAltGraph(graph);
@@ -125,7 +101,6 @@ export default class Alternatives extends Component {
   }
 
   addComplianceProcess() {
-    const id = Date.now();
     const complianceProcess = {
       id: Date.now(),
       name: this.state.processName,
@@ -135,6 +110,16 @@ export default class Alternatives extends Component {
     const node = this.graph.getElementById(this.state.nodeId);
     this.linkNodes(this.graph, node, newNode);
     this.onHide();
+  }
+
+  addProcess(cp){
+    console.log('process received alternative', cp);
+    // todo: weiter hier mit erstellen der Knoten usw.
+    /*
+    const newNode = GraphEditor.addNode(this.graph, { complianceProcess });
+    const node = this.graph.getElementById(this.state.nodeId);
+    this.linkNodes(this.graph, node, newNode);
+    */
   }
 
   addComplianceProcessPattern() {
@@ -158,6 +143,28 @@ export default class Alternatives extends Component {
       this.renderGraphProps(null);
     } else {
       this.growl.show({ severity: 'warn', summary: 'Please select a node from the graph.', detail: '' });
+    }
+  }
+
+  renderGraphProps(node){
+    if (node !== null) {
+      this.setState({ nodeId: node.data('id') });
+      this.setState({ nodeName: node.data('name') });
+      this.setState({ nodeType: node.data('nodetype') });
+      this.setState({ modelType: node.data('modeltype') });
+
+      const nodeType = node.data('nodetype');
+      if (nodeType !== 'compliance'){ // non compliance nodes
+        this.setState({ nodeProps: node.data('props') });
+      } else { // compliance nodes
+        this.setState({ nodeProps: [] });
+      }
+    } else {
+      this.setState({ nodeId: null });
+      this.setState({ nodeName: null });
+      this.setState({ nodeType: null });
+      this.setState({ modelType: null });
+      this.setState({ nodeProps: [] });
     }
   }
 
@@ -244,7 +251,11 @@ export default class Alternatives extends Component {
           {this.renderComplianceProcessDialog()}
           {this.renderComplianceProcessPatternDialog()}
           <section className="container-graph">
-            <GraphEditPanel nodeType={this.state.nodeType} addComplianceRequirement={this.addComplianceRequirement} />
+            <GraphEditPanel
+              nodeType={this.state.nodeType}
+              addComplianceRequirement={this.addComplianceRequirement}
+              addProcess={this.addProcess}
+            />
             <div className="viewer" id="alt-graph-container" />
             <GraphPropsPanel nodeId={this.state.nodeId} removeNode={this.removeNode} />
           </section>

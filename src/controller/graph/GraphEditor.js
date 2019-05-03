@@ -1,7 +1,7 @@
+import cytoscape from 'cytoscape';
 import * as queryinfra from './../infra/InfraQuery';
 import * as queryprocess from './../process/ProcessQuery';
 import * as querygraph from './GraphQuery';
-import cytoscape from 'cytoscape';
 
 // final
 export function removeModeltypeFromGraph(graph, modeltype) {
