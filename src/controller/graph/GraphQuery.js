@@ -335,7 +335,6 @@ export function edgeExist(graph, sourceID, targetID){
 
   if (exist.length > 0){
     return true;
-  }else{
-    return false;
   }
+  return false;
 }

@@ -13,19 +13,19 @@ class AboutDialog extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    this.setState({visibleDialog: nextProps.showAboutDialog});
+    this.setState({ visibleDialog: nextProps.showAboutDialog });
   }
 
   onHide() {
     this.props.close();
-    this.setState({visibleDialog: false});
+    this.setState({ visibleDialog: false });
   }
 
   render() {
     const footer = (
-        <div>
-          <Button label="close" onClick={this.onHide} />
-        </div>
+      <div>
+        <Button label="close" onClick={this.onHide} />
+      </div>
     );
 
     return (
@@ -36,7 +36,8 @@ class AboutDialog extends Component {
           footer={footer}
           style={{ width: '50vw' }}
           onHide={this.onHide}
-          maximizable>
+          maximizable
+        >
           About
           ...
         </Dialog>

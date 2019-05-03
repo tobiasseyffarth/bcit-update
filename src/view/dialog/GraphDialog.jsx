@@ -4,7 +4,7 @@ import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import '../../App.css';
 import ProjectModel from '../../models/ProjectModel';
-import * as GraphRenderer from "../../controller/graph/GraphRenderer";
+import * as GraphRenderer from '../../controller/graph/GraphRenderer';
 
 class GraphDialog extends Component {
   constructor(props) {
@@ -23,12 +23,12 @@ class GraphDialog extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    this.setState({visibleDialog: nextProps.showGraphDialog});
+    this.setState({ visibleDialog: nextProps.showGraphDialog });
   }
 
   onHide() {
     this.props.close();
-    this.setState({visibleDialog: false});
+    this.setState({ visibleDialog: false });
   }
 
   onShow() {
@@ -107,40 +107,40 @@ class GraphDialog extends Component {
 
   renderGraphPropsPanel() {
     return (
-        <div className="property-panel">
-          <div>
-            <label>ID: {this.state.nodeId}</label>
-          </div>
-          <br />
-          <div>
-            <label>Name: {this.state.nodeName}</label>
-          </div>
-          <br />
-          <div>
-            <label>Node Type: {this.state.nodeType}</label>
-          </div>
-          <br />
-          <div>
-            <label>Model Type: {this.state.modelType}</label>
-          </div>
-          <br />
-          <div>
-            <ListBox
-                style={{ width: '100%' }}
-                options={this.state.nodeProps}
-                optionLabel="name"
-            />
-          </div>
-          <br />
-          <div>
-            <Button
-                label="remove compliance node"
-                onClick={this.removeNode}
-                tooltip="remove compliance node"
-                disabled={this.state.removeDisabled}
-            />
-          </div>
+      <div className="property-panel">
+        <div>
+          <label>ID: {this.state.nodeId}</label>
         </div>
+        <br />
+        <div>
+          <label>Name: {this.state.nodeName}</label>
+        </div>
+        <br />
+        <div>
+          <label>Node Type: {this.state.nodeType}</label>
+        </div>
+        <br />
+        <div>
+          <label>Model Type: {this.state.modelType}</label>
+        </div>
+        <br />
+        <div>
+          <ListBox
+            style={{ width: '100%' }}
+            options={this.state.nodeProps}
+            optionLabel="name"
+          />
+        </div>
+        <br />
+        <div>
+          <Button
+            label="remove compliance node"
+            onClick={this.removeNode}
+            tooltip="remove compliance node"
+            disabled={this.state.removeDisabled}
+          />
+        </div>
+      </div>
     );
   }
 
@@ -153,13 +153,15 @@ class GraphDialog extends Component {
 
     return (
       <div className="content-section implementation">
-        <Dialog header="Graph"
-            footer={footer}
-            visible={this.state.visibleDialog}
-            style={{ width: '80vw' }}
-            onHide={this.onHide}
-            onShow={this.onShow}
-            maximizable>
+        <Dialog
+          header="Graph"
+          footer={footer}
+          visible={this.state.visibleDialog}
+          style={{ width: '80vw' }}
+          onHide={this.onHide}
+          onShow={this.onShow}
+          maximizable
+        >
           <section className="container-graph">
             <div className="viewer" id="graph-container" />
             {this.renderGraphPropsPanel()}

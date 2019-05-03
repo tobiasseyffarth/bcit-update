@@ -292,10 +292,10 @@ export function isTaskOrSubprocess(input) {
 }
 
 export function getDataInputShapes(viewer, shape){
-  let result = [];
-  let { businessObject } = shape;
+  const result = [];
+  const { businessObject } = shape;
 
-  if(businessObject.dataInputAssociations !== undefined){
+  if (businessObject.dataInputAssociations !== undefined){
     for (let i = 0; i < businessObject.dataInputAssociations.length; i++){
       const input = businessObject.dataInputAssociations[i];
       const sourceId = input.sourceRef[0].id;
@@ -307,10 +307,10 @@ export function getDataInputShapes(viewer, shape){
 }
 
 export function getDataOutputShapes(viewer, shape){
-  let result = [];
-  let { businessObject } = shape;
+  const result = [];
+  const { businessObject } = shape;
 
-  if(businessObject.dataOutputAssociations !== undefined){
+  if (businessObject.dataOutputAssociations !== undefined){
     for (let i = 0; i < businessObject.dataOutputAssociations.length; i++){
       const input = businessObject.dataOutputAssociations[i];
       console.log(input);
@@ -339,12 +339,12 @@ export function getDirectSucessors(businessObject) {
 
 export function getSucessors(viewer, shape){
   const process = shape.businessObject.$parent;
-  let graph = GraphEditor.getEmptyGraph();
+  const graph = GraphEditor.getEmptyGraph();
   GraphEditor.createGraphFromProcess(graph, process);
 
   const node = graph.getElementById(shape.id);
   const sucs = GraphQuery.getSuccessors(node);
-  let result = [];
+  const result = [];
 
   for (let i = 0; i < sucs.length; i++){
     const node = sucs[i];

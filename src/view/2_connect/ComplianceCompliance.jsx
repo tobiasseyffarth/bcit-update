@@ -60,7 +60,7 @@ export default class StepComplianceCompliance extends Component {
       if (sourceReq === targetReq){
         const detail = '';
         this.growl.show({ severity: 'warn', summary: 'Can not connect same elements.', detail });
-      }else {
+      } else {
         const graph = ProjectModel.getGraph();
 
         // check whether the connection already exist
@@ -71,13 +71,13 @@ export default class StepComplianceCompliance extends Component {
           ProjectModel.setGraph(graph);
 
           const detail = `connect ${this.state.selectedComplianceOne.id} and ${this.state.selectedComplianceTwo.id}`;
-          this.growl.show({severity: 'info', summary: 'elements connected', detail});
+          this.growl.show({ severity: 'info', summary: 'elements connected', detail });
 
-          this.setState({selectedComplianceOne: null});
-          this.setState({selectedComplianceTwo: null});
-        } else{
-          const detail = 'Connection already exists.'
-          this.growl.show({severity: 'warn', summary: 'Can not connect same elements.', detail});
+          this.setState({ selectedComplianceOne: null });
+          this.setState({ selectedComplianceTwo: null });
+        } else {
+          const detail = 'Connection already exists.';
+          this.growl.show({ severity: 'warn', summary: 'Can not connect same elements.', detail });
         }
       }
     }

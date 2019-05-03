@@ -5,8 +5,8 @@ import { Button } from 'primereact/button';
 import '../../App.css';
 import AlternativeView from '../5_analyze/AlternativeView';
 import ProjectModel from '../../models/ProjectModel';
-import * as GraphRenderer from "../../controller/graph/GraphRenderer";
-import cytoscape from "cytoscape";
+import * as GraphRenderer from '../../controller/graph/GraphRenderer';
+import cytoscape from 'cytoscape';
 
 class RemoveDialog extends Component {
   constructor(props) {
@@ -21,16 +21,16 @@ class RemoveDialog extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    this.setState({visibleDialog: nextProps.showRemoveDialog});
+    this.setState({ visibleDialog: nextProps.showRemoveDialog });
   }
 
   onHide() {
     this.props.close();
-    this.setState({visibleDialog: false});
+    this.setState({ visibleDialog: false });
   }
 
   closeAlternativeView(){
-    this.setState({visibleAlternative: false});
+    this.setState({ visibleAlternative: false });
   }
 
   onShow() {
@@ -98,31 +98,31 @@ class RemoveDialog extends Component {
 
   renderGraphPropsPanel() {
     return (
-        <div className="property-panel">
-          <div>
-            <label>ID: {this.state.nodeId}</label>
-          </div>
-          <br />
-          <div>
-            <label>Name: {this.state.nodeName}</label>
-          </div>
-          <br />
-          <div>
-            <label>Node Type: {this.state.nodeType}</label>
-          </div>
-          <br />
-          <div>
-            <label>Model Type: {this.state.modelType}</label>
-          </div>
-          <br />
-          <div>
-            <ListBox
-                style={{ width: '100%' }}
-                options={this.state.nodeProps}
-                optionLabel="name"
-            />
-          </div>
+      <div className="property-panel">
+        <div>
+          <label>ID: {this.state.nodeId}</label>
         </div>
+        <br />
+        <div>
+          <label>Name: {this.state.nodeName}</label>
+        </div>
+        <br />
+        <div>
+          <label>Node Type: {this.state.nodeType}</label>
+        </div>
+        <br />
+        <div>
+          <label>Model Type: {this.state.modelType}</label>
+        </div>
+        <br />
+        <div>
+          <ListBox
+            style={{ width: '100%' }}
+            options={this.state.nodeProps}
+            optionLabel="name"
+          />
+        </div>
+      </div>
     );
   }
 
@@ -159,13 +159,13 @@ class RemoveDialog extends Component {
     return (
       <div className="content-section implementation">
         <Dialog
-            header="Graph Remove"
-            footer={footer}
-            visible={this.state.visibleDialog}
-            style={{ width: '80vw' }}
-            onHide={this.onHide}
-            onShow={() => this.onShow()}
-            maximizable
+          header="Graph Remove"
+          footer={footer}
+          visible={this.state.visibleDialog}
+          style={{ width: '80vw' }}
+          onHide={this.onHide}
+          onShow={() => this.onShow()}
+          maximizable
         >
           <section className="container-graph">
             <div className="viewer" id="graph-container-remove" />
@@ -179,7 +179,7 @@ class RemoveDialog extends Component {
   render() {
     return (
       <div>
-        <AlternativeView showAlternative={this.state.visibleAlternative} close={this.closeAlternativeView}/>
+        <AlternativeView showAlternative={this.state.visibleAlternative} close={this.closeAlternativeView} />
         <div>
           {this.renderRemoveDialog()}
         </div>

@@ -61,26 +61,26 @@ class BpmnView extends Component {
     const shape = this.state.bpmnShape;
 
     if (shape === null){
-      this.growl.show({ severity: 'warn', summary: 'Please select an element.', detail:'' });
+      this.growl.show({ severity: 'warn', summary: 'Please select an element.', detail: '' });
     } else {
       const graph = ProjectModel.getGraph();
-      const deleteGraph = AnalyzeChange.getDeleteGraph({shape}, graph);
+      const deleteGraph = AnalyzeChange.getDeleteGraph({ shape }, graph);
 
       if (!deleteGraph) {
         this.growl.show({
           severity: 'warn',
           summary: 'Can not analyze element',
-          detail: 'Can not analyze this element.'
+          detail: 'Can not analyze this element.',
         });
       } else {
         if (deleteGraph !== null && deleteGraph.nodes().length > 1) {
           ProjectModel.setRemoveGraph(deleteGraph);
-          this.setState({visibleRemove: true});
-          console.log('violated req', GraphQuery.filterNodes(deleteGraph, {style: 'violated', type: 'compliance'}));
+          this.setState({ visibleRemove: true });
+          console.log('violated req', GraphQuery.filterNodes(deleteGraph, { style: 'violated', type: 'compliance' }));
         }
         if (deleteGraph !== null && deleteGraph.nodes().length <= 1) {
           const detail = 'no violations found';
-          this.growl.show({severity: 'info', summary: 'No compliance violation', detail});
+          this.growl.show({ severity: 'info', summary: 'No compliance violation', detail });
         }
       }
     }
@@ -90,25 +90,25 @@ class BpmnView extends Component {
     const shape = this.state.bpmnShape;
 
     if (shape === null) {
-      this.growl.show({severity: 'warn', summary: 'Please select an element.', detail: ''});
+      this.growl.show({ severity: 'warn', summary: 'Please select an element.', detail: '' });
     } else {
       const graph = ProjectModel.getGraph();
-      const changeGraph = AnalyzeChange.getChangeGraph({shape}, graph);
+      const changeGraph = AnalyzeChange.getChangeGraph({ shape }, graph);
 
       if (!changeGraph) {
         this.growl.show({
           severity: 'warn',
           summary: 'Can not analyze element',
-          detail: 'Can not analyze this element.'
+          detail: 'Can not analyze this element.',
         });
       } else {
         if (changeGraph !== null && changeGraph.nodes().length > 1) {
           ProjectModel.setChangeGraph(changeGraph);
-          this.setState({visibleChange: true});
+          this.setState({ visibleChange: true });
         }
         if (changeGraph !== null && changeGraph.nodes().length <= 1) {
           const detail = 'no demands found';
-          this.growl.show({severity: 'info', summary: 'No compliance violation', detail});
+          this.growl.show({ severity: 'info', summary: 'No compliance violation', detail });
         }
       }
     }
@@ -185,10 +185,10 @@ class BpmnView extends Component {
           position="topright"
         />
         <div>
-          <RemoveDialog showRemoveDialog={this.state.visibleRemove} close={this.onHide}/>
-          <ChangeDialog showChangeDialog={this.state.visibleChange} close={this.onHide}/>
+          <RemoveDialog showRemoveDialog={this.state.visibleRemove} close={this.onHide} />
+          <ChangeDialog showChangeDialog={this.state.visibleChange} close={this.onHide} />
           <section className="container-process">
-            <div className="viewer" style={{width: '1545px'}}>
+            <div className="viewer" style={{ width: '1545px' }}>
               <div id="canvas" />
             </div>
             {this.renderBpmnPropsPanel()}

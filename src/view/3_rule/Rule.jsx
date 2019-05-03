@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'primereact/button';
 import PropTypes from 'prop-types';
-import BpmnModeler from "bpmn-js/dist/bpmn-modeler.development";
+import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import BpmnViewer from 'bpmn-js/dist/bpmn-viewer.development';
 import * as ProcessQuery from '../../controller/process/ProcessQuery';
 import * as ProcessRenderer from './../../controller/process/ProcessRenderer';
@@ -18,7 +18,7 @@ export default class Rule extends Component {
   }
 
   componentDidMount(){
-    this.bpmnModelerA = new BpmnModeler ({
+    this.bpmnModelerA = new BpmnModeler({
       container: '#canvasa',
       height: '350px',
     });
@@ -101,7 +101,7 @@ export default class Rule extends Component {
   removeShape(){
     if (this.state.selectedShape !== null){
       const viewer = this.bpmnModelerA;
-      const shape = this.state.selectedShape ;
+      const shape = this.state.selectedShape;
       const sucs = ProcessQuery.getSucessors(viewer, shape);
 
       const dataInputShapes = ProcessQuery.getDataInputShapes(viewer, shape);
@@ -130,7 +130,9 @@ export default class Rule extends Component {
         ProcessRenderer.moveShape(viewer, sucs[i]);
       }
 
-      let newShape = ProcessRenderer.createShape(viewer, {x: posX, y: posY, type: 'bpmn:Task', name: 'new task'});
+      const newShape = ProcessRenderer.createShape(viewer, {
+        x: posX, y: posY, type: 'bpmn:Task', name: 'new task',
+      });
       ProcessRenderer.integrateShapeSequential(viewer, newShape, shape, 'after');
     }
   }
@@ -152,14 +154,14 @@ export default class Rule extends Component {
             </div>
             <br />
             <Button
-                label="remove"
-                onClick={this.removeShape}
+              label="remove"
+              onClick={this.removeShape}
             />
             <br />
             <br />
             <Button
-                label="insert"
-                onClick={this.insertShape}
+              label="insert"
+              onClick={this.insertShape}
             />
           </div>
         </section>

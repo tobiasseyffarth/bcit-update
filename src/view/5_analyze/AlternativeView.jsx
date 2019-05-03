@@ -4,15 +4,15 @@ import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import '../../App.css';
 import ProjectModel from '../../models/ProjectModel';
-import BpmnModeler from "bpmn-js/dist/bpmn-modeler.development";
+import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 
 class AlternativeView extends Component {
   constructor(props) {
     super(props);
     this.state = {
       alternativeProcess: [
-        {name: 'alternative 1'},
-        {name: 'alternative 2'},
+        { name: 'alternative 1' },
+        { name: 'alternative 2' },
       ],
       visibleAlternative: false,
     };
@@ -28,12 +28,12 @@ class AlternativeView extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    this.setState({visibleAlternative: nextProps.showAlternative});
+    this.setState({ visibleAlternative: nextProps.showAlternative });
   }
 
   onHide() {
     this.props.close();
-    this.setState({visibleAlternative: false});
+    this.setState({ visibleAlternative: false });
   }
 
   onShow() {
@@ -60,7 +60,7 @@ class AlternativeView extends Component {
   render() {
     const footer = (
       <div>
-        <Button label="close" onClick={this.onHide}/>
+        <Button label="close" onClick={this.onHide} />
       </div>
     );
 
@@ -70,18 +70,18 @@ class AlternativeView extends Component {
           header="Alternative Processes"
           footer={footer}
           visible={this.state.visibleAlternative}
-          style={{width: '80vw'}}
+          style={{ width: '80vw' }}
           onHide={this.onHide}
           onShow={() => this.onShow()}
           maximizable
         >
           <section className="container-process">
-            <div className="viewer" style={{width: '60vw', height: '400px'}}>
-              <div id="alternative"/>
+            <div className="viewer" style={{ width: '60vw', height: '400px' }}>
+              <div id="alternative" />
             </div>
             <div className="property-panel">
               <ListBox
-                  style={{width: '100%'}}
+                style={{ width: '100%' }}
 
               />
             </div>

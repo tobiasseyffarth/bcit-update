@@ -1,7 +1,7 @@
 import * as queryinfra from './../infra/InfraQuery';
 import * as queryprocess from './../process/ProcessQuery';
 import * as querygraph from './GraphQuery';
-import cytoscape from "cytoscape";
+import cytoscape from 'cytoscape';
 
 // final
 export function removeModeltypeFromGraph(graph, modeltype) {
@@ -352,10 +352,10 @@ function linkNodes(graph, source, target) {
   const edgeID = `${source.id()}_${target.id()}`;
   const exist = graph.getElementById(edgeID);
 
-  if(exist.length === 0) {
+  if (exist.length === 0) {
     graph.add({
       group: 'edges',
-      data: {id: edgeID, source: source.id(), target: target.id()},
+      data: { id: edgeID, source: source.id(), target: target.id() },
     });
   }
 }
@@ -413,7 +413,7 @@ export function addUniqueNode(graph, input, nodestyle) { // adds a single node t
           nodetype: 'compliance',
           modeltype: 'compliance',
           display_name: element.id,
-          nodestyle: nodestyle,
+          nodestyle,
         },
       });
     }
@@ -568,19 +568,19 @@ export function addNode(graph, input){
 
   if (req !== undefined){
     id = req.id;
-    isUnique = querygraph.isUniqueNode(graph, {id: id});
+    isUnique = querygraph.isUniqueNode(graph, { id });
 
     if (isUnique) {
       return graph.add({
         group: 'nodes',
         data: {
-          id: id,
+          id,
           display_name: id,
           nodetype: 'compliance',
           modeltype: 'compliance',
           text: req.text,
           title: req.title,
-          props: req.source
+          props: req.source,
         },
       });
     }
@@ -588,7 +588,7 @@ export function addNode(graph, input){
 
   if (complianceProcess !== undefined){
     id = complianceProcess.id;
-    isUnique = querygraph.isUniqueNode(graph, {id: id});
+    isUnique = querygraph.isUniqueNode(graph, { id });
 
     if (isUnique){
       return graph.add({
@@ -600,7 +600,7 @@ export function addNode(graph, input){
           nodetype: 'complianceprocess',
           modeltype: 'complianceprocess',
           props: complianceProcess.props,
-          rule: complianceProcess.rule
+          rule: complianceProcess.rule,
         },
       });
     }
@@ -608,19 +608,19 @@ export function addNode(graph, input){
 
   if (comProcessPattern !== undefined){
     id = comProcessPattern.id;
-    isUnique = querygraph.isUniqueNode(graph, {id: id});
+    isUnique = querygraph.isUniqueNode(graph, { id });
 
     if (isUnique){
       return graph.add({
         group: 'nodes',
         data: {
-          id: id,
+          id,
           display_name: comProcessPattern.name,
           name: comProcessPattern.name,
           nodetype: 'complianceprocesspattern',
           modeltype: 'complianceprocesspattern',
           props: comProcessPattern.props,
-          rule: comProcessPattern.rule
+          rule: comProcessPattern.rule,
         },
       });
     }

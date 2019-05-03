@@ -83,6 +83,8 @@ export default class ConnectWizard extends Component {
   }
 }
 
+//
+
 ConnectWizard.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,

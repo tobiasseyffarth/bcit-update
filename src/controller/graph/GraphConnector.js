@@ -86,7 +86,7 @@ export function linkInfra2Process(viewer, graph, shape, itComponent) {
       GraphCreator.updateFlownodeProperty(graph, businessObject); // 2. graph in graphviewer updaten
       GraphCreator.addNodes(graph, { itComponent, businessObject }); // 3. create and link nodes
       ProcessRenderer.addExtensionShape(viewer, shape, { infra: itComponent }, extension); // 4. add DataObject to process model
-    } else{
+    } else {
       return false;
     }
   }

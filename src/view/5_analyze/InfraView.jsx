@@ -109,28 +109,28 @@ class InfraView extends Component {
     const { itComponent } = this.state;
 
     if (itComponent === null){
-      this.growl.show({ severity: 'warn', summary: 'Please select an element.', detail:'' });
+      this.growl.show({ severity: 'warn', summary: 'Please select an element.', detail: '' });
     } else {
       const graph = ProjectModel.getGraph();
-      const deleteGraph = AnalyzeChange.getDeleteGraph({itComponent}, graph);
+      const deleteGraph = AnalyzeChange.getDeleteGraph({ itComponent }, graph);
 
       if (!deleteGraph) {
         this.growl.show({
           severity: 'warn',
           summary: 'Can not analyze element',
-          detail: 'Can not analyze this element.'
+          detail: 'Can not analyze this element.',
         });
       } else {
         if (deleteGraph !== null && deleteGraph.nodes().length > 1) {
           ProjectModel.setRemoveGraph(deleteGraph);
-          this.setState({visibleRemove: true}, () => {
-                // this.renderRemoveGraph(deleteGraph);
-              },
+          this.setState({ visibleRemove: true }, () => {
+            // this.renderRemoveGraph(deleteGraph);
+          },
           );
         }
         if (deleteGraph !== null && deleteGraph.nodes().length <= 1) {
           const detail = 'no violations found';
-          this.growl.show({severity: 'info', summary: 'No compliance violation', detail});
+          this.growl.show({ severity: 'info', summary: 'No compliance violation', detail });
         }
       }
     }
@@ -140,28 +140,28 @@ class InfraView extends Component {
     const { itComponent } = this.state;
 
     if (itComponent === null){
-      this.growl.show({ severity: 'warn', summary: 'Please select an element.', detail:'' });
+      this.growl.show({ severity: 'warn', summary: 'Please select an element.', detail: '' });
     } else {
       const graph = ProjectModel.getGraph();
-      const changeGraph = AnalyzeChange.getChangeGraph({itComponent}, graph);
+      const changeGraph = AnalyzeChange.getChangeGraph({ itComponent }, graph);
 
       if (!changeGraph) {
         this.growl.show({
           severity: 'warn',
           summary: 'Can not analyze element',
-          detail: 'Can not analyze this element.'
+          detail: 'Can not analyze this element.',
         });
       } else {
         if (changeGraph !== null && changeGraph.nodes().length > 1) {
           ProjectModel.setChangeGraph(changeGraph);
-          this.setState({visibleChange: true}, () => {
-                // this.renderChangeGraph(changeGraph);
-              },
+          this.setState({ visibleChange: true }, () => {
+            // this.renderChangeGraph(changeGraph);
+          },
           );
         }
         if (changeGraph !== null && changeGraph.nodes().length <= 1) {
           const detail = 'no demands found';
-          this.growl.show({severity: 'info', summary: 'No compliance violation', detail});
+          this.growl.show({ severity: 'info', summary: 'No compliance violation', detail });
         }
       }
     }
@@ -217,8 +217,8 @@ class InfraView extends Component {
           position="topright"
         />
         <div>
-          <RemoveDialog showRemoveDialog={this.state.visibleRemove} close={this.onHide}/>
-          <ChangeDialog showChangeDialog={this.state.visibleChange} close={this.onHide}/>
+          <RemoveDialog showRemoveDialog={this.state.visibleRemove} close={this.onHide} />
+          <ChangeDialog showChangeDialog={this.state.visibleChange} close={this.onHide} />
           <section className="container-infra">
             <div className="viewer" id="infra-container" style={{ width: this.state.width }} />
             {this.renderInfraPropsPanel()}

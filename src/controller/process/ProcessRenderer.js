@@ -299,7 +299,6 @@ export function integrateShapeSequential(viewer, newShape, oldShape, position){
       removeShape(viewer, sfShape);
     }
     connectShapes(viewer, newShape, oldShape); // connect old shape and new shape
-
   } else if (position === 'after'){
     const dirSucs = queryprocess.getDirectSucessors(oldShape.businessObject);
     for (let i = 0; i < dirSucs.length; i++){
