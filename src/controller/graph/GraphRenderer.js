@@ -418,6 +418,20 @@ export function styleNodesAltGraph(graph) {
   }
 }
 
+function getPosX(noPreds, posX, j){
+  let result;
+
+  if (noPreds === 1){
+    result = posX;
+  } else if ((noPreds % 2) === 0){
+    result = posX - (noPreds/ 2) * 60 + (j * 120);
+  } else {
+    result = posX - ((noPreds - 1) / 2) * 60 + (j * 120);
+  }
+
+  return result;
+}
+
 export function drawNodesAltGraph(graph){
   const compliance = querygraph.filterNodes(graph, { type: 'compliance'});
 
@@ -430,7 +444,7 @@ export function drawNodesAltGraph(graph){
     const dirPreds = querygraph.getDirectPredecessor(node);
     for (let j = 0; j < dirPreds.length; j++){
       const nodePred = dirPreds[j];
-      const predX = posX + (j * 120);
+      const predX = getPosX(dirPreds.length, posX, j);
       const predY = posY + 150;
       nodePred.position({ x: predX, y: predY});
     }
@@ -448,19 +462,9 @@ function drawNodes(nodes){
     const posY = node.position('y');
     for (let j = 0; j < dirPreds.length; j++){
       const nodePred = dirPreds[j];
-      let predX;
-
-      if (dirPreds.length === 1){
-        predX = posX;
-      } else if ((dirPreds.length % 2) === 0){
-        predX = posX - (dirPreds.length / 2) * 60 + (j * 120);
-      } else {
-        predX = posX - ((dirPreds.length - 1) / 2) * 60 + (j * 120);
-      }
-
+      let predX = getPosX(dirPreds.length, posX, j);
       const predY = posY + 150;
       nodePred.position({ x: predX, y: predY});
-
       if (querygraph.getDirectPredecessor(nodePred).length > 0){
         nextIteration.push(nodePred);
       }
