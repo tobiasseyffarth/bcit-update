@@ -129,7 +129,7 @@ export default class Alternatives extends Component {
     }
   }
 
-  addComplianceProcess(){
+  addComplianceProcess() {
     const id = Date.now();
     const complianceProcess = {
       id: Date.now(),
@@ -142,7 +142,7 @@ export default class Alternatives extends Component {
     this.onHide();
   }
 
-  addComplianceProcessPattern(){
+  addComplianceProcessPattern() {
     const id = Date.now();
     const comProcessPattern = {
       id: Date.now(),
@@ -155,11 +155,11 @@ export default class Alternatives extends Component {
     this.onHide();
   }
 
-  connectNodes(){
+  connectNodes() {
 
   }
 
-  showComplianceProcessDialog(){
+  showComplianceProcessDialog() {
     const type = this.state.nodeType;
 
     if (type === null) {
@@ -177,7 +177,7 @@ export default class Alternatives extends Component {
     }
   }
 
-  showComplianceProcessPatternDialog(){
+  showComplianceProcessPatternDialog() {
     const type = this.state.nodeType;
 
     if (type === null) {
@@ -196,11 +196,11 @@ export default class Alternatives extends Component {
     }
   }
 
-  selectCompliance(selectedRequirement){
+  selectCompliance(selectedRequirement) {
     this.setState({ selectedCompliance: selectedRequirement });
   }
 
-  removeNode(){
+  removeNode() {
     const id = this.state.nodeId;
     let node = this.graph.getElementById(id);
 
@@ -279,7 +279,7 @@ export default class Alternatives extends Component {
     );
   }
 
-  renderGraphPropsPanel(){
+  renderGraphPropsPanel() {
     return(
       <div className="property-panel">
         <div>
@@ -315,7 +315,7 @@ export default class Alternatives extends Component {
     )
   }
 
-  renderGraphEditPanel(){
+  renderGraphEditPanel() {
     const value = this.state.selectedCompliance;
     const compliance = ProjectModel.getCompliance();
     let option;

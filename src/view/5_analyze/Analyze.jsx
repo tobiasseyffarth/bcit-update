@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { TabView, TabPanel } from 'primereact/tabview';
-import InfraView from '../container/InfraView';
-import ComplianceView from '../container/ComplianceView';
-import BpmnView from '../container/BpmnView';
+import InfraView from './InfraView';
+import ComplianceView from './ComplianceView';
+import BpmnView from './BpmnView';
 
 export default class Analyze extends Component {
   constructor(props) {

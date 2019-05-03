@@ -3,7 +3,7 @@ import { ListBox } from 'primereact/listbox';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import '../../App.css';
-import AlternativeView from './../container/AlternativeView';
+import AlternativeView from '../5_analyze/AlternativeView';
 import ProjectModel from '../../models/ProjectModel';
 import * as GraphRenderer from "../../controller/graph/GraphRenderer";
 import cytoscape from "cytoscape";
