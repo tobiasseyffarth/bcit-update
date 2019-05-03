@@ -448,7 +448,16 @@ function drawNodes(nodes){
     const posY = node.position('y');
     for (let j = 0; j < dirPreds.length; j++){
       const nodePred = dirPreds[j];
-      const predX = posX + (j * 120);
+      let predX;
+
+      if (dirPreds.length === 1){
+        predX = posX;
+      } else if ((dirPreds.length % 2) === 0){
+        predX = posX - (dirPreds.length / 2) * 60 + (j * 120);
+      } else {
+        predX = posX - ((dirPreds.length - 1) / 2) * 60 + (j * 120);
+      }
+
       const predY = posY + 150;
       nodePred.position({ x: predX, y: predY});
 
@@ -456,11 +465,9 @@ function drawNodes(nodes){
         nextIteration.push(nodePred);
       }
     }
-
   }
 
   if (nextIteration.length > 0){
     drawNodes(nextIteration);
   }
-
 }
