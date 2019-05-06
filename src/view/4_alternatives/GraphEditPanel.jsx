@@ -3,6 +3,7 @@ import { ListBox } from 'primereact/listbox';
 import { Button } from 'primereact/button';
 import { Growl } from 'primereact/growl';
 import ProcessDialog from './ProcessDialog';
+import ProcessPatternDialog from './ProcessPatternDialog';
 import ProjectModel from '../../models/ProjectModel';
 
 
@@ -19,6 +20,7 @@ export default class GraphEditPanel extends Component {
 
     this.closeDialogs = this.closeDialogs.bind(this);
     this.addProcess = this.addProcess.bind(this);
+    this.addCpPattern = this.addCpPattern.bind(this);
     this.addComplianceRequirement = this.addComplianceRequirement.bind(this);
     this.showComplianceProcessDialog = this.showComplianceProcessDialog.bind(this);
     this.showComplianceProcessPatternDialog = this.showComplianceProcessPatternDialog.bind(this);
@@ -40,8 +42,11 @@ export default class GraphEditPanel extends Component {
   }
 
   addProcess(process){
-    console.log('process received edit panel');
     this.props.addProcess(process);
+  }
+
+  addCpPattern(cpPattern){
+    this.props.addCpPattern(cpPattern);
   }
 
   selectCompliance(selectedRequirement) {
@@ -136,14 +141,19 @@ export default class GraphEditPanel extends Component {
       <div>
         <Growl
           ref={(el) => {
-              this.growl = el;
-            }}
+            this.growl = el;
+          }}
           position="topright"
         />
         <ProcessDialog
           showComplianceProcessDialog={this.state.visibleComplianceProcessDialog}
           close={this.closeDialogs}
           addProcess={this.addProcess}
+        />
+        <ProcessPatternDialog
+          showCpPatternDialog={this.state.visibleComplianceProcessPatternDialog}
+          close={this.closeDialogs}
+          addCpProcess={this.addCpPattern}
         />
         <div>
           {this.renderGraphEditPanel()}

@@ -28,6 +28,9 @@ export default class GraphPropsPanel extends Component {
 
   componentWillReceiveProps(nextProps){
     this.setState({ nodeId: nextProps.nodeId });
+    this.setState({ nodeName: nextProps.nodeName });
+    this.setState({ nodeType: nextProps.nodeType });
+    this.setState({ modelType: nextProps.modelType });
   }
 
   removeNode() {

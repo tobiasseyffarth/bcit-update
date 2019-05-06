@@ -4,7 +4,7 @@ import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import '../../App.css';
 
-class ProcessDialog extends Component {
+class ProcessPatternDialog extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,11 +15,11 @@ class ProcessDialog extends Component {
     };
 
     this.onHide = this.onHide.bind(this);
-    this.addComplianceProcess = this.addComplianceProcess.bind(this);
+    this.addCpPattern = this.addCpPattern.bind(this);
   }
 
   componentWillReceiveProps(nextProps){
-    this.setState({ visibleDialog: nextProps.showComplianceProcessDialog });
+    this.setState({ visibleDialog: nextProps.showCpPatternDialog });
     this.setState({ processName: nextProps.name });
     this.setState({ processRule: nextProps.rule });
   }
@@ -29,23 +29,23 @@ class ProcessDialog extends Component {
     this.setState({ visibleDialog: false });
   }
 
-  addComplianceProcess(){
-    const comProcess ={
+  addCpPattern(){
+    const cpPattern ={
       name: this.state.processName,
       rule: this.state.rule,
       props: this.state.processProps,
-      modeltype: 'complianceprocess',
-      nodetype: 'complianceprocess'
+      modeltype: 'complianceprocesspattern',
+      nodetype: 'complianceprocesspattern'
     };
 
-    this.props.addProcess(comProcess);
+    this.props.addCpProcess(cpPattern);
     this.onHide();
   }
 
   render() {
     const footer = (
       <div>
-        <Button label="Add" onClick={this.addComplianceProcess}/>
+        <Button label="Add" onClick={this.addCpPattern}/>
         <Button label="Abort" onClick={this.onHide}/>
       </div>
     );
@@ -53,7 +53,7 @@ class ProcessDialog extends Component {
     return (
       <div className="content-section implementation">
         <Dialog
-          header="Create new compliance process"
+          header="Create new compliance process pattern"
           footer={footer}
           visible={this.state.visibleDialog}
           style={{width: '80vw'}}
@@ -82,4 +82,4 @@ class ProcessDialog extends Component {
   }
 }
 
-export default ProcessDialog;
+export default ProcessPatternDialog;

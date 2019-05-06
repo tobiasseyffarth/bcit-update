@@ -25,6 +25,7 @@ export default class Alternatives extends Component {
     };
 
     this.addProcess = this.addProcess.bind(this);
+    this.addComplianceProcessPattern = this.addComplianceProcessPattern.bind(this);
     this.onHide = this.onHide.bind(this);
     this.addComplianceRequirement = this.addComplianceRequirement.bind(this);
     this.addComplianceProcess = this.addComplianceProcess.bind(this);
@@ -113,26 +114,15 @@ export default class Alternatives extends Component {
   }
 
   addProcess(cp){
-    console.log('process received alternative', cp);
-    // todo: weiter hier mit erstellen der Knoten usw.
-    /*
-    const newNode = GraphEditor.addNode(this.graph, { complianceProcess });
+    const newNode = GraphEditor.addNode(this.graph, { complianceProcess: cp });
     const node = this.graph.getElementById(this.state.nodeId);
     this.linkNodes(this.graph, node, newNode);
-    */
   }
 
-  addComplianceProcessPattern() {
-    const id = Date.now();
-    const comProcessPattern = {
-      id: Date.now(),
-      name: this.state.processName,
-    };
-    const newNode = GraphEditor.addNode(this.graph, { comProcessPattern });
+  addComplianceProcessPattern(cpPattern) {
+    const newNode = GraphEditor.addNode(this.graph, { comProcessPattern: cpPattern });
     const node = this.graph.getElementById(this.state.nodeId);
-
     this.linkNodes(this.graph, node, newNode);
-    this.onHide();
   }
 
   removeNode(nodeId) {
@@ -255,9 +245,17 @@ export default class Alternatives extends Component {
               nodeType={this.state.nodeType}
               addComplianceRequirement={this.addComplianceRequirement}
               addProcess={this.addProcess}
+              addCpPattern={this.addComplianceProcessPattern}
             />
             <div className="viewer" id="alt-graph-container" />
-            <GraphPropsPanel nodeId={this.state.nodeId} removeNode={this.removeNode} />
+            <GraphPropsPanel
+              nodeId={this.state.nodeId}
+              nodeName={this.state.nodeName}
+              nodeType={this.state.nodeType}
+              modelType={this.state.modelType}
+              nodeProps={this.state.processProps}
+              removeNode={this.removeNode}
+            />
           </section>
         </div>
       </div>
