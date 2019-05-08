@@ -1,15 +1,6 @@
 import React, { Component } from 'react';
-import { Dialog } from 'primereact/dialog';
 import { ListBox } from 'primereact/listbox';
 import { Button } from 'primereact/button';
-import { Dropdown } from 'primereact/dropdown';
-import { Checkbox } from 'primereact/checkbox';
-import { Growl } from 'primereact/growl';
-import { InputText } from 'primereact/inputtext';
-import PropTypes from 'prop-types';
-import ProjectModel from '../../models/ProjectModel';
-import * as GraphRenderer from '../../controller/graph/GraphRenderer';
-import * as GraphEditor from '../../controller/graph/GraphEditor';
 
 export default class GraphPropsPanel extends Component {
   constructor(props) {

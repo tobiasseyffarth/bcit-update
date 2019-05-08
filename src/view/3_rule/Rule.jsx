@@ -102,7 +102,7 @@ export default class Rule extends Component {
     if (this.state.selectedShape !== null){
       const viewer = this.bpmnModelerA;
       const shape = this.state.selectedShape;
-      const sucs = ProcessQuery.getSucessors(viewer, shape);
+      const sucs = ProcessQuery.getSucessorShapes(viewer, shape);
 
       const dataInputShapes = ProcessQuery.getDataInputShapes(viewer, shape);
       for (let i = 0; i < dataInputShapes.length; i++){
@@ -124,7 +124,7 @@ export default class Rule extends Component {
       const viewer = this.bpmnModelerA;
       const posX = shape.x + 300;
       const posY = shape.y * 1.5;
-      const sucs = ProcessQuery.getSucessors(viewer, shape);
+      const sucs = ProcessQuery.getSucessorShapes(viewer, shape);
 
       for (let i = sucs.length - 1; i >= 0; i--){
         ProcessRenderer.moveShape(viewer, sucs[i]);

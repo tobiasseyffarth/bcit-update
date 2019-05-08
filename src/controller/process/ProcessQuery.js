@@ -337,7 +337,7 @@ export function getDirectSucessors(businessObject) {
   return null;
 }
 
-export function getSucessors(viewer, shape){
+export function getSucessorShapes(viewer, shape){
   const process = shape.businessObject.$parent;
   const graph = GraphEditor.getEmptyGraph();
   GraphEditor.createGraphFromProcess(graph, process);
