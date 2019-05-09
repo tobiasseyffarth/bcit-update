@@ -16,12 +16,10 @@ function getAlternativeCP(altGraph, violatedCP, resultGraph){
 
 }
 
-function getAlternativePattern(altGraph, violatedCP){
-
+function getAlternativePattern(violatedCP){
   // get first successor node of type pattern
-
-  // integration point of the pattern is the integration point of violatedCP
-
+  const cpPattern = GraphQuery.getSuccessors(violatedCP, 'complianceprocesspattern');
+  return cpPattern
 }
 
 export function getAlternatives(altGraph, violatedCP){

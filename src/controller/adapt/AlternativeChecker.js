@@ -9,6 +9,7 @@ G(Task_A -> F(Task_B)): Task_B kommt irgendwann nach Task_A --> F: eventually
 
  */
 
+// helper to read props
 function getValueByKey(pair, key){
   for (let i = 0; i < pair.length; i++){
     const entry = pair[i];

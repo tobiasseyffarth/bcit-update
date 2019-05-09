@@ -9,6 +9,7 @@ import GraphEditPanel from './GraphEditPanel';
 import GraphPropsPanel from './GraphPropsPanel';
 import * as GraphRenderer from '../../controller/graph/GraphRenderer';
 import * as GraphEditor from '../../controller/graph/GraphEditor';
+import * as ProjectIO from './../../controller/helpers/projectio';
 
 export default class Alternatives extends Component {
   constructor(props) {
@@ -54,6 +55,13 @@ export default class Alternatives extends Component {
     GraphRenderer.styleNodesAltGraph(this.graph);
     GraphRenderer.drawNodesAltGraph(this.graph);
     this.hookGraphOnClick(this.graph);
+
+    const g = this.graph;
+    const elements = ProjectIO.getElementsFromGraph(g);
+    console.log(elements);
+
+    const newG = ProjectIO.getGraphFromElements(elements);
+    console.log(newG);
   }
 
   onHide() {
