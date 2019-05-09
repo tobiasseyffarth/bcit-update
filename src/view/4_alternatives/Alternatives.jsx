@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { Dialog } from 'primereact/dialog';
-import { Button } from 'primereact/button';
 import { Growl } from 'primereact/growl';
-import { InputText } from 'primereact/inputtext';
 import PropTypes from 'prop-types';
 import ProjectModel from '../../models/ProjectModel';
 import GraphEditPanel from './GraphEditPanel';
@@ -56,10 +53,11 @@ export default class Alternatives extends Component {
     GraphRenderer.drawNodesAltGraph(this.graph);
     this.hookGraphOnClick(this.graph);
 
-    const g = this.graph;
-    const elements = ProjectIO.getElementsFromGraph(g);
-    console.log(elements);
+    this.stringyfyGraph();
+  }
 
+  stringyfyGraph(){
+    const elements = ProjectIO.getElementsFromGraph(this.graph);
     const newG = ProjectIO.getGraphFromElements(elements);
     console.log(newG);
   }
@@ -166,76 +164,6 @@ export default class Alternatives extends Component {
     }
   }
 
-  renderComplianceProcessDialog() {
-    const footer = (
-      <div>
-        <Button label="Add" onClick={this.addComplianceProcess} />
-        <Button label="Abort" onClick={this.onHide} />
-      </div>
-    );
-
-    return (
-      <div className="content-section implementation">
-        <Dialog
-          header="Create new compliance process"
-          footer={footer}
-          visible={this.state.visibleComplianceProcessDialog}
-          style={{ width: '80vw' }}
-          onHide={this.onHide}
-          maximizable
-        >
-          <div>
-            <label htmlFor="processName">Name</label>
-            <InputText
-              id="processName"
-              value={this.state.processName}
-              onChange={e => this.setState({ processName: e.target.value })}
-            />
-          </div>
-          <div>
-            <label htmlFor="processRule">Rule</label>
-            <InputText
-              id="processRule"
-              value={this.state.processRule}
-              onChange={e => this.setState({ processRule: e.target.value })}
-            />
-          </div>
-        </Dialog>
-      </div>
-    );
-  }
-
-  renderComplianceProcessPatternDialog() {
-    const footer = (
-      <div>
-        <Button label="Add" onClick={this.addComplianceProcessPattern} />
-        <Button label="Abort" onClick={this.onHide} />
-      </div>
-    );
-
-    return (
-      <div className="content-section implementation">
-        <Dialog
-          header="Create new compliance process pattern"
-          footer={footer}
-          visible={this.state.visibleComplianceProcessPatternDialog}
-          style={{ width: '80vw' }}
-          onHide={this.onHide}
-          maximizable
-        >
-          <div>
-            <label htmlFor="processName">Name</label>
-            <InputText
-              id="processName"
-              value={this.state.processName}
-              onChange={e => this.setState({ processName: e.target.value })}
-            />
-          </div>
-        </Dialog>
-      </div>
-    );
-  }
-
   render() {
     return (
       <div>
@@ -246,8 +174,6 @@ export default class Alternatives extends Component {
           position="topright"
         />
         <div>
-          {this.renderComplianceProcessDialog()}
-          {this.renderComplianceProcessPatternDialog()}
           <section className="container-graph">
             <GraphEditPanel
               nodeType={this.state.nodeType}
