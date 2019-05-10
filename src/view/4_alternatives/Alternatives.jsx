@@ -23,11 +23,10 @@ export default class Alternatives extends Component {
     };
 
     this.addProcess = this.addProcess.bind(this);
-    this.addComplianceProcessPattern = this.addComplianceProcessPattern.bind(this);
     this.onHide = this.onHide.bind(this);
     this.addComplianceRequirement = this.addComplianceRequirement.bind(this);
-    this.addComplianceProcess = this.addComplianceProcess.bind(this);
     this.addComplianceProcessPattern = this.addComplianceProcessPattern.bind(this);
+    this.editNode = this.editNode.bind(this);
     this.removeNode = this.removeNode.bind(this);
   }
 
@@ -59,7 +58,6 @@ export default class Alternatives extends Component {
   stringyfyGraph(){
     const elements = ProjectIO.getElementsFromGraph(this.graph);
     const newG = ProjectIO.getGraphFromElements(elements);
-    console.log(newG);
   }
 
   onHide() {
@@ -107,18 +105,6 @@ export default class Alternatives extends Component {
     }
   }
 
-  addComplianceProcess() {
-    const complianceProcess = {
-      id: Date.now(),
-      name: this.state.processName,
-      rule: this.state.processRule,
-    };
-    const newNode = GraphEditor.addNode(this.graph, { complianceProcess });
-    const node = this.graph.getElementById(this.state.nodeId);
-    this.linkNodes(this.graph, node, newNode);
-    this.onHide();
-  }
-
   addProcess(cp){
     const newNode = GraphEditor.addNode(this.graph, { complianceProcess: cp });
     const node = this.graph.getElementById(this.state.nodeId);
@@ -129,6 +115,18 @@ export default class Alternatives extends Component {
     const newNode = GraphEditor.addNode(this.graph, { comProcessPattern: cpPattern });
     const node = this.graph.getElementById(this.state.nodeId);
     this.linkNodes(this.graph, node, newNode);
+  }
+
+  editNode(changedNode){
+    const id = changedNode.id;
+    let node = this.graph.getElementById(id);
+    node.data('name', changedNode.name);
+    node.data('display_name', changedNode.name);
+    node.data('props', changedNode.props);
+
+    this.renderGraphProps(node);
+    GraphRenderer.styleNodesAltGraph(this.graph);
+    GraphRenderer.drawNodesAltGraph(this.graph);
   }
 
   removeNode(nodeId) {
@@ -188,6 +186,7 @@ export default class Alternatives extends Component {
               nodeType={this.state.nodeType}
               modelType={this.state.modelType}
               nodeProps={this.state.processProps}
+              editNode={this.editNode}
               removeNode={this.removeNode}
             />
           </section>

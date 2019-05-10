@@ -1,20 +1,28 @@
 import React, { Component } from 'react';
 import { ListBox } from 'primereact/listbox';
 import { Button } from 'primereact/button';
+import ProcessDialog from './ProcessDialog';
+import ProcessPatternDialog from './ProcessPatternDialog';
 
 export default class GraphPropsPanel extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      node: null,
       nodeId: null,
       nodeName: null,
       nodeType: null,
       modelType: null,
       nodeProps: [],
+      visibleComplianceDialog: false,
+      visibleComplianceProcessDialog: false,
+      visibleComplianceProcessPatternDialog: false,
     };
 
+    this.closeDialogs = this.closeDialogs.bind(this);
     this.removeNode = this.removeNode.bind(this);
     this.editNode = this.editNode.bind(this);
+    this.openDialog = this.openDialog.bind(this);
   }
 
   componentWillReceiveProps(nextProps){
@@ -28,8 +36,35 @@ export default class GraphPropsPanel extends Component {
     this.props.removeNode(this.state.nodeId);
   }
 
-  editNode(){
+  closeDialogs(){
+    this.setState({ visibleComplianceProcessDialog: false });
+    this.setState({ visibleComplianceProcessPatternDialog: false });
+  }
 
+  openDialog(){
+    const modelType = this.state.modelType;
+    const node = {
+      id: this.state.nodeId,
+      name: this.state.nodeName,
+      nodeType: this.state.nodeType,
+      modelType: this.state.modelType,
+      props: this.state.nodeProps
+    };
+
+    this.setState({ node: node });
+
+    if (modelType === 'complianceprocesspattern'){
+      this.setState({ visibleComplianceProcessPatternDialog: true });
+      // this.setState({ pattern: node });
+    } else if (modelType === 'complianceprocess'){
+      this.setState({ visibleComplianceProcessDialog: true });
+    } else if (modelType === 'compliance') {
+      this.setState({ visibleComplianceDialog: true });
+    }
+  }
+
+  editNode(node){
+    this.props.editNode(node);
   }
 
   renderGraphPropsPanel() {
@@ -61,8 +96,8 @@ export default class GraphPropsPanel extends Component {
         <br />
         <div>
           <Button
-            label="edit process"
-            onClick={this.editNode}
+            label="edit"
+            onClick={this.openDialog}
           />
         </div>
         <br />
@@ -79,7 +114,21 @@ export default class GraphPropsPanel extends Component {
   render() {
     return (
       <div>
-        {this.renderGraphPropsPanel()}
+        <ProcessPatternDialog
+          showCpPatternDialog={this.state.visibleComplianceProcessPatternDialog}
+          pattern={this.state.node}
+          edit={this.editNode}
+          close={this.closeDialogs}
+        />
+        <ProcessDialog
+          showComplianceProcessDialog={this.state.visibleComplianceProcessDialog}
+          process={this.state.node}
+          edit={this.editNode}
+          close={this.closeDialogs}
+        />
+        <div>
+          {this.renderGraphPropsPanel()}
+        </div>
       </div>
     );
   }

@@ -8,20 +8,32 @@ class ProcessPatternDialog extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      processName: null,
-      processRule: null,
-      processProps: null,
+      header: 'Create new compliance process pattern',
+      mode: 'add',
+      patternName: null,
+      patternProps: null,
       visibleDialog: false,
+      pattern: null
     };
 
+    this.onShow = this.onShow.bind(this);
     this.onHide = this.onHide.bind(this);
     this.addCpPattern = this.addCpPattern.bind(this);
+    this.buttonClick = this.buttonClick.bind(this);
   }
 
   componentWillReceiveProps(nextProps){
     this.setState({ visibleDialog: nextProps.showCpPatternDialog });
-    this.setState({ processName: nextProps.name });
-    this.setState({ processRule: nextProps.rule });
+    this.setState({ pattern: nextProps.pattern });
+  }
+
+  onShow(){
+    const pattern = this.state.pattern;
+    if (pattern !== undefined){
+      this.setState({ patternName: pattern.name });
+      this.setState({ header: 'Edit compliance process pattern' });
+      this.setState({ mode: 'edit'});
+    }
   }
 
   onHide() {
@@ -29,23 +41,47 @@ class ProcessPatternDialog extends Component {
     this.setState({ visibleDialog: false });
   }
 
-  addCpPattern(){
-    const cpPattern ={
-      name: this.state.processName,
-      rule: this.state.rule,
-      props: this.state.processProps,
-      modeltype: 'complianceprocesspattern',
-      nodetype: 'complianceprocesspattern'
-    };
+  getCpPattern(pattern){
+    let cpPattern;
 
+    if (pattern === undefined){
+      cpPattern = {
+        name: this.state.patternName,
+        props: this.state.patternProps,
+        modeltype: 'complianceprocesspattern',
+        nodetype: 'complianceprocesspattern'
+      };
+    } else{
+      pattern.name = this.state.patternName;
+      cpPattern = pattern;
+    }
+    return cpPattern;
+  }
+
+  editCpPattern(){
+    const cpPattern = this.getCpPattern(this.state.pattern);
+    this.props.edit(cpPattern);
+  }
+
+  addCpPattern(){
+    const cpPattern = this.getCpPattern();
     this.props.addCpProcess(cpPattern);
+  }
+
+  buttonClick(){
+    const mode = this.state.mode;
+    if (mode === 'add'){
+      this.addCpPattern();
+    } else if (mode === 'edit'){
+      this.editCpPattern();
+    }
     this.onHide();
   }
 
   render() {
     const footer = (
       <div>
-        <Button label="Add" onClick={this.addCpPattern}/>
+        <Button label="Ok" onClick={this.buttonClick}/>
         <Button label="Abort" onClick={this.onHide}/>
       </div>
     );
@@ -53,10 +89,11 @@ class ProcessPatternDialog extends Component {
     return (
       <div className="content-section implementation">
         <Dialog
-          header="Create new compliance process pattern"
+          header={this.state.header}
           footer={footer}
           visible={this.state.visibleDialog}
           style={{width: '80vw'}}
+          onShow={this.onShow}
           onHide={this.onHide}
           maximizable
         >
@@ -64,16 +101,8 @@ class ProcessPatternDialog extends Component {
             <label htmlFor="processName">Name</label>
             <InputText
               id="processName"
-              value={this.state.processName}
-              onChange={e => this.setState({processName: e.target.value})}
-            />
-          </div>
-          <div>
-            <label htmlFor="processRule">Rule</label>
-            <InputText
-              id="processRule"
-              value={this.state.processRule}
-              onChange={e => this.setState({processRule: e.target.value})}
+              value={this.state.patternName}
+              onChange={e => this.setState({patternName: e.target.value})}
             />
           </div>
         </Dialog>

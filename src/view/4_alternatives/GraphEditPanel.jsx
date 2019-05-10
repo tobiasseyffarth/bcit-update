@@ -145,15 +145,15 @@ export default class GraphEditPanel extends Component {
           }}
           position="topright"
         />
-        <ProcessDialog
-          showComplianceProcessDialog={this.state.visibleComplianceProcessDialog}
-          close={this.closeDialogs}
-          addProcess={this.addProcess}
-        />
         <ProcessPatternDialog
           showCpPatternDialog={this.state.visibleComplianceProcessPatternDialog}
           close={this.closeDialogs}
           addCpProcess={this.addCpPattern}
+        />
+        <ProcessDialog
+          showComplianceProcessDialog={this.state.visibleComplianceProcessDialog}
+          close={this.closeDialogs}
+          addProcess={this.addProcess}
         />
         <div>
           {this.renderGraphEditPanel()}

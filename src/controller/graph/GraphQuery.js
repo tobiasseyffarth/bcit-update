@@ -338,3 +338,14 @@ export function edgeExist(graph, sourceID, targetID){
   }
   return false;
 }
+
+export function getPropsValue(props, key){
+  for (let i = 0; i < props.length; i++){
+    const entry = props[i];
+
+    if (entry.key === key){
+      return pair.value;
+    }
+  }
+  return null;
+}

@@ -8,20 +8,23 @@ class ProcessDialog extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      header: 'Create new compliance process',
+      mode: 'add',
+      process: null,
       processName: null,
       processRule: null,
       processProps: null,
       visibleDialog: false,
     };
 
+    this.onShow = this.onShow.bind(this);
     this.onHide = this.onHide.bind(this);
-    this.addComplianceProcess = this.addComplianceProcess.bind(this);
+    this.buttonClick = this.buttonClick.bind(this);
   }
 
   componentWillReceiveProps(nextProps){
     this.setState({ visibleDialog: nextProps.showComplianceProcessDialog });
-    this.setState({ processName: nextProps.name });
-    this.setState({ processRule: nextProps.rule });
+    this.setState({ process: nextProps.process });
   }
 
   onHide() {
@@ -29,23 +32,57 @@ class ProcessDialog extends Component {
     this.setState({ visibleDialog: false });
   }
 
-  addComplianceProcess(){
-    const comProcess ={
-      name: this.state.processName,
-      rule: this.state.rule,
-      props: this.state.processProps,
-      modeltype: 'complianceprocess',
-      nodetype: 'complianceprocess'
-    };
+  onShow(){
+    const process = this.state.process;
+    console.log(process);
+    if (process !== undefined){
+      this.setState({ processName: process.name });
+      this.setState({ header: 'Edit compliance process' });
+      this.setState({ mode: 'edit'});
+    }
+  }
 
+  getComplianceProcess(process){
+    let complianceProcess;
+
+    if (process === undefined){
+      complianceProcess = {
+        name: this.state.processName,
+        props: this.state.processProps,
+        modeltype: 'complianceprocess',
+        nodetype: 'complianceprocess'
+      };
+    } else{
+      process.name = this.state.processName;
+      complianceProcess = process;
+    }
+    return complianceProcess;
+  }
+
+  addComplianceProcess(){
+    const comProcess = this.getComplianceProcess();
     this.props.addProcess(comProcess);
+  }
+
+  editComplianceProcess(){
+    const comProcess = this.getComplianceProcess(this.state.process);
+    this.props.edit(comProcess);
+  }
+
+  buttonClick(){
+    const mode = this.state.mode;
+    if (mode === 'add'){
+      this.addComplianceProcess();
+    } else if (mode === 'edit'){
+      this.editComplianceProcess();
+    }
     this.onHide();
   }
 
   render() {
     const footer = (
       <div>
-        <Button label="Add" onClick={this.addComplianceProcess}/>
+        <Button label="Ok" onClick={this.buttonClick}/>
         <Button label="Abort" onClick={this.onHide}/>
       </div>
     );
@@ -53,10 +90,11 @@ class ProcessDialog extends Component {
     return (
       <div className="content-section implementation">
         <Dialog
-          header="Create new compliance process"
+          header={this.state.header}
           footer={footer}
           visible={this.state.visibleDialog}
           style={{width: '80vw'}}
+          onShow={this.onShow}
           onHide={this.onHide}
           maximizable
         >

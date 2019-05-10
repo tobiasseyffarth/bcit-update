@@ -1,5 +1,7 @@
 // contains functions to check whether alternatives can be executed
 
+import * as GraphQuery from './../graph/GraphQuery';
+
 /*
 
 W(Task_A): bis Task_A --> W:Weak Unitl
@@ -7,19 +9,7 @@ Task_A -> X(Task_B): Task_B direkt nach Task_A --> X: next
 
 G(Task_A -> F(Task_B)): Task_B kommt irgendwann nach Task_A --> F: eventually
 
- */
-
-// helper to read props
-function getValueByKey(pair, key){
-  for (let i = 0; i < pair.length; i++){
-    const entry = pair[i];
-
-    if (entry.key === key){
-      return pair.value;
-    }
-  }
-  return null;
-}
+*/
 
 function getTaskId(ltlString){
   const start = ltlString.indexOf('W(') + 1;
@@ -51,7 +41,7 @@ function isTaskBetween(startTaskId, endTaskId){
 
 export function isExecutable(cpNode, reqNode, resultGraph){
   const rule = reqNode.data('rule');
-  const ce = getValueByKey(cpNode.data('props'), 'controlledEntity');
+  const ce = GraphQuery.getPropsValue(cpNode.data('props'), 'controlledEntity');
   const taskId = getTaskId(rule);
 
   return isTaskBefore(ce, taskId);
