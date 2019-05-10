@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
+import {MultiSelect} from 'primereact/multiselect';
 import '../../App.css';
+import * as GraphQuery from './../../controller/graph/GraphQuery';
+import ProjectModel from './../../models/ProjectModel';
 
 class ProcessDialog extends Component {
   constructor(props) {
@@ -10,10 +13,12 @@ class ProcessDialog extends Component {
     this.state = {
       header: 'Create new compliance process',
       mode: 'add',
-      process: null,
       processName: null,
       processRule: null,
-      processProps: null,
+      controlledEntity: [],
+      selectedCE: [],
+      furtherReq: [],
+      selectedReq: [],
       visibleDialog: false,
     };
 
@@ -27,33 +32,117 @@ class ProcessDialog extends Component {
     this.setState({ process: nextProps.process });
   }
 
+  getInfraElements(){
+    const graph = ProjectModel.getGraph();
+    const infraNodes = GraphQuery.filterNodes(graph, {type: 'infra'});
+    let result = [];
+
+    for (let i = 0; i < infraNodes.length; i++){
+      const node = infraNodes[i];
+      if (node.data('name') !== undefined) {
+        result.push({name: node.data('name'), id: node.data('id')});
+      }
+    }
+    return result;
+  }
+
+  getBusinessActivity(){
+    const graph = ProjectModel.getGraph();
+    const businessNodes = GraphQuery.filterNodes(graph, {type: 'businessprocess'});
+    let result = [];
+
+    for (let i = 0; i < businessNodes.length; i++){
+      const node = businessNodes[i];
+      if (node.data('name') !== undefined) {
+        result.push({name: node.data('name'), id: node.data('id')});
+      }
+    }
+    return result;
+  }
+
   onHide() {
     this.props.close();
     this.setState({ visibleDialog: false });
   }
 
   onShow(){
+    this.setState({ controlledEntity: this.getBusinessActivity()});
+    this.setState({ furtherReq: this.getInfraElements()});
+
     const process = this.state.process;
-    console.log(process);
     if (process !== undefined){
       this.setState({ processName: process.name });
       this.setState({ header: 'Edit compliance process' });
       this.setState({ mode: 'edit'});
+      this.renderProps(process);
     }
+  }
+
+  getProps(){
+    const ce = this.state.selectedCE;
+    const req = this.state.selectedReq;
+    let result = [];
+
+    for (let i = 0; i < ce.length; i++){
+      result.push({
+        key: 'ce',
+        value: ce[i].id,
+        display: 'Controlled Entity ' + ce[i].name})
+    }
+
+    for (let i = 0; i < req.length; i++){
+      result.push({
+        key: 'req',
+        value: req[i].id,
+        display: 'Further Requirement ' + req[i].name})
+    }
+    return result;
+  }
+
+  renderProps(process){
+    const ce = this.getBusinessActivity();
+    const req = this.getInfraElements();
+    const props = process.props;
+    let result = [];
+
+    for (let i = 0; i < ce.length; i++){
+      for (let j = 0; j < props.length; j++){
+        const entity = ce[i];
+        const prop = props[j];
+        if (entity.id === prop.value){
+          result.push(entity);
+        }
+      }
+    }
+    this.setState({ selectedCE: result});
+
+    result = [];
+    for (let i = 0; i < req.length; i++){
+      for (let j = 0; j < props.length; j++){
+        const entity = req[i];
+        const prop = props[j];
+        if (entity.id === prop.value){
+          result.push(entity);
+        }
+      }
+    }
+    this.setState({ selectedReq: result});
   }
 
   getComplianceProcess(process){
     let complianceProcess;
+    let props = this.getProps();
 
     if (process === undefined){
       complianceProcess = {
         name: this.state.processName,
-        props: this.state.processProps,
+        props: props,
         modeltype: 'complianceprocess',
         nodetype: 'complianceprocess'
       };
     } else{
       process.name = this.state.processName;
+      process.props = props;
       complianceProcess = process;
     }
     return complianceProcess;
@@ -113,6 +202,22 @@ class ProcessDialog extends Component {
               value={this.state.processRule}
               onChange={e => this.setState({processRule: e.target.value})}
             />
+          </div>
+          <div>
+            <label htmlFor="controlledEntity">Controlled Entity</label>
+            <MultiSelect
+              optionLabel="name"
+              value={this.state.selectedCE}
+              options={this.state.controlledEntity}
+              onChange={(e) => this.setState({selectedCE: e.value})} />
+          </div>
+          <div>
+            <label htmlFor="furtherReq">Further Requirements</label>
+            <MultiSelect
+              optionLabel="name"
+              value={this.state.selectedReq}
+              options={this.state.furtherReq}
+              onChange={(e) => this.setState({selectedReq: e.value})} />
           </div>
         </Dialog>
       </div>

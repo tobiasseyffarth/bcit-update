@@ -30,6 +30,7 @@ export default class GraphPropsPanel extends Component {
     this.setState({ nodeName: nextProps.nodeName });
     this.setState({ nodeType: nextProps.nodeType });
     this.setState({ modelType: nextProps.modelType });
+    this.setState({ nodeProps: nextProps.nodeProps });
   }
 
   removeNode() {
@@ -55,7 +56,6 @@ export default class GraphPropsPanel extends Component {
 
     if (modelType === 'complianceprocesspattern'){
       this.setState({ visibleComplianceProcessPatternDialog: true });
-      // this.setState({ pattern: node });
     } else if (modelType === 'complianceprocess'){
       this.setState({ visibleComplianceProcessDialog: true });
     } else if (modelType === 'compliance') {
@@ -90,7 +90,7 @@ export default class GraphPropsPanel extends Component {
           <ListBox
             style={{ width: '100%' }}
             options={this.state.nodeProps}
-            optionLabel="name"
+            optionLabel="display"
           />
         </div>
         <br />

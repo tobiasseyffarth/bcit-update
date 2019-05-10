@@ -17,9 +17,6 @@ export default class Alternatives extends Component {
       nodeType: null,
       modelType: null,
       nodeProps: [],
-      processName: '',
-      processRule: '',
-      processProps: [],
     };
 
     this.addProcess = this.addProcess.bind(this);
@@ -118,8 +115,8 @@ export default class Alternatives extends Component {
   }
 
   editNode(changedNode){
-    const id = changedNode.id;
-    let node = this.graph.getElementById(id);
+    const { id } = changedNode;
+    const node = this.graph.getElementById(id);
     node.data('name', changedNode.name);
     node.data('display_name', changedNode.name);
     node.data('props', changedNode.props);
@@ -185,7 +182,7 @@ export default class Alternatives extends Component {
               nodeName={this.state.nodeName}
               nodeType={this.state.nodeType}
               modelType={this.state.modelType}
-              nodeProps={this.state.processProps}
+              nodeProps={this.state.nodeProps}
               editNode={this.editNode}
               removeNode={this.removeNode}
             />
