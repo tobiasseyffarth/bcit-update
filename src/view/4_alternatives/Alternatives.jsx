@@ -48,18 +48,11 @@ export default class Alternatives extends Component {
     GraphRenderer.styleNodesAltGraph(this.graph);
     GraphRenderer.drawNodesAltGraph(this.graph);
     this.hookGraphOnClick(this.graph);
-
-    this.stringyfyGraph();
   }
 
   onHide() {
     this.setState({ visibleComplianceProcessDialog: false });
     this.setState({ visibleComplianceProcessPatternDialog: false });
-  }
-
-  stringyfyGraph(){
-    const elements = ProjectIO.getElementsFromGraph(this.graph);
-    const newG = ProjectIO.getGraphFromElements(elements);
   }
 
   hookGraphOnClick(graph){

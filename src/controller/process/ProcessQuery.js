@@ -24,6 +24,20 @@ export function getProcess(viewer, e) {
 }
 
 // final
+export function getFlowElementsOfProcess(process) {
+  const flowElements = [];
+
+  if (process.flowElements === undefined) {
+    return null;
+  }
+  for (let i = 0; i < process.flowElements.length; i++) {
+    flowElements.push(process.flowElements[i]);
+  }
+
+  return flowElements;
+}
+
+// final
 export function getSequenceFlowsofProcess(process) {
   const flowElements = getFlowElementsOfProcess(process);
   const sequence = [];
@@ -66,20 +80,6 @@ export function getSequenceFlow(sourceShape, targetShape){
     }
   }
   return null;
-}
-
-// final
-export function getFlowElementsOfProcess(process) {
-  const flowElements = [];
-
-  if (process.flowElements === undefined) {
-    return null;
-  }
-  for (let i = 0; i < process.flowElements.length; i++) {
-    flowElements.push(process.flowElements[i]);
-  }
-
-  return flowElements;
 }
 
 // final
@@ -355,6 +355,7 @@ export function getSucessorShapes(viewer, shape){
   return result;
 }
 
+/*
 export function getSuccessors(viewer, id){
   const process = getProcess(viewer);
   const graph = GraphEditor.getEmptyGraph();
@@ -371,10 +372,14 @@ export function getSuccessors(viewer, id){
 
   return result;
 }
+*/
 
+
+/*
 export function getPredecessors(viewer, id){
 
 }
+*/
 
 // testen
 export function getDirectPredecessors(businessObject) {
@@ -391,6 +396,7 @@ export function getDirectPredecessors(businessObject) {
   return null;
 }
 
+/*
 // todo: testen mit Parallelitäten in Parallität und Exklusivität
 function getParallelTrace(node, parallelTrace) {
   const sucs = getDirectSucessors(node);
@@ -445,7 +451,9 @@ function getParallelTrace(node, parallelTrace) {
   }
   return getParallelTrace(node, _parallelTrace);
 }
+*/
 
+/*
 // todo: testen
 function searchTrace(openTraces, finalTraces, endNode) {
   const help = []; // openTraces
@@ -489,7 +497,9 @@ function searchTrace(openTraces, finalTraces, endNode) {
   }
   return searchTrace(help, _finalTraces, endNode);
 }
+*/
 
+/*
 // todo: testen
 export function getTraces(process) {
   const finalTraces = [];
@@ -504,3 +514,4 @@ export function getTraces(process) {
 
   return searchTrace(openTraces, finalTraces, endNode);
 }
+*/

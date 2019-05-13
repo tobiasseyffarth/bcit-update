@@ -55,7 +55,7 @@ class GraphDialog extends Component {
     });
   }
 
-  removeNode(){
+  removeNode = () => {
     /*
     let graph = ProjectModel.getGraph();
     let node = graph.getElementById(this.state.nodeId);
@@ -68,7 +68,7 @@ class GraphDialog extends Component {
       }
     }
     */
-  }
+  };
 
   renderGraphView(){
     const container = document.getElementById('graph-container');

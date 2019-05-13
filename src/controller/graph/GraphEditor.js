@@ -433,6 +433,7 @@ export function addUniqueNode(graph, input, nodestyle) { // adds a single node t
       node.data('nodestyle', nodestyle);
       graph.add(node);
     }
+    return graph.getElementById(node.id());
   }
 }
 
@@ -625,6 +626,7 @@ export function addNode(graph, input){
       });
     }
   }
+  return null;
 }
 
 export function linkNodesAltGraph(graph, node, newNode){

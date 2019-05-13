@@ -432,26 +432,6 @@ function getPosX(noPreds, posX, j){
   return result;
 }
 
-export function drawNodesAltGraph(graph){
-  const compliance = querygraph.filterNodes(graph, { type: 'compliance' });
-
-  for (let i = 0; i < compliance.length; i++){
-    const node = compliance[i];
-    const posX = 270 + (i * 120);
-    const posY = 150;
-    node.position({ x: posX, y: posY });
-
-    const dirPreds = querygraph.getDirectPredecessor(node);
-    for (let j = 0; j < dirPreds.length; j++){
-      const nodePred = dirPreds[j];
-      const predX = getPosX(dirPreds.length, posX, j);
-      const predY = posY + 150;
-      nodePred.position({ x: predX, y: predY });
-    }
-    drawNodes(dirPreds);
-  }
-}
-
 function drawNodes(nodes){
   const nextIteration = [];
 
@@ -473,5 +453,25 @@ function drawNodes(nodes){
 
   if (nextIteration.length > 0){
     drawNodes(nextIteration);
+  }
+}
+
+export function drawNodesAltGraph(graph){
+  const compliance = querygraph.filterNodes(graph, { type: 'compliance' });
+
+  for (let i = 0; i < compliance.length; i++){
+    const node = compliance[i];
+    const posX = 270 + (i * 120);
+    const posY = 150;
+    node.position({ x: posX, y: posY });
+
+    const dirPreds = querygraph.getDirectPredecessor(node);
+    for (let j = 0; j < dirPreds.length; j++){
+      const nodePred = dirPreds[j];
+      const predX = getPosX(dirPreds.length, posX, j);
+      const predY = posY + 150;
+      nodePred.position({ x: predX, y: predY });
+    }
+    drawNodes(dirPreds);
   }
 }

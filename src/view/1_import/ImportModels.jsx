@@ -9,9 +9,11 @@ import * as infraquery from '../../controller/infra/InfraQuery';
 import * as complianceimporter from '../../controller/compliance/ComplianceImporter';
 import * as GraphConnector from './../../controller/graph/GraphConnector';
 import * as ProcessQuery from '../../controller/process/ProcessQuery';
+import * as ProjectIO from '../../controller/helpers/projectio';
 import bpmnXml from './../../models/processmodel';
 import infraXml from './../../models/inframodel';
 import complianceJson from '../../models/compliancemodel';
+import altGraph from '../../models/altGraph';
 import ProjectModel from './../../models/ProjectModel';
 import './../../App.css';
 
@@ -74,7 +76,7 @@ export default class ImportModels extends Component {
   }
 
   // temporary
-  openModels(){
+  openModels = () => {
     if (ProjectModel.getCompliance() === null){
       const compliance = complianceimporter.getJSON(complianceJson);
       ProjectModel.setCompliance(compliance);
@@ -101,9 +103,11 @@ export default class ImportModels extends Component {
     }
 
     if (ProjectModel.getAltGraph() === null){
-
+      const elements = JSON.parse(altGraph);
+      const graph = ProjectIO.getGraphFromElements(elements);
+      ProjectModel.setAltGraph(graph);
     }
-  }
+  };
 
   render() {
     return (
