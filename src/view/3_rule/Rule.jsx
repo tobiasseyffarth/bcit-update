@@ -62,31 +62,6 @@ export default class Rule extends Component {
     eventBus.on('element.click', e => this.hookBpmnOnClick(e));
   }
 
-  renderBpmnB = (xml) => {
-    this.bpmnModelerB.importXML(xml, (err) => {
-      if (err) {
-        console.log('error rendering', err);
-      } else {
-        const canvas = this.bpmnModelerB.get('canvas');
-        canvas.zoom('fit-viewport');
-      }
-    });
-  };
-
-  renderBpmnProps(shape) {
-    if (shape !== null) {
-      const { businessObject } = shape;
-
-      this.setState({ bpmnId: businessObject.id });
-      this.setState({ bpmnName: businessObject.name });
-      this.setState({ selectedShape: shape });
-    } else {
-      this.setState({ bpmnId: null });
-      this.setState({ bpmnName: null });
-      this.setState({ selectedShape: null });
-    }
-  }
-
   removeShape(){
     if (this.state.selectedShape !== null){
       const viewer = this.bpmnModelerA;
@@ -126,12 +101,37 @@ export default class Rule extends Component {
     }
   }
 
+  renderBpmnProps(shape) {
+    if (shape !== null) {
+      const { businessObject } = shape;
+
+      this.setState({ bpmnId: businessObject.id });
+      this.setState({ bpmnName: businessObject.name });
+      this.setState({ selectedShape: shape });
+    } else {
+      this.setState({ bpmnId: null });
+      this.setState({ bpmnName: null });
+      this.setState({ selectedShape: null });
+    }
+  }
+
   renderBpmnA = (xml) => {
     this.bpmnModelerA.importXML(xml, (err) => {
       if (err) {
         console.log('error rendering', err);
       } else {
         const canvas = this.bpmnModelerA.get('canvas');
+        canvas.zoom('fit-viewport');
+      }
+    });
+  };
+
+  renderBpmnB = (xml) => {
+    this.bpmnModelerB.importXML(xml, (err) => {
+      if (err) {
+        console.log('error rendering', err);
+      } else {
+        const canvas = this.bpmnModelerB.get('canvas');
         canvas.zoom('fit-viewport');
       }
     });

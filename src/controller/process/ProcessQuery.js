@@ -348,8 +348,8 @@ export function getSucessorShapes(viewer, shape){
 
   for (let i = 0; i < sucs.length; i++){
     const suc = sucs[i];
-    const shape = getShapeOfRegistry(viewer, suc.id());
-    result.push(shape);
+    const shapeSuc = getShapeOfRegistry(viewer, suc.id());
+    result.push(shapeSuc);
   }
 
   return result;

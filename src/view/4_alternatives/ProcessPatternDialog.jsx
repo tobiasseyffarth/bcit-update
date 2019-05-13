@@ -52,8 +52,8 @@ class ProcessPatternDialog extends Component {
         nodetype: 'complianceprocesspattern',
       };
     } else {
-      pattern.name = this.state.patternName;
       cpPattern = pattern;
+      cpPattern.name = this.state.patternName;
     }
     return cpPattern;
   }

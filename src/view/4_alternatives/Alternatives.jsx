@@ -68,7 +68,7 @@ export default class Alternatives extends Component {
     });
   }
 
-  linkNodes = (graph, node, newNode) =>{
+  linkNodes = (graph, node, newNode) => {
     GraphEditor.linkNodesAltGraph(graph, node, newNode);
     GraphRenderer.styleNodesAltGraph(graph);
     GraphRenderer.drawNodesAltGraph(graph);

@@ -66,22 +66,6 @@ export default class StepProcIT extends Component {
     }
   }
 
-  renderBpmnProps(element) {
-    if (element !== null) {
-      const { businessObject } = element;
-
-      this.setState({ bpmnId: businessObject.id });
-      this.setState({ bpmnName: businessObject.name });
-      this.setState({ isCompliance: ProcessQuery.isCompliance(businessObject) });
-      this.setState({ bpmnProps: ProcessQuery.getExtensionOfElement(businessObject) });
-    } else {
-      this.setState({ bpmnId: null });
-      this.setState({ bpmnName: null });
-      this.setState({ isCompliance: false });
-      this.setState({ bpmnProps: [] });
-    }
-  }
-
   setComplianceProcess(e) {
     if (this.state.bpmnShape !== null) {
       const modeler = this.bpmnModeler;
@@ -182,6 +166,61 @@ export default class StepProcIT extends Component {
     }
   }
 
+  hookInfraOnClick(graph){
+    const _this = this;
+
+    graph.on('tap', (evt) => { // http://js.cytoscape.org/#core/events
+      const element = evt.target;
+      if (element === graph) { // background
+        _this.renderInfraProps(null);
+      } else {
+        if (element.isNode()) { // edge
+          _this.renderInfraProps(element);
+        }
+        if (element.isEdge()) {
+          console.log('taped on edge');
+        }
+      }
+    });
+  }
+
+  showBpmnModeler() {
+    console.log(this.bpmnModeler.get('elementRegistry'));
+  }
+
+  removeInfraProp() {
+    const { infra } = this.state;
+    const elementId = this.state.infraElementId;
+    const element = InfraQuery.getElementById(infra, elementId);
+    const prop = this.state.infraElementProp;
+    const graph = ProjectModel.getGraph();
+    const { infraGraph } = this.state;
+
+    GraphConnector.updateITComponent(graph, infraGraph, element);
+    InfraQuery.removeITProps(element, prop);
+
+    ProjectModel.setInfra(infra);
+    ProjectModel.setGraph(graph);
+  }
+
+  renderInfraProps(nodeInfra){ // todo: wie bei ITCompliance auf itComponent umstellen
+    if (nodeInfra !== null) {
+      const { infra } = this.state;
+      const id = nodeInfra.data('id');
+      const element = InfraQuery.getElementById(infra, id);
+
+      this.setState({ infraElement: element });
+      this.setState({ infraElementId: nodeInfra.data('id') });
+      this.setState({ infraElementName: nodeInfra.data('display_name') });
+      this.setState({ infraElementProps: nodeInfra.data('props') });
+    } else {
+      this.setState({ infraElement: null });
+      this.setState({ infraElementId: null });
+      this.setState({ infraElementName: null });
+      this.setState({ infraElementProps: null });
+    }
+  }
+
   renderInfra(infra) {
     const container = document.getElementById('infra-container');
     const graph = cytoscape({
@@ -222,59 +261,20 @@ export default class StepProcIT extends Component {
     this.setState({ infraGraph: graph }, () => this.hookInfraOnClick(graph));
   }
 
-  renderInfraProps(nodeInfra){ // todo: wie bei ITCompliance auf itComponent umstellen
-    if (nodeInfra !== null) {
-      const { infra } = this.state;
-      const id = nodeInfra.data('id');
-      const element = InfraQuery.getElementById(infra, id);
+  renderBpmnProps(element) {
+    if (element !== null) {
+      const { businessObject } = element;
 
-      this.setState({ infraElement: element });
-      this.setState({ infraElementId: nodeInfra.data('id') });
-      this.setState({ infraElementName: nodeInfra.data('display_name') });
-      this.setState({ infraElementProps: nodeInfra.data('props') });
+      this.setState({ bpmnId: businessObject.id });
+      this.setState({ bpmnName: businessObject.name });
+      this.setState({ isCompliance: ProcessQuery.isCompliance(businessObject) });
+      this.setState({ bpmnProps: ProcessQuery.getExtensionOfElement(businessObject) });
     } else {
-      this.setState({ infraElement: null });
-      this.setState({ infraElementId: null });
-      this.setState({ infraElementName: null });
-      this.setState({ infraElementProps: null });
+      this.setState({ bpmnId: null });
+      this.setState({ bpmnName: null });
+      this.setState({ isCompliance: false });
+      this.setState({ bpmnProps: [] });
     }
-  }
-
-  hookInfraOnClick(graph){
-    const _this = this;
-
-    graph.on('tap', (evt) => { // http://js.cytoscape.org/#core/events
-      const element = evt.target;
-      if (element === graph) { // background
-        _this.renderInfraProps(null);
-      } else {
-        if (element.isNode()) { // edge
-          _this.renderInfraProps(element);
-        }
-        if (element.isEdge()) {
-          console.log('taped on edge');
-        }
-      }
-    });
-  }
-
-  showBpmnModeler() {
-    console.log(this.bpmnModeler.get('elementRegistry'));
-  }
-
-  removeInfraProp() {
-    const { infra } = this.state;
-    const elementId = this.state.infraElementId;
-    const element = InfraQuery.getElementById(infra, elementId);
-    const prop = this.state.infraElementProp;
-    const graph = ProjectModel.getGraph();
-    const { infraGraph } = this.state;
-
-    GraphConnector.updateITComponent(graph, infraGraph, element);
-    InfraQuery.removeITProps(element, prop);
-
-    ProjectModel.setInfra(infra);
-    ProjectModel.setGraph(graph);
   }
 
   renderBpmn = (xml) => {

@@ -435,6 +435,7 @@ export function addUniqueNode(graph, input, nodestyle) { // adds a single node t
     }
     return graph.getElementById(node.id());
   }
+  return null;
 }
 
 export function addNodes(graph, option) {
@@ -564,11 +565,10 @@ export function addNode(graph, input){
   const { req } = input;
   const { complianceProcess } = input;
   const { comProcessPattern } = input;
-  let id;
   let isUnique;
 
   if (req !== undefined){
-    id = req.id;
+    const { id } = req;
     isUnique = querygraph.isUniqueNode(graph, { id });
 
     if (isUnique) {
@@ -588,14 +588,14 @@ export function addNode(graph, input){
   }
 
   if (complianceProcess !== undefined){
-    id = complianceProcess.id;
+    const { id } = complianceProcess;
     isUnique = querygraph.isUniqueNode(graph, { id });
 
     if (isUnique){
       return graph.add({
         group: 'nodes',
         data: {
-          id: complianceProcess.id,
+          id,
           display_name: complianceProcess.name,
           name: complianceProcess.name,
           nodetype: 'complianceprocess',
@@ -608,7 +608,7 @@ export function addNode(graph, input){
   }
 
   if (comProcessPattern !== undefined){
-    id = comProcessPattern.id;
+    const { id } = comProcessPattern;
     isUnique = querygraph.isUniqueNode(graph, { id });
 
     if (isUnique){

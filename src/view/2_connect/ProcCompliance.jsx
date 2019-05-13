@@ -55,19 +55,24 @@ export default class StepProcCompliance extends Component {
     this.setState({ complianceFilter: compliance });
   }
 
-  renderBpmnProps(element) {
-    if (element !== null) {
+  setComplianceProcess(e) {
+    if (this.state.bpmnShape !== null) {
+      const modeler = this.bpmnModeler;
+      const element = this.state.bpmnShape;
       const { businessObject } = element;
 
-      this.setState({ bpmnId: businessObject.id });
-      this.setState({ bpmnName: businessObject.name });
-      this.setState({ isCompliance: ProcessQuery.isCompliance(businessObject) });
-      this.setState({ bpmnProps: ProcessQuery.getExtensionOfElement(businessObject) });
-    } else {
-      this.setState({ bpmnId: null });
-      this.setState({ bpmnName: null });
-      this.setState({ isCompliance: false });
-      this.setState({ bpmnProps: [] });
+      if (e.checked) {
+        this.setState({ isCompliance: true }, () => this.renderBpmnProps(element));
+        ProcessEditor.defineAsComplianceProcess(modeler, businessObject, true);
+        ProcessRenderer.renderComplianceProcess(modeler, element, true);
+      } else {
+        this.setState({ isCompliance: false }, () => this.renderBpmnProps(element));
+        ProcessEditor.defineAsComplianceProcess(modeler, businessObject, false);
+        ProcessRenderer.renderComplianceProcess(modeler, element, false);
+      }
+
+      this.updateBusinessObject(businessObject);
+      this.updateBpmnXml();
     }
   }
 
@@ -86,27 +91,6 @@ export default class StepProcCompliance extends Component {
       ProcessRenderer.renderComplianceProcess(this.bpmnModeler, element, isCPP);
       this.updateBusinessObject(businessObject);
       this.fitBpmnView();
-      this.updateBpmnXml();
-    }
-  }
-
-  setComplianceProcess(e) {
-    if (this.state.bpmnShape !== null) {
-      const modeler = this.bpmnModeler;
-      const element = this.state.bpmnShape;
-      const { businessObject } = element;
-
-      if (e.checked) {
-        this.setState({ isCompliance: true }, () => this.renderBpmnProps(element));
-        ProcessEditor.defineAsComplianceProcess(modeler, businessObject, true);
-        ProcessRenderer.renderComplianceProcess(modeler, element, true);
-      } else {
-        this.setState({ isCompliance: false }, () => this.renderBpmnProps(element));
-        ProcessEditor.defineAsComplianceProcess(modeler, businessObject, false);
-        ProcessRenderer.renderComplianceProcess(modeler, element, false);
-      }
-
-      this.updateBusinessObject(businessObject);
       this.updateBpmnXml();
     }
   }
@@ -178,6 +162,22 @@ export default class StepProcCompliance extends Component {
 
     this.setState({ complianceText: reqText });
     this.setState({ selectedCompliance: selectedRequirement });
+  }
+
+  renderBpmnProps(element) {
+    if (element !== null) {
+      const { businessObject } = element;
+
+      this.setState({ bpmnId: businessObject.id });
+      this.setState({ bpmnName: businessObject.name });
+      this.setState({ isCompliance: ProcessQuery.isCompliance(businessObject) });
+      this.setState({ bpmnProps: ProcessQuery.getExtensionOfElement(businessObject) });
+    } else {
+      this.setState({ bpmnId: null });
+      this.setState({ bpmnName: null });
+      this.setState({ isCompliance: false });
+      this.setState({ bpmnProps: [] });
+    }
   }
 
   renderBpmn = (xml) => {

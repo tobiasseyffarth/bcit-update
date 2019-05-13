@@ -4,7 +4,7 @@ import { Growl } from 'primereact/growl';
 import PropTypes from 'prop-types';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import * as fileio from './../../controller/helpers/fileio';
-import * as infraimporter from '../../controller/infra/InfraImporter';
+import infraimporter from '../../controller/infra/InfraImporter';
 import * as infraquery from '../../controller/infra/InfraQuery';
 import * as complianceimporter from '../../controller/compliance/ComplianceImporter';
 import * as GraphConnector from './../../controller/graph/GraphConnector';
@@ -43,15 +43,23 @@ export default class ImportModels extends Component {
   async openInfra() {
     const file = await fileio.getFile('.xml');
     const input = await fileio.readFile(file);
-    const result = infraimporter.getInfra(input);
+    const result = infraimporter(input);
 
     if (result.infra !== undefined){
       ProjectModel.setInfra(result.infra);
       GraphConnector.addSubGraphs({ infra: result.infra }); // add infra to graph
       const metadata = infraquery.getMetadata(result.infra);
-      this.growl.show({ severity: 'info', summary: 'Infrastructure imported', detail: metadata.name });
+      this.growl.show({
+        severity: 'info',
+        summary: 'Infrastructure imported',
+        detail: metadata.name,
+      });
     } else {
-      this.growl.show({ severity: 'error', summary: 'Error importing infrastructure', detail: result.error.toString() });
+      this.growl.show({
+        severity: 'error',
+        summary: 'Error importing infrastructure',
+        detail: result.error.toString(),
+      });
     }
   }
 
@@ -83,7 +91,7 @@ export default class ImportModels extends Component {
     }
 
     if (ProjectModel.getInfra() === null){
-      const infra = infraimporter.getInfra(infraXml);
+      const infra = infraimporter(infraXml);
       ProjectModel.setInfra(infra.infra);
       GraphConnector.addSubGraphs({ infra: infra.infra });
     }

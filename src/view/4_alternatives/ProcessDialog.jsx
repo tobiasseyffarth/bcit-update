@@ -33,20 +33,6 @@ class ProcessDialog extends Component {
     this.setState({ process: nextProps.process });
   }
 
-  getBusinessActivity = () => {
-    const graph = ProjectModel.getGraph();
-    const businessNodes = GraphQuery.filterNodes(graph, { type: 'businessprocess' });
-    const result = [];
-
-    for (let i = 0; i < businessNodes.length; i++){
-      const node = businessNodes[i];
-      if (node.data('name') !== undefined) {
-        result.push({ name: node.data('name'), id: node.data('id') });
-      }
-    }
-    return result;
-  };
-
   onHide() {
     this.setState({ process: null });
     this.setState({ processName: null });
@@ -71,6 +57,20 @@ class ProcessDialog extends Component {
       this.renderProps(process);
     }
   }
+
+  getBusinessActivity = () => {
+    const graph = ProjectModel.getGraph();
+    const businessNodes = GraphQuery.filterNodes(graph, { type: 'businessprocess' });
+    const result = [];
+
+    for (let i = 0; i < businessNodes.length; i++){
+      const node = businessNodes[i];
+      if (node.data('name') !== undefined) {
+        result.push({ name: node.data('name'), id: node.data('id') });
+      }
+    }
+    return result;
+  };
 
   getInfraElements = () => {
     const graph = ProjectModel.getGraph();
@@ -121,9 +121,9 @@ class ProcessDialog extends Component {
         nodetype: 'complianceprocess',
       };
     } else {
-      process.name = this.state.processName;
-      process.props = props;
       complianceProcess = process;
+      complianceProcess.name = this.state.processName;
+      complianceProcess.props = props;
     }
     return complianceProcess;
   }

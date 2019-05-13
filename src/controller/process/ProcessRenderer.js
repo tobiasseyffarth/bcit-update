@@ -108,7 +108,6 @@ function getTopPosition(viewer) {
 
   for (let i = 0; i < shapeCollection.length; i++) {
     const shape = shapeCollection[i];
-    const element = shape.businessObject;
 
     if (!queryprocess.isExtensionShape(shape)) { // check if shape is a modelled extension
       if (shape.y !== undefined) {
@@ -119,8 +118,6 @@ function getTopPosition(viewer) {
           top = shape.y;
         }
       }
-    } else {
-      console.log(element);
     }
   }
   return top;

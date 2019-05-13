@@ -12,8 +12,6 @@ function getMetadata(archiObject) {
 const propDefintions = {};
 
 function getArchiElements(archiObject) {
-  if (!archiObject) { throw 'Empty Archimate XML'; }
-
   const elems = archiObject.model.elements.element;
   for (let i = -1; ++i < elems.length;) {
     const elem = elems[i];
@@ -102,7 +100,7 @@ function getSequenceFlows(obj) {
   Object.assign(elements, sequenceFlows);
 }
 
-export function getInfra(data) {
+export default function getInfra(data) {
   try {
     const jsonObj = fastXmlParser.parse(data, {
       attrPrefix: '@_',
