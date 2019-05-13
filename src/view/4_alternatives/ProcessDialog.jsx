@@ -13,6 +13,7 @@ class ProcessDialog extends Component {
     this.state = {
       header: 'Create new compliance process',
       mode: 'add',
+      process: null,
       processName: null,
       processRule: null,
       controlledEntity: [],
@@ -61,8 +62,15 @@ class ProcessDialog extends Component {
   }
 
   onHide() {
-    this.props.close();
+    this.setState({ process: null });
+    this.setState({ processName: null });
+    this.setState({ processRule: null });
+    this.setState({ controlledEntity: [] });
+    this.setState({ selectedCE: [] });
+    this.setState({ furtherReq: [] });
+    this.setState({ selectedReq: [] });
     this.setState({ visibleDialog: false });
+    this.props.close();
   }
 
   onShow(){
