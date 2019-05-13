@@ -6,7 +6,6 @@ import ProcessDialog from './ProcessDialog';
 import ProcessPatternDialog from './ProcessPatternDialog';
 import ProjectModel from '../../models/ProjectModel';
 
-
 export default class GraphEditPanel extends Component {
   constructor(props) {
     super(props);

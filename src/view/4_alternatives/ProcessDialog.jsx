@@ -16,6 +16,7 @@ class ProcessDialog extends Component {
       mode: 'add',
       process: null,
       processName: null,
+      processId: null,
       processRule: null,
       controlledEntity: [],
       selectedCE: [],
@@ -29,6 +30,8 @@ class ProcessDialog extends Component {
     this.onShow = this.onShow.bind(this);
     this.onHide = this.onHide.bind(this);
     this.buttonClick = this.buttonClick.bind(this);
+    this.selectComplianceProcess = this.selectComplianceProcess.bind(this);
+    this.renderProps = this.renderProps.bind(this);
   }
 
   componentWillReceiveProps(nextProps){
@@ -164,6 +167,12 @@ class ProcessDialog extends Component {
     this.onHide();
   }
 
+  selectComplianceProcess(cp){
+    this.setState({processId: cp.id});
+    this.setState({processName: cp.name});
+    this.renderProps(cp);
+  }
+
   renderProps(process){
     const ce = this.getBusinessActivity();
     const req = this.getInfraElements();
@@ -186,7 +195,7 @@ class ProcessDialog extends Component {
       for (let j = 0; j < props.length; j++){
         const entity = req[i];
         const prop = props[j];
-        if (entity.id === prop.value){
+        if (entity.id === prop.value || entity.id === prop._value){
           result.push(entity);
         }
       }
@@ -211,9 +220,7 @@ class ProcessDialog extends Component {
             style={{width: '30%'}}
             value={this.state.selectedCP}
             options={this.state.complianceProcesses}
-            onChange={(e) => {
-              this.setState({selectedCP: e.value})
-            }}
+            onChange={(e) => { this.selectComplianceProcess(e.value) }}
             optionLabel="name"
           />
         </div>
