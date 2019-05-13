@@ -87,20 +87,6 @@ export default class StepITCompliance extends Component {
     this.setState({ selectedCompliance: selectedRequirement });
   }
 
-  renderInfraProps(element){
-    if (element !== null) {
-      this.setState({ infraElement: element });
-      this.setState({ infraElementId: element.id });
-      this.setState({ infraElementName: element.name });
-      this.setState({ infraElementProps: element.props });
-    } else {
-      this.setState({ infraElement: null });
-      this.setState({ infraElementId: null });
-      this.setState({ infraElementName: null });
-      this.setState({ infraElementProps: null });
-    }
-  }
-
   hookInfraOnClick(graph){
     const _this = this;
     const { infra } = this.state;
@@ -138,6 +124,20 @@ export default class StepITCompliance extends Component {
 
     ProjectModel.setInfra(infra);
     ProjectModel.setGraph(graph);
+  }
+
+  renderInfraProps(element){
+    if (element !== null) {
+      this.setState({ infraElement: element });
+      this.setState({ infraElementId: element.id });
+      this.setState({ infraElementName: element.name });
+      this.setState({ infraElementProps: element.props });
+    } else {
+      this.setState({ infraElement: null });
+      this.setState({ infraElementId: null });
+      this.setState({ infraElementName: null });
+      this.setState({ infraElementProps: null });
+    }
   }
 
   renderInfra(infra) {

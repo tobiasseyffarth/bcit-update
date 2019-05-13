@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { ListBox } from 'primereact/listbox';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
+import cytoscape from 'cytoscape';
 import '../../App.css';
 import ProjectModel from '../../models/ProjectModel';
 import * as GraphRenderer from '../../controller/graph/GraphRenderer';
-import cytoscape from 'cytoscape';
 
 class ChangeDialog extends Component {
   constructor(props) {

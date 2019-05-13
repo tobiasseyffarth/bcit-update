@@ -52,59 +52,6 @@ class InfraView extends Component {
     this.setState({ visibleAlternative: false });
   }
 
-  renderInfra(infra){
-    const container = document.getElementById('infra-container');
-    const graph = cytoscape({
-      container,
-      style: [ // the stylesheet for the graph
-        {
-          selector: 'node',
-          style: {
-            label: 'data(display_name)',
-            shape: 'triangle',
-            'background-color': '#ffffff',
-            'border-style': 'solid',
-            'border-color': '#666666',
-            'border-width': 1,
-          },
-        },
-        {
-          selector: 'edge',
-          style: {
-            width: 1,
-            'line-color': '#1c2966',
-            'mid-target-arrow-color': '#3040b7',
-            'mid-target-arrow-shape': 'triangle',
-            'line-style': 'dotted',
-          },
-        },
-      ],
-    });
-
-    GraphCreator.createGraphFromInfra(graph, infra);
-    const layout = graph.layout({ name: 'breadthfirst' }); // more options http://js.cytoscape.org/#layouts
-    layout.run();
-    graph.autolock(false); // elements can not be moved by the user
-    GraphRenderer.resizeGraph(graph);
-    this.hookInfraOnClick(graph);
-  }
-
-  hookInfraOnClick(graph){
-    const _this = this;
-    const { infra } = this.state;
-
-    graph.on('tap', (evt) => { // http://js.cytoscape.org/#core/events
-      const element = evt.target;
-      if (element === graph) { // background
-        _this.renderInfraProps(null);
-      } else if (element.isNode()) { // edge
-        const id = element.data('id');
-        const itComponent = InfraQuery.getElementById(infra, id);
-        _this.renderInfraProps(itComponent);
-      }
-    });
-  }
-
   getRemoveGraph(){
     const { itComponent } = this.state;
 
@@ -165,6 +112,59 @@ class InfraView extends Component {
         }
       }
     }
+  }
+
+  hookInfraOnClick(graph){
+    const _this = this;
+    const { infra } = this.state;
+
+    graph.on('tap', (evt) => { // http://js.cytoscape.org/#core/events
+      const element = evt.target;
+      if (element === graph) { // background
+        _this.renderInfraProps(null);
+      } else if (element.isNode()) { // edge
+        const id = element.data('id');
+        const itComponent = InfraQuery.getElementById(infra, id);
+        _this.renderInfraProps(itComponent);
+      }
+    });
+  }
+
+  renderInfra(infra){
+    const container = document.getElementById('infra-container');
+    const graph = cytoscape({
+      container,
+      style: [ // the stylesheet for the graph
+        {
+          selector: 'node',
+          style: {
+            label: 'data(display_name)',
+            shape: 'triangle',
+            'background-color': '#ffffff',
+            'border-style': 'solid',
+            'border-color': '#666666',
+            'border-width': 1,
+          },
+        },
+        {
+          selector: 'edge',
+          style: {
+            width: 1,
+            'line-color': '#1c2966',
+            'mid-target-arrow-color': '#3040b7',
+            'mid-target-arrow-shape': 'triangle',
+            'line-style': 'dotted',
+          },
+        },
+      ],
+    });
+
+    GraphCreator.createGraphFromInfra(graph, infra);
+    const layout = graph.layout({ name: 'breadthfirst' }); // more options http://js.cytoscape.org/#layouts
+    layout.run();
+    graph.autolock(false); // elements can not be moved by the user
+    GraphRenderer.resizeGraph(graph);
+    this.hookInfraOnClick(graph);
   }
 
   renderInfraProps(itComponent){

@@ -31,9 +31,9 @@ export default class TopMenu extends Component {
     this.setState({ visibleGraph: true });
   }
 
-  exportBpmn(){
+  exportBpmn = () => {
     console.log(ProjectModel.getBpmnXml());
-  }
+  };
 
 
   render() {

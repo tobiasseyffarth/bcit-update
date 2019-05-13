@@ -74,12 +74,7 @@ export function linkInfra2Process(viewer, graph, shape, itComponent) {
 
   if (!businessObject.$type.toLowerCase().includes('data')) {
     const extension = ProcessEditor.createExtensionElement('infra', itComponent.id);
-
-    console.log(businessObject);
-
     const isUniqueExt = ProcessQuery.isUniqueExtension(businessObject, extension);
-
-    console.log(isUniqueExt);
 
     if (isUniqueExt) {
       ProcessEditor.addExtension(viewer, businessObject, extension); // 1. zu props flowelement hinzufügen
@@ -90,6 +85,7 @@ export function linkInfra2Process(viewer, graph, shape, itComponent) {
       return false;
     }
   }
+  return null;
 }
 
 export function linkRequirement2Requirement(graph, source_requirement, target_requirement) {

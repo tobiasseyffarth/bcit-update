@@ -48,15 +48,6 @@ class BpmnView extends Component {
     this.setState({ visibleChange: false });
   }
 
-  hookBpmnEventBus() {
-    const eventBus = this.bpmnModeler.get('eventBus');
-    eventBus.on('element.click', e => this.hookBpmnOnClick(e));
-  }
-
-  hookBpmnOnClick(e) {
-    this.renderBpmnProps(e.element);
-  }
-
   getRemoveGraph(){
     const shape = this.state.bpmnShape;
 
@@ -112,6 +103,15 @@ class BpmnView extends Component {
         }
       }
     }
+  }
+
+  hookBpmnOnClick(e) {
+    this.renderBpmnProps(e.element);
+  }
+
+  hookBpmnEventBus() {
+    const eventBus = this.bpmnModeler.get('eventBus');
+    eventBus.on('element.click', e => this.hookBpmnOnClick(e));
   }
 
   renderDiagram = (xml) => {

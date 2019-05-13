@@ -344,7 +344,7 @@ export function getPropsValue(props, key){
     const entry = props[i];
 
     if (entry.key === key){
-      return pair.value;
+      return entry.value;
     }
   }
   return null;

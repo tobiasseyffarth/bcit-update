@@ -55,16 +55,6 @@ export default class StepProcCompliance extends Component {
     this.setState({ complianceFilter: compliance });
   }
 
-  renderBpmn = (xml) => {
-    this.bpmnModeler.importXML(xml, (err) => {
-      if (err) {
-        console.log('error rendering', err);
-      } else {
-        this.fitBpmnView();
-      }
-    });
-  };
-
   renderBpmnProps(element) {
     if (element !== null) {
       const { businessObject } = element;
@@ -189,6 +179,16 @@ export default class StepProcCompliance extends Component {
     this.setState({ complianceText: reqText });
     this.setState({ selectedCompliance: selectedRequirement });
   }
+
+  renderBpmn = (xml) => {
+    this.bpmnModeler.importXML(xml, (err) => {
+      if (err) {
+        console.log('error rendering', err);
+      } else {
+        this.fitBpmnView();
+      }
+    });
+  };
 
   renderBpmnPropsPanel() {
     return (

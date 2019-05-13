@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { ListBox } from 'primereact/listbox';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
+import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import '../../App.css';
 import ProjectModel from '../../models/ProjectModel';
-import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 
 class AlternativeView extends Component {
   constructor(props) {
@@ -53,9 +53,9 @@ class AlternativeView extends Component {
     });
   };
 
-  renderAlternativeProcess(option) {
+  renderAlternativeProcess = (option) => {
     console.log(option);
-  }
+  };
 
   render() {
     const footer = (

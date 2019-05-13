@@ -43,16 +43,16 @@ export default class GraphPropsPanel extends Component {
   }
 
   openDialog(){
-    const modelType = this.state.modelType;
+    const { modelType } = this.state;
     const node = {
       id: this.state.nodeId,
       name: this.state.nodeName,
       nodeType: this.state.nodeType,
       modelType: this.state.modelType,
-      props: this.state.nodeProps
+      props: this.state.nodeProps,
     };
 
-    this.setState({ node: node });
+    this.setState({ node });
 
     if (modelType === 'complianceprocesspattern'){
       this.setState({ visibleComplianceProcessPatternDialog: true });

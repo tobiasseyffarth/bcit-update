@@ -52,14 +52,14 @@ export default class Alternatives extends Component {
     this.stringyfyGraph();
   }
 
-  stringyfyGraph(){
-    const elements = ProjectIO.getElementsFromGraph(this.graph);
-    const newG = ProjectIO.getGraphFromElements(elements);
-  }
-
   onHide() {
     this.setState({ visibleComplianceProcessDialog: false });
     this.setState({ visibleComplianceProcessPatternDialog: false });
+  }
+
+  stringyfyGraph(){
+    const elements = ProjectIO.getElementsFromGraph(this.graph);
+    const newG = ProjectIO.getGraphFromElements(elements);
   }
 
   hookGraphOnClick(graph){
@@ -75,11 +75,11 @@ export default class Alternatives extends Component {
     });
   }
 
-  linkNodes(graph, node, newNode){
+  linkNodes = (graph, node, newNode) =>{
     GraphEditor.linkNodesAltGraph(graph, node, newNode);
     GraphRenderer.styleNodesAltGraph(graph);
     GraphRenderer.drawNodesAltGraph(graph);
-  }
+  };
 
   addComplianceRequirement(req){
     if (req !== null){

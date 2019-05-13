@@ -29,14 +29,14 @@ class RemoveDialog extends Component {
     this.setState({ visibleDialog: false });
   }
 
-  closeAlternativeView(){
-    this.setState({ visibleAlternative: false });
-  }
-
   onShow() {
     if (ProjectModel.getRemoveGraph() !== null) {
       this.renderRemoveGraph(ProjectModel.getRemoveGraph());
     }
+  }
+
+  closeAlternativeView(){
+    this.setState({ visibleAlternative: false });
   }
 
   hookGraphOnClick(graph){
@@ -50,6 +50,10 @@ class RemoveDialog extends Component {
         _this.renderGraphProps(element);
       }
     });
+  }
+
+  showAlternativeDialog(){
+    this.setState({ visibleAlternative: true });
   }
 
   renderRemoveGraph(graph) {
@@ -90,10 +94,6 @@ class RemoveDialog extends Component {
 
     GraphRenderer.renderAnalyzeGraph(graphDelete, graph);
     this.hookGraphOnClick(graphDelete);
-  }
-
-  showAlternativeDialog(){
-    this.setState({ visibleAlternative: true });
   }
 
   renderGraphPropsPanel() {

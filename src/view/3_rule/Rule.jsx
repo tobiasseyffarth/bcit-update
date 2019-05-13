@@ -62,17 +62,6 @@ export default class Rule extends Component {
     eventBus.on('element.click', e => this.hookBpmnOnClick(e));
   }
 
-  renderBpmnA = (xml) => {
-    this.bpmnModelerA.importXML(xml, (err) => {
-      if (err) {
-        console.log('error rendering', err);
-      } else {
-        const canvas = this.bpmnModelerA.get('canvas');
-        canvas.zoom('fit-viewport');
-      }
-    });
-  };
-
   renderBpmnB = (xml) => {
     this.bpmnModelerB.importXML(xml, (err) => {
       if (err) {
@@ -136,6 +125,17 @@ export default class Rule extends Component {
       ProcessRenderer.integrateShapeSequential(viewer, newShape, shape, 'after');
     }
   }
+
+  renderBpmnA = (xml) => {
+    this.bpmnModelerA.importXML(xml, (err) => {
+      if (err) {
+        console.log('error rendering', err);
+      } else {
+        const canvas = this.bpmnModelerA.get('canvas');
+        canvas.zoom('fit-viewport');
+      }
+    });
+  };
 
   render() {
     return (

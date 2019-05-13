@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
-import {MultiSelect} from 'primereact/multiselect';
+import { MultiSelect } from 'primereact/multiselect';
 import '../../App.css';
 import * as GraphQuery from './../../controller/graph/GraphQuery';
 import ProjectModel from './../../models/ProjectModel';
@@ -33,33 +33,19 @@ class ProcessDialog extends Component {
     this.setState({ process: nextProps.process });
   }
 
-  getInfraElements(){
+  getBusinessActivity = () => {
     const graph = ProjectModel.getGraph();
-    const infraNodes = GraphQuery.filterNodes(graph, {type: 'infra'});
-    let result = [];
-
-    for (let i = 0; i < infraNodes.length; i++){
-      const node = infraNodes[i];
-      if (node.data('name') !== undefined) {
-        result.push({name: node.data('name'), id: node.data('id')});
-      }
-    }
-    return result;
-  }
-
-  getBusinessActivity(){
-    const graph = ProjectModel.getGraph();
-    const businessNodes = GraphQuery.filterNodes(graph, {type: 'businessprocess'});
-    let result = [];
+    const businessNodes = GraphQuery.filterNodes(graph, { type: 'businessprocess' });
+    const result = [];
 
     for (let i = 0; i < businessNodes.length; i++){
       const node = businessNodes[i];
       if (node.data('name') !== undefined) {
-        result.push({name: node.data('name'), id: node.data('id')});
+        result.push({ name: node.data('name'), id: node.data('id') });
       }
     }
     return result;
-  }
+  };
 
   onHide() {
     this.setState({ process: null });
@@ -74,81 +60,67 @@ class ProcessDialog extends Component {
   }
 
   onShow(){
-    this.setState({ controlledEntity: this.getBusinessActivity()});
-    this.setState({ furtherReq: this.getInfraElements()});
+    this.setState({ controlledEntity: this.getBusinessActivity() });
+    this.setState({ furtherReq: this.getInfraElements() });
 
-    const process = this.state.process;
+    const { process } = this.state;
     if (process !== undefined){
       this.setState({ processName: process.name });
       this.setState({ header: 'Edit compliance process' });
-      this.setState({ mode: 'edit'});
+      this.setState({ mode: 'edit' });
       this.renderProps(process);
     }
   }
 
+  getInfraElements = () => {
+    const graph = ProjectModel.getGraph();
+    const infraNodes = GraphQuery.filterNodes(graph, { type: 'infra' });
+    const result = [];
+
+    for (let i = 0; i < infraNodes.length; i++){
+      const node = infraNodes[i];
+      if (node.data('name') !== undefined) {
+        result.push({ name: node.data('name'), id: node.data('id') });
+      }
+    }
+    return result;
+  };
+
   getProps(){
     const ce = this.state.selectedCE;
     const req = this.state.selectedReq;
-    let result = [];
+    const result = [];
 
     for (let i = 0; i < ce.length; i++){
       result.push({
         key: 'ce',
         value: ce[i].id,
-        display: 'Controlled Entity ' + ce[i].name})
+        display: `Controlled Entity ${ce[i].name}`,
+      });
     }
 
     for (let i = 0; i < req.length; i++){
       result.push({
         key: 'req',
         value: req[i].id,
-        display: 'Further Requirement ' + req[i].name})
+        display: `Further Requirement ${req[i].name}`,
+      });
     }
     return result;
   }
 
-  renderProps(process){
-    const ce = this.getBusinessActivity();
-    const req = this.getInfraElements();
-    const props = process.props;
-    let result = [];
-
-    for (let i = 0; i < ce.length; i++){
-      for (let j = 0; j < props.length; j++){
-        const entity = ce[i];
-        const prop = props[j];
-        if (entity.id === prop.value){
-          result.push(entity);
-        }
-      }
-    }
-    this.setState({ selectedCE: result});
-
-    result = [];
-    for (let i = 0; i < req.length; i++){
-      for (let j = 0; j < props.length; j++){
-        const entity = req[i];
-        const prop = props[j];
-        if (entity.id === prop.value){
-          result.push(entity);
-        }
-      }
-    }
-    this.setState({ selectedReq: result});
-  }
-
   getComplianceProcess(process){
     let complianceProcess;
-    let props = this.getProps();
+    const props = this.getProps();
 
     if (process === undefined){
       complianceProcess = {
         name: this.state.processName,
-        props: props,
+        props,
         modeltype: 'complianceprocess',
-        nodetype: 'complianceprocess'
+        nodetype: 'complianceprocess',
       };
-    } else{
+    } else {
       process.name = this.state.processName;
       process.props = props;
       complianceProcess = process;
@@ -167,7 +139,7 @@ class ProcessDialog extends Component {
   }
 
   buttonClick(){
-    const mode = this.state.mode;
+    const { mode } = this.state;
     if (mode === 'add'){
       this.addComplianceProcess();
     } else if (mode === 'edit'){
@@ -176,11 +148,41 @@ class ProcessDialog extends Component {
     this.onHide();
   }
 
+  renderProps(process){
+    const ce = this.getBusinessActivity();
+    const req = this.getInfraElements();
+    const { props } = process;
+    let result = [];
+
+    for (let i = 0; i < ce.length; i++){
+      for (let j = 0; j < props.length; j++){
+        const entity = ce[i];
+        const prop = props[j];
+        if (entity.id === prop.value){
+          result.push(entity);
+        }
+      }
+    }
+    this.setState({ selectedCE: result });
+
+    result = [];
+    for (let i = 0; i < req.length; i++){
+      for (let j = 0; j < props.length; j++){
+        const entity = req[i];
+        const prop = props[j];
+        if (entity.id === prop.value){
+          result.push(entity);
+        }
+      }
+    }
+    this.setState({ selectedReq: result });
+  }
+
   render() {
     const footer = (
       <div>
-        <Button label="Ok" onClick={this.buttonClick}/>
-        <Button label="Abort" onClick={this.onHide}/>
+        <Button label="Ok" onClick={this.buttonClick} />
+        <Button label="Abort" onClick={this.onHide} />
       </div>
     );
 
@@ -190,7 +192,7 @@ class ProcessDialog extends Component {
           header={this.state.header}
           footer={footer}
           visible={this.state.visibleDialog}
-          style={{width: '80vw'}}
+          style={{ width: '80vw' }}
           onShow={this.onShow}
           onHide={this.onHide}
           maximizable
@@ -200,7 +202,7 @@ class ProcessDialog extends Component {
             <InputText
               id="processName"
               value={this.state.processName}
-              onChange={e => this.setState({processName: e.target.value})}
+              onChange={e => this.setState({ processName: e.target.value })}
             />
           </div>
           <div>
@@ -208,7 +210,7 @@ class ProcessDialog extends Component {
             <InputText
               id="processRule"
               value={this.state.processRule}
-              onChange={e => this.setState({processRule: e.target.value})}
+              onChange={e => this.setState({ processRule: e.target.value })}
             />
           </div>
           <div>
@@ -217,7 +219,8 @@ class ProcessDialog extends Component {
               optionLabel="name"
               value={this.state.selectedCE}
               options={this.state.controlledEntity}
-              onChange={(e) => this.setState({selectedCE: e.value})} />
+              onChange={e => this.setState({ selectedCE: e.value })}
+            />
           </div>
           <div>
             <label htmlFor="furtherReq">Further Requirements</label>
@@ -225,7 +228,8 @@ class ProcessDialog extends Component {
               optionLabel="name"
               value={this.state.selectedReq}
               options={this.state.furtherReq}
-              onChange={(e) => this.setState({selectedReq: e.value})} />
+              onChange={e => this.setState({ selectedReq: e.value })}
+            />
           </div>
         </Dialog>
       </div>

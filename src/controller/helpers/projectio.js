@@ -1,21 +1,21 @@
 import * as GraphEditor from './../graph/GraphEditor';
 
 export function getElementsFromGraph(graph){
-  let nodes = graph.nodes();
-  let edges = graph.edges();
+  const nodes = graph.nodes();
+  const edges = graph.edges();
 
-  let graphElements = {
+  const graphElements = {
     node: [],
-    edge: []
+    edge: [],
   };
 
   for (let i = 0; i < nodes.length; i++) {
-    let _node = nodes[i];
+    const _node = nodes[i];
     graphElements.node.push(_node.data());
   }
 
   for (let i = 0; i < edges.length; i++) {
-    let _edge = edges[i];
+    const _edge = edges[i];
     graphElements.edge.push(_edge.data());
   }
 
@@ -23,7 +23,7 @@ export function getElementsFromGraph(graph){
 }
 
 export function getGraphFromElements(elements){
-  let graph = GraphEditor.getEmptyGraph();
+  const graph = GraphEditor.getEmptyGraph();
   const nodes = elements.node;
   const edges = elements.edge;
 
@@ -32,7 +32,7 @@ export function getGraphFromElements(elements){
 
     graph.add({
       group: 'nodes',
-      data: node
+      data: node,
     });
   }
 
@@ -41,7 +41,7 @@ export function getGraphFromElements(elements){
 
     graph.add({
       group: 'edges',
-      data: edge
+      data: edge,
     });
   }
   return graph;

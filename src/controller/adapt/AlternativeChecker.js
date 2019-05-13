@@ -18,8 +18,8 @@ function getTaskId(ltlString){
   for (let i = start; ltlString.length; i++){
     const char = ltlString.charAt(i);
 
-    if (char !==')'){
-      result = result + char;
+    if (char !== ')'){
+      result += char;
     } else {
       break;
     }
@@ -48,5 +48,4 @@ export function isExecutable(cpNode, reqNode, resultGraph){
 
 
   // check wheather the requirements to execute are obsolete in the result graph
-
 }

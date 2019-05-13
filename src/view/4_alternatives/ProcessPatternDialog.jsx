@@ -13,7 +13,7 @@ class ProcessPatternDialog extends Component {
       patternName: null,
       patternProps: null,
       visibleDialog: false,
-      pattern: null
+      pattern: null,
     };
 
     this.onShow = this.onShow.bind(this);
@@ -28,11 +28,11 @@ class ProcessPatternDialog extends Component {
   }
 
   onShow(){
-    const pattern = this.state.pattern;
+    const { pattern } = this.state;
     if (pattern !== undefined){
       this.setState({ patternName: pattern.name });
       this.setState({ header: 'Edit compliance process pattern' });
-      this.setState({ mode: 'edit'});
+      this.setState({ mode: 'edit' });
     }
   }
 
@@ -49,9 +49,9 @@ class ProcessPatternDialog extends Component {
         name: this.state.patternName,
         props: this.state.patternProps,
         modeltype: 'complianceprocesspattern',
-        nodetype: 'complianceprocesspattern'
+        nodetype: 'complianceprocesspattern',
       };
-    } else{
+    } else {
       pattern.name = this.state.patternName;
       cpPattern = pattern;
     }
@@ -69,7 +69,7 @@ class ProcessPatternDialog extends Component {
   }
 
   buttonClick(){
-    const mode = this.state.mode;
+    const { mode } = this.state;
     if (mode === 'add'){
       this.addCpPattern();
     } else if (mode === 'edit'){
@@ -81,8 +81,8 @@ class ProcessPatternDialog extends Component {
   render() {
     const footer = (
       <div>
-        <Button label="Ok" onClick={this.buttonClick}/>
-        <Button label="Abort" onClick={this.onHide}/>
+        <Button label="Ok" onClick={this.buttonClick} />
+        <Button label="Abort" onClick={this.onHide} />
       </div>
     );
 
@@ -92,7 +92,7 @@ class ProcessPatternDialog extends Component {
           header={this.state.header}
           footer={footer}
           visible={this.state.visibleDialog}
-          style={{width: '80vw'}}
+          style={{ width: '80vw' }}
           onShow={this.onShow}
           onHide={this.onHide}
           maximizable
@@ -102,7 +102,7 @@ class ProcessPatternDialog extends Component {
             <InputText
               id="processName"
               value={this.state.patternName}
-              onChange={e => this.setState({patternName: e.target.value})}
+              onChange={e => this.setState({ patternName: e.target.value })}
             />
           </div>
         </Dialog>

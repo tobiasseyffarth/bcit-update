@@ -82,26 +82,6 @@ export default class StepProcIT extends Component {
     }
   }
 
-  removeBpmnProp() {
-    if (this.state.bpmnShape !== null && this.state.bpmnProp !== null) {
-      const element = this.state.bpmnShape;
-      const { businessObject } = element;
-
-      ProcessEditor.removeExt(businessObject.extensionElements, {
-        name: this.state.bpmnProp._name,
-        value: this.state.bpmnProp._value,
-      });
-      this.setState({ bpmnShape: element });
-      this.renderBpmnProps(element);
-      const isCPP = ProcessQuery.isCompliance(businessObject);
-      ProcessRenderer.renderComplianceProcess(this.bpmnModeler, element, isCPP);
-
-      this.updateBusinessObject(businessObject);
-      this.fitBpmnView();
-      this.updateBpmnXml();
-    }
-  }
-
   setComplianceProcess(e) {
     if (this.state.bpmnShape !== null) {
       const modeler = this.bpmnModeler;
@@ -119,6 +99,26 @@ export default class StepProcIT extends Component {
       }
 
       this.updateBusinessObject(businessObject);
+      this.updateBpmnXml();
+    }
+  }
+
+  removeBpmnProp() {
+    if (this.state.bpmnShape !== null && this.state.bpmnProp !== null) {
+      const element = this.state.bpmnShape;
+      const { businessObject } = element;
+
+      ProcessEditor.removeExt(businessObject.extensionElements, {
+        name: this.state.bpmnProp._name,
+        value: this.state.bpmnProp._value,
+      });
+      this.setState({ bpmnShape: element });
+      this.renderBpmnProps(element);
+      const isCPP = ProcessQuery.isCompliance(businessObject);
+      ProcessRenderer.renderComplianceProcess(this.bpmnModeler, element, isCPP);
+
+      this.updateBusinessObject(businessObject);
+      this.fitBpmnView();
       this.updateBpmnXml();
     }
   }
