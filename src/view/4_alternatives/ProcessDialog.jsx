@@ -3,6 +3,7 @@ import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { MultiSelect } from 'primereact/multiselect';
+import {Dropdown} from 'primereact/dropdown';
 import '../../App.css';
 import * as GraphQuery from './../../controller/graph/GraphQuery';
 import ProjectModel from './../../models/ProjectModel';
@@ -20,6 +21,8 @@ class ProcessDialog extends Component {
       selectedCE: [],
       furtherReq: [],
       selectedReq: [],
+      complianceProcesses: [],
+      selectedCP: null,
       visibleDialog: false,
     };
 
@@ -48,6 +51,7 @@ class ProcessDialog extends Component {
   onShow(){
     this.setState({ controlledEntity: this.getBusinessActivity() });
     this.setState({ furtherReq: this.getInfraElements() });
+    this.setState({ complianceProcesses: this.getComplianceProcess() });
 
     const { process } = this.state;
     if (process !== undefined){
@@ -68,6 +72,18 @@ class ProcessDialog extends Component {
       if (node.data('name') !== undefined) {
         result.push({ name: node.data('name'), id: node.data('id') });
       }
+    }
+    return result;
+  };
+
+  getComplianceProcess = () => {
+    const graph = ProjectModel.getGraph();
+    const complianceNodes = GraphQuery.filterNodes(graph, { type: 'complianceprocess' });
+    const result = [];
+
+    for (let i = 0; i < complianceNodes.length; i++){
+      const node = complianceNodes[i];
+      result.push({ name: node.data('name'), id: node.data('id'), props: node.data('props') });
     }
     return result;
   };
@@ -109,7 +125,7 @@ class ProcessDialog extends Component {
     return result;
   }
 
-  getComplianceProcess(process){
+  createComplianceProcess(process){
     let complianceProcess;
     const props = this.getProps();
 
@@ -129,12 +145,12 @@ class ProcessDialog extends Component {
   }
 
   addComplianceProcess(){
-    const comProcess = this.getComplianceProcess();
+    const comProcess = this.createComplianceProcess();
     this.props.addProcess(comProcess);
   }
 
   editComplianceProcess(){
-    const comProcess = this.getComplianceProcess(this.state.process);
+    const comProcess = this.createComplianceProcess(this.state.process);
     this.props.edit(comProcess);
   }
 
@@ -186,6 +202,24 @@ class ProcessDialog extends Component {
       </div>
     );
 
+    let complianceProcess;
+    if (this.state.mode === 'add') {
+      complianceProcess = (
+        <div>
+          <label htmlFor="complianceProcess">Select existing compliance process</label>
+          <Dropdown
+            style={{width: '30%'}}
+            value={this.state.selectedCP}
+            options={this.state.complianceProcesses}
+            onChange={(e) => {
+              this.setState({selectedCP: e.value})
+            }}
+            optionLabel="name"
+          />
+        </div>
+      );
+    }
+
     return (
       <div className="content-section implementation">
         <Dialog
@@ -197,9 +231,11 @@ class ProcessDialog extends Component {
           onHide={this.onHide}
           maximizable
         >
+          {complianceProcess}
           <div>
             <label htmlFor="processName">Name</label>
             <InputText
+              style={{ width: '30%' }}
               id="processName"
               value={this.state.processName}
               onChange={e => this.setState({ processName: e.target.value })}
@@ -208,6 +244,7 @@ class ProcessDialog extends Component {
           <div>
             <label htmlFor="processRule">Rule</label>
             <InputText
+              style={{ width: '30%' }}
               id="processRule"
               value={this.state.processRule}
               onChange={e => this.setState({ processRule: e.target.value })}
@@ -216,6 +253,7 @@ class ProcessDialog extends Component {
           <div>
             <label htmlFor="controlledEntity">Controlled Entity</label>
             <MultiSelect
+              style={{ width: '30%' }}
               optionLabel="name"
               value={this.state.selectedCE}
               options={this.state.controlledEntity}
@@ -225,6 +263,7 @@ class ProcessDialog extends Component {
           <div>
             <label htmlFor="furtherReq">Further Requirements</label>
             <MultiSelect
+              style={{ width: '30%' }}
               optionLabel="name"
               value={this.state.selectedReq}
               options={this.state.furtherReq}
