@@ -52,6 +52,10 @@ export default class GraphEditPanel extends Component {
     this.setState({ selectedCompliance: selectedRequirement });
   }
 
+  showReqDialog(){
+
+  }
+
   showComplianceProcessDialog() {
     const type = this.state.nodeType;
 

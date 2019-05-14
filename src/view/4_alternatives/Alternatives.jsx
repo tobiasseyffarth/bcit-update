@@ -74,7 +74,7 @@ export default class Alternatives extends Component {
     GraphRenderer.drawNodesAltGraph(graph);
   };
 
-  addComplianceRequirement(req){
+  addComplianceRequirement(req){ // todo: die req aus dem dialog übernehmen
     if (req !== null){
       const isUnique = GraphEditor.addNode(this.graph, { req });
       GraphRenderer.styleNodesAltGraph(this.graph);
