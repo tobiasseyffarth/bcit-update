@@ -579,9 +579,7 @@ export function addNode(graph, input){
           display_name: id,
           nodetype: 'compliance',
           modeltype: 'compliance',
-          text: req.text,
-          title: req.title,
-          props: req.source,
+          props: req.props,
         },
       });
     }

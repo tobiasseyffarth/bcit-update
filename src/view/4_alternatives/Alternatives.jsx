@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Growl } from 'primereact/growl';
 import PropTypes from 'prop-types';
+import ReqDialog from './ReqDialog';
 import ProjectModel from '../../models/ProjectModel';
 import GraphEditPanel from './GraphEditPanel';
 import GraphPropsPanel from './GraphPropsPanel';
 import * as GraphRenderer from '../../controller/graph/GraphRenderer';
 import * as GraphEditor from '../../controller/graph/GraphEditor';
+import * as GraphQuery from '../../controller/graph/GraphQuery';
 import * as ProjectIO from './../../controller/helpers/projectio';
 
 export default class Alternatives extends Component {
@@ -17,11 +19,14 @@ export default class Alternatives extends Component {
       nodeType: null,
       modelType: null,
       nodeProps: [],
+      visibleReqDialog: false,
+      reqName: null,
     };
 
-    this.addProcess = this.addProcess.bind(this);
     this.onHide = this.onHide.bind(this);
-    this.addComplianceRequirement = this.addComplianceRequirement.bind(this);
+    this.showReqDialog = this.showReqDialog.bind(this);
+    this.addReq = this.addReq.bind(this);
+    this.addProcess = this.addProcess.bind(this);
     this.addComplianceProcessPattern = this.addComplianceProcessPattern.bind(this);
     this.editNode = this.editNode.bind(this);
     this.removeNode = this.removeNode.bind(this);
@@ -53,6 +58,7 @@ export default class Alternatives extends Component {
   onHide() {
     this.setState({ visibleComplianceProcessDialog: false });
     this.setState({ visibleComplianceProcessPatternDialog: false });
+    this.setState({ visibleReqDialog: false });
   }
 
   hookGraphOnClick(graph){
@@ -74,12 +80,13 @@ export default class Alternatives extends Component {
     GraphRenderer.drawNodesAltGraph(graph);
   };
 
-  addComplianceRequirement(req){ // todo: die req aus dem dialog übernehmen
+  showReqDialog(req){
     if (req !== null){
-      const isUnique = GraphEditor.addNode(this.graph, { req });
-      GraphRenderer.styleNodesAltGraph(this.graph);
-      GraphRenderer.drawNodesAltGraph(this.graph);
-      if (!isUnique){
+      const isUnique = GraphQuery.isUniqueNode(this.graph, { id: req.id });
+      if (isUnique) {
+        this.setState({ visibleReqDialog: true });
+        this.setState({ reqName: req.id });
+      } else {
         this.growl.show({
           severity: 'warn',
           summary: 'Compliance requirement already in the graph.',
@@ -93,6 +100,12 @@ export default class Alternatives extends Component {
         detail: '',
       });
     }
+  }
+
+  addReq(req){
+    GraphEditor.addNode(this.graph, { req: req });
+    GraphRenderer.styleNodesAltGraph(this.graph);
+    GraphRenderer.drawNodesAltGraph(this.graph);
   }
 
   addProcess(cp){
@@ -113,7 +126,6 @@ export default class Alternatives extends Component {
     node.data('name', changedNode.name);
     node.data('display_name', changedNode.name);
     node.data('props', changedNode.props);
-
     this.renderGraphProps(node);
     GraphRenderer.styleNodesAltGraph(this.graph);
     GraphRenderer.drawNodesAltGraph(this.graph);
@@ -136,13 +148,7 @@ export default class Alternatives extends Component {
       this.setState({ nodeName: node.data('name') });
       this.setState({ nodeType: node.data('nodetype') });
       this.setState({ modelType: node.data('modeltype') });
-
-      const nodeType = node.data('nodetype');
-      if (nodeType !== 'compliance'){ // non compliance nodes
-        this.setState({ nodeProps: node.data('props') });
-      } else { // compliance nodes
-        this.setState({ nodeProps: [] });
-      }
+      this.setState({ nodeProps: node.data('props') });
     } else {
       this.setState({ nodeId: null });
       this.setState({ nodeName: null });
@@ -161,11 +167,17 @@ export default class Alternatives extends Component {
             }}
           position="topright"
         />
+        <ReqDialog
+          showReqDialog={this.state.visibleReqDialog}
+          reqName={this.state.reqName}
+          addReq={this.addReq}
+          close={this.onHide}
+        />
         <div>
           <section className="container-graph">
             <GraphEditPanel
               nodeType={this.state.nodeType}
-              addComplianceRequirement={this.addComplianceRequirement}
+              showReqDialog={this.showReqDialog}
               addProcess={this.addProcess}
               addCpPattern={this.addComplianceProcessPattern}
             />

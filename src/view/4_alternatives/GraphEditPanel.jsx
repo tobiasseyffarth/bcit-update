@@ -20,7 +20,7 @@ export default class GraphEditPanel extends Component {
     this.closeDialogs = this.closeDialogs.bind(this);
     this.addProcess = this.addProcess.bind(this);
     this.addCpPattern = this.addCpPattern.bind(this);
-    this.addComplianceRequirement = this.addComplianceRequirement.bind(this);
+    this.showReqDialog = this.showReqDialog.bind(this);
     this.showComplianceProcessDialog = this.showComplianceProcessDialog.bind(this);
     this.showComplianceProcessPatternDialog = this.showComplianceProcessPatternDialog.bind(this);
   }
@@ -35,9 +35,8 @@ export default class GraphEditPanel extends Component {
     this.setState({ visibleComplianceProcessPatternDialog: false });
   }
 
-  addComplianceRequirement(){
-    const req = this.state.selectedCompliance;
-    this.props.addComplianceRequirement(req);
+  addReq(req){
+    this.props.addReq(req);
   }
 
   addProcess(process){
@@ -53,7 +52,8 @@ export default class GraphEditPanel extends Component {
   }
 
   showReqDialog(){
-
+    const req = this.state.selectedCompliance;
+    this.props.showReqDialog(req);
   }
 
   showComplianceProcessDialog() {
@@ -120,7 +120,7 @@ export default class GraphEditPanel extends Component {
           <br />
           <Button
             label="add req"
-            onClick={this.addComplianceRequirement}
+            onClick={this.showReqDialog}
           />
           <br />
           <br />

@@ -110,11 +110,13 @@ export default class ImportModels extends Component {
       });
     }
 
+    /*
     if (ProjectModel.getAltGraph() === null){
       const elements = JSON.parse(altGraph);
       const graph = ProjectIO.getGraphFromElements(elements);
       ProjectModel.setAltGraph(graph);
     }
+    */
   };
 
   render() {

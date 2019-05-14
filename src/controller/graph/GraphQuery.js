@@ -1,3 +1,5 @@
+import ProjectModel from "../../models/ProjectModel";
+
 export function getDirectPredecessor(node, nodetype) {
   let helper = [];
   helper = node.incomers();
@@ -348,4 +350,30 @@ export function getPropsValue(props, key){
     }
   }
   return null;
+}
+
+export function getBusinessActivities(graph){
+  const businessNodes = filterNodes(graph, { type: 'businessprocess' });
+  const result = [];
+
+  for (let i = 0; i < businessNodes.length; i++){
+    const node = businessNodes[i];
+    if (node.data('name') !== undefined) {
+      result.push({ name: node.data('name'), id: node.data('id') });
+    }
+  }
+  return result;
+}
+
+export function getInfraElements(graph) {
+  const infraNodes = filterNodes(graph, { type: 'infra' });
+  const result = [];
+
+  for (let i = 0; i < infraNodes.length; i++){
+    const node = infraNodes[i];
+    if (node.data('name') !== undefined) {
+      result.push({ name: node.data('name'), id: node.data('id') });
+    }
+  }
+  return result;
 }

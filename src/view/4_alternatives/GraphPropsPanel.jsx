@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ListBox } from 'primereact/listbox';
 import { Button } from 'primereact/button';
+import ReqDialog from './ReqDialog';
 import ProcessDialog from './ProcessDialog';
 import ProcessPatternDialog from './ProcessPatternDialog';
 
@@ -14,7 +15,7 @@ export default class GraphPropsPanel extends Component {
       nodeType: null,
       modelType: null,
       nodeProps: [],
-      visibleComplianceDialog: false,
+      visibleReqDialog: false,
       visibleComplianceProcessDialog: false,
       visibleComplianceProcessPatternDialog: false,
     };
@@ -38,6 +39,7 @@ export default class GraphPropsPanel extends Component {
   }
 
   closeDialogs(){
+    this.setState({ visibleReqDialog: false });
     this.setState({ visibleComplianceProcessDialog: false });
     this.setState({ visibleComplianceProcessPatternDialog: false });
   }
@@ -59,7 +61,7 @@ export default class GraphPropsPanel extends Component {
     } else if (modelType === 'complianceprocess'){
       this.setState({ visibleComplianceProcessDialog: true });
     } else if (modelType === 'compliance') {
-      this.setState({ visibleComplianceDialog: true });
+      this.setState({ visibleReqDialog: true });
     }
   }
 
@@ -114,6 +116,12 @@ export default class GraphPropsPanel extends Component {
   render() {
     return (
       <div>
+        <ReqDialog
+          showReqDialog={this.state.visibleReqDialog}
+          req={this.state.node}
+          edit={this.editNode}
+          close={this.closeDialogs}
+        />
         <ProcessPatternDialog
           showCpPatternDialog={this.state.visibleComplianceProcessPatternDialog}
           pattern={this.state.node}

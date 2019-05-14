@@ -1,33 +1,44 @@
-# Semantic Commit Messages
+# BCIT 2.0
 
-See how a minor change to your commit message style can make you a better programmer.
+BCIT 2.0 is a tool for analyzing the interactions between business process compliance
+and information technology. Furthermore BCIT is able to adapt the business process through alternative compliance processes. 
 
-Format: `<type>(<scope>): <subject>`
+## Content
+- [Features](#features)
+- [Setup](#setup)
+- [Usage](#usage)
+- [Credits](#credits)
+- [License](#license)
 
-`<scope>` is optional
+## Features
 
-## Example
+## Setup
+You can use BCIT online on the[GitHub Page](https://pages.github.com/) of this repository or you can run it locally: 
+   1. Clone the repository `git clone`
+   2. Install npm dependencies `npm install`
+   3. Run `npm start`
 
-```
-feat: add hat wobble
-^--^  ^------------^
-|     |
-|     +-> Summary in present tense.
-|
-+-------> Type: chore, docs, feat, fix, refactor, style, or test.
-```
+**Requirements**
+- Node.JS>= xyz (only for local usage)
+- Firefox version -1 or Chrome version -1
 
-More Examples:
+## Usage
+Describe the demo...
+Furthermore, the usage is show in the following [screencast](link to screencast).
 
-- `feat`: (new feature for the user, not a new feature for build script)
-- `fix`: (bug fix for the user, not a fix to a build script)
-- `docs`: (changes to the documentation)
-- `style`: (formatting, missing semi colons, etc; no production code change)
-- `refactor`: (refactoring production code, eg. renaming a variable)
-- `test`: (adding missing tests, refactoring tests; no production code change)
-- `chore`: (updating grunt tasks etc; no production code change)
+## Credits
+- Tobias Seyffarth
+- Kai Raschke
 
-Reference(s):
+## License
+MIT
 
-- https://seesparkbox.com/foundry/semantic_commit_messages
-- http://karma-runner.github.io/1.0/dev/git-commit-msg.html
+<https://help.github.com/en/articles/about-readmes>
+https://guides.github.com/features/wikis/#syntax-highlighting
+https://help.github.com/en/articles/basic-writing-and-formatting-syntax#mentioning-people-and-teams
+https://www.webfx.com/tools/emoji-cheat-sheet/
+https://guides.github.com/features/mastering-markdown/
+
+***References***
+* [1] 
+* [2] 

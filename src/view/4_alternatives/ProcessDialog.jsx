@@ -5,8 +5,8 @@ import { InputText } from 'primereact/inputtext';
 import { MultiSelect } from 'primereact/multiselect';
 import {Dropdown} from 'primereact/dropdown';
 import '../../App.css';
-import * as GraphQuery from './../../controller/graph/GraphQuery';
 import ProjectModel from './../../models/ProjectModel';
+import * as GraphQuery from './../../controller/graph/GraphQuery';
 
 class ProcessDialog extends Component {
   constructor(props) {
@@ -52,9 +52,9 @@ class ProcessDialog extends Component {
   }
 
   onShow(){
-    this.setState({ controlledEntity: this.getBusinessActivity() });
-    this.setState({ furtherReq: this.getInfraElements() });
-    this.setState({ complianceProcesses: this.getComplianceProcess() });
+    this.setState({ controlledEntity: GraphQuery.getBusinessActivities(ProjectModel.getGraph()) });
+    this.setState({ furtherReq: GraphQuery.getInfraElements(ProjectModel.getGraph())});
+    this.setState({ complianceProcesses: GraphQuery.filterNodes(ProjectModel.getGraph(), { type: 'complianceprocess'}) });
 
     const { process } = this.state;
     if (process !== undefined){
@@ -64,46 +64,6 @@ class ProcessDialog extends Component {
       this.renderProps(process);
     }
   }
-
-  getBusinessActivity = () => {
-    const graph = ProjectModel.getGraph();
-    const businessNodes = GraphQuery.filterNodes(graph, { type: 'businessprocess' });
-    const result = [];
-
-    for (let i = 0; i < businessNodes.length; i++){
-      const node = businessNodes[i];
-      if (node.data('name') !== undefined) {
-        result.push({ name: node.data('name'), id: node.data('id') });
-      }
-    }
-    return result;
-  };
-
-  getComplianceProcess = () => {
-    const graph = ProjectModel.getGraph();
-    const complianceNodes = GraphQuery.filterNodes(graph, { type: 'complianceprocess' });
-    const result = [];
-
-    for (let i = 0; i < complianceNodes.length; i++){
-      const node = complianceNodes[i];
-      result.push({ name: node.data('name'), id: node.data('id'), props: node.data('props') });
-    }
-    return result;
-  };
-
-  getInfraElements = () => {
-    const graph = ProjectModel.getGraph();
-    const infraNodes = GraphQuery.filterNodes(graph, { type: 'infra' });
-    const result = [];
-
-    for (let i = 0; i < infraNodes.length; i++){
-      const node = infraNodes[i];
-      if (node.data('name') !== undefined) {
-        result.push({ name: node.data('name'), id: node.data('id') });
-      }
-    }
-    return result;
-  };
 
   getProps(){
     const ce = this.state.selectedCE;
@@ -147,22 +107,14 @@ class ProcessDialog extends Component {
     return complianceProcess;
   }
 
-  addComplianceProcess(){
-    const comProcess = this.createComplianceProcess();
-    this.props.addProcess(comProcess);
-  }
-
-  editComplianceProcess(){
-    const comProcess = this.createComplianceProcess(this.state.process);
-    this.props.edit(comProcess);
-  }
-
   buttonClick(){
     const { mode } = this.state;
     if (mode === 'add'){
-      this.addComplianceProcess();
+      const comProcess = this.createComplianceProcess();
+      this.props.addProcess(comProcess);
     } else if (mode === 'edit'){
-      this.editComplianceProcess();
+      const comProcess = this.createComplianceProcess(this.state.process);
+      this.props.edit(comProcess);
     }
     this.onHide();
   }
@@ -174,8 +126,9 @@ class ProcessDialog extends Component {
   }
 
   renderProps(process){
-    const ce = this.getBusinessActivity();
-    const req = this.getInfraElements();
+    const ce =  GraphQuery.getBusinessActivities(ProjectModel.getGraph());
+    const req = GraphQuery.getInfraElements(ProjectModel.getGraph());
+
     const { props } = process;
     let result = [];
 
