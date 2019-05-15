@@ -4,8 +4,8 @@ import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { MultiSelect } from 'primereact/multiselect';
 import '../../App.css';
-import * as GraphQuery from "../../controller/graph/GraphQuery";
-import ProjectModel from "../../models/ProjectModel";
+import * as GraphQuery from '../../controller/graph/GraphQuery';
+import ProjectModel from '../../models/ProjectModel';
 
 class ReqDialog extends Component {
   constructor(props) {
@@ -57,7 +57,7 @@ class ReqDialog extends Component {
     const preds = this.state.selectedPredActivities;
     const result = [];
 
-    if(preds !== null) {
+    if (preds !== null) {
       for (let i = 0; i < preds.length; i++) {
         result.push({
           key: 'pred',
@@ -100,11 +100,11 @@ class ReqDialog extends Component {
   }
 
   renderProps(req){
-    const preds =  GraphQuery.getBusinessActivities(ProjectModel.getGraph());
+    const preds = GraphQuery.getBusinessActivities(ProjectModel.getGraph());
     const { props } = req;
 
     if (props !== undefined || props !== null) {
-      let result = [];
+      const result = [];
 
       for (let i = 0; i < preds.length; i++) {
         for (let j = 0; j < props.length; j++) {
@@ -115,7 +115,7 @@ class ReqDialog extends Component {
           }
         }
       }
-      this.setState({selectedPredActivities: result});
+      this.setState({ selectedPredActivities: result });
     }
   }
 
@@ -142,7 +142,7 @@ class ReqDialog extends Component {
             <label htmlFor="reqName">Name</label>
             <InputText
               id="reqName"
-              value={this.state.reqName}
+              value={this.state.reqNode}
               readonly
             />
           </div>

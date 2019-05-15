@@ -3,7 +3,7 @@ import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { MultiSelect } from 'primereact/multiselect';
-import {Dropdown} from 'primereact/dropdown';
+import { Dropdown } from 'primereact/dropdown';
 import '../../App.css';
 import ProjectModel from './../../models/ProjectModel';
 import * as GraphQuery from './../../controller/graph/GraphQuery';
@@ -53,8 +53,8 @@ class ProcessDialog extends Component {
 
   onShow(){
     this.setState({ controlledEntity: GraphQuery.getBusinessActivities(ProjectModel.getGraph()) });
-    this.setState({ furtherReq: GraphQuery.getInfraElements(ProjectModel.getGraph())});
-    this.setState({ complianceProcesses: GraphQuery.filterNodes(ProjectModel.getGraph(), { type: 'complianceprocess'}) });
+    this.setState({ furtherReq: GraphQuery.getInfraElements(ProjectModel.getGraph()) });
+    this.setState({ complianceProcesses: GraphQuery.filterNodes(ProjectModel.getGraph(), { type: 'complianceprocess' }) });
 
     const { process } = this.state;
     if (process !== undefined){
@@ -120,13 +120,13 @@ class ProcessDialog extends Component {
   }
 
   selectComplianceProcess(cp){
-    this.setState({processId: cp.id});
-    this.setState({processName: cp.name});
+    this.setState({ processId: cp.id });
+    this.setState({ processName: cp.name });
     this.renderProps(cp);
   }
 
   renderProps(process){
-    const ce =  GraphQuery.getBusinessActivities(ProjectModel.getGraph());
+    const ce = GraphQuery.getBusinessActivities(ProjectModel.getGraph());
     const req = GraphQuery.getInfraElements(ProjectModel.getGraph());
 
     const { props } = process;
@@ -170,10 +170,10 @@ class ProcessDialog extends Component {
         <div>
           <label htmlFor="complianceProcess">Select existing compliance process</label>
           <Dropdown
-            style={{width: '30%'}}
+            style={{ width: '30%' }}
             value={this.state.selectedCP}
             options={this.state.complianceProcesses}
-            onChange={(e) => { this.selectComplianceProcess(e.value) }}
+            onChange={(e) => { this.selectComplianceProcess(e.value); }}
             optionLabel="name"
           />
         </div>

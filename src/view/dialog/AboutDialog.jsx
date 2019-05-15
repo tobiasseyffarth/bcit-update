@@ -22,9 +22,29 @@ class AboutDialog extends Component {
   }
 
   render() {
+    const references = (
+      <div>
+        <p>Dependencies</p>
+        <p>
+          <dl>
+            <dt>@fortawesome/fontawesome-svg-core</dt>
+            <dd>Creators: </dd>
+            <dd>Version: </dd>
+            <dd>License: </dd>
+            <dd>Repository: </dd>
+          </dl>
+        </p>
+        <p>Development Dependencies</p>
+      </div>
+    );
+
     const footer = (
       <div>
-        <Button label="close" onClick={this.onHide} />
+        <Button
+          label="close"
+          onClick={this.onHide}
+          tooltip="close dialog"
+        />
       </div>
     );
 
@@ -38,8 +58,10 @@ class AboutDialog extends Component {
           onHide={this.onHide}
           maximizable
         >
-          About
-          ...
+          <div>
+            <p>Contributors: Tobias Seyffarth, Kai Raschke</p>
+          </div>
+          {references}
         </Dialog>
       </div>
     );

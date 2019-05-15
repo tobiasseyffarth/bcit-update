@@ -15,6 +15,7 @@ import * as GraphRenderer from '../../controller/graph/GraphRenderer';
 import * as InfraQuery from '../../controller/infra/InfraQuery';
 import * as FileIO from '../../controller/helpers/fileio';
 import ProjectModel from '../../models/ProjectModel';
+import './../../App.css';
 
 export default class StepProcIT extends Component {
   constructor(props) {
@@ -39,7 +40,6 @@ export default class StepProcIT extends Component {
     this.removeInfraProp = this.removeInfraProp.bind(this);
     this.removeBpmnProp = this.removeBpmnProp.bind(this);
     this.setComplianceProcess = this.setComplianceProcess.bind(this);
-    this.showBpmnModeler = this.showBpmnModeler.bind(this);
     this.connectElements = this.connectElements.bind(this);
   }
 
@@ -184,10 +184,6 @@ export default class StepProcIT extends Component {
     });
   }
 
-  showBpmnModeler() {
-    console.log(this.bpmnModeler.get('elementRegistry'));
-  }
-
   removeInfraProp() {
     const { infra } = this.state;
     const elementId = this.state.infraElementId;
@@ -307,14 +303,10 @@ export default class StepProcIT extends Component {
           />
           <br />
           <Button
+            className="button-panel"
             label="remove"
             onClick={this.removeBpmnProp}
-            tooltip="remove property"
-          />
-          <Button
-            label="xml"
-            onClick={this.showBpmnModeler}
-            tooltip="show Bpmn Modeler"
+            tooltip="remove selected property from BPMN element"
           />
         </div>
         <div>
@@ -334,10 +326,10 @@ export default class StepProcIT extends Component {
       <div className="property-panel">
         <div>
           <Button
-            className="p-button-warning"
+            className="button-panel p-button-warning"
             label="connect"
             onClick={this.connectElements}
-            tooltip="connect elements"
+            tooltip="connect selected IT component to selected BPMN element"
           />
         </div>
         <br />
@@ -358,9 +350,10 @@ export default class StepProcIT extends Component {
           />
           <br />
           <Button
+            className="button-panel"
             label="remove"
             onClick={this.removeInfraProp}
-            tooltip="remove property"
+            tooltip="remove selected property from IT component"
           />
         </div>
       </div>

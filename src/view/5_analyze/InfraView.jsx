@@ -31,10 +31,6 @@ class InfraView extends Component {
 
   componentDidMount() {
     this.onMount();
-    const width = this.props.setWidth;
-    const infraProps = document.getElementById('infra-props-panel');
-    const infraPropsWidth = infraProps.offsetWidth;
-    this.state.width = width - infraPropsWidth;
   }
 
   onMount() {
@@ -44,6 +40,11 @@ class InfraView extends Component {
         this.renderInfra(infra);
       });
     }
+
+    const infraProps = document.getElementById('infra-props-panel');
+    const infraPropsWidth = infraProps.offsetWidth;
+    const width = this.props.setWidth - infraPropsWidth;
+    this.setState({width: width})
   }
 
   onHide() {

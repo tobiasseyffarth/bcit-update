@@ -98,15 +98,19 @@ export default class GraphPropsPanel extends Component {
         <br />
         <div>
           <Button
+            className="button-panel"
             label="edit"
             onClick={this.openDialog}
+            tooltip="edit selected node"
           />
         </div>
         <br />
         <div>
           <Button
+            className="button-panel"
             label="remove node"
             onClick={this.removeNode}
+            tooltip="remove selected node from the graph"
           />
         </div>
       </div>

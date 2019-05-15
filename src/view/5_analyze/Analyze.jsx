@@ -18,25 +18,25 @@ export default class Analyze extends Component {
   }
 
   onMount(){
-    const tabPanel = document.getElementById('tab-container');
+    const tabPanel = document.getElementById('contentSection');
     this.setState({ tabWidth: tabPanel.offsetWidth });
   }
 
   render() {
     return (
       <div>
-        <div className="content-section implementation">
+        <div className="content-section implementation" id ="contentSection">
           <TabView >
-            <TabPanel header="View process model" id="tabPanel">
+            <TabPanel header="View compliance requirements" id="tabPanelCompliance">
+              <ComplianceView />
+            </TabPanel>
+            <TabPanel header="View process model" id="tabPanelBpmn">
               <section className="container-process" id="tab-container">
-                <BpmnView />
+                <BpmnView setWidth={this.state.tabWidth}/>
               </section>
             </TabPanel>
-            <TabPanel header="View infrastructure model" >
+            <TabPanel header="View infrastructure model" id="tabPanelInfra">
               <InfraView setWidth={this.state.tabWidth} />
-            </TabPanel>
-            <TabPanel header="View compliance requirements" >
-              <ComplianceView />
             </TabPanel>
           </TabView>
         </div>

@@ -210,9 +210,10 @@ export default class StepProcCompliance extends Component {
           />
           <br />
           <Button
+            className="button-panel"
             label="remove"
             onClick={this.removeBpmnProp}
-            tooltip="remove property"
+            tooltip="remove selected property from BPMN element"
           />
         </div>
         <div>
@@ -236,10 +237,20 @@ export default class StepProcCompliance extends Component {
         <div>
           <section className="container-compliance">
             <div className="compliance-view-selector">
-              <ListBox style={{ height: '98%', width: '98%' }} optionLabel="id" value={value} options={option} onChange={e => this.selectCompliance(e.value)} filter />
+              <ListBox
+                style={{ height: '98%', width: '98%' }}
+                optionLabel="id" value={value}
+                options={option}
+                onChange={e => this.selectCompliance(e.value)}
+                filter />
             </div>
             <div className="compliance-view-text">
-              <InputTextarea readOnly style={{ width: '100%', height: '98%' }} cols={60} value={this.state.complianceText} autoResize={false} />
+              <InputTextarea
+                readOnly
+                style={{ width: '100%', height: '98%' }}
+                cols={60}
+                value={this.state.complianceText}
+                autoResize={false} />
             </div>
           </section>
         </div>
@@ -250,7 +261,10 @@ export default class StepProcCompliance extends Component {
   render() {
     return (
       <div>
-        <Growl ref={(el) => { this.growl = el; }} position="topright" />
+        <Growl
+          ref={(el) => { this.growl = el; }}
+          position="topright"
+        />
         <div>
           <section className="container-process">
             <div className="viewer">
@@ -262,10 +276,10 @@ export default class StepProcCompliance extends Component {
             {this.renderComplianceSelector()}
             <div className="property-panel">
               <Button
-                className="p-button-warning"
+                className="p-button-warning button-panel"
                 label="connect"
                 onClick={this.connectElements}
-                tooltip="connect compliance and process"
+                tooltip="connect selected compliance requirement to selected BPMN element"
               />
             </div>
           </section>

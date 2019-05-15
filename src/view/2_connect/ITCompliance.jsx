@@ -200,9 +200,10 @@ export default class StepITCompliance extends Component {
           />
           <br />
           <Button
+            className="button-panel"
             label="remove"
             onClick={this.removeInfraProp}
-            tooltip="remove property"
+            tooltip="remove selected property from IT component"
           />
         </div>
       </div>
@@ -255,10 +256,10 @@ export default class StepITCompliance extends Component {
             {this.renderComplianceSelector()}
             <div className="property-panel">
               <Button
-                className="p-button-warning"
+                className="p-button-warning button-panel"
                 label="connect"
                 onClick={this.connectElements}
-                tooltip="connect compliance and process"
+                tooltip="connect selected compliance requirement to selected IT component"
               />
             </div>
           </section>

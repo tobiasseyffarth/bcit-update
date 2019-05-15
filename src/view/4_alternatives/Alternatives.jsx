@@ -53,6 +53,9 @@ export default class Alternatives extends Component {
     GraphRenderer.styleNodesAltGraph(this.graph);
     GraphRenderer.drawNodesAltGraph(this.graph);
     this.hookGraphOnClick(this.graph);
+
+    const el = ProjectIO.getElementsFromGraph(this.graph);
+    console.log(JSON.stringify(el));
   }
 
   onHide() {
@@ -103,7 +106,7 @@ export default class Alternatives extends Component {
   }
 
   addReq(req){
-    GraphEditor.addNode(this.graph, { req: req });
+    GraphEditor.addNode(this.graph, { req });
     GraphRenderer.styleNodesAltGraph(this.graph);
     GraphRenderer.drawNodesAltGraph(this.graph);
   }

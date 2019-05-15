@@ -28,6 +28,11 @@ class BpmnView extends Component {
   }
 
   componentDidMount() {
+    const bpmnProps = document.getElementById('bpmn-props-panel');
+    const bpmnPropsWidth = bpmnProps.offsetWidth;
+    const width = this.props.setWidth - bpmnPropsWidth - 50;
+    this.setState({width: width});
+
     this.bpmnModeler = new BpmnModeler({
       container: '#canvas',
       height: '400px',
@@ -127,7 +132,7 @@ class BpmnView extends Component {
 
   renderBpmnPropsPanel() {
     return (
-      <div className="property-panel">
+      <div className="property-panel" id="bpmn-props-panel">
         <div>
           <label>ID: {this.state.bpmnId} </label>
         </div>
@@ -188,7 +193,7 @@ class BpmnView extends Component {
           <RemoveDialog showRemoveDialog={this.state.visibleRemove} close={this.onHide} />
           <ChangeDialog showChangeDialog={this.state.visibleChange} close={this.onHide} />
           <section className="container-process">
-            <div className="viewer" style={{ width: '1545px' }}>
+            <div className="viewer" style={{ width: this.state.width }}>
               <div id="canvas" />
             </div>
             {this.renderBpmnPropsPanel()}

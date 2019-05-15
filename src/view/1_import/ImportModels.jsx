@@ -110,13 +110,11 @@ export default class ImportModels extends Component {
       });
     }
 
-    /*
     if (ProjectModel.getAltGraph() === null){
       const elements = JSON.parse(altGraph);
       const graph = ProjectIO.getGraphFromElements(elements);
       ProjectModel.setAltGraph(graph);
     }
-    */
   };
 
   render() {
@@ -130,22 +128,22 @@ export default class ImportModels extends Component {
             className="button-import"
             label="Import Compliance"
             onClick={this.openCompliance}
-            tooltip="open compliance file"
+            tooltip="import compliance file"
           />
           <br />
           <br />
           <Button
             className="button-import"
-            label="Import BPMN"
+            label="Import Business Process"
             onClick={this.openBPMN}
-            tooltip="open BPMN file"
+            tooltip="import business process model modelled as BPMN file"
           />
           <br />
           <br />
           <Button
             className="button-import"
-            label="Import Infrastructure"
-            tooltip="open archimate file"
+            label="Import Infrastructure Model"
+            tooltip="import infrastructure model modelled as archimate file"
             onClick={this.openInfra}
           />
         </div>

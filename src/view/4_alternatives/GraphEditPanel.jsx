@@ -5,6 +5,7 @@ import { Growl } from 'primereact/growl';
 import ProcessDialog from './ProcessDialog';
 import ProcessPatternDialog from './ProcessPatternDialog';
 import ProjectModel from '../../models/ProjectModel';
+import './../../App.css';
 
 export default class GraphEditPanel extends Component {
   constructor(props) {
@@ -119,20 +120,26 @@ export default class GraphEditPanel extends Component {
           />
           <br />
           <Button
-            label="add req"
+            className="button-editpanel"
+            label="add compliance requirement"
             onClick={this.showReqDialog}
+            tooltip="add the selected compliance requirement"
           />
           <br />
           <br />
           <Button
-            label="add pattern"
+            className="button-editpanel"
+            label="add compliance process pattern"
             onClick={this.showComplianceProcessPatternDialog}
+            tooltip="add a compliance process pattern to the selected element"
           />
           <br />
           <br />
           <Button
+            className="button-editpanel"
             label="add compliance process"
             onClick={this.showComplianceProcessDialog}
+            tooltip="add a compliance process to the selected element"
           />
         </div>
       </div>

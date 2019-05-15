@@ -77,6 +77,14 @@ html {
     width: 350px;
 }
 
+.button-panel {
+    width: 100px;
+}
+
+.button-editpanel {
+    width: 98%;
+}
+
 .djs-bendpoints {
     display: none;
 }
