@@ -142,7 +142,7 @@ class ReqDialog extends Component {
             <label htmlFor="reqName">Name</label>
             <InputText
               id="reqName"
-              value={this.state.reqNode}
+              value={this.state.reqName}
               readonly
             />
           </div>

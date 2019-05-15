@@ -126,7 +126,7 @@ export default class ImportModels extends Component {
           <br />
           <Button
             className="button-import"
-            label="Import Compliance"
+            label="Import Compliance Requirements"
             onClick={this.openCompliance}
             tooltip="import compliance file"
           />
