@@ -229,7 +229,13 @@ export default class StepProcCompliance extends Component {
   }
 
   renderComplianceSelector(){
-    const option = this.state.complianceFilter.requirement;
+    let option;
+    if (this.state.complianceFilter === null) {
+      option = [];
+    } else {
+      option = this.state.complianceFilter.requirement;
+    }
+
     const value = this.state.selectedCompliance;
 
     return (

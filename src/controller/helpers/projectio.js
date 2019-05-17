@@ -21,7 +21,6 @@ export function getElementsFromGraph(graph) {
     const _edge = edges[i];
     graphElements.edge.push(_edge.data());
   }
-
   return graphElements;
 }
 
@@ -67,8 +66,6 @@ export async function openProject(){
   const fileContent = await FileIo.readFile(file);
   const projectFile = JSON.parse(fileContent);
 
-  console.log(projectFile);
-
   const graph = getGraphFromElements(projectFile.graph);
   const altGraph = getGraphFromElements(projectFile.altGraph);
 
@@ -80,16 +77,6 @@ export async function openProject(){
 }
 
 export async function saveProject(){
-
-  /*
-  const compliance = JSON.stringify(Projectmodel.getCompliance());
-  const infra = JSON.stringify(Projectmodel.getInfra());
-  const graphElements = JSON.stringify(getElementsFromGraph(Projectmodel.getGraph()));
-  const altGraphElements = JSON.stringify(getElementsFromGraph(Projectmodel.getAltGraph()));
-
-  console.log('graph', JSON.stringify(altGraphElements));
-  */
-
   let projectFile = {
     bpmn: ProjectModel.getBpmnXml(),
     infra: ProjectModel.getInfra(),
@@ -99,8 +86,6 @@ export async function saveProject(){
   };
 
   const output = JSON.stringify(projectFile);
-  const readFile = JSON.parse(output);
   const file = new File([output], 'BCIT project.bcit', {type: 'text/plain;charset=utf-8'});
   saveAs(file);
 }
-
