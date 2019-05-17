@@ -104,7 +104,7 @@ export default class StepComplianceCompliance extends Component {
           <div className="compliance-view-text">
             <InputTextarea
               readOnly
-              style={{ width: '100%', height: '98%' }}
+              style={{ width: '100%', height: '98%', resize: 'none' }}
               cols={60}
               value={this.state.complianceTextOne}
               autoResize={false}
@@ -124,7 +124,7 @@ export default class StepComplianceCompliance extends Component {
         <section className="container-compliance">
           <div className="compliance-view-selector">
             <ListBox
-              style={{ height: '98%', width: '98%', resize:'none' }}
+              style={{ height: '98%', width: '98%' }}
               optionLabel="id"
               value={value}
               options={option}
@@ -135,7 +135,7 @@ export default class StepComplianceCompliance extends Component {
           <div className="compliance-view-text">
             <InputTextarea
               readOnly
-              style={{ width: '100%', height: '98%', resize:'none' }}
+              style={{ width: '100%', height: '98%', resize: 'none' }}
               cols={60}
               value={this.state.complianceTextTwo}
               autoResize={false}
@@ -160,7 +160,7 @@ export default class StepComplianceCompliance extends Component {
             </div>
           </section>
           <Button
-            style={{left: '5px'}}
+            style={{ left: '5px' }}
             className="p-button-warning button-panel"
             label="connect"
             onClick={this.connectCompliance}

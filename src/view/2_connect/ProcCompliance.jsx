@@ -239,10 +239,12 @@ export default class StepProcCompliance extends Component {
             <div className="compliance-view-selector">
               <ListBox
                 style={{ height: '98%', width: '98%' }}
-                optionLabel="id" value={value}
+                optionLabel="id"
+                value={value}
                 options={option}
                 onChange={e => this.selectCompliance(e.value)}
-                filter />
+                filter
+              />
             </div>
             <div className="compliance-view-text">
               <InputTextarea
@@ -250,7 +252,8 @@ export default class StepProcCompliance extends Component {
                 style={{ width: '100%', height: '98%' }}
                 cols={60}
                 value={this.state.complianceText}
-                autoResize={false} />
+                autoResize={false}
+              />
             </div>
           </section>
         </div>

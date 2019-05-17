@@ -25,14 +25,14 @@ export default class Analyze extends Component {
   render() {
     return (
       <div>
-        <div className="content-section implementation" id ="contentSection">
+        <div className="content-section implementation" id="contentSection">
           <TabView >
             <TabPanel header="View compliance requirements" id="tabPanelCompliance">
               <ComplianceView />
             </TabPanel>
             <TabPanel header="View process model" id="tabPanelBpmn">
               <section className="container-process" id="tab-container">
-                <BpmnView setWidth={this.state.tabWidth}/>
+                <BpmnView setWidth={this.state.tabWidth} />
               </section>
             </TabPanel>
             <TabPanel header="View infrastructure model" id="tabPanelInfra">

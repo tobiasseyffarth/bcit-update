@@ -34,7 +34,7 @@ class ReqDialog extends Component {
   }
 
   onShow(){
-    const reqNode = this.state.reqNode;
+    const { reqNode } = this.state;
     if (reqNode !== undefined){
       this.setState({ header: 'Edit compliance requirement' });
     }
@@ -142,7 +142,7 @@ class ReqDialog extends Component {
             <label htmlFor="reqName">Name</label>
             <InputText
               id="reqName"
-              value={this.state.reqName}
+              value={this.state.reqn}
               readonly
             />
           </div>

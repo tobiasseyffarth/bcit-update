@@ -261,7 +261,7 @@ class AboutDialog extends Component {
           visible={this.state.visibleDialog}
           footer={footer}
           style={{ width: '50vw' }}
-          contentStyle={{maxHeight: '50vh', overflow: 'auto'}}
+          contentStyle={{ maxHeight: '50vh', overflow: 'auto' }}
           onHide={this.onHide}
           maximizable
         >

@@ -136,7 +136,7 @@ class ComplianceView extends Component {
             <div className="compliance-view-text">
               <InputTextarea
                 readOnly
-                style={{ width: '100%', height: '98%', resize:'none' }}
+                style={{ width: '100%', height: '98%', resize: 'none' }}
                 cols={60}
                 value={this.state.complianceText}
                 autoResize={false}

@@ -41,10 +41,14 @@ class InfraView extends Component {
       });
     }
 
+    this.setWidth();
+  }
+
+  setWidth(){
     const infraProps = document.getElementById('infra-props-panel');
     const infraPropsWidth = infraProps.offsetWidth;
     const width = this.props.setWidth - infraPropsWidth;
-    this.setState({width: width})
+    this.setState({ width: width });
   }
 
   onHide() {

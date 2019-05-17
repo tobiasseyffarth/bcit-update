@@ -28,10 +28,7 @@ class BpmnView extends Component {
   }
 
   componentDidMount() {
-    const bpmnProps = document.getElementById('bpmn-props-panel');
-    const bpmnPropsWidth = bpmnProps.offsetWidth;
-    const width = this.props.setWidth - bpmnPropsWidth - 50;
-    this.setState({width: width});
+    this.setWith();
 
     this.bpmnModeler = new BpmnModeler({
       container: '#canvas',
@@ -46,6 +43,13 @@ class BpmnView extends Component {
     if (ProjectModel.getBpmnXml() !== null) {
       this.renderDiagram(ProjectModel.getBpmnXml());
     }
+  }
+
+  setWith(){
+    const bpmnProps = document.getElementById('bpmn-props-panel');
+    const bpmnPropsWidth = bpmnProps.offsetWidth;
+    const width = this.props.setWidth - bpmnPropsWidth - 50;
+    this.setState({ width: width });
   }
 
   onHide() {
