@@ -75,7 +75,6 @@ export default class ImportModels extends Component {
         console.log('error rendering', err);
       } else {
         const process = ProcessQuery.getProcess(bpmnModeler);
-        ProjectModel.setProcess(process);
         GraphConnector.addSubGraphs({ process });
       }
     });
