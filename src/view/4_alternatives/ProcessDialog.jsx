@@ -54,7 +54,7 @@ class ProcessDialog extends Component {
   onShow(){
     this.setState({ controlledEntity: GraphQuery.getBusinessActivities(ProjectModel.getGraph()) });
     this.setState({ furtherReq: GraphQuery.getInfraElements(ProjectModel.getGraph()) });
-    this.setState({ complianceProcesses: GraphQuery.filterNodes(ProjectModel.getGraph(), { type: 'complianceprocess' }) });
+    this.setState({ complianceProcesses: GraphQuery.getComplianceProcesses(ProjectModel.getGraph()) });
 
     const { process } = this.state;
     if (process !== undefined){

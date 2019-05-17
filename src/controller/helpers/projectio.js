@@ -76,7 +76,7 @@ export async function openProject(){
   ProjectModel.setAltGraph(altGraph);
 }
 
-export async function saveProject(){
+export async function exportProject(){
   let projectFile = {
     bpmn: ProjectModel.getBpmnXml(),
     infra: ProjectModel.getInfra(),
@@ -87,5 +87,11 @@ export async function saveProject(){
 
   const output = JSON.stringify(projectFile);
   const file = new File([output], 'BCIT project.bcit', {type: 'text/plain;charset=utf-8'});
+  saveAs(file);
+}
+
+export async function exportBpmn(){
+  const output = ProjectModel.getBpmnXml();
+  const file = new File([output], 'process.bpmn', {type: 'text/plain;charset=utf-8'});
   saveAs(file);
 }

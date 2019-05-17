@@ -377,3 +377,20 @@ export function getInfraElements(graph) {
   }
   return result;
 }
+
+export function getComplianceProcesses(graph) {
+  const cp = filterNodes(graph, { type: 'complianceprocess' });
+  const result = [];
+
+  for (let i = 0; i < cp.length; i++){
+    const node = cp[i];
+    if (node.data('name') !== undefined) {
+      result.push({
+        name: node.data('name'),
+        id: node.data('id'),
+        props: node.data('props')
+      });
+    }
+  }
+  return result;
+}

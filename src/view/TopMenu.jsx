@@ -16,7 +16,7 @@ export default class TopMenu extends Component {
 
     this.newProject = this.newProject.bind(this);
     this.openProject = this.openProject.bind(this);
-    this.saveProject = this.saveProject.bind(this);
+    this.exportProject = this.exportProject.bind(this);
     this.exportBpmn = this.exportBpmn.bind(this);
     this.showAboutDialog = this.showAboutDialog.bind(this);
     this.showGraphDialog = this.showGraphDialog.bind(this);
@@ -40,25 +40,20 @@ export default class TopMenu extends Component {
   };
 
   async openProject (){
-    console.log('open project');
-    const file = await ProjectIo.openProject();
-    console.log(file);
+    ProjectIo.openProject();
   }
 
-  async saveProject () {
-    console.log('save project');
-    const file = await ProjectIo.saveProject();
-    console.log(file);
+  async exportProject () {
+    ProjectIo.exportProject();
   }
 
   showGraphDialog() {
     this.setState({ visibleGraph: true });
   }
 
-  exportBpmn = () => {
-    console.log(ProjectModel.getBpmnXml());
-  };
-
+  async exportBpmn() {
+    ProjectIo.exportBpmn();
+  }
 
   render() {
     const items = [
@@ -74,8 +69,8 @@ export default class TopMenu extends Component {
             command: () => { this.openProject(); },
           },
           {
-            label: 'Save Project',
-            command: () => { this.saveProject(); },
+            label: 'Export Project',
+            command: () => { this.exportProject(); },
           },
           {
             separator: true,
