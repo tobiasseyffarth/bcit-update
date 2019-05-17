@@ -118,6 +118,15 @@ class AboutDialog extends Component {
         </p>
         <p>
           <dl>
+            <dt>file-saver</dt>
+            <dd>Creators: Eli Grey</dd>
+            <dd>Version: 2.0.2</dd>
+            <dd>License: MIT</dd>
+            <dd>Repository: https://github.com/eligrey/FileSaver.js</dd>
+          </dl>
+        </p>
+        <p>
+          <dl>
             <dt>file-system</dt>
             <dd>Creators: douzi8</dd>
             <dd>Version: 2.2.2</dd>

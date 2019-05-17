@@ -1,5 +1,5 @@
 import { saveAs } from 'file-saver';
-import Projectmodel from './../../models/ProjectModel';
+import ProjectModel from './../../models/ProjectModel';
 import * as GraphEditor from './../graph/GraphEditor';
 import * as FileIo from './fileio';
 
@@ -51,15 +51,15 @@ export function getGraphFromElements(elements) {
 }
 
 export function newProject() {
-  Projectmodel.setAltGraph(null);
-  Projectmodel.setRemoveGraph(null);
-  Projectmodel.setChangeGraph(null);
-  Projectmodel.setGraph(null);
-  Projectmodel.setInfra(null);
-  Projectmodel.setBpmnXml(null);
-  Projectmodel.setCompliance(null);
-  Projectmodel.setViewer(null);
-  Projectmodel.setName(null);
+  ProjectModel.setAltGraph(null);
+  ProjectModel.setRemoveGraph(null);
+  ProjectModel.setChangeGraph(null);
+  ProjectModel.setGraph(null);
+  ProjectModel.setInfra(null);
+  ProjectModel.setBpmnXml(null);
+  ProjectModel.setCompliance(null);
+  ProjectModel.setViewer(null);
+  ProjectModel.setName(null);
 }
 
 export async function openProject(){
@@ -72,11 +72,11 @@ export async function openProject(){
   const graph = getGraphFromElements(projectFile.graph);
   const altGraph = getGraphFromElements(projectFile.altGraph);
 
-  Projectmodel.setBpmnXml(projectFile.bpmn);
-  Projectmodel.setInfra(projectFile.infra);
-  Projectmodel.setCompliance(projectFile.compliance);
-  Projectmodel.setGraph(graph);
-  Projectmodel.setAltGraph(altGraph);
+  ProjectModel.setBpmnXml(projectFile.bpmn);
+  ProjectModel.setInfra(projectFile.infra);
+  ProjectModel.setCompliance(projectFile.compliance);
+  ProjectModel.setGraph(graph);
+  ProjectModel.setAltGraph(altGraph);
 }
 
 export async function saveProject(){
@@ -91,11 +91,11 @@ export async function saveProject(){
   */
 
   let projectFile = {
-    bpmn: Projectmodel.getBpmnXml(),
-    infra: Projectmodel.getInfra(),
-    compliance: Projectmodel.getCompliance(),
-    graph: getElementsFromGraph(Projectmodel.getGraph()),
-    altGraph: getElementsFromGraph(Projectmodel.getAltGraph())
+    bpmn: ProjectModel.getBpmnXml(),
+    infra: ProjectModel.getInfra(),
+    compliance: ProjectModel.getCompliance(),
+    graph: getElementsFromGraph(ProjectModel.getGraph()),
+    altGraph: getElementsFromGraph(ProjectModel.getAltGraph())
   };
 
   const output = JSON.stringify(projectFile);
