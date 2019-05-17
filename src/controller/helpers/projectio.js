@@ -1,3 +1,4 @@
+import { saveAs } from 'file-saver';
 import Projectmodel from './../../models/ProjectModel';
 import * as GraphEditor from './../graph/GraphEditor';
 import * as FileIo from './fileio';
@@ -62,9 +63,11 @@ export function newProject() {
 }
 
 export async function openProject(){
-  const file = await FileIo.getFile();
+  const file = await FileIo.getFile('.bcit');
   const fileContent = await FileIo.readFile(file);
   const projectFile = JSON.parse(fileContent);
+
+  console.log(projectFile);
 
   const graph = getGraphFromElements(projectFile.graph);
   const altGraph = getGraphFromElements(projectFile.altGraph);
@@ -97,6 +100,7 @@ export async function saveProject(){
 
   const output = JSON.stringify(projectFile);
   const readFile = JSON.parse(output);
-  console.log(readFile);
+  const file = new File([output], 'BCIT project.bcit', {type: 'text/plain;charset=utf-8'});
+  saveAs(file);
 }
 
