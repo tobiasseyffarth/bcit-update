@@ -63,7 +63,17 @@ export function newProject() {
 
 export async function openProject(){
   const file = await FileIo.getFile();
-  return file;
+  const fileContent = await FileIo.readFile(file);
+  const projectFile = JSON.parse(fileContent);
+
+  const graph = getGraphFromElements(projectFile.graph);
+  const altGraph = getGraphFromElements(projectFile.altGraph);
+
+  Projectmodel.setBpmnXml(projectFile.bpmn);
+  Projectmodel.setInfra(projectFile.infra);
+  Projectmodel.setCompliance(projectFile.compliance);
+  Projectmodel.setGraph(graph);
+  Projectmodel.setAltGraph(altGraph);
 }
 
 export async function saveProject(){
