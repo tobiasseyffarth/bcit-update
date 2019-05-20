@@ -18,8 +18,8 @@ class ProcessDialog extends Component {
       processName: null,
       processId: null,
       processRule: null,
-      controlledEntity: [],
-      selectedCE: [],
+      Trigger: [],
+      selectedTrigger: [],
       furtherReq: [],
       selectedReq: [],
       complianceProcesses: [],
@@ -43,8 +43,8 @@ class ProcessDialog extends Component {
     this.setState({ process: null });
     this.setState({ processName: null });
     this.setState({ processRule: null });
-    this.setState({ controlledEntity: [] });
-    this.setState({ selectedCE: [] });
+    this.setState({ Trigger: [] });
+    this.setState({ selectedTrigger: [] });
     this.setState({ furtherReq: [] });
     this.setState({ selectedReq: [] });
     this.setState({ visibleDialog: false });
@@ -52,7 +52,7 @@ class ProcessDialog extends Component {
   }
 
   onShow(){
-    this.setState({ controlledEntity: GraphQuery.getBusinessActivities(ProjectModel.getGraph()) });
+    this.setState({ Trigger: GraphQuery.getBusinessActivities(ProjectModel.getGraph()) });
     this.setState({ furtherReq: GraphQuery.getInfraElements(ProjectModel.getGraph()) });
     this.setState({ complianceProcesses: GraphQuery.getComplianceProcesses(ProjectModel.getGraph()) });
 
@@ -66,7 +66,7 @@ class ProcessDialog extends Component {
   }
 
   getProps(){
-    const ce = this.state.selectedCE;
+    const ce = this.state.selectedTrigger;
     const req = this.state.selectedReq;
     const result = [];
 
@@ -141,7 +141,7 @@ class ProcessDialog extends Component {
         }
       }
     }
-    this.setState({ selectedCE: result });
+    this.setState({ selectedTrigger: result });
 
     result = [];
     for (let i = 0; i < req.length; i++){
@@ -211,13 +211,13 @@ class ProcessDialog extends Component {
             />
           </div>
           <div>
-            <label htmlFor="controlledEntity">Controlled Entity</label>
+            <label htmlFor="Trigger">Trigger</label>
             <MultiSelect
               style={{ width: '30%' }}
               optionLabel="name"
-              value={this.state.selectedCE}
-              options={this.state.controlledEntity}
-              onChange={e => this.setState({ selectedCE: e.value })}
+              value={this.state.selectedTrigger}
+              options={this.state.Trigger}
+              onChange={e => this.setState({ selectedTrigger: e.value })}
             />
           </div>
           <div>
