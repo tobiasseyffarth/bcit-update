@@ -92,7 +92,7 @@ class RemoveDialog extends Component {
       },
     });
 
-    GraphRenderer.renderAnalyzeGraph(graphDelete, graph);
+    GraphRenderer.renderAnalyzeGraph(graphDelete, graph, containerRemove);
     this.hookGraphOnClick(graphDelete);
   }
 

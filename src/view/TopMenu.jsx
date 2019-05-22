@@ -5,6 +5,8 @@ import GraphDialog from './dialog/GraphDialog';
 import ProjectModel from './../models/ProjectModel';
 import PropTypes from "prop-types";
 import * as ProjectIo from './../controller/helpers/projectio';
+import 'primeicons/primeicons.css';
+
 
 export default class TopMenu extends Component {
   constructor(props) {
@@ -62,14 +64,17 @@ export default class TopMenu extends Component {
         items: [
           {
             label: 'New Project',
+            icon: 'pi pi-fw pi-plus',
             command: () => { this.newProject(); },
           },
           {
             label: 'Open Project',
+            icon: 'pi pi-fw pi-folder-open',
             command: () => { this.openProject(); },
           },
           {
             label: 'Export Project',
+            icon: 'pi pi-fw pi-save',
             command: () => { this.exportProject(); },
           },
           {
@@ -77,10 +82,12 @@ export default class TopMenu extends Component {
           },
           {
             label: 'View Graph',
+            icon: 'pi pi-fw pi-info',
             command: () => { this.showGraphDialog(); },
           },
           {
             label: 'Export BPMN',
+            icon: 'pi pi-fw pi-cloud-download',
             command: () => { this.exportBpmn(); },
           },
         ],

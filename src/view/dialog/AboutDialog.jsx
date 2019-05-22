@@ -154,6 +154,15 @@ class AboutDialog extends Component {
         </p>
         <p>
           <dl>
+            <dt>primeicons</dt>
+            <dd>Creators: PrimeFaces</dd>
+            <dd>Version: 1.0.0</dd>
+            <dd>License: MIT</dd>
+            <dd>Repository: https://github.com/primefaces/primeicons</dd>
+          </dl>
+        </p>
+        <p>
+          <dl>
             <dt>primereact</dt>
             <dd>Creators: PrimeFaces</dd>
             <dd>Version: 3.1.0</dd>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ListBox } from 'primereact/listbox';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
+import { Accordion, AccordionTab } from 'primereact/accordion';
 import cytoscape from 'cytoscape';
 import '../../App.css';
 import ProjectModel from '../../models/ProjectModel';
@@ -13,6 +14,8 @@ class ChangeDialog extends Component {
     this.state = {
       visibleDialog: false,
       visibleAlternative: false,
+      indirectDemands: [],
+      directDemands: [],
     };
     this.onHide = this.onHide.bind(this);
   }
@@ -29,6 +32,8 @@ class ChangeDialog extends Component {
   onShow() {
     if (ProjectModel.getChangeGraph() !== null) {
       this.renderChangeGraph(ProjectModel.getChangeGraph());
+      this.getDirectDemands(ProjectModel.getChangeGraph().nodes());
+      this.getIndirectDemands(ProjectModel.getChangeGraph().nodes());
     }
   }
 
@@ -40,16 +45,40 @@ class ChangeDialog extends Component {
       if (element === graph) { // background
         _this.renderGraphProps(null);
       } else if (element.isNode()) { // edge
-        _this.renderGraphProps(element);
+        _this.renderGraphProps({ node: element });
       }
     });
+  }
+
+  getDirectDemands(nodes) {
+    let directDemands = [];
+
+    for (let i = 0; i < nodes.length; i++) {
+      const node = nodes[i];
+      if (node.data('nodestyle') === 'directdemand') {
+        directDemands.push(node.data());
+      }
+    }
+    this.setState({directDemands: directDemands});
+  }
+
+  getIndirectDemands(nodes) {
+    let indirectDemands = [];
+
+    for (let i = 0; i < nodes.length; i++) {
+      const node = nodes[i];
+      if (node.data('nodestyle') === 'indirectdemand') {
+        indirectDemands.push(node.data());
+      }
+    }
+    this.setState({indirectDemands: indirectDemands});
   }
 
   renderChangeGraph(graph) {
     const containerChange = document.getElementById('graph-container-change');
     const graphChange = cytoscape({
       container: containerChange,
-      style: [ // the stylesheet for the graph
+      style: [
         {
           selector: 'node',
           style: {
@@ -81,7 +110,7 @@ class ChangeDialog extends Component {
       },
     });
 
-    GraphRenderer.renderAnalyzeGraph(graphChange, graph);
+    GraphRenderer.renderAnalyzeGraph(graphChange, graph, containerChange);
     this.hookGraphOnClick(graphChange);
   }
 
@@ -111,29 +140,70 @@ class ChangeDialog extends Component {
             optionLabel="name"
           />
         </div>
+        <br />
+        <div>
+          <Accordion multiple={true}>
+            <AccordionTab header="Direct demands">
+              <ListBox
+                style={{ width: '100%' }}
+                options={this.state.directDemands}
+                optionLabel="display_name"
+                onChange={(e) => this.renderGraphProps({ el: e.value })}
+              />
+            </AccordionTab>
+            <AccordionTab header="Indirect Demands">
+              <ListBox
+                style={{ width: '100%' }}
+                options={this.state.indirectDemands}
+                optionLabel="display_name"
+                onChange={(e) => this.renderGraphProps({ el: e.value })}
+              />
+            </AccordionTab>
+            <AccordionTab header="Legend">
+              Content III
+            </AccordionTab>
+          </Accordion>
+        </div>
       </div>
     );
   }
 
-  renderGraphProps(node){
-    if (node !== null) {
-      this.setState({ nodeId: node.data('id') });
-      this.setState({ nodeName: node.data('name') });
-      this.setState({ nodeType: node.data('nodetype') });
-      this.setState({ modelType: node.data('modeltype') });
-
-      const nodeType = node.data('nodetype');
-      if (nodeType !== 'compliance'){ // non compliance nodes
-        this.setState({ nodeProps: node.data('props') });
-      } else { // compliance nodes
-        this.setState({ nodeProps: [] });
-      }
-    } else {
+  renderGraphProps(input) {
+    if (input === null) {
       this.setState({ nodeId: null });
       this.setState({ nodeName: null });
       this.setState({ nodeType: null });
       this.setState({ modelType: null });
       this.setState({ nodeProps: [] });
+    } else {
+      const { node } = input;
+      const { el } = input;
+
+      if (node !== undefined) {
+        this.setState({nodeId: node.data('id')});
+        this.setState({nodeName: node.data('name')});
+        this.setState({nodeType: node.data('nodetype')});
+        this.setState({modelType: node.data('modeltype')});
+
+        const nodeType = node.data('nodetype');
+        if (nodeType !== 'compliance') { // non compliance nodes
+          this.setState({nodeProps: node.data('props')});
+        } else { // compliance nodes
+          this.setState({nodeProps: []});
+        }
+      } else if (el !== undefined) {
+        this.setState({nodeId: el.id});
+        this.setState({nodeName: el.name});
+        this.setState({nodeType: el.nodetype});
+        this.setState({modelType: el.modeltype});
+
+        const nodeType = el.nodetype;
+        if (nodeType !== 'compliance') { // non compliance nodes
+          this.setState({nodeProps: el.props});
+        } else { // compliance nodes
+          this.setState({nodeProps: []});
+        }
+      }
     }
   }
 

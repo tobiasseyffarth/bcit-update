@@ -77,10 +77,11 @@ function drawCompliancePreds(node, compliance_preds) {
   }
 }
 
-function updateInfraCP(node) {
+function updateInfraCP(node, container) {
   const changed_node = node;
-
-  changed_node.position({ x: 270, y: 150 });
+  const x = container.offsetWidth / 2;
+  const y = container.offsetHeight / 2;
+  changed_node.position({ x: x, y: y });
   const x_changed = changed_node.position('x');
   const y_changed = changed_node.position('y');
 
@@ -151,10 +152,12 @@ function updateInfraCP(node) {
   }
 }
 
-function updateBusinessProcess(node) {
+function updateBusinessProcess(node, container) {
   const changedNode = node;
+  const x = container.offsetWidth / 2;
+  const y = container.offsetHeight / 2;
+  changedNode.position({ x: x, y: y });
 
-  changedNode.position({ x: 270, y: 150 });
   const xChanged = changedNode.position('x');
   const yChanged = changedNode.position('y');
 
@@ -202,11 +205,11 @@ function updateBusinessProcess(node) {
   }
 }
 
-function updateCompliance(node) {
-  // console.log('update compliance');
-
+function updateCompliance(node, container) {
   const changedNode = node;
-  changedNode.position({ x: 270, y: 150 });
+  const x = container.offsetWidth / 2;
+  const y = container.offsetHeight / 2;
+  changedNode.position({ x: x, y: y });
   const xChanged = changedNode.position('x');
   const yChanged = changedNode.position('y');
 
@@ -278,22 +281,20 @@ function updateCompliance(node) {
   }
 }
 
-export function drawAnalyze(graph) {
+export function drawAnalyze(graph, container) {
   const changed_node = graph.nodes().filter('node[nodestyle = "changedElement"]')[0]; // only one change node possible
   const nodetype = changed_node.data('nodetype');
 
   if (nodetype === 'infra' || nodetype === 'complianceprocess') {
-    updateInfraCP(changed_node);
+    updateInfraCP(changed_node, container);
   }
 
   if (nodetype === 'compliance') {
-    // console.log('update compliance');
-    updateCompliance(changed_node);
+    updateCompliance(changed_node, container);
   }
 
   if (nodetype === 'businessprocess') {
-    console.log('update business process');
-    updateBusinessProcess(changed_node);
+    updateBusinessProcess(changed_node, container);
   }
   clearGraph(graph);
 }
@@ -389,13 +390,13 @@ export function styleEdgesAnalyzeGraph(graph) {
   }
 }
 
-export function renderAnalyzeGraph(graph, graphAnalyze){
+export function renderAnalyzeGraph(graph, graphAnalyze, container){
   removeElements(graph);
   copyGraphElements(graph, graphAnalyze);
   styleEdgesAnalyzeGraph(graph);
   styleNodesAnalyzeGraph(graph);
-  drawAnalyze(graph);
-  resizeGraph(graph);
+  drawAnalyze(graph, container);
+  // resizeGraph(graph);
 }
 
 export function styleNodesAltGraph(graph) {
