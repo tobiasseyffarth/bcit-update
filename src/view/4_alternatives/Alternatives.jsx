@@ -68,8 +68,11 @@ export default class Alternatives extends Component {
       const element = evt.target;
       if (element === graph) { // background
         _this.renderGraphProps(null);
+        GraphRenderer.unhighlightNodes(this.graph);
       } else if (element.isNode()) { // edge
         _this.renderGraphProps(element);
+        GraphRenderer.unhighlightNodes(this.graph);
+        GraphRenderer.highlightNode(element);
       }
     });
   }
