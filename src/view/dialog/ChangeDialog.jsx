@@ -18,6 +18,7 @@ class ChangeDialog extends Component {
       directDemands: [],
     };
     this.onHide = this.onHide.bind(this);
+    this.clickAccordionElement = this.clickAccordionElement.bind(this);
   }
 
   componentWillReceiveProps(nextProps){
@@ -32,8 +33,7 @@ class ChangeDialog extends Component {
   onShow() {
     if (ProjectModel.getChangeGraph() !== null) {
       this.renderChangeGraph(ProjectModel.getChangeGraph());
-      this.getDirectDemands(ProjectModel.getChangeGraph().nodes());
-      this.getIndirectDemands(ProjectModel.getChangeGraph().nodes());
+      this.getDemands(ProjectModel.getChangeGraph().nodes());
     }
   }
 
@@ -44,39 +44,34 @@ class ChangeDialog extends Component {
       const element = evt.target;
       if (element === graph) { // background
         _this.renderGraphProps(null);
+        GraphRenderer.unhighlightNodes(this.graphChange);
       } else if (element.isNode()) { // edge
         _this.renderGraphProps({ node: element });
+        GraphRenderer.unhighlightNodes(this.graphChange);
+        GraphRenderer.highlightNode(element);
       }
     });
   }
 
-  getDirectDemands(nodes) {
+  getDemands(nodes) {
     let directDemands = [];
+    let indirectDemands = [];
 
     for (let i = 0; i < nodes.length; i++) {
       const node = nodes[i];
       if (node.data('nodestyle') === 'directdemand') {
         directDemands.push(node.data());
-      }
-    }
-    this.setState({directDemands: directDemands});
-  }
-
-  getIndirectDemands(nodes) {
-    let indirectDemands = [];
-
-    for (let i = 0; i < nodes.length; i++) {
-      const node = nodes[i];
-      if (node.data('nodestyle') === 'indirectdemand') {
+      } else if (node.data('nodestyle') === 'indirectdemand') {
         indirectDemands.push(node.data());
       }
     }
+    this.setState({directDemands: directDemands});
     this.setState({indirectDemands: indirectDemands});
   }
 
   renderChangeGraph(graph) {
     const containerChange = document.getElementById('graph-container-change');
-    const graphChange = cytoscape({
+    this.graphChange = cytoscape({
       container: containerChange,
       style: [
         {
@@ -110,8 +105,15 @@ class ChangeDialog extends Component {
       },
     });
 
-    GraphRenderer.renderAnalyzeGraph(graphChange, graph, containerChange);
-    this.hookGraphOnClick(graphChange);
+    GraphRenderer.renderAnalyzeGraph(this.graphChange, graph, containerChange);
+    this.hookGraphOnClick(this.graphChange);
+  }
+
+  clickAccordionElement(element){
+    this.renderGraphProps( {el: element} );
+    GraphRenderer.unhighlightNodes(this.graphChange);
+    const node = this.graphChange.getElementById(element.id);
+    GraphRenderer.highlightNode(node);
   }
 
   renderGraphPropsPanel() {
@@ -148,7 +150,7 @@ class ChangeDialog extends Component {
                 style={{ width: '100%' }}
                 options={this.state.directDemands}
                 optionLabel="display_name"
-                onChange={(e) => this.renderGraphProps({ el: e.value })}
+                onChange={(e) => this.clickAccordionElement(e.value)}
               />
             </AccordionTab>
             <AccordionTab header="Indirect Demands">
@@ -156,7 +158,7 @@ class ChangeDialog extends Component {
                 style={{ width: '100%' }}
                 options={this.state.indirectDemands}
                 optionLabel="display_name"
-                onChange={(e) => this.renderGraphProps({ el: e.value })}
+                onChange={(e) => this.clickAccordionElement(e.value)}
               />
             </AccordionTab>
             <AccordionTab header="Legend">

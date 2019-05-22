@@ -476,3 +476,18 @@ export function drawNodesAltGraph(graph){
     drawNodes(dirPreds);
   }
 }
+
+export function highlightNode(node) {
+  node.style('color', 'blue');
+  node.style('font-weight', 'bold');
+}
+
+export function unhighlightNodes(graph) {
+  const nodes = graph.nodes();
+
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i];
+    node.style('color', 'black');
+    node.style('font-weight', 'normal');
+  }
+}

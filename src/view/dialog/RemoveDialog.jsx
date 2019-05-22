@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ListBox } from 'primereact/listbox';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
+import { Accordion, AccordionTab } from 'primereact/accordion';
 import cytoscape from 'cytoscape';
 import '../../App.css';
 import AlternativeView from '../5_analyze/AlternativeView';
@@ -18,9 +19,10 @@ class RemoveDialog extends Component {
     this.onHide = this.onHide.bind(this);
     this.showAlternativeDialog = this.showAlternativeDialog.bind(this);
     this.closeAlternativeView = this.closeAlternativeView.bind(this);
+    this.clickAccordionElement = this.clickAccordionElement.bind(this);
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     this.setState({ visibleDialog: nextProps.showRemoveDialog });
   }
 
@@ -32,10 +34,27 @@ class RemoveDialog extends Component {
   onShow() {
     if (ProjectModel.getRemoveGraph() !== null) {
       this.renderRemoveGraph(ProjectModel.getRemoveGraph());
+      this.getAnalyzeResults(ProjectModel.getRemoveGraph().nodes());
     }
   }
 
-  closeAlternativeView(){
+  getAnalyzeResults(nodes) {
+    let violated = [];
+    let obsolete = [];
+
+    for (let i = 0; i < nodes.length; i++) {
+      const node = nodes[i];
+      if (node.data('nodestyle') === 'violated') {
+        violated.push(node.data());
+      } else if (node.data('nodestyle') === 'obsolete') {
+        obsolete.push(node.data());
+      }
+    }
+    this.setState({violatedElements: violated});
+    this.setState({obsoleteElements: obsolete});
+  }
+
+  closeAlternativeView() {
     this.setState({ visibleAlternative: false });
   }
 
@@ -46,19 +65,22 @@ class RemoveDialog extends Component {
       const element = evt.target;
       if (element === graph) { // background
         _this.renderGraphProps(null);
+        GraphRenderer.unhighlightNodes(this.graphRemove);
       } else if (element.isNode()) { // edge
-        _this.renderGraphProps(element);
+        _this.renderGraphProps({ node: element });
+        GraphRenderer.unhighlightNodes(this.graphRemove);
+        GraphRenderer.highlightNode(element);
       }
     });
   }
 
-  showAlternativeDialog(){
+  showAlternativeDialog() {
     this.setState({ visibleAlternative: true });
   }
 
   renderRemoveGraph(graph) {
     const containerRemove = document.getElementById('graph-container-remove');
-    const graphDelete = cytoscape({
+    this.graphRemove = cytoscape({
       container: containerRemove,
       style: [ // the stylesheet for the graph
         {
@@ -92,8 +114,15 @@ class RemoveDialog extends Component {
       },
     });
 
-    GraphRenderer.renderAnalyzeGraph(graphDelete, graph, containerRemove);
-    this.hookGraphOnClick(graphDelete);
+    GraphRenderer.renderAnalyzeGraph(this.graphRemove, graph, containerRemove);
+    this.hookGraphOnClick(this.graphRemove);
+  }
+
+  clickAccordionElement(element){
+    this.renderGraphProps( {el: element} );
+    GraphRenderer.unhighlightNodes(this.graphRemove);
+    const node = this.graphRemove.getElementById(element.id);
+    GraphRenderer.highlightNode(node);
   }
 
   renderGraphPropsPanel() {
@@ -122,29 +151,70 @@ class RemoveDialog extends Component {
             optionLabel="name"
           />
         </div>
+        <br />
+        <div>
+          <Accordion multiple={true}>
+            <AccordionTab header="Violated Compliance Elements">
+              <ListBox
+                style={{ width: '100%' }}
+                options={this.state.violatedElements}
+                optionLabel="display_name"
+                onChange={(e) => this.clickAccordionElement(e.value)}
+              />
+            </AccordionTab>
+            <AccordionTab header="Obsolete Compliance Elements">
+              <ListBox
+                style={{ width: '100%' }}
+                options={this.state.obsoleteElements}
+                optionLabel="display_name"
+                onChange={(e) => this.clickAccordionElement(e.value)}
+              />
+            </AccordionTab>
+            <AccordionTab header="Legend">
+              Content III
+            </AccordionTab>
+          </Accordion>
+        </div>
       </div>
     );
   }
 
-  renderGraphProps(node){
-    if (node !== null) {
-      this.setState({ nodeId: node.data('id') });
-      this.setState({ nodeName: node.data('name') });
-      this.setState({ nodeType: node.data('nodetype') });
-      this.setState({ modelType: node.data('modeltype') });
-
-      const nodeType = node.data('nodetype');
-      if (nodeType !== 'compliance'){ // non compliance nodes
-        this.setState({ nodeProps: node.data('props') });
-      } else { // compliance nodes
-        this.setState({ nodeProps: [] });
-      }
-    } else {
+  renderGraphProps(input) {
+    if (input === null) {
       this.setState({ nodeId: null });
       this.setState({ nodeName: null });
       this.setState({ nodeType: null });
       this.setState({ modelType: null });
       this.setState({ nodeProps: [] });
+    } else {
+      const { node } = input;
+      const { el } = input;
+
+      if (node !== undefined) {
+        this.setState({nodeId: node.data('id')});
+        this.setState({nodeName: node.data('name')});
+        this.setState({nodeType: node.data('nodetype')});
+        this.setState({modelType: node.data('modeltype')});
+
+        const nodeType = node.data('nodetype');
+        if (nodeType !== 'compliance') { // non compliance nodes
+          this.setState({nodeProps: node.data('props')});
+        } else { // compliance nodes
+          this.setState({nodeProps: []});
+        }
+      } else if (el !== undefined) {
+        this.setState({nodeId: el.id});
+        this.setState({nodeName: el.name});
+        this.setState({nodeType: el.nodetype});
+        this.setState({modelType: el.modeltype});
+
+        const nodeType = el.nodetype;
+        if (nodeType !== 'compliance') { // non compliance nodes
+          this.setState({nodeProps: el.props});
+        } else { // compliance nodes
+          this.setState({nodeProps: []});
+        }
+      }
     }
   }
 
