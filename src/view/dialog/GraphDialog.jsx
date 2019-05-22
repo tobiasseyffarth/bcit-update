@@ -44,9 +44,12 @@ class GraphDialog extends Component {
       const element = evt.target;
       if (element === graph) { // background
         _this.renderGraphProps(null);
+        GraphRenderer.unhighlightNodes(this.graph);
       } else {
         if (element.isNode()) { // edge
           _this.renderGraphProps(element);
+          GraphRenderer.unhighlightNodes(this.graph);
+          GraphRenderer.highlightNode(element);
         }
         if (element.isEdge()) {
           console.log('taped on edge');
@@ -72,13 +75,13 @@ class GraphDialog extends Component {
 
   renderGraphView(){
     const container = document.getElementById('graph-container');
-    const graph = ProjectModel.getGraph();
-    graph.mount(container);
-    const layout = graph.layout({ name: 'breadthfirst' }); // more options http://js.cytoscape.org/#layouts
+    this.graph = ProjectModel.getGraph();
+    this.graph.mount(container);
+    const layout = this.graph.layout({ name: 'breadthfirst' }); // more options http://js.cytoscape.org/#layouts
     layout.run(); // graph.autolock(false); //elements can not be moved by the user
-    GraphRenderer.resizeGraph(graph);
-    GraphRenderer.colorNodes(graph);
-    this.hookGraphOnClick(graph);
+    GraphRenderer.resizeGraph(this.graph);
+    GraphRenderer.colorNodes(this.graph);
+    this.hookGraphOnClick(this.graph);
   }
 
   renderGraphProps(node){
@@ -149,7 +152,6 @@ class GraphDialog extends Component {
       <div className="content-section implementation">
         <Dialog
           header="Graph"
-
           visible={this.state.visibleDialog}
           style={{ width: '80vw' }}
           onHide={this.onHide}
