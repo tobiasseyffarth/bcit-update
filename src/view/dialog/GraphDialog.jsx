@@ -145,17 +145,11 @@ class GraphDialog extends Component {
   }
 
   render() {
-    const footer = (
-      <div>
-        <Button label="close" icon="pi pi-check" onClick={this.onHide} />
-      </div>
-    );
-
     return (
       <div className="content-section implementation">
         <Dialog
           header="Graph"
-          footer={footer}
+
           visible={this.state.visibleDialog}
           style={{ width: '80vw' }}
           onHide={this.onHide}

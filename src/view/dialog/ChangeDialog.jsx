@@ -208,17 +208,10 @@ class ChangeDialog extends Component {
   }
 
   renderChangeDialog() {
-    const footer = (
-      <div>
-        <Button label="close" onClick={this.onHide} />
-      </div>
-    );
-
     return (
       <div className="content-section implementation">
         <Dialog
           header="Graph Change"
-          footer={footer}
           visible={this.state.visibleDialog}
           style={{ width: '80vw' }}
           onHide={this.onHide}

@@ -64,7 +64,7 @@ export default class TopMenu extends Component {
         items: [
           {
             label: 'New Project',
-            icon: 'pi pi-fw pi-plus',
+            icon: 'pi pi-fw pi-file',
             command: () => { this.newProject(); },
           },
           {

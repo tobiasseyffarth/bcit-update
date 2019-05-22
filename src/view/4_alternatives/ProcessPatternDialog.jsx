@@ -95,7 +95,7 @@ class ProcessPatternDialog extends Component {
           style={{ width: '80vw' }}
           onShow={this.onShow}
           onHide={this.onHide}
-          maximizable
+          closable={false}
         >
           <div>
             <label htmlFor="processName">Name</label>

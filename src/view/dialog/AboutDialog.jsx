@@ -22,16 +22,6 @@ class AboutDialog extends Component {
   }
 
   render() {
-    const footer = (
-      <div>
-        <Button
-          label="close"
-          onClick={this.onHide}
-          tooltip="close dialog"
-        />
-      </div>
-    );
-
     const references = (
       <div>
         <p>Dependencies</p>
@@ -277,7 +267,6 @@ class AboutDialog extends Component {
         <Dialog
           header="About BCIT 2.0"
           visible={this.state.visibleDialog}
-          footer={footer}
           style={{ width: '50vw' }}
           contentStyle={{ maxHeight: '50vh', overflow: 'auto' }}
           onHide={this.onHide}

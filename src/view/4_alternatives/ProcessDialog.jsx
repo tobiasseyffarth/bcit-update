@@ -189,7 +189,7 @@ class ProcessDialog extends Component {
           style={{ width: '80vw' }}
           onShow={this.onShow}
           onHide={this.onHide}
-          maximizable
+          closable={false}
         >
           {complianceProcess}
           <div>

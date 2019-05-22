@@ -152,7 +152,6 @@ class RemoveDialog extends Component {
     const footer = (
       <div>
         <Button label="show alternatives" onClick={this.showAlternativeDialog} />
-        <Button label="close" onClick={this.onHide} />
       </div>
     );
 
