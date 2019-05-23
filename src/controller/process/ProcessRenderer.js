@@ -2,7 +2,7 @@ import * as queryprocess from './ProcessQuery';
 import * as editprocess from './ProcessEditor';
 
 // final
-function colorShape(viewer, element, coloroption) {
+export function colorShape(viewer, element, coloroption) {
   const modeling = viewer.get('modeling');
   const _stroke = coloroption.stroke || 'black';
   const _fill = coloroption.fill || 'none';

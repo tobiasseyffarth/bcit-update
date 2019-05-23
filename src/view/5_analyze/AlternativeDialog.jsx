@@ -7,6 +7,8 @@ import '../../App.css';
 import ProjectModel from '../../models/ProjectModel';
 import * as AlternativeFinder from './../../controller/adapt/AlternativeFinder';
 import * as ProcessQuery from './../../controller/process/ProcessQuery';
+import * as GraphQuery from './../../controller/graph/GraphQuery';
+import * as ProcessRenderer from './../../controller/process/ProcessRenderer';
 
 class AlternativeDialog extends Component {
   constructor(props) {
@@ -26,7 +28,7 @@ class AlternativeDialog extends Component {
     this.onHide = this.onHide.bind(this);
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     this.setState({ visibleAlternative: nextProps.showAlternative });
   }
 
@@ -39,14 +41,11 @@ class AlternativeDialog extends Component {
     const propsPanel = document.getElementById('alternative-panel');
     const height = propsPanel.offsetHeight;
 
-    if (this.state.bpmnModeler === null) {
+    if (this.bpmnAltModeler === undefined){
       this.bpmnAltModeler = new BpmnModeler({
         container: '#alternative',
         height: height,
       });
-      this.setState({ bpmnModeler: this.bpmnAltModeler });
-    } else {
-      this.bpmnAltModeler = this.state.bpmnModeler;
     }
 
     if (ProjectModel.getBpmnXml() !== null) {
@@ -62,6 +61,76 @@ class AlternativeDialog extends Component {
     }
 
     AlternativeFinder.getAlternatives(this.altGraph, this.removeGraph);
+  }
+
+  hookBpmnOnClick(e) {
+    const { element } = e;
+    console.log(element);
+  }
+
+  hookBpmnEventBus(){
+    const eventBus = this.bpmnAltModeler.get('eventBus');
+    eventBus.on('element.click', e => this.hookBpmnOnClick(e));
+  }
+
+  highlightOriginalProcess(){
+    const process = ProcessQuery.getProcess(this.bpmnAltModeler);
+    const flowNodes = ProcessQuery.getFlowNodesOfProcess(process);
+    const graph = this.removeGraph;
+    const violatedElements = GraphQuery.filterNodes(graph, { style: 'violated'});
+    const obsoleteElements = GraphQuery.filterNodes(graph, { style: 'obsolete'});
+    const changedElements = GraphQuery.filterNodes(graph, { style: 'changedElement'});
+
+    for (let i = 0; i < flowNodes.length; i++) {
+      const node = flowNodes[i];
+      for (let j = 0; j < violatedElements.length; j++) {
+        const violatedElement = violatedElements[j].data();
+        if (node.name !== undefined) {
+          if (node.name === violatedElement.display_name){
+            const shape = ProcessQuery.getShapeOfRegistry(this.bpmnAltModeler, node.id);
+            const isCompliance = ProcessQuery.isCompliance(node);
+            if (isCompliance) {
+              ProcessRenderer.colorShape(this.bpmnAltModeler, shape, { stroke: 'red', fill: 'grey'});
+            } else {
+              ProcessRenderer.colorShape(this.bpmnAltModeler, shape, { stroke: 'red'});
+            }
+          }
+        }
+      }
+
+      for (let j = 0; j < obsoleteElements.length; j++) {
+        const obsoleteElement = obsoleteElements[j].data();
+        if (node.name !== undefined) {
+          if (node.name === obsoleteElement.display_name){
+            const shape = ProcessQuery.getShapeOfRegistry(this.bpmnAltModeler, node.id);
+            const isCompliance = ProcessQuery.isCompliance(node);
+            if (isCompliance) {
+              ProcessRenderer.colorShape(this.bpmnAltModeler, shape, { stroke: 'blue', fill: 'grey'});
+            } else {
+              ProcessRenderer.colorShape(this.bpmnAltModeler, shape, { stroke: 'blue'});
+            }
+          }
+        }
+      }
+
+      for (let j = 0; j < changedElements.length; j++) {
+        const changedElement = changedElements[j].data();
+        if (node.name !== undefined) {
+          if (node.name === changedElement.display_name){
+            const shape = ProcessQuery.getShapeOfRegistry(this.bpmnAltModeler, node.id);
+            const isCompliance = ProcessQuery.isCompliance(node);
+            if (isCompliance) {
+              ProcessRenderer.colorShape(this.bpmnAltModeler, shape, { stroke: 'orange', fill: 'grey'});
+            } else {
+              ProcessRenderer.colorShape(this.bpmnAltModeler, shape, { stroke: 'orange'});
+            }
+          }
+        }
+      }
+    }
+  }
+
+  getAlternativeProcesses(){
 
   }
 
@@ -72,6 +141,9 @@ class AlternativeDialog extends Component {
       } else {
         const canvas = this.bpmnAltModeler.get('canvas');
         canvas.zoom('fit-viewport');
+        this.hookBpmnEventBus();
+        this.highlightOriginalProcess();
+        this.getAlternativeProcesses();
       }
     });
   };
