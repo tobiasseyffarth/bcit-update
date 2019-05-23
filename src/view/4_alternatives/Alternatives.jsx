@@ -73,6 +73,7 @@ export default class Alternatives extends Component {
         _this.renderGraphProps(element);
         GraphRenderer.unhighlightNodes(this.graph);
         GraphRenderer.highlightNode(element);
+        console.log(element);
       }
     });
   }

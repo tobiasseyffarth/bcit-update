@@ -93,12 +93,17 @@ class ProcessDialog extends Component {
     const props = this.getProps();
 
     if (process === undefined){
-      complianceProcess = { //todo Hier die ID des CP übernehmen
+      complianceProcess = {
         name: this.state.processName,
         props,
         modeltype: 'complianceprocess',
         nodetype: 'complianceprocess',
       };
+
+      if (this.state.processId !== null) { // take id from cp as 'cpid'
+        complianceProcess.cpid = this.state.processId;
+      }
+
     } else {
       complianceProcess = process;
       complianceProcess.name = this.state.processName;
@@ -120,7 +125,7 @@ class ProcessDialog extends Component {
   }
 
   selectComplianceProcess(cp){ // todo: prüfen, ob bereits in dem Graph vorhanden --> muss unique sein
-    this.setState({ processId: cp.id }); //todo: id muss die Knotenid werden
+    this.setState({ processId: cp.id });
     this.setState({ processName: cp.name });
     this.renderProps(cp);
   }
