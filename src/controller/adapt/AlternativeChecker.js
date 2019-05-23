@@ -46,6 +46,5 @@ export function isExecutable(cpNode, reqNode, resultGraph){
 
   return isTaskBefore(ce, taskId);
 
-
   // check wheather the requirements to execute are obsolete in the result graph
 }

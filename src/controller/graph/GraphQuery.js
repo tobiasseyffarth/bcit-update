@@ -1,5 +1,3 @@
-import ProjectModel from '../../models/ProjectModel';
-
 export function getDirectPredecessor(node, nodetype) {
   let helper = [];
   helper = node.incomers();

@@ -4,20 +4,29 @@ import * as GraphQuery from './../graph/GraphQuery';
 // contains functions to find alternative CP from the AltGraph
 
 function getAlternativeCP(altGraph, violatedCP, resultGraph){
-  // get Sibling
-
-  // get leafes
-
-  // check all nodes from leaf to common element --> take the first appropriate node
-
+  let result = [];
   const nodeReq = GraphQuery.getSuccessors(violatedCP, 'compliance');
-  const isExecutable = AlternativeChecker.isExecutable(violatedCP, nodeReq, resultGraph);
+
+  // get Sibling Compliance Process
+  const cpps = GraphQuery.getSuccessors(violatedCP, 'complianceprocesspattern');
+  for (let i = 0; i < cpps.length; i++) {
+    const pattern = cpps[i];
+    const complianceProcess = GraphQuery.getPredecessors(pattern, 'complianceprocess');
+    console.log(complianceProcess);
+    const isExecutable = AlternativeChecker.isExecutable(complianceProcess, nodeReq, resultGraph);
+
+    if (isExecutable) {
+      result.push(complianceProcess);
+    }
+  }
+  return result;
 }
 
 function getAlternativePattern(violatedCP){
   // get first successor node of type pattern
-  const cpPattern = GraphQuery.getSuccessors(violatedCP, 'complianceprocesspattern');
-  return cpPattern;
+  const cpps = GraphQuery.getSuccessors(violatedCP, 'complianceprocesspattern');
+  const cp = cpps[0];
+  return cp;
 }
 
 export function getAlternatives(altGraph, violatedCP){

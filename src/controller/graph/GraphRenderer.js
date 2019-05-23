@@ -478,7 +478,7 @@ export function drawNodesAltGraph(graph){
 }
 
 export function highlightNode(node) {
-  node.style('color', 'blue');
+  node.style('color', '#017ADC');
   node.style('font-weight', 'bold');
 }
 
