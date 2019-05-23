@@ -3,7 +3,7 @@ import * as GraphQuery from './../graph/GraphQuery';
 
 // contains functions to find alternative CP from the AltGraph
 
-function getAlternativeCP(altGraph, violatedCP, resultGraph){
+function getAlternativeCP(altGraph, violatedCP, resultGraph) {
   let result = [];
   const nodeReq = GraphQuery.getSuccessors(violatedCP, 'compliance');
 
@@ -22,17 +22,17 @@ function getAlternativeCP(altGraph, violatedCP, resultGraph){
   return result;
 }
 
-function getAlternativePattern(violatedCP){
+function getAlternativePattern(violatedCP) {
   // get first successor node of type pattern
   const cpps = GraphQuery.getSuccessors(violatedCP, 'complianceprocesspattern');
   const cp = cpps[0];
   return cp;
 }
 
-export function getAlternatives(altGraph, violatedCP){
+export function getAlternatives(altGraph, violatedCP) { // export function (altGraph, deleteGraph)
   let result = getAlternativeCP(altGraph, violatedCP);
 
-  if (result.length === 0){
+  if (result.length === 0) {
     result = getAlternativePattern(altGraph, violatedCP);
   }
 

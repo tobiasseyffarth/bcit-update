@@ -72,9 +72,9 @@ class ProcessDialog extends Component {
 
     for (let i = 0; i < ce.length; i++){
       result.push({
-        key: 'ce',
+        key: 'trigger',
         value: ce[i].id,
-        display: `Controlled Entity ${ce[i].name}`,
+        display: `Trigger for execution ${ce[i].name}`,
       });
     }
 
@@ -204,15 +204,6 @@ class ProcessDialog extends Component {
               id="processName"
               value={this.state.processName}
               onChange={e => this.setState({ processName: e.target.value })}
-            />
-          </div>
-          <div>
-            <label htmlFor="processRule">Rule</label>
-            <InputText
-              style={{ width: '30%' }}
-              id="processRule"
-              value={this.state.processRule}
-              onChange={e => this.setState({ processRule: e.target.value })}
             />
           </div>
           <div>
