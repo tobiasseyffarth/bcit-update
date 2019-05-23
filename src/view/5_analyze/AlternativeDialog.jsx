@@ -6,6 +6,7 @@ import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import '../../App.css';
 import ProjectModel from '../../models/ProjectModel';
 import * as AlternativeFinder from './../../controller/adapt/AlternativeFinder';
+import * as ProcessQuery from './../../controller/process/ProcessQuery';
 
 class AlternativeDialog extends Component {
   constructor(props) {
@@ -61,6 +62,7 @@ class AlternativeDialog extends Component {
     }
 
     AlternativeFinder.getAlternatives(this.altGraph, this.removeGraph);
+
   }
 
   renderBpmn = (xml) => {
