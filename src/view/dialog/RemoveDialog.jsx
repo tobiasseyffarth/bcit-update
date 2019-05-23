@@ -5,7 +5,7 @@ import { Button } from 'primereact/button';
 import { Accordion, AccordionTab } from 'primereact/accordion';
 import cytoscape from 'cytoscape';
 import '../../App.css';
-import AlternativeView from '../5_analyze/AlternativeView';
+import AlternativeDialog from '../5_analyze/AlternativeDialog';
 import ProjectModel from '../../models/ProjectModel';
 import * as GraphRenderer from '../../controller/graph/GraphRenderer';
 
@@ -221,7 +221,10 @@ class RemoveDialog extends Component {
   renderRemoveDialog() {
     const footer = (
       <div>
-        <Button label="show alternatives" onClick={this.showAlternativeDialog} />
+        <Button
+          label="show alternatives"
+          onClick={this.showAlternativeDialog}
+        />
       </div>
     );
 
@@ -248,7 +251,10 @@ class RemoveDialog extends Component {
   render() {
     return (
       <div>
-        <AlternativeView showAlternative={this.state.visibleAlternative} close={this.closeAlternativeView} />
+        <AlternativeDialog
+          showAlternative={this.state.visibleAlternative}
+          close={this.closeAlternativeView}
+        />
         <div>
           {this.renderRemoveDialog()}
         </div>

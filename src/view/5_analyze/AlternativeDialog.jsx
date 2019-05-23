@@ -5,8 +5,9 @@ import { Button } from 'primereact/button';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import '../../App.css';
 import ProjectModel from '../../models/ProjectModel';
+import * as AlternativeFinder from './../../controller/adapt/AlternativeFinder';
 
-class AlternativeView extends Component {
+class AlternativeDialog extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -14,9 +15,12 @@ class AlternativeView extends Component {
         { name: 'alternative 1' },
         { name: 'alternative 2' },
       ],
+      selectedProcess: null,
       visibleAlternative: false,
     };
+
     this.renderAlternativeProcess = this.renderAlternativeProcess.bind(this);
+    this.exportProcess = this.exportProcess.bind(this);
     this.onHide = this.onHide.bind(this);
   }
 
@@ -40,6 +44,19 @@ class AlternativeView extends Component {
     if (ProjectModel.getBpmnXml() !== null) {
       this.renderBpmn(ProjectModel.getBpmnXml());
     }
+
+    if (ProjectModel.getRemoveGraph() !== null) {
+      this.removeGraph = ProjectModel.getRemoveGraph();
+    }
+
+    if (ProjectModel.getAltGraph() !== null) {
+      this.altGraph = ProjectModel.getAltGraph();
+    }
+
+    console.log(this.removeGraph);
+    console.log(this.altGraph);
+
+    AlternativeFinder.getAlternatives(this.altGraph, this.removeGraph);
   }
 
   renderBpmn = (xml) => {
@@ -54,21 +71,48 @@ class AlternativeView extends Component {
   };
 
   renderAlternativeProcess = (option) => {
-    console.log(option);
+    console.log('render', option);
+    this.setState({ selectedProcess: option});
   };
 
-  render() {
-    const footer = (
-      <div>
-        <Button label="close" onClick={this.onHide} />
-      </div>
-    );
+  exportProcess = () => {
+    console.log('export process', this.state.selectedProcess);
+  };
 
+  renderAlternativePanel(){
+    return (
+      <div className="property-panel">
+        <ListBox
+          style={{ width: '100%' }}
+          value={this.state.selectedProcess}
+          options={this.state.alternativeProcess}
+          optionLabel="name"
+          onChange={(e) => this.renderAlternativeProcess(e.value)}
+        />
+        <br />
+        <Button
+          label="export process"
+          onClick={this.exportProcess}
+        />
+      </div>
+    )
+  }
+
+  renderPropsPanel(){
+    return (
+      <div className="property-panel">
+        <ListBox
+          style={{ width: '100%' }}
+        />
+      </div>
+    )
+  }
+
+  render() {
     return (
       <div className="content-section implementation">
         <Dialog
           header="Alternative Processes"
-          footer={footer}
           visible={this.state.visibleAlternative}
           style={{ width: '80vw' }}
           onHide={this.onHide}
@@ -76,15 +120,11 @@ class AlternativeView extends Component {
           maximizable
         >
           <section className="container-process">
+            {this.renderAlternativePanel()}
             <div className="viewer" style={{ width: '60vw', height: '400px' }}>
               <div id="alternative" />
             </div>
-            <div className="property-panel">
-              <ListBox
-                style={{ width: '100%' }}
-
-              />
-            </div>
+            {this.renderPropsPanel()}
           </section>
         </Dialog>
       </div>
@@ -92,4 +132,4 @@ class AlternativeView extends Component {
   }
 }
 
-export default AlternativeView;
+export default AlternativeDialog;
