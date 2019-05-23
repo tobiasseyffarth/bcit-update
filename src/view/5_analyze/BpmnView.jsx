@@ -34,10 +34,12 @@ class BpmnView extends Component {
       container: '#canvas',
       height: '400px',
     });
+    /*
     this.bpmnAltModeler = new BpmnModeler({
       container: '#alternative',
       height: '350px',
     });
+    */
     this.hookBpmnEventBus();
 
     if (ProjectModel.getBpmnXml() !== null) {

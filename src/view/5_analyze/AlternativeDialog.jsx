@@ -17,18 +17,12 @@ class AlternativeDialog extends Component {
       ],
       selectedProcess: null,
       visibleAlternative: false,
+      bpmnModeler: null,
     };
 
     this.renderAlternativeProcess = this.renderAlternativeProcess.bind(this);
     this.exportProcess = this.exportProcess.bind(this);
     this.onHide = this.onHide.bind(this);
-  }
-
-  componentDidMount() {
-    this.bpmnAltModeler = new BpmnModeler({
-      container: '#alternative',
-      height: '350px',
-    });
   }
 
   componentWillReceiveProps(nextProps){
@@ -41,6 +35,19 @@ class AlternativeDialog extends Component {
   }
 
   onShow() {
+    const propsPanel = document.getElementById('alternative-panel');
+    const height = propsPanel.offsetHeight;
+
+    if (this.state.bpmnModeler === null) {
+      this.bpmnAltModeler = new BpmnModeler({
+        container: '#alternative',
+        height: height,
+      });
+      this.setState({ bpmnModeler: this.bpmnAltModeler });
+    } else {
+      this.bpmnAltModeler = this.state.bpmnModeler;
+    }
+
     if (ProjectModel.getBpmnXml() !== null) {
       this.renderBpmn(ProjectModel.getBpmnXml());
     }
@@ -52,9 +59,6 @@ class AlternativeDialog extends Component {
     if (ProjectModel.getAltGraph() !== null) {
       this.altGraph = ProjectModel.getAltGraph();
     }
-
-    console.log(this.removeGraph);
-    console.log(this.altGraph);
 
     AlternativeFinder.getAlternatives(this.altGraph, this.removeGraph);
   }
@@ -81,7 +85,7 @@ class AlternativeDialog extends Component {
 
   renderAlternativePanel(){
     return (
-      <div className="property-panel">
+      <div className="property-panel" id="alternative-panel">
         <ListBox
           style={{ width: '100%' }}
           value={this.state.selectedProcess}
@@ -121,7 +125,7 @@ class AlternativeDialog extends Component {
         >
           <section className="container-process">
             {this.renderAlternativePanel()}
-            <div className="viewer" style={{ width: '60vw', height: '400px' }}>
+            <div className="viewer" style={{ width: '60vw' }}>
               <div id="alternative" />
             </div>
             {this.renderPropsPanel()}
