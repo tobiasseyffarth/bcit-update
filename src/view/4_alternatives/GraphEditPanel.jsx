@@ -55,7 +55,6 @@ export default class GraphEditPanel extends Component {
   showReqDialog(){
     const req = this.state.selectedCompliance;
     this.props.showReqDialog(req);
-    console.log('selected req edit panel', req);
   }
 
   showComplianceProcessDialog() {

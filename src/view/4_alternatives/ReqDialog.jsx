@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
+import { Dropdown } from 'primereact/dropdown';
 import { MultiSelect } from 'primereact/multiselect';
 import '../../App.css';
 import * as GraphQuery from '../../controller/graph/GraphQuery';
@@ -142,12 +143,12 @@ class ReqDialog extends Component {
             <label htmlFor="reqName">Name</label>
             <InputText
               id="reqName"
-              value={this.state.reqn}
+              value={this.state.reqName}
               readonly
             />
           </div>
           <div>
-            <label htmlFor="predActivity">Further Requirements</label>
+            <label htmlFor="predActivity">Compliance Process must be executed before</label>
             <MultiSelect
               style={{ width: '30%' }}
               optionLabel="name"

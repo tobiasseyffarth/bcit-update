@@ -68,11 +68,17 @@ export function newProject() {
   ProjectModel.setName(null);
 }
 
-export async function openProject(){
-  const file = await FileIo.getFile('.bcit');
-  const fileContent = await FileIo.readFile(file);
-  const projectFile = JSON.parse(fileContent);
+export async function openProject(content){
+  let fileContent;
 
+  if (content !== undefined){
+    fileContent = content;
+  } else {
+    const file = await FileIo.getFile('.bcit');
+    fileContent = await FileIo.readFile(file);
+  }
+
+  const projectFile = JSON.parse(fileContent);
   const graph = getGraphFromElements(projectFile.graph);
   const altGraph = getGraphFromElements(projectFile.altGraph);
 

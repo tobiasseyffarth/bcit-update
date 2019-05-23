@@ -14,6 +14,7 @@ import bpmnXml from './../../models/processmodel';
 import infraXml from './../../models/inframodel';
 import complianceJson from '../../models/compliancemodel';
 import altGraph from '../../models/altGraph';
+import sampleModel from '../../models/sampleModel';
 import ProjectModel from './../../models/ProjectModel';
 import './../../App.css';
 
@@ -26,6 +27,7 @@ export default class ImportModels extends Component {
     this.openInfra = this.openInfra.bind(this);
     this.openBPMN = this.openBPMN.bind(this);
     //this.openModels(); // temporary
+    this.openProjectModel(); // temporary
   }
 
   async openCompliance() {
@@ -81,6 +83,13 @@ export default class ImportModels extends Component {
 
     this.growl.show({ severity: 'info', summary: 'BPMN successfull imported', detail: 'detail...' });
   }
+
+  // temporary
+  openProjectModel = () => {
+    if (ProjectModel.getBpmnXml() === null){
+      ProjectIO.openProject(sampleModel);
+    }
+  };
 
   // temporary
   openModels = () => {

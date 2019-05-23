@@ -87,7 +87,6 @@ export default class Alternatives extends Component {
     if (req !== null){
       const isUnique = GraphQuery.isUniqueNode(this.graph, { id: req.id });
       if (isUnique) {
-        console.log('is unique', req.id);
         this.setState({ visibleReqDialog: true });
         this.setState({ reqName: req.id });
       } else {
