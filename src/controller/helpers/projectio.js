@@ -103,8 +103,8 @@ export async function exportProject(){
   saveAs(file);
 }
 
-export async function exportBpmn(){
-  const output = ProjectModel.getBpmnXml();
+export async function exportBpmn(bpmnXml){
+  const output = bpmnXml || ProjectModel.getBpmnXml();
   const file = new File([output], 'process.bpmn', {type: 'text/plain;charset=utf-8'});
   saveAs(file);
 }

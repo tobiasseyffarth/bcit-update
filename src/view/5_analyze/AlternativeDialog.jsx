@@ -10,6 +10,7 @@ import * as ProcessQuery from './../../controller/process/ProcessQuery';
 import * as GraphQuery from './../../controller/graph/GraphQuery';
 import * as ProcessRenderer from './../../controller/process/ProcessRenderer';
 import * as FileIo from './../../controller/helpers/fileio';
+import * as ProjectIo from './../../controller/helpers/projectio';
 
 class AlternativeDialog extends Component {
   constructor(props) {
@@ -59,6 +60,7 @@ class AlternativeDialog extends Component {
     }
 
     const alternatives = AlternativeFinder.getAlternatives(this.altGraph, this.removeGraph);
+
     /*
     let processes = this.state.alternativeProcess;
     for (let i = 0; i < alternatives.length; i++) {
@@ -67,6 +69,7 @@ class AlternativeDialog extends Component {
       processes.push({name: name, bpmnXml: process});
     }
     */
+
   }
 
   hookBpmnOnClick(e) {
@@ -174,13 +177,13 @@ class AlternativeDialog extends Component {
   };
 
   selectProcess = (option) => {
-    console.log('render', option);
     this.setState({ selectedProcess: option});
     this.renderBpmn(option.bpmnXml);
   };
 
   exportProcess = () => {
-    console.log('export process', this.state.selectedProcess);
+    const bpmnXml = this.state.selectedProcess.bpmnXml;
+    ProjectIo.exportBpmn(bpmnXml);
   };
 
   renderAlternativePanel() {
