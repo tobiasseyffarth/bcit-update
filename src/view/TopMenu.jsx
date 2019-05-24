@@ -1,5 +1,6 @@
 import { Menubar } from 'primereact/menubar';
 import React, { Component } from 'react';
+import { Button } from 'primereact/button';
 import AboutDialog from './dialog/AboutDialog';
 import GraphDialog from './dialog/GraphDialog';
 import ProjectModel from './../models/ProjectModel';

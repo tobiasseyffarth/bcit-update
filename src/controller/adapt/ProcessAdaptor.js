@@ -10,7 +10,7 @@ export function adaptBusinessProcess(viewer, violatedCP, alternative){
   // --> integration point of the pattern is the integration point of violatedCP
 
   // if process
-  // --> get ce of process
+  // --> get trigger of process
   // integrate after ce
 
 }

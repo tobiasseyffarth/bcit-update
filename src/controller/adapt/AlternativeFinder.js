@@ -16,7 +16,7 @@ function getAlternativeCP(altGraph, violatedCP, deleteGraph) {
     const isExecutable = AlternativeChecker.isExecutable(complianceProcess, nodeReq, deleteGraph);
 
     if (isExecutable) {
-      result.push(complianceProcess);
+      result.push(complianceProcess); // todo: compliance process has a trigger == direct predecessor
     }
   }
   return result;
@@ -29,8 +29,7 @@ function getAlternativePattern(violatedCP) {
   return cp;
 }
 
-export function getAlternatives(altGraph, deleteGraph) {
-  const nodes = deleteGraph.nodes();
+export function getAlternatives(altGraph, deleteGraph, process) {
   const cps = GraphQuery.filterNodes(deleteGraph, { type: 'complianceprocess'});
   console.log('violated compliance processes', cps);
 
@@ -48,5 +47,6 @@ export function getAlternatives(altGraph, deleteGraph) {
   }
   */
 
+  return null;
 
 }

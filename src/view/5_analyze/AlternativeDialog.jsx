@@ -9,21 +9,19 @@ import * as AlternativeFinder from './../../controller/adapt/AlternativeFinder';
 import * as ProcessQuery from './../../controller/process/ProcessQuery';
 import * as GraphQuery from './../../controller/graph/GraphQuery';
 import * as ProcessRenderer from './../../controller/process/ProcessRenderer';
+import * as FileIo from './../../controller/helpers/fileio';
 
 class AlternativeDialog extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      alternativeProcess: [
-        { name: 'alternative 1' },
-        { name: 'alternative 2' },
-      ],
+      processList: [],
       selectedProcess: null,
       visibleAlternative: false,
       bpmnModeler: null,
     };
 
-    this.renderAlternativeProcess = this.renderAlternativeProcess.bind(this);
+    this.selectProcess = this.selectProcess.bind(this);
     this.exportProcess = this.exportProcess.bind(this);
     this.onHide = this.onHide.bind(this);
   }
@@ -49,7 +47,7 @@ class AlternativeDialog extends Component {
     }
 
     if (ProjectModel.getBpmnXml() !== null) {
-      this.renderBpmn(ProjectModel.getBpmnXml());
+      this.renderOriginalProcess(ProjectModel.getBpmnXml());
     }
 
     if (ProjectModel.getRemoveGraph() !== null) {
@@ -60,7 +58,15 @@ class AlternativeDialog extends Component {
       this.altGraph = ProjectModel.getAltGraph();
     }
 
-    AlternativeFinder.getAlternatives(this.altGraph, this.removeGraph);
+    const alternatives = AlternativeFinder.getAlternatives(this.altGraph, this.removeGraph);
+    /*
+    let processes = this.state.alternativeProcess;
+    for (let i = 0; i < alternatives.length; i++) {
+      const name = 'alternative' + i;
+      const process = alternatives[i];
+      processes.push({name: name, bpmnXml: process});
+    }
+    */
   }
 
   hookBpmnOnClick(e) {
@@ -68,12 +74,12 @@ class AlternativeDialog extends Component {
     console.log(element);
   }
 
-  hookBpmnEventBus(){
+  hookBpmnEventBus() {
     const eventBus = this.bpmnAltModeler.get('eventBus');
     eventBus.on('element.click', e => this.hookBpmnOnClick(e));
   }
 
-  highlightOriginalProcess(){
+  highlightOriginalProcess() {
     const process = ProcessQuery.getProcess(this.bpmnAltModeler);
     const flowNodes = ProcessQuery.getFlowNodesOfProcess(process);
     const graph = this.removeGraph;
@@ -130,11 +136,19 @@ class AlternativeDialog extends Component {
     }
   }
 
-  getAlternativeProcesses(){
+  pushOriginalToList(){
+    const bpmnXml = FileIo.getXmlFromViewer(this.bpmnAltModeler);
+    const entry = {
+      name: 'original process',
+      bpmnXml: bpmnXml
+    };
 
+    let list = [];
+    list.push(entry);
+    this.setState({ processList: list })
   }
 
-  renderBpmn = (xml) => {
+  renderOriginalProcess = (xml) => {
     this.bpmnAltModeler.importXML(xml, (err) => {
       if (err) {
         console.log('error rendering', err);
@@ -143,29 +157,41 @@ class AlternativeDialog extends Component {
         canvas.zoom('fit-viewport');
         this.hookBpmnEventBus();
         this.highlightOriginalProcess();
-        this.getAlternativeProcesses();
+        this.pushOriginalToList();
       }
     });
   };
 
-  renderAlternativeProcess = (option) => {
+  renderBpmn = (xml) => {
+    this.bpmnAltModeler.importXML(xml, (err) => {
+      if (err) {
+        console.log('error rendering', err);
+      } else {
+        const canvas = this.bpmnAltModeler.get('canvas');
+        canvas.zoom('fit-viewport');
+      }
+    });
+  };
+
+  selectProcess = (option) => {
     console.log('render', option);
     this.setState({ selectedProcess: option});
+    this.renderBpmn(option.bpmnXml);
   };
 
   exportProcess = () => {
     console.log('export process', this.state.selectedProcess);
   };
 
-  renderAlternativePanel(){
+  renderAlternativePanel() {
     return (
       <div className="property-panel" id="alternative-panel">
         <ListBox
           style={{ width: '100%' }}
           value={this.state.selectedProcess}
-          options={this.state.alternativeProcess}
+          options={this.state.processList}
           optionLabel="name"
-          onChange={(e) => this.renderAlternativeProcess(e.value)}
+          onChange={(e) => this.selectProcess(e.value)}
         />
         <br />
         <Button
@@ -176,7 +202,7 @@ class AlternativeDialog extends Component {
     )
   }
 
-  renderPropsPanel(){
+  renderPropsPanel() {
     return (
       <div className="property-panel">
         <ListBox
