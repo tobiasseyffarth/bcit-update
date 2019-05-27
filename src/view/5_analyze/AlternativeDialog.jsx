@@ -55,14 +55,16 @@ class AlternativeDialog extends Component {
   }
 
   async renderAlternativeProcesses() {
-    const altProcesses = await ProcessAdapter.getAdaptedProcesses(this.altGraph, this.removeGraph, ProjectModel.getBpmnXml());
+    const altGraph = this.altGraph;
+    const removeGraph = this.removeGraph;
+    const bpmnXml = ProjectModel.getBpmnXml();
+    const altProcesses = await ProcessAdapter.getAdaptedProcesses(altGraph, removeGraph, bpmnXml);
     let processList = this.state.processList;
 
     for (let i = 0; i < altProcesses.length; i++) {
       const altProc = altProcesses[i];
       processList.push(altProc);
     }
-
     this.setState({ processList });
   }
 

@@ -23,6 +23,18 @@ export function getProcess(viewer, e) {
   return process;
 }
 
+export function getShapes(viewer){
+  const elementRegistry = viewer.get('elementRegistry');
+  const nodes = elementRegistry.getAll();
+  let shapes = [];
+
+  for (let i = 0; i < nodes.length; i++) {
+    const shape = nodes[i];
+    shapes.push(shape);
+  }
+  return shapes;
+}
+
 // final
 export function getFlowElementsOfProcess(process) {
   const flowElements = [];

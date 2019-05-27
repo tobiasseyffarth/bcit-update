@@ -227,7 +227,7 @@ export function updateITDisplayName(graph_view, graph_infra, element) {
   }
 }
 
-// todo: sometimes error because leaves[0] is undefined
+// todo: sometimes error because leaves[0] is undefined --> Error beim entfernen der Compliance von IT
 function removePred(predecessors) {
   const leaves = predecessors.leaves('node');
   const node = leaves[0];

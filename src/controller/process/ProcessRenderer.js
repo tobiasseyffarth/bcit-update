@@ -10,6 +10,15 @@ export function colorShape(viewer, element, coloroption) {
   modeling.setColor(element, { stroke: _stroke, fill: _fill });
 }
 
+export function resetShapeColor(viewer) {
+  // get Shapes of Process
+  const shapes = queryprocess.getShapes(viewer);
+
+  for (let i = 0; i < shapes.length; i++) {
+    colorShape(viewer, shapes[i], { stroke: 'black' });
+  }
+}
+
 export function createShape(viewer, option) {
   const canvas = viewer.get('canvas');
   const elementFactory = viewer.get('elementFactory');

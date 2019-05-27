@@ -127,17 +127,20 @@ class InfraView extends Component {
       const element = evt.target;
       if (element === graph) { // background
         _this.renderInfraProps(null);
+        GraphRenderer.unhighlightNodes(this.graph);
       } else if (element.isNode()) { // edge
         const id = element.data('id');
         const itComponent = InfraQuery.getElementById(infra, id);
         _this.renderInfraProps(itComponent);
+        GraphRenderer.unhighlightNodes(this.graph);
+        GraphRenderer.highlightNode(element);
       }
     });
   }
 
   renderInfra(infra){
     const container = document.getElementById('infra-container');
-    const graph = cytoscape({
+    this.graph = cytoscape({
       container,
       style: [ // the stylesheet for the graph
         {
@@ -164,12 +167,12 @@ class InfraView extends Component {
       ],
     });
 
-    GraphCreator.createGraphFromInfra(graph, infra);
-    const layout = graph.layout({ name: 'breadthfirst' }); // more options http://js.cytoscape.org/#layouts
+    GraphCreator.createGraphFromInfra(this.graph, infra);
+    const layout = this.graph.layout({ name: 'breadthfirst' }); // more options http://js.cytoscape.org/#layouts
     layout.run();
-    graph.autolock(false); // elements can not be moved by the user
-    GraphRenderer.resizeGraph(graph);
-    this.hookInfraOnClick(graph);
+    this.graph.autolock(false); // elements can not be moved by the user
+    GraphRenderer.resizeGraph(this.graph);
+    this.hookInfraOnClick(this.graph);
   }
 
   renderInfraProps(itComponent){
