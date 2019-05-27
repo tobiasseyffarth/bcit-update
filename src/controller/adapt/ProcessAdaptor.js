@@ -16,8 +16,6 @@ async function getModeler(bpmnXml) {
         console.log('error rendering', err);
       } else {
         process = ProcessQuery.getProcess(modeler);
-        console.log(modeler);
-        console.log(process);
         res(modeler);
       }
     });
@@ -62,7 +60,6 @@ function removeObsoleteElements(viewer, shapeList){
       ProcessRenderer.moveShape(viewer, sucs[j], 'left');
     }
   }
-
 }
 
 function getShapes(modeler, queryResult){
@@ -73,6 +70,20 @@ function getShapes(modeler, queryResult){
     const shape = ProcessQuery.getShapeOfRegistry(modeler, element.id);
     if (shape !== undefined) {
       shapes.push(shape);
+    }
+
+    // test extension shapes
+    const shapesOfProcess = ProcessQuery.getShapes(modeler);
+    for (let j = 0; j < shapesOfProcess.length; j++) {
+      const extShape = shapesOfProcess[j];
+      const id = ProcessQuery.getIdFromExtensionShape(extShape);
+
+      if (id === element.id) {
+        if (extShape.type !== 'label'){
+          shapes.push(extShape);
+        }
+      }
+
     }
   }
   return shapes;
@@ -85,8 +96,10 @@ export async function getAdaptedProcesses(altGraph, deleteGraph, bpmnXml){
   const modeler = await getModeler(bpmnXml);
 
   if (violatedElements.length === 0) {
-    const obsoleteShapes = getShapes(modeler, obsoleteElements);
-    console.log('removed obsolete shapes', obsoleteShapes);
+    let obsoleteShapes = getShapes(modeler, obsoleteElements);
+    const changedElement = GraphQuery.filterNodes(deleteGraph, { style: 'changedElement' });
+    removeObsoleteElements(modeler, obsoleteShapes);
+    obsoleteShapes = getShapes(modeler, changedElement);
     removeObsoleteElements(modeler, obsoleteShapes);
     adaptedProcesses.push({
       name: 'removed obsolete elements',
@@ -109,4 +122,3 @@ export async function getAdaptedProcesses(altGraph, deleteGraph, bpmnXml){
 
   return adaptedProcesses;
 }
-
