@@ -1,5 +1,7 @@
 import * as AlternativeChecker from './AlternativeChecker';
 import * as GraphQuery from './../graph/GraphQuery';
+import * as ProcessQuery from './../process/ProcessQuery';
+import BpmnModeler from "bpmn-js/dist/bpmn-modeler.development";
 
 // contains functions to find alternative CP from the AltGraph
 
@@ -29,8 +31,13 @@ function getAlternativePattern(violatedCP) {
   return cp;
 }
 
-export function getAlternatives(altGraph, deleteGraph, process) {
+export function getAlternatives(altGraph, deleteGraph) {
   const cps = GraphQuery.filterNodes(deleteGraph, { type: 'complianceprocess'});
+  let result = {
+    violated: 'violatedNode',
+    alternative: 'alternative node'
+  };
+
   console.log('violated compliance processes', cps);
 
   for (let i = 0; i < cps.length; i++){

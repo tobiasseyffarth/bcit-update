@@ -6,6 +6,7 @@ import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import '../../App.css';
 import ProjectModel from '../../models/ProjectModel';
 import * as AlternativeFinder from './../../controller/adapt/AlternativeFinder';
+import * as ProcessAdapter from './../../controller/adapt/ProcessAdaptor';
 import * as ProcessQuery from './../../controller/process/ProcessQuery';
 import * as GraphQuery from './../../controller/graph/GraphQuery';
 import * as ProcessRenderer from './../../controller/process/ProcessRenderer';
@@ -47,29 +48,22 @@ class AlternativeDialog extends Component {
       });
     }
 
-    if (ProjectModel.getBpmnXml() !== null) {
-      this.renderOriginalProcess(ProjectModel.getBpmnXml());
+    this.renderOriginalProcess(ProjectModel.getBpmnXml());
+    this.removeGraph = ProjectModel.getRemoveGraph();
+    this.altGraph = ProjectModel.getAltGraph();
+    this.renderAlternativeProcesses();
+  }
+
+  async renderAlternativeProcesses() {
+    const altProcesses = await ProcessAdapter.getAdaptedProcesses(this.altGraph, this.removeGraph, ProjectModel.getBpmnXml());
+    let processList = this.state.processList;
+
+    for (let i = 0; i < altProcesses.length; i++) {
+      const altProc = altProcesses[i];
+      processList.push(altProc);
     }
 
-    if (ProjectModel.getRemoveGraph() !== null) {
-      this.removeGraph = ProjectModel.getRemoveGraph();
-    }
-
-    if (ProjectModel.getAltGraph() !== null) {
-      this.altGraph = ProjectModel.getAltGraph();
-    }
-
-    const alternatives = AlternativeFinder.getAlternatives(this.altGraph, this.removeGraph);
-
-    /*
-    let processes = this.state.alternativeProcess;
-    for (let i = 0; i < alternatives.length; i++) {
-      const name = 'alternative' + i;
-      const process = alternatives[i];
-      processes.push({name: name, bpmnXml: process});
-    }
-    */
-
+    this.setState({ processList });
   }
 
   hookBpmnOnClick(e) {
