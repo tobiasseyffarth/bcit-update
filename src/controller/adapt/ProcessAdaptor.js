@@ -25,7 +25,7 @@ async function getModeler(bpmnXml) {
   return await promise;
 }
 
-function adaptBusinessProcessByAlternatives(viewer, violatedCPShape, alternative){
+function adaptBusinessProcessByAlternatives(viewer, violatedCPShape, alternative) {
 
   // check whether alternative is process or pattern
 
@@ -43,7 +43,7 @@ function adaptBusinessProcessByAlternatives(viewer, violatedCPShape, alternative
   return bpmnXml;
 }
 
-function removeObsoleteElements(viewer, shapeList){
+function removeObsoleteElements(viewer, shapeList) {
 
   for (let i = 0; i < shapeList.length; i++) {
     const shape = shapeList[i];
@@ -62,7 +62,7 @@ function removeObsoleteElements(viewer, shapeList){
   }
 }
 
-function getShapes(modeler, queryResult){
+function getShapes(modeler, queryResult) {
   let shapes = [];
 
   for (let i = 0; i < queryResult.length; i++) {
@@ -80,10 +80,12 @@ function getShapes(modeler, queryResult){
 
       if (id === element.id) {
         if (extShape.type !== 'label'){
-          shapes.push(extShape);
+          const extBO = extShape.businessObject;
+          if (ProcessQuery.isDataObject(extBO) || ProcessQuery.isDataStore(extBO)) {
+            shapes.push(extShape);
+          }
         }
       }
-
     }
   }
   return shapes;
