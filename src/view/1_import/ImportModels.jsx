@@ -27,7 +27,7 @@ export default class ImportModels extends Component {
     this.openInfra = this.openInfra.bind(this);
     this.openBPMN = this.openBPMN.bind(this);
     // this.openModels(); // temporary
-    // this.openProjectModel(); // temporary
+    this.openProjectModel(); // temporary
   }
 
   async openCompliance() {
