@@ -92,6 +92,9 @@ export function moveShape(viewer, shape, direction) {
     const dataInput = dataInputs[i];
     yPos = (shape.y / 2) - 51;
     modeler.moveShape(dataInput, { x: xPos, y: yPos }, false);
+
+    const shapeLabel = dataInput.label;
+    modeler.moveShape(shapeLabel, { x: xPos, y: yPos }, false);
   }
 
   // move DataOutput of the activity
@@ -100,6 +103,9 @@ export function moveShape(viewer, shape, direction) {
     const dataOutput = dataOutputs[i];
     yPos = (shape.y / 2) - 51;
     modeler.moveShape(dataOutput, { x: xPos, y: yPos }, false);
+
+    const shapeLabel = dataOutputs.label;
+    modeler.moveShape(shapeLabel, { x: xPos, y: yPos }, false);
   }
 }
 
