@@ -73,7 +73,6 @@ class BpmnView extends Component {
         if (deleteGraph !== null && deleteGraph.nodes().length > 1) {
           ProjectModel.setRemoveGraph(deleteGraph);
           this.setState({ visibleRemove: true });
-          console.log('violated req', GraphQuery.filterNodes(deleteGraph, { style: 'violated', type: 'compliance' }));
         }
         if (deleteGraph !== null && deleteGraph.nodes().length <= 1) {
           const detail = 'no violations found';

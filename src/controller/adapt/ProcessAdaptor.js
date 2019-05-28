@@ -121,13 +121,16 @@ export async function getAdaptedProcesses(altGraph, deleteGraph, bpmnXml){
 
   } else {
 
-    const altEles = AlternativeFinder.getAlternatives(altGraph, deleteGraph);
-    let violatedShapes = getShapes(modeler, violatedElements); // todo: hier die changed shape im fall eines Cp abgreifen
+    const altEles = AlternativeFinder.getAlternatives(altGraph, deleteGraph, modeler);
+    let violatedShapes = getShapes(modeler, violatedElements);
     const changedElement = GraphQuery.filterNodes(deleteGraph, { style: 'changedElement' });
     if (changedElement[0].data('nodetype') === 'complianceprocess') {
       violatedShapes.push(getShapes(modeler, changedElement)[0]);
     }
 
+    console.log('alternatives', altEles);
+
+    /*
     // adapt process with alternatives
     for (let i = 0; i < altEles; i++) {
       const altEle = altEles[i];
@@ -137,8 +140,9 @@ export async function getAdaptedProcesses(altGraph, deleteGraph, bpmnXml){
         name: 'alternative process', i,
         bpmnXml: altBpmnXml,
       });
-
     }
+    */
+
   }
 
   return adaptedProcesses;

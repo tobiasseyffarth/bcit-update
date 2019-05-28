@@ -1,76 +1,70 @@
 import * as AlternativeChecker from './AlternativeChecker';
 import * as GraphQuery from './../graph/GraphQuery';
-import * as ProcessQuery from './../process/ProcessQuery';
 
 // contains functions to find alternative CP from the AltGraph
 
-function getAlternativeCP(altGraph, violatedCP, deleteGraph) {
+function getAlternativeCP(violatedCP, deleteGraph, viewer) {
   let result = [];
-  const nodeReq = GraphQuery.getSuccessors(violatedCP, 'compliance')[0].data();
-  let nodeViolatedCP;
+  const nodeReq = GraphQuery.filterNodesByType(GraphQuery.getSuccessors(violatedCP), 'compliance')[0];
+  const complianceProcesses = GraphQuery.filterNodesByType(GraphQuery.getPredecessors(nodeReq), 'complianceprocess');
 
-  // get violated cp node from alternative graph
-  const nodes = altGraph.nodes();
-  for (let i = 0; i < nodes.length; i++) {
-    const node = nodes[i].data();
-    if (node.cpid !== undefined && node.cpid === violatedCP.id()) {
-      nodeViolatedCP = node;
-      break;
-    }
-  }
-
-  console.log('node requirement', nodeReq);
-  console.log('node violated cp', nodeViolatedCP);
-
-  /*
-  // get Sibling Compliance Process
-  const cpps = GraphQuery.getSuccessors(violatedCP, 'complianceprocesspattern');
-  for (let i = 0; i < cpps.length; i++) {
-    const pattern = cpps[i];
-    const complianceProcess = GraphQuery.getPredecessors(pattern, 'complianceprocess');
-    console.log(complianceProcess);
-    const isExecutable = AlternativeChecker.isExecutable(complianceProcess, nodeReq, deleteGraph);
+  for (let i = 0; i < complianceProcesses.length; i++) {
+    const complianceProcess = complianceProcesses[i];
+    const isExecutable = AlternativeChecker.isExecutable(complianceProcess, nodeReq, deleteGraph, viewer);
 
     if (isExecutable) {
-      result.push(complianceProcess); // todo: compliance process has a trigger == direct predecessor
+      result.push({
+        violatedCP: violatedCP,
+        alternative: complianceProcess
+      });
     }
   }
   return result;
-
-  */
 }
 
 function getAlternativePattern(violatedCP) {
   // get first successor node of type pattern
-  const cpps = GraphQuery.getSuccessors(violatedCP, 'complianceprocesspattern');
-  const cp = cpps[0];
-  return cp;
+  const cpps = GraphQuery.getDirectSuccessor(violatedCP, 'complianceprocesspattern');
+  return cpps[0];
 }
 
-export function getAlternatives(altGraph, deleteGraph) {
+function getViolatedComplianceProcess(altGraph, id) {
+  // get violated cp node from alternative graph
+  const nodes = altGraph.nodes();
+  let nodeViolatedCP;
+
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i];
+    if (node.data('cpid') !== undefined && node.data('cpid') === id) {
+      nodeViolatedCP = node;
+      break;
+    }
+  }
+  return nodeViolatedCP;
+}
+
+export function getAlternatives(altGraph, deleteGraph, viewer) {
   const violatedComplianceProcesses = GraphQuery.filterNodes(deleteGraph, { type: 'complianceprocess' });
-  let result = [];
+  let alternativeCP;
 
   for (let i = 0; i < violatedComplianceProcesses.length; i++){
     const violatedComProcess = violatedComplianceProcesses[i];
-    const reqs = GraphQuery.getDirectSuccessor(violatedComProcess, 'compliance');
-    console.log('violated compliance process', violatedComProcess);
-    console.log('violated reqs', reqs);
+    const violatedNode = getViolatedComplianceProcess(altGraph, violatedComProcess.id());
 
-    let alternativeCP = getAlternativeCP(altGraph, violatedComProcess);
+    if (violatedNode !== undefined) {
+      alternativeCP = getAlternativeCP(violatedNode, deleteGraph, viewer);
 
-    /*
-    if (alternativeCP.length === 0) {
-      alternativeCP = getAlternativePattern(altGraph, violatedComProcess);
+      if(alternativeCP.length === 0) {
+        const pattern = getAlternativePattern(violatedNode);
+        alternativeCP.push({
+          violatedCP: violatedNode,
+          alternative: pattern
+        });
+      }
+    } else {
+      console.log('can not find compliance process in alternatives');
+      return null;
     }
-
-    result.push({
-      violatedCP: violatedComProcess,
-      alternativeCP: alternativeCP
-    });
-
-    */
   }
-
-  return result;
+  return alternativeCP;
 }

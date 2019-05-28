@@ -367,6 +367,24 @@ export function getSucessorShapes(viewer, shape){
   return result;
 }
 
+export function getPredecessorShapes(viewer, shape){
+  const process = shape.businessObject.$parent;
+  const graph = GraphEditor.getEmptyGraph();
+  GraphEditor.createGraphFromProcess(graph, process);
+
+  const node = graph.getElementById(shape.id);
+  const preds = GraphQuery.getPredecessors(node);
+  const result = [];
+
+  for (let i = 0; i < sucs.length; i++){
+    const pred = preds[i];
+    const shapePred = getShapeOfRegistry(viewer, pred.id());
+    result.push(shapePred);
+  }
+
+  return result;
+}
+
 /*
 export function getSuccessors(viewer, id){
   const process = getProcess(viewer);

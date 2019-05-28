@@ -17,8 +17,8 @@ class ReqDialog extends Component {
       reqName: null,
       reqNode: null,
       visibleDialog: false,
-      predActivities: null,
-      selectedPredActivities: null,
+      untilActivities: null,
+      selectedUntilActivities: null,
     };
 
     this.onShow = this.onShow.bind(this);
@@ -38,7 +38,7 @@ class ReqDialog extends Component {
     if (reqNode !== undefined){
       this.setState({ header: 'Edit compliance requirement' });
     }
-    this.setState({ predActivities: GraphQuery.getBusinessActivities(ProjectModel.getGraph()) });
+    this.setState({ untilActivities: GraphQuery.getBusinessActivities(ProjectModel.getGraph()) });
 
     if (reqNode !== undefined){
       this.setState({ reqName: reqNode.id });
@@ -54,15 +54,15 @@ class ReqDialog extends Component {
   }
 
   getProps(){
-    const preds = this.state.selectedPredActivities;
+    const until = this.state.selectedUntilActivities;
     const result = [];
 
-    if (preds !== null) {
-      for (let i = 0; i < preds.length; i++) {
+    if (until !== null) {
+      for (let i = 0; i < until.length; i++) {
         result.push({
-          key: 'pred',
-          value: preds[i].id,
-          display: `Until ${preds[i].name}`,
+          key: 'until',
+          value: until[i].id,
+          display: `Until ${until[i].name}`,
         });
       }
     }
@@ -100,22 +100,22 @@ class ReqDialog extends Component {
   }
 
   renderProps(req){
-    const preds = GraphQuery.getBusinessActivities(ProjectModel.getGraph());
+    const until = GraphQuery.getBusinessActivities(ProjectModel.getGraph());
     const { props } = req;
 
     if (props !== undefined || props !== null) {
       const result = [];
 
-      for (let i = 0; i < preds.length; i++) {
+      for (let i = 0; i < until.length; i++) {
         for (let j = 0; j < props.length; j++) {
-          const entity = preds[i];
+          const entity = until[i];
           const prop = props[j];
           if (entity.id === prop.value) {
             result.push(entity);
           }
         }
       }
-      this.setState({ selectedPredActivities: result });
+      this.setState({ selectedUntilActivities: result });
     }
   }
 
@@ -151,9 +151,9 @@ class ReqDialog extends Component {
             <MultiSelect
               style={{ width: '30%' }}
               optionLabel="name"
-              value={this.state.selectedPredActivities}
-              options={this.state.predActivities}
-              onChange={e => this.setState({ selectedPredActivities: e.value })}
+              value={this.state.selectedUntilActivities}
+              options={this.state.untilActivities}
+              onChange={e => this.setState({ selectedUntilActivities: e.value })}
             />
           </div>
         </Dialog>
