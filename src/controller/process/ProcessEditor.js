@@ -93,13 +93,11 @@ export function defineAsComplianceProcess(viewer, element, status) {
   }
 }
 
-/*
-// final
-function definition2xml(definitions) {
-  const moddle = new BpmnModdle();
-  let xml;
-  moddle.toXML(definitions, (err, xmlStrUpdated) => {
-    xml = xmlStrUpdated;
-  });
+export function defineAsComplianceProcessPattern(viewer, element, status) {
+  if (status === true) { // if element shall be set as a compliance process
+    const extension = createExtensionElement('isComplianceProcessPattern', 'true');
+    addExtension(viewer, element, extension);
+  } else { // undo a set compliance process
+    removeExt(element.extensionElements, { name: 'isComplianceProcessPattern', value: 'true' });
+  }
 }
-*/

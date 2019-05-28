@@ -2,12 +2,12 @@ import * as queryprocess from './ProcessQuery';
 import * as editprocess from './ProcessEditor';
 
 // final
-export function colorShape(viewer, element, coloroption) {
+export function colorShape(viewer, shape, coloroption) {
   const modeling = viewer.get('modeling');
   const _stroke = coloroption.stroke || 'black';
   const _fill = coloroption.fill || 'none';
 
-  modeling.setColor(element, { stroke: _stroke, fill: _fill });
+  modeling.setColor(shape, { stroke: _stroke, fill: _fill });
 }
 
 export function resetShapeColor(viewer) {

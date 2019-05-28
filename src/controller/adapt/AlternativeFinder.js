@@ -10,15 +10,19 @@ function getAlternativeCP(violatedCP, deleteGraph, viewer) {
 
   for (let i = 0; i < complianceProcesses.length; i++) {
     const complianceProcess = complianceProcesses[i];
-    const isExecutable = AlternativeChecker.isExecutable(complianceProcess, nodeReq, deleteGraph, viewer);
 
-    if (isExecutable) {
-      result.push({
-        violatedCP: violatedCP,
-        alternative: complianceProcess
-      });
+    if (complianceProcess.data('id') !== violatedCP.data('id')) {
+      const isExecutable = AlternativeChecker.isExecutable(complianceProcess, nodeReq, deleteGraph, viewer);
+
+      if (isExecutable) {
+        result.push({
+          violatedCP: violatedCP,
+          alternative: complianceProcess
+        });
+      }
     }
   }
+  console.log(result);
   return result;
 }
 
@@ -66,5 +70,6 @@ export function getAlternatives(altGraph, deleteGraph, viewer) {
       return null;
     }
   }
+  console.log('return alternatives', alternativeCP);
   return alternativeCP;
 }

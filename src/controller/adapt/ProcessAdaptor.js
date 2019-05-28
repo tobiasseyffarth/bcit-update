@@ -1,8 +1,9 @@
 // contains functions to create alternative business processes
 
+import BpmnModeler from "bpmn-js/dist/bpmn-modeler.development";
 import * as ProcessQuery from "../process/ProcessQuery";
 import * as ProcessRenderer from "../process/ProcessRenderer";
-import BpmnModeler from "bpmn-js/dist/bpmn-modeler.development";
+import * as ProcessEditor from "../process/ProcessEditor";
 import * as GraphQuery from "../graph/GraphQuery";
 import * as AlternativeFinder from './AlternativeFinder';
 import * as FileIo from './../../controller/helpers/fileio';
@@ -25,13 +26,23 @@ async function getModeler(bpmnXml) {
   return await promise;
 }
 
-function adaptBusinessProcessByAlternatives(viewer, violatedShapes, alternative) {
+function adaptBusinessProcessByAlternatives(viewer, alternative) {
+
+  let copyViewer = Object.assign({}, viewer);
+  const violated = alternative.violatedCP;
+  const altNode = alternative.alternative;
+  const type = altNode.data('nodetype');
+  console.log('violated shape', violated);
+  console.log('alternative ele', altNode);
+
   // 1. check whether alternative is process or pattern
 
   // 2. if alternative is pattern
   // get direct successor of violated cp
   // remove violatedCP
   // --> integration point of the pattern is the integration point of violatedCP
+
+  /*
   for (let i = 0; i < violatedShapes.length; i++) {
     const shape = violatedShapes[i];
     if (ProcessQuery.isCompliance(shape.businessObject)){
@@ -41,13 +52,55 @@ function adaptBusinessProcessByAlternatives(viewer, violatedShapes, alternative)
       removeObsoleteShape(viewer, shape);
     }
   }
+  */
+
+  if (type === 'complianceprocess') {
+    console.log('create new compliance process');
+    const trigger = GraphQuery.getPropsValue(altNode.data('props'), 'trigger');
+    const predShape = ProcessQuery.getShapeOfRegistry(copyViewer, trigger);
+    const violatedShape = ProcessQuery.getShapeOfRegistry(copyViewer, violated.data('cpid'));
+
+    console.log('violated shape', violatedShape);
+    console.log('pred shape', predShape);
+
+    // insertShape(predShape, altNode, copyViewer); // todo error when insert a shape
+    // removeObsoleteShape(copyViewer, violatedShape); // todo error when removing a shape
+  }
 
   // 3. if alternative is process
   // --> get trigger of process
-  // integrate after ce
+  // integrate after trigger
+  // remove obsolete shape
 
-  const bpmnXml = FileIo.getXmlFromViewer(viewer);
-  return bpmnXml;
+  // const bpmnXml = FileIo.getXmlFromViewer(copyViewer);
+  return null;
+}
+
+function insertShape(predShape, altNode, viewer) {
+  const posX = predShape.x + 300;
+  const posY = predShape.y * 1.5;
+  const sucs = ProcessQuery.getSucessorShapes(viewer, predShape);
+
+  for (let i = sucs.length - 1; i >= 0; i--){
+    ProcessRenderer.moveShape(viewer, sucs[i]);
+  }
+
+  const name = altNode.data('name');
+  const type = altNode.data('nodetype');
+  let newShape = ProcessRenderer.createShape(viewer, {
+    x: posX, y: posY, type: 'bpmn:Task', name: name,
+  });
+
+  if (type === 'complianceprocess') {
+    ProcessEditor.defineAsComplianceProcess(viewer, newShape.businessObject, true);
+    ProcessRenderer.colorShape(viewer, newShape, { fill: 'grey' });
+  } else if (type === 'complianceprocesspattern') {
+    ProcessEditor.defineAsComplianceProcessPattern(viewer, newShape.businessObject, true);
+  }
+
+  ProcessRenderer.integrateShapeSequential(viewer, newShape, predShape, 'after');
+
+  //todo: hier ext Elements Data und DataStore einbauen
 }
 
 function removeObsoleteShape(viewer, shape) {
@@ -105,7 +158,7 @@ export async function getAdaptedProcesses(altGraph, deleteGraph, bpmnXml){
   let adaptedProcesses = [];
   const violatedElements = GraphQuery.filterNodes(deleteGraph, { style: 'violated' });
   const obsoleteElements = GraphQuery.filterNodes(deleteGraph, { style: 'obsolete' });
-  const modeler = await getModeler(bpmnXml);
+  let modeler = await getModeler(bpmnXml);
 
   if (violatedElements.length === 0) {
 
@@ -129,21 +182,19 @@ export async function getAdaptedProcesses(altGraph, deleteGraph, bpmnXml){
     }
 
     console.log('alternatives', altEles);
-
-    /*
     // adapt process with alternatives
-    for (let i = 0; i < altEles; i++) {
+    for (let i = 0; i < altEles.length; i++) {
       const altEle = altEles[i];
+      const altBpmnXml = adaptBusinessProcessByAlternatives(modeler, altEle);
 
-      const altBpmnXml = adaptBusinessProcessByAlternatives(modeler, violatedShapes, altEle);
+      console.log(altBpmnXml);
+
+      let name = 'alternative process ' + (i + 1);
       adaptedProcesses.push({
-        name: 'alternative process', i,
+        name: name,
         bpmnXml: altBpmnXml,
       });
     }
-    */
-
   }
-
   return adaptedProcesses;
 }

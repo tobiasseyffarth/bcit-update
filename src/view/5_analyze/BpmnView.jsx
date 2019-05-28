@@ -8,7 +8,6 @@ import ChangeDialog from '../dialog/ChangeDialog';
 import ProjectModel from '../../models/ProjectModel';
 import * as ProcessQuery from '../../controller/process/ProcessQuery';
 import * as AnalyzeChange from '../../controller/analyze/AnalyzeChange';
-import * as GraphQuery from '../../controller/graph/GraphQuery';
 
 class BpmnView extends Component {
   constructor(props) {
