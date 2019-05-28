@@ -1,14 +1,28 @@
 import * as AlternativeChecker from './AlternativeChecker';
 import * as GraphQuery from './../graph/GraphQuery';
 import * as ProcessQuery from './../process/ProcessQuery';
-import BpmnModeler from "bpmn-js/dist/bpmn-modeler.development";
 
 // contains functions to find alternative CP from the AltGraph
 
 function getAlternativeCP(altGraph, violatedCP, deleteGraph) {
   let result = [];
-  const nodeReq = GraphQuery.getSuccessors(violatedCP, 'compliance');
+  const nodeReq = GraphQuery.getSuccessors(violatedCP, 'compliance')[0].data();
+  let nodeViolatedCP;
 
+  // get violated cp node from alternative graph
+  const nodes = altGraph.nodes();
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i].data();
+    if (node.cpid !== undefined && node.cpid === violatedCP.id()) {
+      nodeViolatedCP = node;
+      break;
+    }
+  }
+
+  console.log('node requirement', nodeReq);
+  console.log('node violated cp', nodeViolatedCP);
+
+  /*
   // get Sibling Compliance Process
   const cpps = GraphQuery.getSuccessors(violatedCP, 'complianceprocesspattern');
   for (let i = 0; i < cpps.length; i++) {
@@ -22,6 +36,8 @@ function getAlternativeCP(altGraph, violatedCP, deleteGraph) {
     }
   }
   return result;
+
+  */
 }
 
 function getAlternativePattern(violatedCP) {
@@ -32,28 +48,29 @@ function getAlternativePattern(violatedCP) {
 }
 
 export function getAlternatives(altGraph, deleteGraph) {
-  const cps = GraphQuery.filterNodes(deleteGraph, { type: 'complianceprocess'});
-  let result = {
-    violated: 'violatedNode',
-    alternative: 'alternative node'
-  };
+  const violatedComplianceProcesses = GraphQuery.filterNodes(deleteGraph, { type: 'complianceprocess' });
+  let result = [];
 
-  console.log('violated compliance processes', cps);
-
-  for (let i = 0; i < cps.length; i++){
-    const cp = cps[i];
-    const reqs = GraphQuery.getDirectSuccessor(cp, 'compliance');
+  for (let i = 0; i < violatedComplianceProcesses.length; i++){
+    const violatedComProcess = violatedComplianceProcesses[i];
+    const reqs = GraphQuery.getDirectSuccessor(violatedComProcess, 'compliance');
+    console.log('violated compliance process', violatedComProcess);
     console.log('violated reqs', reqs);
+
+    let alternativeCP = getAlternativeCP(altGraph, violatedComProcess);
+
+    /*
+    if (alternativeCP.length === 0) {
+      alternativeCP = getAlternativePattern(altGraph, violatedComProcess);
+    }
+
+    result.push({
+      violatedCP: violatedComProcess,
+      alternativeCP: alternativeCP
+    });
+
+    */
   }
 
-  /*
-  let result = getAlternativeCP(altGraph, violatedCP);
-
-  if (result.length === 0) {
-    result = getAlternativePattern(altGraph, violatedCP);
-  }
-  */
-
-  return null;
-
+  return result;
 }

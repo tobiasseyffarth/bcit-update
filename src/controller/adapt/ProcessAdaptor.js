@@ -26,14 +26,12 @@ async function getModeler(bpmnXml) {
 }
 
 function adaptBusinessProcessByAlternatives(viewer, violatedShapes, alternative) {
+  // 1. check whether alternative is process or pattern
 
-  // check whether alternative is process or pattern
-
-  // if pattern
+  // 2. if alternative is pattern
   // get direct successor of violated cp
   // remove violatedCP
   // --> integration point of the pattern is the integration point of violatedCP
-
   for (let i = 0; i < violatedShapes.length; i++) {
     const shape = violatedShapes[i];
     if (ProcessQuery.isCompliance(shape.businessObject)){
@@ -44,10 +42,9 @@ function adaptBusinessProcessByAlternatives(viewer, violatedShapes, alternative)
     }
   }
 
-  // if process
+  // 3. if alternative is process
   // --> get trigger of process
   // integrate after ce
-
 
   const bpmnXml = FileIo.getXmlFromViewer(viewer);
   return bpmnXml;
@@ -69,7 +66,6 @@ function removeObsoleteShape(viewer, shape) {
 }
 
 function removeObsoleteShapes(viewer, shapeList) {
-
   for (let i = 0; i < shapeList.length; i++) {
     const shape = shapeList[i];
     removeObsoleteShape(viewer, shape);
@@ -132,18 +128,16 @@ export async function getAdaptedProcesses(altGraph, deleteGraph, bpmnXml){
       violatedShapes.push(getShapes(modeler, changedElement)[0]);
     }
 
-    console.log(violatedShapes);
-
     // adapt process with alternatives
     for (let i = 0; i < altEles; i++) {
       const altEle = altEles[i];
-
 
       const altBpmnXml = adaptBusinessProcessByAlternatives(modeler, violatedShapes, altEle);
       adaptedProcesses.push({
         name: 'alternative process', i,
         bpmnXml: altBpmnXml,
       });
+
     }
   }
 
