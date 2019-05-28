@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { ListBox } from 'primereact/listbox';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
+import { Checkbox } from 'primereact/checkbox';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import '../../App.css';
 import ProjectModel from '../../models/ProjectModel';
-import * as AlternativeFinder from './../../controller/adapt/AlternativeFinder';
 import * as ProcessAdapter from './../../controller/adapt/ProcessAdaptor';
 import * as ProcessQuery from './../../controller/process/ProcessQuery';
 import * as GraphQuery from './../../controller/graph/GraphQuery';
@@ -70,7 +70,7 @@ class AlternativeDialog extends Component {
 
   hookBpmnOnClick(e) {
     const { element } = e;
-    console.log(element);
+    this.renderBpmnProps(element);
   }
 
   hookBpmnEventBus() {
@@ -182,6 +182,23 @@ class AlternativeDialog extends Component {
     ProjectIo.exportBpmn(bpmnXml);
   };
 
+  renderBpmnProps(shape) {
+    if (shape !== null) {
+      const { businessObject } = shape;
+      this.setState({ bpmnShape: shape });
+      this.setState({ bpmnId: businessObject.id });
+      this.setState({ bpmnName: businessObject.name });
+      this.setState({ isCompliance: ProcessQuery.isCompliance(businessObject) });
+      this.setState({ bpmnProps: ProcessQuery.getExtensionOfElement(businessObject) });
+    } else {
+      this.setState({ bpmnShape: null });
+      this.setState({ bpmnId: null });
+      this.setState({ bpmnName: null });
+      this.setState({ isCompliance: false });
+      this.setState({ bpmnProps: [] });
+    }
+  }
+
   renderAlternativePanel() {
     return (
       <div className="property-panel" id="alternative-panel">
@@ -204,9 +221,30 @@ class AlternativeDialog extends Component {
   renderPropsPanel() {
     return (
       <div className="property-panel">
-        <ListBox
-          style={{ width: '100%' }}
-        />
+        <div>
+          <label>ID: {this.state.bpmnId} </label>
+        </div>
+        <br />
+        <div>
+          <label>Name: {this.state.bpmnName} </label>
+        </div>
+        <br />
+        <div>
+          <ListBox
+            options={this.state.bpmnProps}
+            onChange={e => this.setState({ bpmnProp: e.value })}
+            optionLabel="name"
+            style={{ width: '100%' }}
+          />
+        </div>
+        <br />
+        <div>
+          <Checkbox
+            inputId="cb"
+            checked={this.state.isCompliance}
+          />
+          <label htmlFor="cb">is Compliance Process </label>
+        </div>
       </div>
     )
   }
