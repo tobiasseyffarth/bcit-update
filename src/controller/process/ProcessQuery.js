@@ -204,9 +204,14 @@ export function hasExtensionName(businessObject, name) {
   return false;
 }
 
-export function isExtensionShape(element) {
-  const { businessObject } = element;
+export function isExtensionShape(shape) {
+  const { businessObject } = shape;
   return hasExtension(businessObject, 'flowelement');
+}
+
+export function isComplianceExtensionShape(shape) {
+  const { businessObject } = shape;
+  return hasExtension(businessObject, 'compliance');
 }
 
 // final

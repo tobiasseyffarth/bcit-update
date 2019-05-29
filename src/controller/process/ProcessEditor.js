@@ -28,6 +28,7 @@ function addElements(viewer, process) {
   process.flowElements.push(database);
 }
 */
+
 export function addExtension(viewer, element, extension) {
   const moddle = viewer.get('moddle'); // Moddle verändert das Datenmodell
   const extensionElements = moddle.create('bpmn:ExtensionElements'); // moddle.create('bpmn:DataObject', {id: 'dataObject_2'}); // mit moddle.create können beliebige BPMN-Objekte erzeugt werden

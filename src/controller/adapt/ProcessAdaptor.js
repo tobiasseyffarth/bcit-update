@@ -32,30 +32,31 @@ async function adaptBusinessProcessByAlternatives(alternative) {
   const violated = alternative.violatedCP;
   const altNode = alternative.alternative;
   const type = altNode.data('nodetype');
+  const violatedShape = ProcessQuery.getShapeOfRegistry(modeler, violated.data('cpid'));
 
   // 1. check whether alternative is process or pattern
   // 2. if alternative is pattern
-  // get direct successor of violated cp
-  // remove violatedCP
-  // --> integration point of the pattern is the integration point of violatedCP
+  if (type === 'complianceprocesspattern') {
 
-  /*
-  for (let i = 0; i < violatedShapes.length; i++) {
-    const shape = violatedShapes[i];
-    if (ProcessQuery.isCompliance(shape.businessObject)){
-      // get direct predecessor
+    ProcessEditor.defineAsComplianceProcess(modeler, violatedShape.businessObject, false);
+    ProcessRenderer.colorShape(modeler, violatedShape, { stroke: 'grey', fill: 'none'} );
+    ProcessEditor.defineAsComplianceProcessPattern(modeler, violatedShape.businessObject, true);
+    ProcessRenderer.updateShape(modeler, violatedShape, {name: altNode.data('name')});
 
-      // remove Element
-      removeObsoleteShape(viewer, shape);
+    // remove data input shapes expect the compliance requirement
+    const dataInputShapes = ProcessQuery.getDataInputShapes(modeler, violatedShape);
+    for (let j = 0; j < dataInputShapes.length; j++){
+      const dataInputShape = dataInputShapes[j];
+      if (ProcessQuery.isExtensionShape(dataInputShape) && !ProcessQuery.isComplianceExtensionShape(dataInputShape)) {
+        ProcessRenderer.removeShape(modeler, dataInputShape);
+      }
     }
   }
-  */
 
   // 3. if alternative is process
   if (type === 'complianceprocess') {
     const trigger = GraphQuery.getPropsValue(altNode.data('props'), 'trigger')[0];
     const predShape = ProcessQuery.getShapeOfRegistry(modeler, trigger);
-    const violatedShape = ProcessQuery.getShapeOfRegistry(modeler, violated.data('cpid'));
     insertShape(predShape, altNode, modeler);
     removeObsoleteShape(modeler, violatedShape);
   }
@@ -90,11 +91,13 @@ function insertShape(predShape, altNode, viewer) {
   ProcessRenderer.addExtensionShape(viewer, newShape, { compliance: nodeReq.data() });
 
   // add infra as dataStore to the process model
-  const reqs = GraphQuery.getPropsValue(altNode.data('props'), 'req');
-  const infra = ProjectModel.getInfra();
-  for (let i = 0; i < reqs.length; i++) {
-    const infraElement = InfraQuery.getElementById(infra, reqs[i]);
-    ProcessRenderer.addExtensionShape(viewer, newShape, { infra: infraElement });
+  if (altNode.data('props') !== null) {
+    const reqs = GraphQuery.getPropsValue(altNode.data('props'), 'req');
+    const infra = ProjectModel.getInfra();
+    for (let i = 0; i < reqs.length; i++) {
+      const infraElement = InfraQuery.getElementById(infra, reqs[i]);
+      ProcessRenderer.addExtensionShape(viewer, newShape, {infra: infraElement});
+    }
   }
 
 }

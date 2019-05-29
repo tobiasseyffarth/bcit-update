@@ -65,12 +65,12 @@ export function removeShape(viewer, shape) {
 }
 
 // final
-export function updateShape(viewer, element, option) {
+export function updateShape(viewer, shape, option) {
   const modeler = viewer.get('modeling');
   const _option = option || { id: 'neueid' };
 
-  modeler.updateProperties(element, _option);
-  return element;
+  modeler.updateProperties(shape, _option);
+  return shape;
 }
 
 export function moveShape(viewer, shape, direction) {
