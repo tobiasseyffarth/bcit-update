@@ -190,7 +190,7 @@ export function addExtensionShape(viewer, element, option, extension) {
   });
 
   // extend the element
-  if (extension !== undefined || extension !== null) {
+  if (extension !== undefined) {
     const dataElement = dataShape.businessObject;
     editprocess.addExtension(viewer, dataElement, extension);
     const ext = editprocess.createExtensionElement('flowelement', element.id);

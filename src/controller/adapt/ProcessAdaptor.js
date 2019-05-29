@@ -1,5 +1,4 @@
 // contains functions to create alternative business processes
-
 import BpmnModeler from "bpmn-js/dist/bpmn-modeler.development";
 import ProjectModel from './../../models/ProjectModel';
 import * as ProcessQuery from "../process/ProcessQuery";
@@ -8,6 +7,7 @@ import * as ProcessEditor from "../process/ProcessEditor";
 import * as GraphQuery from "../graph/GraphQuery";
 import * as AlternativeFinder from './AlternativeFinder';
 import * as FileIo from './../../controller/helpers/fileio';
+import * as InfraQuery from './../infra/InfraQuery';
 
 async function getModeler(bpmnXml) {
   let promise = new Promise((res, rej) => {
@@ -34,7 +34,6 @@ async function adaptBusinessProcessByAlternatives(alternative) {
   const type = altNode.data('nodetype');
 
   // 1. check whether alternative is process or pattern
-
   // 2. if alternative is pattern
   // get direct successor of violated cp
   // remove violatedCP
@@ -84,21 +83,24 @@ function insertShape(predShape, altNode, viewer) {
   } else if (type === 'complianceprocesspattern') {
     ProcessEditor.defineAsComplianceProcessPattern(viewer, newShape.businessObject, true);
   }
-
   ProcessRenderer.integrateShapeSequential(viewer, newShape, predShape, 'after');
 
-  //todo: hier ext Elements Data und DataStore einbauen
+  // add compliance requirements as data to the process model
   const nodeReq = GraphQuery.filterNodesByType(GraphQuery.getSuccessors(altNode), 'compliance')[0];
-  console.log('node requirement', nodeReq);
+  ProcessRenderer.addExtensionShape(viewer, newShape, { compliance: nodeReq.data() });
 
-  const req = GraphQuery.getPropsValue(altNode.data('props'), 'req');
-  console.log('further requirements', req);
+  // add infra as dataStore to the process model
+  const reqs = GraphQuery.getPropsValue(altNode.data('props'), 'req');
+  const infra = ProjectModel.getInfra();
+  for (let i = 0; i < reqs.length; i++) {
+    const infraElement = InfraQuery.getElementById(infra, reqs[i]);
+    ProcessRenderer.addExtensionShape(viewer, newShape, { infra: infraElement });
+  }
+
 }
 
 function removeObsoleteShape(viewer, shape) {
   const sucs = ProcessQuery.getSucessorShapes(viewer, shape);
-  console.log('sucs des violated shape', sucs);
-
   const dataInputShapes = ProcessQuery.getDataInputShapes(viewer, shape);
   for (let j = 0; j < dataInputShapes.length; j++){
     const dataInputShape = dataInputShapes[j];
