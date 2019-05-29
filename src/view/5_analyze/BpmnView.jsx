@@ -45,7 +45,7 @@ class BpmnView extends Component {
     const bpmnProps = document.getElementById('bpmn-props-panel');
     const bpmnPropsWidth = bpmnProps.offsetWidth;
     const width = this.props.setWidth - bpmnPropsWidth - 50;
-    this.setState({ width: width });
+    this.setState({ width });
   }
 
   onHide() {

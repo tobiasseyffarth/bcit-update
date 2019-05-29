@@ -4,7 +4,7 @@ import { Button } from 'primereact/button';
 import AboutDialog from './dialog/AboutDialog';
 import GraphDialog from './dialog/GraphDialog';
 import ProjectModel from './../models/ProjectModel';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import * as ProjectIo from './../controller/helpers/projectio';
 import 'primeicons/primeicons.css';
 
@@ -37,16 +37,16 @@ export default class TopMenu extends Component {
 
   newProject = () => {
     this.onHide();
-    history.pushState({id: 'homepage'}, 'Home | My App', '/import');
+    history.pushState({ id: 'homepage' }, 'Home | My App', '/import');
     location.reload();
     ProjectIo.newProject();
   };
 
-  async openProject (){
+  async openProject(){
     ProjectIo.openProject();
   }
 
-  async exportProject () {
+  async exportProject() {
     ProjectIo.exportProject();
   }
 

@@ -340,7 +340,7 @@ export function edgeExist(graph, sourceID, targetID){
 }
 
 export function getPropsValue(props, key) {
-  let result = [];
+  const result = [];
   for (let i = 0; i < props.length; i++) {
     const entry = props[i];
     if (entry.key === key){
@@ -386,7 +386,7 @@ export function getComplianceProcesses(graph) {
       result.push({
         name: node.data('name'),
         id: node.data('id'),
-        props: node.data('props')
+        props: node.data('props'),
       });
     }
   }

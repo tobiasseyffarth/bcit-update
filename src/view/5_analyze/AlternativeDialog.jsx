@@ -44,7 +44,7 @@ class AlternativeDialog extends Component {
     if (this.bpmnAltModeler === undefined){
       this.bpmnAltModeler = new BpmnModeler({
         container: '#alternative',
-        height: height,
+        height,
       });
     }
 
@@ -59,7 +59,7 @@ class AlternativeDialog extends Component {
     const removeGraph = this.removeGraph;
     const bpmnXml = ProjectModel.getBpmnXml();
     const altProcesses = await ProcessAdapter.getAdaptedProcesses(altGraph, removeGraph, bpmnXml);
-    let processList = this.state.processList;
+    const processList = this.state.processList;
 
     for (let i = 0; i < altProcesses.length; i++) {
       const altProc = altProcesses[i];
@@ -82,9 +82,9 @@ class AlternativeDialog extends Component {
     const process = ProcessQuery.getProcess(this.bpmnAltModeler);
     const flowNodes = ProcessQuery.getFlowNodesOfProcess(process);
     const graph = this.removeGraph;
-    const violatedElements = GraphQuery.filterNodes(graph, { style: 'violated'});
-    const obsoleteElements = GraphQuery.filterNodes(graph, { style: 'obsolete'});
-    const changedElements = GraphQuery.filterNodes(graph, { style: 'changedElement'});
+    const violatedElements = GraphQuery.filterNodes(graph, { style: 'violated' });
+    const obsoleteElements = GraphQuery.filterNodes(graph, { style: 'obsolete' });
+    const changedElements = GraphQuery.filterNodes(graph, { style: 'changedElement' });
 
     for (let i = 0; i < flowNodes.length; i++) {
       const node = flowNodes[i];
@@ -95,9 +95,9 @@ class AlternativeDialog extends Component {
             const shape = ProcessQuery.getShapeOfRegistry(this.bpmnAltModeler, node.id);
             const isCompliance = ProcessQuery.isCompliance(node);
             if (isCompliance) {
-              ProcessRenderer.colorShape(this.bpmnAltModeler, shape, { stroke: 'red', fill: 'grey'});
+              ProcessRenderer.colorShape(this.bpmnAltModeler, shape, { stroke: 'red', fill: 'grey' });
             } else {
-              ProcessRenderer.colorShape(this.bpmnAltModeler, shape, { stroke: 'red'});
+              ProcessRenderer.colorShape(this.bpmnAltModeler, shape, { stroke: 'red' });
             }
           }
         }
@@ -110,9 +110,9 @@ class AlternativeDialog extends Component {
             const shape = ProcessQuery.getShapeOfRegistry(this.bpmnAltModeler, node.id);
             const isCompliance = ProcessQuery.isCompliance(node);
             if (isCompliance) {
-              ProcessRenderer.colorShape(this.bpmnAltModeler, shape, { stroke: 'blue', fill: 'grey'});
+              ProcessRenderer.colorShape(this.bpmnAltModeler, shape, { stroke: 'blue', fill: 'grey' });
             } else {
-              ProcessRenderer.colorShape(this.bpmnAltModeler, shape, { stroke: 'blue'});
+              ProcessRenderer.colorShape(this.bpmnAltModeler, shape, { stroke: 'blue' });
             }
           }
         }
@@ -125,9 +125,9 @@ class AlternativeDialog extends Component {
             const shape = ProcessQuery.getShapeOfRegistry(this.bpmnAltModeler, node.id);
             const isCompliance = ProcessQuery.isCompliance(node);
             if (isCompliance) {
-              ProcessRenderer.colorShape(this.bpmnAltModeler, shape, { stroke: 'orange', fill: 'grey'});
+              ProcessRenderer.colorShape(this.bpmnAltModeler, shape, { stroke: 'orange', fill: 'grey' });
             } else {
-              ProcessRenderer.colorShape(this.bpmnAltModeler, shape, { stroke: 'orange'});
+              ProcessRenderer.colorShape(this.bpmnAltModeler, shape, { stroke: 'orange' });
             }
           }
         }
@@ -139,12 +139,12 @@ class AlternativeDialog extends Component {
     const bpmnXml = FileIo.getXmlFromViewer(this.bpmnAltModeler);
     const entry = {
       name: 'original process',
-      bpmnXml: bpmnXml
+      bpmnXml,
     };
 
-    let list = [];
+    const list = [];
     list.push(entry);
-    this.setState({ processList: list })
+    this.setState({ processList: list });
   }
 
   renderOriginalProcess = (xml) => {
@@ -173,7 +173,7 @@ class AlternativeDialog extends Component {
   };
 
   selectProcess = (option) => {
-    this.setState({ selectedProcess: option});
+    this.setState({ selectedProcess: option });
     this.renderBpmn(option.bpmnXml);
   };
 
@@ -207,7 +207,7 @@ class AlternativeDialog extends Component {
           value={this.state.selectedProcess}
           options={this.state.processList}
           optionLabel="name"
-          onChange={(e) => this.selectProcess(e.value)}
+          onChange={e => this.selectProcess(e.value)}
         />
         <br />
         <Button
@@ -215,7 +215,7 @@ class AlternativeDialog extends Component {
           onClick={this.exportProcess}
         />
       </div>
-    )
+    );
   }
 
   renderPropsPanel() {
@@ -246,7 +246,7 @@ class AlternativeDialog extends Component {
           <label htmlFor="cb">is Compliance Process </label>
         </div>
       </div>
-    )
+    );
   }
 
   render() {

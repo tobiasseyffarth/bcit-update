@@ -11,6 +11,7 @@ G(Task_A -> F(Task_B)): Task_B kommt irgendwann nach Task_A --> F: eventually
 
 */
 
+/*
 function getTaskId(ltlString) {
   const start = ltlString.indexOf('W(') + 1;
   let result = new String();
@@ -26,6 +27,7 @@ function getTaskId(ltlString) {
   }
   return result;
 }
+*/
 
 function isTaskBefore(taskId, sucId, viewer) {
   const shape = ProcessQuery.getShapeOfRegistry(viewer, taskId);
@@ -37,16 +39,20 @@ function isTaskBefore(taskId, sucId, viewer) {
       return true;
     }
   }
-  return false
+  return false;
 }
 
+/*
 function isTaskAfter(taskId, predId, viewer) {
 
 }
+*/
 
+/*
 function isTaskBetween(startTaskId, endTaskId, viewer) {
 
 }
+*/
 
 export function isExecutable(cpNode, reqNode, deleteGraph, viewer) {
   const trigger = GraphQuery.getPropsValue(cpNode.data('props'), 'trigger')[0];

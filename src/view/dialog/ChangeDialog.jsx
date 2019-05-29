@@ -54,8 +54,8 @@ class ChangeDialog extends Component {
   }
 
   getDemands(nodes) {
-    let directDemands = [];
-    let indirectDemands = [];
+    const directDemands = [];
+    const indirectDemands = [];
 
     for (let i = 0; i < nodes.length; i++) {
       const node = nodes[i];
@@ -65,8 +65,8 @@ class ChangeDialog extends Component {
         indirectDemands.push(node.data());
       }
     }
-    this.setState({directDemands: directDemands});
-    this.setState({indirectDemands: indirectDemands});
+    this.setState({ directDemands });
+    this.setState({ indirectDemands });
   }
 
   renderChangeGraph(graph) {
@@ -110,7 +110,7 @@ class ChangeDialog extends Component {
   }
 
   clickAccordionElement(element){
-    this.renderGraphProps( {el: element} );
+    this.renderGraphProps({ el: element });
     GraphRenderer.unhighlightNodes(this.graphChange);
     const node = this.graphChange.getElementById(element.id);
     GraphRenderer.highlightNode(node);
@@ -144,13 +144,13 @@ class ChangeDialog extends Component {
         </div>
         <br />
         <div>
-          <Accordion multiple={true}>
+          <Accordion multiple>
             <AccordionTab header="Direct demands">
               <ListBox
                 style={{ width: '100%' }}
                 options={this.state.directDemands}
                 optionLabel="display_name"
-                onChange={(e) => this.clickAccordionElement(e.value)}
+                onChange={e => this.clickAccordionElement(e.value)}
               />
             </AccordionTab>
             <AccordionTab header="Indirect Demands">
@@ -158,7 +158,7 @@ class ChangeDialog extends Component {
                 style={{ width: '100%' }}
                 options={this.state.indirectDemands}
                 optionLabel="display_name"
-                onChange={(e) => this.clickAccordionElement(e.value)}
+                onChange={e => this.clickAccordionElement(e.value)}
               />
             </AccordionTab>
             <AccordionTab header="Legend">
@@ -182,28 +182,28 @@ class ChangeDialog extends Component {
       const { el } = input;
 
       if (node !== undefined) {
-        this.setState({nodeId: node.data('id')});
-        this.setState({nodeName: node.data('name')});
-        this.setState({nodeType: node.data('nodetype')});
-        this.setState({modelType: node.data('modeltype')});
+        this.setState({ nodeId: node.data('id') });
+        this.setState({ nodeName: node.data('name') });
+        this.setState({ nodeType: node.data('nodetype') });
+        this.setState({ modelType: node.data('modeltype') });
 
         const nodeType = node.data('nodetype');
         if (nodeType !== 'compliance') { // non compliance nodes
-          this.setState({nodeProps: node.data('props')});
+          this.setState({ nodeProps: node.data('props') });
         } else { // compliance nodes
-          this.setState({nodeProps: []});
+          this.setState({ nodeProps: [] });
         }
       } else if (el !== undefined) {
-        this.setState({nodeId: el.id});
-        this.setState({nodeName: el.name});
-        this.setState({nodeType: el.nodetype});
-        this.setState({modelType: el.modeltype});
+        this.setState({ nodeId: el.id });
+        this.setState({ nodeName: el.name });
+        this.setState({ nodeType: el.nodetype });
+        this.setState({ modelType: el.modeltype });
 
         const nodeType = el.nodetype;
         if (nodeType !== 'compliance') { // non compliance nodes
-          this.setState({nodeProps: el.props});
+          this.setState({ nodeProps: el.props });
         } else { // compliance nodes
-          this.setState({nodeProps: []});
+          this.setState({ nodeProps: [] });
         }
       }
     }

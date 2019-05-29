@@ -600,7 +600,7 @@ export function addNode(graph, input){
           modeltype: 'complianceprocess',
           props: complianceProcess.props,
           rule: complianceProcess.rule,
-          cpid: complianceProcess.cpid
+          cpid: complianceProcess.cpid,
         },
       });
     }

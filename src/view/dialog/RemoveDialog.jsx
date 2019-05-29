@@ -39,8 +39,8 @@ class RemoveDialog extends Component {
   }
 
   getAnalyzeResults(nodes) {
-    let violated = [];
-    let obsolete = [];
+    const violated = [];
+    const obsolete = [];
 
     for (let i = 0; i < nodes.length; i++) {
       const node = nodes[i];
@@ -50,8 +50,8 @@ class RemoveDialog extends Component {
         obsolete.push(node.data());
       }
     }
-    this.setState({violatedElements: violated});
-    this.setState({obsoleteElements: obsolete});
+    this.setState({ violatedElements: violated });
+    this.setState({ obsoleteElements: obsolete });
   }
 
   closeAlternativeView() {
@@ -119,7 +119,7 @@ class RemoveDialog extends Component {
   }
 
   clickAccordionElement(element){
-    this.renderGraphProps( {el: element} );
+    this.renderGraphProps({ el: element });
     GraphRenderer.unhighlightNodes(this.graphRemove);
     const node = this.graphRemove.getElementById(element.id);
     GraphRenderer.highlightNode(node);
@@ -153,13 +153,13 @@ class RemoveDialog extends Component {
         </div>
         <br />
         <div>
-          <Accordion multiple={true}>
+          <Accordion multiple>
             <AccordionTab header="Violated Compliance Elements">
               <ListBox
                 style={{ width: '100%' }}
                 options={this.state.violatedElements}
                 optionLabel="display_name"
-                onChange={(e) => this.clickAccordionElement(e.value)}
+                onChange={e => this.clickAccordionElement(e.value)}
               />
             </AccordionTab>
             <AccordionTab header="Obsolete Compliance Elements">
@@ -167,7 +167,7 @@ class RemoveDialog extends Component {
                 style={{ width: '100%' }}
                 options={this.state.obsoleteElements}
                 optionLabel="display_name"
-                onChange={(e) => this.clickAccordionElement(e.value)}
+                onChange={e => this.clickAccordionElement(e.value)}
               />
             </AccordionTab>
             <AccordionTab header="Legend">
@@ -191,28 +191,28 @@ class RemoveDialog extends Component {
       const { el } = input;
 
       if (node !== undefined) {
-        this.setState({nodeId: node.data('id')});
-        this.setState({nodeName: node.data('name')});
-        this.setState({nodeType: node.data('nodetype')});
-        this.setState({modelType: node.data('modeltype')});
+        this.setState({ nodeId: node.data('id') });
+        this.setState({ nodeName: node.data('name') });
+        this.setState({ nodeType: node.data('nodetype') });
+        this.setState({ modelType: node.data('modeltype') });
 
         const nodeType = node.data('nodetype');
         if (nodeType !== 'compliance') { // non compliance nodes
-          this.setState({nodeProps: node.data('props')});
+          this.setState({ nodeProps: node.data('props') });
         } else { // compliance nodes
-          this.setState({nodeProps: []});
+          this.setState({ nodeProps: [] });
         }
       } else if (el !== undefined) {
-        this.setState({nodeId: el.id});
-        this.setState({nodeName: el.name});
-        this.setState({nodeType: el.nodetype});
-        this.setState({modelType: el.modeltype});
+        this.setState({ nodeId: el.id });
+        this.setState({ nodeName: el.name });
+        this.setState({ nodeType: el.nodetype });
+        this.setState({ modelType: el.modeltype });
 
         const nodeType = el.nodetype;
         if (nodeType !== 'compliance') { // non compliance nodes
-          this.setState({nodeProps: el.props});
+          this.setState({ nodeProps: el.props });
         } else { // compliance nodes
-          this.setState({nodeProps: []});
+          this.setState({ nodeProps: [] });
         }
       }
     }

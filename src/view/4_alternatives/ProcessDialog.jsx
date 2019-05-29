@@ -103,7 +103,6 @@ class ProcessDialog extends Component {
       if (this.state.processId !== null) { // take id from cp as 'cpid'
         complianceProcess.cpid = this.state.processId;
       }
-
     } else {
       complianceProcess = process;
       complianceProcess.name = this.state.processName;

@@ -81,7 +81,7 @@ function updateInfraCP(node, container) {
   const changed_node = node;
   const x = container.offsetWidth / 2;
   const y = container.offsetHeight / 2;
-  changed_node.position({ x: x, y: y });
+  changed_node.position({ x, y });
   const x_changed = changed_node.position('x');
   const y_changed = changed_node.position('y');
 
@@ -156,7 +156,7 @@ function updateBusinessProcess(node, container) {
   const changedNode = node;
   const x = container.offsetWidth / 2;
   const y = container.offsetHeight / 2;
-  changedNode.position({ x: x, y: y });
+  changedNode.position({ x, y });
 
   const xChanged = changedNode.position('x');
   const yChanged = changedNode.position('y');
@@ -209,7 +209,7 @@ function updateCompliance(node, container) {
   const changedNode = node;
   const x = container.offsetWidth / 2;
   const y = container.offsetHeight / 2;
-  changedNode.position({ x: x, y: y });
+  changedNode.position({ x, y });
   const xChanged = changedNode.position('x');
   const yChanged = changedNode.position('y');
 

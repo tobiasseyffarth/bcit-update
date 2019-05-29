@@ -1,34 +1,30 @@
 // contains functions to create alternative business processes
-import BpmnModeler from "bpmn-js/dist/bpmn-modeler.development";
+import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import ProjectModel from './../../models/ProjectModel';
-import * as ProcessQuery from "../process/ProcessQuery";
-import * as ProcessRenderer from "../process/ProcessRenderer";
-import * as ProcessEditor from "../process/ProcessEditor";
-import * as GraphQuery from "../graph/GraphQuery";
+import * as ProcessQuery from '../process/ProcessQuery';
+import * as ProcessRenderer from '../process/ProcessRenderer';
+import * as ProcessEditor from '../process/ProcessEditor';
+import * as GraphQuery from '../graph/GraphQuery';
 import * as AlternativeFinder from './AlternativeFinder';
 import * as FileIo from './../../controller/helpers/fileio';
 import * as InfraQuery from './../infra/InfraQuery';
 
 async function getModeler(bpmnXml) {
-  let promise = new Promise((res, rej) => {
-    let modeler = new BpmnModeler();
-    let process = null;
+  const promise = new Promise((res) => {
+    const modeler = new BpmnModeler();
     modeler.importXML(bpmnXml, (err) => {
       if (err) {
         console.log('error rendering', err);
       } else {
-        process = ProcessQuery.getProcess(modeler);
         res(modeler);
       }
     });
   });
-
-  // wait until the promise returns us a value
-  return await promise;
+  return promise;
 }
 
 async function adaptBusinessProcessByAlternatives(alternative) {
-  let modeler = await getModeler(ProjectModel.getBpmnXml());
+  const modeler = await getModeler(ProjectModel.getBpmnXml());
   const violatedNode = alternative.violatedCP;
   const altNode = alternative.alternative;
   const type = altNode.data('nodetype');
@@ -38,9 +34,9 @@ async function adaptBusinessProcessByAlternatives(alternative) {
   // 2. if alternative is pattern
   if (type === 'complianceprocesspattern') {
     ProcessEditor.defineAsComplianceProcess(modeler, violatedShape.businessObject, false);
-    ProcessRenderer.colorShape(modeler, violatedShape, { stroke: 'grey', fill: 'none'} );
+    ProcessRenderer.colorShape(modeler, violatedShape, { stroke: 'grey', fill: 'none' });
     ProcessEditor.defineAsComplianceProcessPattern(modeler, violatedShape.businessObject, true);
-    ProcessRenderer.updateShape(modeler, violatedShape, {name: altNode.data('name')});
+    ProcessRenderer.updateShape(modeler, violatedShape, { name: altNode.data('name') });
     removeDataInputShapes(modeler, violatedShape);
   }
 
@@ -50,7 +46,7 @@ async function adaptBusinessProcessByAlternatives(alternative) {
     const triggerViolatedCP = GraphQuery.getPropsValue(violatedNode.data('props'), 'trigger')[0];
 
     if (triggerAlt === triggerViolatedCP) {
-      ProcessRenderer.updateShape(modeler, violatedShape, {name: altNode.data('name')});
+      ProcessRenderer.updateShape(modeler, violatedShape, { name: altNode.data('name') });
       removeDataInputShapes(modeler, violatedShape);
       addDataInputShapes(modeler, violatedShape, altNode);
     } else {
@@ -73,8 +69,8 @@ function insertShape(predShape, altNode, viewer) {
 
   const name = altNode.data('name');
   const type = altNode.data('nodetype');
-  let newShape = ProcessRenderer.createShape(viewer, {
-    x: posX, y: posY, type: 'bpmn:Task', name: name,
+  const newShape = ProcessRenderer.createShape(viewer, {
+    x: posX, y: posY, type: 'bpmn:Task', name,
   });
 
   if (type === 'complianceprocess') {
@@ -149,13 +145,13 @@ function addDataInputShapes(viewer, shape, altNode) {
     const infra = ProjectModel.getInfra();
     for (let i = 0; i < reqs.length; i++) {
       const infraElement = InfraQuery.getElementById(infra, reqs[i]);
-      ProcessRenderer.addExtensionShape(viewer, shape, {infra: infraElement});
+      ProcessRenderer.addExtensionShape(viewer, shape, { infra: infraElement });
     }
   }
 }
 
 function getShapes(modeler, queryResult) {
-  let shapes = [];
+  const shapes = [];
 
   for (let i = 0; i < queryResult.length; i++) {
     const element = queryResult[i].data();
@@ -184,13 +180,12 @@ function getShapes(modeler, queryResult) {
 }
 
 export async function getAdaptedProcesses(altGraph, deleteGraph, bpmnXml){
-  let adaptedProcesses = [];
+  const adaptedProcesses = [];
   const violatedElements = GraphQuery.filterNodes(deleteGraph, { style: 'violated' });
   const obsoleteElements = GraphQuery.filterNodes(deleteGraph, { style: 'obsolete' });
-  let modeler = await getModeler(bpmnXml);
+  const modeler = await getModeler(bpmnXml);
 
   if (violatedElements.length === 0) {
-
     let obsoleteShapes = getShapes(modeler, obsoleteElements);
     const changedElement = GraphQuery.filterNodes(deleteGraph, { style: 'changedElement' });
     removeObsoleteShapes(modeler, obsoleteShapes);
@@ -200,10 +195,9 @@ export async function getAdaptedProcesses(altGraph, deleteGraph, bpmnXml){
       name: 'removed obsolete elements',
       bpmnXml: FileIo.getXmlFromViewer(modeler),
     });
-
   } else {
     const altEles = AlternativeFinder.getAlternatives(altGraph, deleteGraph, modeler);
-    let violatedShapes = getShapes(modeler, violatedElements);
+    const violatedShapes = getShapes(modeler, violatedElements);
     const changedElement = GraphQuery.filterNodes(deleteGraph, { style: 'changedElement' });
     if (changedElement[0].data('nodetype') === 'complianceprocess') {
       violatedShapes.push(getShapes(modeler, changedElement)[0]);
@@ -212,10 +206,10 @@ export async function getAdaptedProcesses(altGraph, deleteGraph, bpmnXml){
     for (let i = 0; i < altEles.length; i++) {
       const altEle = altEles[i];
       const bpmnXml = await adaptBusinessProcessByAlternatives(altEle);
-      let name = 'alternative process ' + (i + 1);
+      const name = `alternative process ${i + 1}`;
       adaptedProcesses.push({
-        name: name,
-        bpmnXml: bpmnXml,
+        name,
+        bpmnXml,
       });
     }
   }

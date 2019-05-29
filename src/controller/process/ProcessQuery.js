@@ -26,7 +26,7 @@ export function getProcess(viewer, e) {
 export function getShapes(viewer){
   const elementRegistry = viewer.get('elementRegistry');
   const nodes = elementRegistry.getAll();
-  let shapes = [];
+  const shapes = [];
 
   for (let i = 0; i < nodes.length; i++) {
     const shape = nodes[i];

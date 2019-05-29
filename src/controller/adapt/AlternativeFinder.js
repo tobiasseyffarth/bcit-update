@@ -4,7 +4,7 @@ import * as GraphQuery from './../graph/GraphQuery';
 // contains functions to find alternative CP from the AltGraph
 
 function getAlternativeCP(violatedCP, deleteGraph, viewer) {
-  let result = [];
+  const result = [];
   const nodeReq = GraphQuery.filterNodesByType(GraphQuery.getSuccessors(violatedCP), 'compliance')[0];
   const complianceProcesses = GraphQuery.filterNodesByType(GraphQuery.getPredecessors(nodeReq), 'complianceprocess');
 
@@ -16,8 +16,8 @@ function getAlternativeCP(violatedCP, deleteGraph, viewer) {
 
       if (isExecutable) {
         result.push({
-          violatedCP: violatedCP,
-          alternative: complianceProcess
+          violatedCP,
+          alternative: complianceProcess,
         });
       }
     }
@@ -57,11 +57,11 @@ export function getAlternatives(altGraph, deleteGraph, viewer) {
     if (violatedNode !== undefined) {
       alternativeCP = getAlternativeCP(violatedNode, deleteGraph, viewer);
 
-      if(alternativeCP.length === 0) {
+      if (alternativeCP.length === 0) {
         const pattern = getAlternativePattern(violatedNode);
         alternativeCP.push({
           violatedCP: violatedNode,
-          alternative: pattern
+          alternative: pattern,
         });
       }
     } else {
