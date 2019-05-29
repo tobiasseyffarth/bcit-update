@@ -133,7 +133,6 @@ class ProcessDialog extends Component {
   renderProps(process){
     const ce = GraphQuery.getBusinessActivities(ProjectModel.getGraph());
     const req = GraphQuery.getInfraElements(ProjectModel.getGraph());
-
     const { props } = process;
     let result = [];
 

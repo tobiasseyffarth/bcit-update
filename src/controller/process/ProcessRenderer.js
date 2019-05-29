@@ -188,12 +188,14 @@ export function addExtensionShape(viewer, element, option, extension) {
   const dataShape = createShape(viewer, {
     name: _name, type: _type, x: _x, y: _y,
   });
-  const dataElement = dataShape.businessObject;
 
   // extend the element
-  editprocess.addExtension(viewer, dataElement, extension);
-  const ext = editprocess.createExtensionElement('flowelement', element.id);
-  editprocess.addExtension(viewer, dataElement, ext);
+  if (extension !== undefined || extension !== null) {
+    const dataElement = dataShape.businessObject;
+    editprocess.addExtension(viewer, dataElement, extension);
+    const ext = editprocess.createExtensionElement('flowelement', element.id);
+    editprocess.addExtension(viewer, dataElement, ext);
+  }
 
   // connect created shape with flownode and color it
   connectShapes(viewer, dataShape, element);

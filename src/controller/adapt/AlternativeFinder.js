@@ -22,7 +22,6 @@ function getAlternativeCP(violatedCP, deleteGraph, viewer) {
       }
     }
   }
-  console.log(result);
   return result;
 }
 

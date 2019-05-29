@@ -54,7 +54,7 @@ async function adaptBusinessProcessByAlternatives(alternative) {
 
   // 3. if alternative is process
   if (type === 'complianceprocess') {
-    const trigger = GraphQuery.getPropsValue(altNode.data('props'), 'trigger');
+    const trigger = GraphQuery.getPropsValue(altNode.data('props'), 'trigger')[0];
     const predShape = ProcessQuery.getShapeOfRegistry(modeler, trigger);
     const violatedShape = ProcessQuery.getShapeOfRegistry(modeler, violated.data('cpid'));
     insertShape(predShape, altNode, modeler);
@@ -88,6 +88,11 @@ function insertShape(predShape, altNode, viewer) {
   ProcessRenderer.integrateShapeSequential(viewer, newShape, predShape, 'after');
 
   //todo: hier ext Elements Data und DataStore einbauen
+  const nodeReq = GraphQuery.filterNodesByType(GraphQuery.getSuccessors(altNode), 'compliance')[0];
+  console.log('node requirement', nodeReq);
+
+  const req = GraphQuery.getPropsValue(altNode.data('props'), 'req');
+  console.log('further requirements', req);
 }
 
 function removeObsoleteShape(viewer, shape) {

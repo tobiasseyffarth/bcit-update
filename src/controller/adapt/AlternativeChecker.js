@@ -49,31 +49,21 @@ function isTaskBetween(startTaskId, endTaskId, viewer) {
 }
 
 export function isExecutable(cpNode, reqNode, deleteGraph, viewer) {
-  const trigger = GraphQuery.getPropsValue(cpNode.data('props'), 'trigger');
-  const furtherReq = GraphQuery.getPropsValue(cpNode.data('props'), 'req');
-  const until = GraphQuery.getPropsValue(reqNode.data('props'), 'until');
-
-  /*
-  console.log('****');
-  console.log('check for ', cpNode.data('name'));
-  console.log('trigger', trigger);
-  console.log('furtherReq for Execution', furtherReq);
-  console.log('executed until', until);
-  */
+  const trigger = GraphQuery.getPropsValue(cpNode.data('props'), 'trigger')[0];
+  const reqs = GraphQuery.getPropsValue(cpNode.data('props'), 'req');
+  const until = GraphQuery.getPropsValue(reqNode.data('props'), 'until')[0];
 
   // 1st check whether the requirements to execute are obsolete in the result graph
   const nodes = deleteGraph.nodes();
   for (let i = 0; i < nodes.length; i++) {
     const node = nodes[i];
-    if (furtherReq === node.data('id')){
-      return false;
+    for (let j = 0; j < reqs.length; j++) {
+      if (reqs[j] === node.data('id')) {
+        return false;
+      }
     }
   }
 
   // 2nd check whether trigger is before until
-  if (isTaskBefore(trigger, until, viewer)) {
-    return true;
-  } else {
-    return false;
-  }
+  return isTaskBefore(trigger, until, viewer);
 }

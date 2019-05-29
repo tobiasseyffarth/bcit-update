@@ -339,18 +339,18 @@ export function edgeExist(graph, sourceID, targetID){
   return false;
 }
 
-export function getPropsValue(props, key){
-  for (let i = 0; i < props.length; i++){
+export function getPropsValue(props, key) {
+  let result = [];
+  for (let i = 0; i < props.length; i++) {
     const entry = props[i];
-
     if (entry.key === key){
-      return entry.value;
+      result.push(entry.value);
     }
   }
-  return null;
+  return result;
 }
 
-export function getBusinessActivities(graph){
+export function getBusinessActivities(graph) {
   const businessNodes = filterNodes(graph, { type: 'businessprocess' });
   const result = [];
 
