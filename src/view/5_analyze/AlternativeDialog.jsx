@@ -65,9 +65,6 @@ class AlternativeDialog extends Component {
       const altProc = altProcesses[i];
       processList.push(altProc);
     }
-
-    console.log('process list', processList);
-
     this.setState({ processList });
   }
 

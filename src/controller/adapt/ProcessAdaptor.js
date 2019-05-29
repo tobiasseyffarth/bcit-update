@@ -52,6 +52,7 @@ async function adaptBusinessProcessByAlternatives(alternative) {
     if (triggerAlt === triggerViolatedCP) {
       ProcessRenderer.updateShape(modeler, violatedShape, {name: altNode.data('name')});
       removeDataInputShapes(modeler, violatedShape);
+      addDataInputShapes(modeler, violatedShape, altNode);
     } else {
       const predShape = ProcessQuery.getShapeOfRegistry(modeler, triggerAlt);
       insertShape(predShape, altNode, modeler);
@@ -87,7 +88,9 @@ function insertShape(predShape, altNode, viewer) {
   // add compliance requirements as data to the process model
   const nodeReq = GraphQuery.filterNodesByType(GraphQuery.getSuccessors(altNode), 'compliance')[0];
   ProcessRenderer.addExtensionShape(viewer, newShape, { compliance: nodeReq.data() });
+  addDataInputShapes(viewer, newShape, altNode);
 
+  /*
   // add infra as dataStore to the process model
   if (altNode.data('props') !== null) {
     const reqs = GraphQuery.getPropsValue(altNode.data('props'), 'req');
@@ -97,7 +100,7 @@ function insertShape(predShape, altNode, viewer) {
       ProcessRenderer.addExtensionShape(viewer, newShape, {infra: infraElement});
     }
   }
-
+  */
 }
 
 function removeObsoleteShape(viewer, shape) {
@@ -135,6 +138,18 @@ function removeDataInputShapes(viewer, shape) {
         }
       }
       ProcessRenderer.removeShape(viewer, dataInputShape);
+    }
+  }
+}
+
+function addDataInputShapes(viewer, shape, altNode) {
+  // add infra as dataStore to the process model
+  if (altNode.data('props') !== null) {
+    const reqs = GraphQuery.getPropsValue(altNode.data('props'), 'req');
+    const infra = ProjectModel.getInfra();
+    for (let i = 0; i < reqs.length; i++) {
+      const infraElement = InfraQuery.getElementById(infra, reqs[i]);
+      ProcessRenderer.addExtensionShape(viewer, shape, {infra: infraElement});
     }
   }
 }

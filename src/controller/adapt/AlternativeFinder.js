@@ -69,6 +69,5 @@ export function getAlternatives(altGraph, deleteGraph, viewer) {
       return null;
     }
   }
-  console.log('return alternatives', alternativeCP);
   return alternativeCP;
 }
