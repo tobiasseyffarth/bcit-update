@@ -29,36 +29,34 @@ async function getModeler(bpmnXml) {
 
 async function adaptBusinessProcessByAlternatives(alternative) {
   let modeler = await getModeler(ProjectModel.getBpmnXml());
-  const violated = alternative.violatedCP;
+  const violatedNode = alternative.violatedCP;
   const altNode = alternative.alternative;
   const type = altNode.data('nodetype');
-  const violatedShape = ProcessQuery.getShapeOfRegistry(modeler, violated.data('cpid'));
+  const violatedShape = ProcessQuery.getShapeOfRegistry(modeler, violatedNode.data('cpid'));
 
   // 1. check whether alternative is process or pattern
   // 2. if alternative is pattern
   if (type === 'complianceprocesspattern') {
-
     ProcessEditor.defineAsComplianceProcess(modeler, violatedShape.businessObject, false);
     ProcessRenderer.colorShape(modeler, violatedShape, { stroke: 'grey', fill: 'none'} );
     ProcessEditor.defineAsComplianceProcessPattern(modeler, violatedShape.businessObject, true);
     ProcessRenderer.updateShape(modeler, violatedShape, {name: altNode.data('name')});
-
-    // remove data input shapes expect the compliance requirement
-    const dataInputShapes = ProcessQuery.getDataInputShapes(modeler, violatedShape);
-    for (let j = 0; j < dataInputShapes.length; j++){
-      const dataInputShape = dataInputShapes[j];
-      if (ProcessQuery.isExtensionShape(dataInputShape) && !ProcessQuery.isComplianceExtensionShape(dataInputShape)) {
-        ProcessRenderer.removeShape(modeler, dataInputShape);
-      }
-    }
+    removeDataInputShapes(modeler, violatedShape);
   }
 
   // 3. if alternative is process
   if (type === 'complianceprocess') {
-    const trigger = GraphQuery.getPropsValue(altNode.data('props'), 'trigger')[0];
-    const predShape = ProcessQuery.getShapeOfRegistry(modeler, trigger);
-    insertShape(predShape, altNode, modeler);
-    removeObsoleteShape(modeler, violatedShape);
+    const triggerAlt = GraphQuery.getPropsValue(altNode.data('props'), 'trigger')[0];
+    const triggerViolatedCP = GraphQuery.getPropsValue(violatedNode.data('props'), 'trigger')[0];
+
+    if (triggerAlt === triggerViolatedCP) {
+      ProcessRenderer.updateShape(modeler, violatedShape, {name: altNode.data('name')});
+      removeDataInputShapes(modeler, violatedShape);
+    } else {
+      const predShape = ProcessQuery.getShapeOfRegistry(modeler, triggerAlt);
+      insertShape(predShape, altNode, modeler);
+      removeObsoleteShape(modeler, violatedShape);
+    }
   }
   return FileIo.getXmlFromViewer(modeler);
 }
@@ -120,6 +118,24 @@ function removeObsoleteShapes(viewer, shapeList) {
   for (let i = 0; i < shapeList.length; i++) {
     const shape = shapeList[i];
     removeObsoleteShape(viewer, shape);
+  }
+}
+
+function removeDataInputShapes(viewer, shape) {
+  // remove data input shapes expect the compliance requirement
+  const dataInputShapes = ProcessQuery.getDataInputShapes(viewer, shape);
+  for (let j = 0; j < dataInputShapes.length; j++){
+    const dataInputShape = dataInputShapes[j];
+    if (ProcessQuery.isExtensionShape(dataInputShape) && !ProcessQuery.isComplianceExtensionShape(dataInputShape)) {
+      // remove extension entry in flow shape
+      const extElements = ProcessQuery.getExtensionOfElement(dataInputShape.businessObject);
+      for (let i = 0; i < extElements.length; i++) {
+        if (extElements[i]._name === 'infra') {
+          ProcessEditor.removeExt(shape.businessObject.extensionElements, { name: 'infra', value: extElements[i]._value });
+        }
+      }
+      ProcessRenderer.removeShape(viewer, dataInputShape);
+    }
   }
 }
 
