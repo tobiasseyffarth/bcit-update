@@ -171,7 +171,13 @@ class RemoveDialog extends Component {
               />
             </AccordionTab>
             <AccordionTab header="Legend">
-              Content III
+              <p>rectangle - compliance requirement</p>
+              <p>roundrectangle - process</p>
+              <p>triangle - IT component</p>
+              <p>orange border - changed element</p>
+              <p>red border - violated element</p>
+              <p>blue border - obsolete element</p>
+              <p>grey filled - compliance process</p>
             </AccordionTab>
           </Accordion>
         </div>
