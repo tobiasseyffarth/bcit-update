@@ -162,7 +162,14 @@ class ChangeDialog extends Component {
               />
             </AccordionTab>
             <AccordionTab header="Legend">
-              Content III
+              <p>rectangle - compliance requirement</p>
+              <p>roundrectangle - process</p>
+              <p>triangle - IT component</p>
+              <p>grey filled - compliance process</p>
+              <p>orange border - changed element</p>
+              <p>green border - demanding element</p>
+              <p>solid connection - direct demanding</p>
+              <p>dotted connection - indirect demanding</p>
             </AccordionTab>
           </Accordion>
         </div>
