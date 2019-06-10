@@ -20,7 +20,6 @@ export default class ConnectWizard extends Component {
     { label: 'Process/IT' },
     { label: 'Process/Compliance' },
     { label: 'IT/Compliance' },
-    { label: 'Edit Process (test)' },
     { label: 'Alternatives' },
     { label: 'Analyze' },
   ];
@@ -51,12 +50,9 @@ export default class ConnectWizard extends Component {
                 this.props.history.push('/ITCompliance');
                 break;
               case 5:
-                this.props.history.push('/rule');
-                break;
-              case 6:
                 this.props.history.push('/alternatives');
                 break;
-              case 7:
+              case 6:
                 this.props.history.push('/analyze');
                 break;
               default:
@@ -72,7 +68,6 @@ export default class ConnectWizard extends Component {
           <Route path="/ProcIT" component={ProcIT} />
           <Route path="/ProcCompliance" component={ProcCompliance} />
           <Route path="/ITCompliance" component={ITCompliance} />
-          <Route path="/rule" component={Rule} />
           <Route path="/alternatives" component={Alternatives} />
           <Route path="/analyze" component={Analyze} />
         </Switch>
