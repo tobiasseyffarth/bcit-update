@@ -79,7 +79,9 @@ class GraphDialog extends Component {
     this.graph.mount(container);
     const layout = this.graph.layout({ name: 'breadthfirst' }); // more options http://js.cytoscape.org/#layouts
     layout.run(); // graph.autolock(false); //elements can not be moved by the user
-    GraphRenderer.resizeGraph(this.graph);
+    this.graph.reset();
+    this.graph.fit();
+    this.graph.resize();
     GraphRenderer.colorNodes(this.graph);
     this.hookGraphOnClick(this.graph);
   }
