@@ -27,7 +27,7 @@ export default class ImportModels extends Component {
     this.openInfra = this.openInfra.bind(this);
     this.openBPMN = this.openBPMN.bind(this);
     // this.openModels(); // temporary
-    this.openProjectModel(); // temporary
+    // this.openProjectModel(); // temporary
   }
 
   async openCompliance() {
@@ -39,7 +39,10 @@ export default class ImportModels extends Component {
     const complianceAdd = complianceimporter.addCompliance({ compliance: helper, imported_compliance: complianceImport });
     ProjectModel.setCompliance(complianceAdd);
 
-    this.growl.show({ severity: 'info', summary: 'Compliance successfull imported', detail: 'detail...' });
+    this.growl.show({
+      severity: 'info',
+      summary: 'Compliance model successfull imported'
+    });
   }
 
   async openInfra() {
@@ -53,7 +56,7 @@ export default class ImportModels extends Component {
       const metadata = infraquery.getMetadata(result.infra);
       this.growl.show({
         severity: 'info',
-        summary: 'Infrastructure imported',
+        summary: 'Infrastructure model successfully imported',
         detail: metadata.name,
       });
     } else {
@@ -71,17 +74,24 @@ export default class ImportModels extends Component {
     ProjectModel.setBpmnXml(input);
 
     const bpmnModeler = new BpmnModeler({}); // create process object and add to graph
-
+    let _this = this;
     bpmnModeler.importXML(input, (err) => {
       if (err) {
         console.log('error rendering', err);
+        _this.growl.show({
+          severity: 'error',
+          summary: 'error rendering process model',
+          detail: err});
       } else {
         const process = ProcessQuery.getProcess(bpmnModeler);
         GraphConnector.addSubGraphs({ process });
+        _this.growl.show({
+          severity: 'info',
+          summary: 'BPMN model successfully imported',
+          detail: process.id
+        });
       }
     });
-
-    this.growl.show({ severity: 'info', summary: 'BPMN successfull imported', detail: 'detail...' });
   }
 
   // temporary
