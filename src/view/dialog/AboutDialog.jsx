@@ -24,7 +24,7 @@ class AboutDialog extends Component {
   render() {
     const references = (
       <div>
-        <p>Dependencies</p>
+        <p><b>Dependencies</b></p>
         <p>
           <dl>
             <dt>@fortawesome/fontawesome-svg-core</dt>
@@ -231,7 +231,7 @@ class AboutDialog extends Component {
             <dd>Repository: https://github.com/nashwaan/xml-js</dd>
           </dl>
         </p>
-        <p>Development Dependencies</p>
+        <p><b>Development Dependencies</b></p>
         <p>
           <dl>
             <dt>@neutrinojs/airbnb</dt>
@@ -273,7 +273,10 @@ class AboutDialog extends Component {
           maximizable
         >
           <div>
-            <p>Contributors: Tobias Seyffarth, Kai Raschke</p>
+            <p><b>Contributors:</b></p>
+            <br/>
+            <p>Tobias Seyffarth, Kai Raschke</p>
+            <br />
           </div>
           {references}
         </Dialog>
