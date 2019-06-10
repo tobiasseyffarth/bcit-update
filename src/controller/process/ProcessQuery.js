@@ -194,6 +194,14 @@ export function isCompliance(element) {
 }
 
 // final
+export function isCompliancePattern(element) {
+  const name = 'isComplianceProcessPattern';
+  const value = 'true';
+
+  return hasExtension(element, name, value);
+}
+
+// final
 export function hasExtensionName(businessObject, name) {
   const props = getExtensionOfElement(businessObject);
   for (let i = 0; i < props.length; i++) { // check if the element has an extension of name

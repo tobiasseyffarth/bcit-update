@@ -203,14 +203,16 @@ export async function getAdaptedProcesses(altGraph, deleteGraph, bpmnXml){
       violatedShapes.push(getShapes(modeler, changedElement)[0]);
     }
     // adapt process with alternatives
-    for (let i = 0; i < altEles.length; i++) {
-      const altEle = altEles[i];
-      const bpmnXml = await adaptBusinessProcessByAlternatives(altEle);
-      const name = `alternative process ${i + 1}`;
-      adaptedProcesses.push({
-        name,
-        bpmnXml,
-      });
+    if (altEles !== null) {
+      for (let i = 0; i < altEles.length; i++) {
+        const altEle = altEles[i];
+        const bpmnXml = await adaptBusinessProcessByAlternatives(altEle);
+        const name = `alternative process ${i + 1}`;
+        adaptedProcesses.push({
+          name,
+          bpmnXml,
+        });
+      }
     }
   }
   return adaptedProcesses;

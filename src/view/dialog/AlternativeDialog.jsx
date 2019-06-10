@@ -3,6 +3,7 @@ import { ListBox } from 'primereact/listbox';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { Checkbox } from 'primereact/checkbox';
+import { Growl } from 'primereact/growl';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import '../../App.css';
 import ProjectModel from '../../models/ProjectModel';
@@ -61,11 +62,19 @@ class AlternativeDialog extends Component {
     const altProcesses = await ProcessAdapter.getAdaptedProcesses(altGraph, removeGraph, bpmnXml);
     const processList = this.state.processList;
 
-    for (let i = 0; i < altProcesses.length; i++) {
-      const altProc = altProcesses[i];
-      processList.push(altProc);
+    if (altProcesses.length > 0) {
+      for (let i = 0; i < altProcesses.length; i++) {
+        const altProc = altProcesses[i];
+        processList.push(altProc);
+      }
+      this.setState({processList});
+    } else {
+      this.growl.show({
+        severity: 'warn',
+        summary: 'Can not found alternative compliance processes.',
+        detail: 'Check if the compliance process is modelled in the alternative graph.',
+      });
     }
-    this.setState({ processList });
   }
 
   hookBpmnOnClick(e) {
@@ -189,12 +198,14 @@ class AlternativeDialog extends Component {
       this.setState({ bpmnId: businessObject.id });
       this.setState({ bpmnName: businessObject.name });
       this.setState({ isCompliance: ProcessQuery.isCompliance(businessObject) });
+      this.setState({ isCompliancePattern: ProcessQuery.isCompliancePattern(businessObject) });
       this.setState({ bpmnProps: ProcessQuery.getExtensionOfElement(businessObject) });
     } else {
       this.setState({ bpmnShape: null });
       this.setState({ bpmnId: null });
       this.setState({ bpmnName: null });
       this.setState({ isCompliance: false });
+      this.setState({ isCompliancePattern: false });
       this.setState({ bpmnProps: [] });
     }
   }
@@ -240,10 +251,18 @@ class AlternativeDialog extends Component {
         <br />
         <div>
           <Checkbox
-            inputId="cb"
+            inputId="cbCompliance"
             checked={this.state.isCompliance}
           />
-          <label htmlFor="cb">is Compliance Process </label>
+          <label htmlFor="cbCompliance">is Compliance Process </label>
+        </div>
+        <br />
+        <div>
+          <Checkbox
+            inputId="cbCompliancePattern"
+            checked={this.state.isCompliancePattern}
+          />
+          <label htmlFor="cbCompliancePattern">is Compliance Process Pattern</label>
         </div>
       </div>
     );
@@ -251,23 +270,26 @@ class AlternativeDialog extends Component {
 
   render() {
     return (
-      <div className="content-section implementation">
-        <Dialog
-          header="Alternative Processes"
-          visible={this.state.visibleAlternative}
-          style={{ width: '80vw' }}
-          onHide={this.onHide}
-          onShow={() => this.onShow()}
-          maximizable
-        >
-          <section className="container-process">
-            {this.renderAlternativePanel()}
-            <div className="viewer" style={{ width: '60vw' }}>
-              <div id="alternative" />
-            </div>
-            {this.renderPropsPanel()}
-          </section>
-        </Dialog>
+      <div>
+        <Growl ref={(el) => { this.growl = el; }} position="topright" />
+        <div className="content-section implementation">
+          <Dialog
+            header="Alternative Processes"
+            visible={this.state.visibleAlternative}
+            style={{ width: '80vw' }}
+            onHide={this.onHide}
+            onShow={() => this.onShow()}
+            maximizable
+          >
+            <section className="container-process">
+              {this.renderAlternativePanel()}
+              <div className="viewer" style={{ width: '60vw' }}>
+                <div id="alternative" />
+              </div>
+              {this.renderPropsPanel()}
+            </section>
+          </Dialog>
+        </div>
       </div>
     );
   }
