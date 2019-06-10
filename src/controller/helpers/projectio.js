@@ -101,8 +101,9 @@ export async function exportProject(){
   saveAs(file);
 }
 
-export async function exportBpmn(bpmnXml){
+export async function exportBpmn(bpmnXml, name){
   const output = bpmnXml || ProjectModel.getBpmnXml();
-  const file = new File([output], 'process.bpmn', { type: 'text/plain;charset=utf-8' });
+  const fileName = name + '.bpmn' || 'process.bpmn';
+  const file = new File([output], fileName, { type: 'text/plain;charset=utf-8' });
   saveAs(file);
 }

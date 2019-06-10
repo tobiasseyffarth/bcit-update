@@ -188,7 +188,8 @@ class AlternativeDialog extends Component {
 
   exportProcess = () => {
     const bpmnXml = this.state.selectedProcess.bpmnXml;
-    ProjectIo.exportBpmn(bpmnXml);
+    const name = this.state.selectedProcess.name;
+    ProjectIo.exportBpmn(bpmnXml, name);
   };
 
   renderBpmnProps(shape) {
