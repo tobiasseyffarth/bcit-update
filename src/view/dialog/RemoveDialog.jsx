@@ -5,7 +5,7 @@ import { Button } from 'primereact/button';
 import { Accordion, AccordionTab } from 'primereact/accordion';
 import cytoscape from 'cytoscape';
 import '../../App.css';
-import AlternativeDialog from '../5_analyze/AlternativeDialog';
+import AlternativeDialog from './AlternativeDialog';
 import ProjectModel from '../../models/ProjectModel';
 import * as GraphRenderer from '../../controller/graph/GraphRenderer';
 
