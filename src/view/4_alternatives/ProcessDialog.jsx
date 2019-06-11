@@ -66,17 +66,15 @@ class ProcessDialog extends Component {
   }
 
   getProps(){
-    const ce = this.state.selectedTrigger;
+    const selectedTrigger = this.state.selectedTrigger;
     const req = this.state.selectedReq;
     const result = [];
 
-    for (let i = 0; i < ce.length; i++){
-      result.push({
-        key: 'trigger',
-        value: ce[i].id,
-        display: `Trigger for execution ${ce[i].name}`,
-      });
-    }
+    result.push({
+      key: 'trigger',
+      value: selectedTrigger.id,
+      display: `Trigger for execution ${selectedTrigger.name}`,
+    });
 
     for (let i = 0; i < req.length; i++){
       result.push({
@@ -130,33 +128,34 @@ class ProcessDialog extends Component {
   }
 
   renderProps(process){
-    const ce = GraphQuery.getBusinessActivities(ProjectModel.getGraph());
+    const trigger = GraphQuery.getBusinessActivities(ProjectModel.getGraph());
     const req = GraphQuery.getInfraElements(ProjectModel.getGraph());
     const { props } = process;
-    let result = [];
+    let selectedTrigger = null;
 
-    for (let i = 0; i < ce.length; i++){
+    for (let i = 0; i < trigger.length; i++){
       for (let j = 0; j < props.length; j++){
-        const entity = ce[i];
+        const entity = trigger[i];
         const prop = props[j];
-        if (entity.id === prop.value){
-          result.push(entity);
+        if (entity.id === prop.value) {
+          selectedTrigger = entity;
+          break;
         }
       }
     }
-    this.setState({ selectedTrigger: result });
+    this.setState({ selectedTrigger });
 
-    result = [];
+    let selectedReq = [];
     for (let i = 0; i < req.length; i++){
       for (let j = 0; j < props.length; j++){
         const entity = req[i];
         const prop = props[j];
         if (entity.id === prop.value || entity.id === prop._value){
-          result.push(entity);
+          selectedReq.push(entity);
         }
       }
     }
-    this.setState({ selectedReq: result });
+    this.setState({ selectedReq });
   }
 
   render() {
@@ -176,7 +175,7 @@ class ProcessDialog extends Component {
             style={{ width: '30%' }}
             value={this.state.selectedCP}
             options={this.state.complianceProcesses}
-            onChange={(e) => { this.selectComplianceProcess(e.value); }}
+            onChange={(e) => { this.selectComplianceProcess(e.value) }}
             optionLabel="name"
           />
         </div>
@@ -206,7 +205,7 @@ class ProcessDialog extends Component {
           </div>
           <div>
             <label htmlFor="Trigger">Trigger</label>
-            <MultiSelect
+            <Dropdown
               style={{ width: '30%' }}
               optionLabel="name"
               value={this.state.selectedTrigger}
