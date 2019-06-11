@@ -159,6 +159,14 @@ export default class Alternatives extends Component {
     }
   }
 
+  editSuccessor(node, newSucId){
+    const oldSuc = GraphQuery.getDirectSuccessor(node)[0];
+    const oldEdge = GraphQuery.getEdge(node, oldSuc);
+    oldEdge.remove();
+    const newSuc = this.graph.getElementById(newSucId);
+    GraphEditor.linkNodes(this.graph, node, newSuc);
+  }
+
   renderGraphProps(node){
     if (node !== null) {
       this.setState({ nodeId: node.data('id') });

@@ -147,7 +147,7 @@ class ReqDialog extends Component {
             />
           </div>
           <div>
-            <label htmlFor="predActivity">Compliance Process must be executed before</label>
+            <label htmlFor="predActivity">Compliance Requirement must be statisfied before</label>
             <MultiSelect
               style={{ width: '30%' }}
               optionLabel="name"
