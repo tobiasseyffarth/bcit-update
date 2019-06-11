@@ -86,6 +86,11 @@ export function moveShape(viewer, shape, direction) {
 
   modeler.moveShape(shape, { x: xPos, y: yPos }, false);
 
+  // move labels of shapes
+  if (shape.label !== undefined) {
+    modeler.moveShape(shape.label, { x: xPos, y: yPos }, false);
+  }
+
   // move DataInput of the activity
   const dataInputs = queryprocess.getDataInputShapes(viewer, shape);
   for (let i = 0; i < dataInputs.length; i++){

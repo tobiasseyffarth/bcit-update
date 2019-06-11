@@ -80,6 +80,7 @@ class AlternativeDialog extends Component {
   hookBpmnOnClick(e) {
     const { element } = e;
     this.renderBpmnProps(element);
+    console.log(element);
   }
 
   hookBpmnEventBus() {
