@@ -69,22 +69,28 @@ export function newProject() {
 export async function openProject(content){
   let fileContent;
 
-  if (content !== undefined){
-    fileContent = content;
-  } else {
-    const file = await FileIo.getFile('.bcit');
-    fileContent = await FileIo.readFile(file);
+  try {
+    if (content !== undefined){
+      fileContent = content;
+    } else {
+      const file = await FileIo.getFile('.bcit');
+      fileContent = await FileIo.readFile(file);
+    }
+
+    const projectFile = JSON.parse(fileContent);
+    const graph = getGraphFromElements(projectFile.graph);
+    const altGraph = getGraphFromElements(projectFile.altGraph);
+
+    ProjectModel.setBpmnXml(projectFile.bpmn);
+    ProjectModel.setInfra(projectFile.infra);
+    ProjectModel.setCompliance(projectFile.compliance);
+    ProjectModel.setGraph(graph);
+    ProjectModel.setAltGraph(altGraph);
+
+    return true;
+  } catch (e) {
+    return false;
   }
-
-  const projectFile = JSON.parse(fileContent);
-  const graph = getGraphFromElements(projectFile.graph);
-  const altGraph = getGraphFromElements(projectFile.altGraph);
-
-  ProjectModel.setBpmnXml(projectFile.bpmn);
-  ProjectModel.setInfra(projectFile.infra);
-  ProjectModel.setCompliance(projectFile.compliance);
-  ProjectModel.setGraph(graph);
-  ProjectModel.setAltGraph(altGraph);
 }
 
 export async function exportProject(){

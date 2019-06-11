@@ -1,9 +1,8 @@
 import { Menubar } from 'primereact/menubar';
 import React, { Component } from 'react';
-import { Button } from 'primereact/button';
+import { Growl } from 'primereact/growl';
 import AboutDialog from './dialog/AboutDialog';
 import GraphDialog from './dialog/GraphDialog';
-import ProjectModel from './../models/ProjectModel';
 import PropTypes from 'prop-types';
 import * as ProjectIo from './../controller/helpers/projectio';
 import 'primeicons/primeicons.css';
@@ -43,7 +42,13 @@ export default class TopMenu extends Component {
   };
 
   async openProject(){
-    ProjectIo.openProject();
+    const result = await ProjectIo.openProject();
+
+    if (result) {
+      this.growl.show({ severity: 'info', summary: 'Project imported'});
+    } else {
+      this.growl.show({ severity: 'error', summary: 'Project can not be imported' });
+    }
   }
 
   async exportProject() {
@@ -97,6 +102,7 @@ export default class TopMenu extends Component {
 
     return (
       <div>
+        <Growl ref={(el) => { this.growl = el; }} position="topright" />
         <AboutDialog showAboutDialog={this.state.visibleAbout} close={this.onHide} />
         <GraphDialog showGraphDialog={this.state.visibleGraph} close={this.onHide} />
         <Menubar model={items}>
