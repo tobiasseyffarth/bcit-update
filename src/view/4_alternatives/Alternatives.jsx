@@ -138,10 +138,24 @@ export default class Alternatives extends Component {
     const node = this.graph.getElementById(nodeId);
 
     if (node !== null && nodeId !== null){
+      // connect predecessors with successor
+      const preds = GraphQuery.getPredecessors(node);
+      const suc = GraphQuery.getSuccessors(node)[0];
       GraphEditor.removeNode(node);
+
+      if (preds.length > 0) {
+        console.log('suc', suc);
+        for (let i = 0; i < preds.length; i++) {
+          const pred = preds[i];
+          GraphEditor.linkNodes(this.graph, pred, suc);
+        }
+      }
       this.renderGraphProps(null);
     } else {
-      this.growl.show({ severity: 'warn', summary: 'Please select a node from the graph.', detail: '' });
+      this.growl.show({
+        severity: 'warn',
+        summary: 'Please select a node from the graph.',
+        detail: '' });
     }
   }
 

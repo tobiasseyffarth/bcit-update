@@ -348,7 +348,7 @@ export function updateNeighborsBasedOnProps(graph, element) { //
 }
 
 // final
-function linkNodes(graph, source, target) {
+export function linkNodes(graph, source, target) {
   const edgeID = `${source.id()}_${target.id()}`;
   const exist = graph.getElementById(edgeID);
 
