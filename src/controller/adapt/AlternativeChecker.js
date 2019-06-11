@@ -55,9 +55,9 @@ function isTaskBetween(startTaskId, endTaskId, viewer) {
 */
 
 export function isExecutable(cpNode, reqNode, deleteGraph, viewer) {
-  const trigger = GraphQuery.getPropsValue(cpNode.data('props'), 'trigger')[0];
+  const trigger = GraphQuery.getPropsValue(cpNode.data('props'), 'trigger')[0]; // there is only one trigger prop
   const reqs = GraphQuery.getPropsValue(cpNode.data('props'), 'req');
-  const until = GraphQuery.getPropsValue(reqNode.data('props'), 'until')[0];
+  const until = GraphQuery.getPropsValue(reqNode.data('props'), 'until')[0]; // there is only one until prop
 
   // 1st check whether the requirements to execute are obsolete in the result graph
   const nodes = deleteGraph.nodes();

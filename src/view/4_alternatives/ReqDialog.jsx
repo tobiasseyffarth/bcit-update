@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
-import { MultiSelect } from 'primereact/multiselect';
+import { Dropdown } from 'primereact/dropdown';
 import '../../App.css';
 import * as GraphQuery from '../../controller/graph/GraphQuery';
 import ProjectModel from '../../models/ProjectModel';
@@ -18,7 +18,7 @@ class ReqDialog extends Component {
       reqNode: null,
       visibleDialog: false,
       untilActivities: null,
-      selectedUntilActivities: null,
+      selectedUntilActivity: null,
     };
 
     this.onShow = this.onShow.bind(this);
@@ -54,17 +54,15 @@ class ReqDialog extends Component {
   }
 
   getProps(){
-    const until = this.state.selectedUntilActivities;
+    const until = this.state.selectedUntilActivity;
     const result = [];
 
     if (until !== null) {
-      for (let i = 0; i < until.length; i++) {
-        result.push({
-          key: 'until',
-          value: until[i].id,
-          display: `Until ${until[i].name}`,
-        });
-      }
+      result.push({
+        key: 'until',
+        value: until.id,
+        display: `Until ${until.name}`,
+      });
     }
     return result;
   }
@@ -111,11 +109,11 @@ class ReqDialog extends Component {
           const entity = until[i];
           const prop = props[j];
           if (entity.id === prop.value) {
-            result.push(entity);
+            this.setState({ selectedUntilActivity: entity });
+            break;
           }
         }
       }
-      this.setState({ selectedUntilActivities: result });
     }
   }
 
@@ -148,12 +146,12 @@ class ReqDialog extends Component {
           </div>
           <div>
             <label htmlFor="predActivity">Compliance Requirement must be statisfied before</label>
-            <MultiSelect
+            <Dropdown
               style={{ width: '30%' }}
               optionLabel="name"
-              value={this.state.selectedUntilActivities}
+              value={this.state.selectedUntilActivity}
               options={this.state.untilActivities}
-              onChange={e => this.setState({ selectedUntilActivities: e.value })}
+              onChange={e => this.setState({ selectedUntilActivity: e.value })}
             />
           </div>
         </Dialog>
