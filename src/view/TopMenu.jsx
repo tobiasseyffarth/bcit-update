@@ -100,7 +100,7 @@ export default class TopMenu extends Component {
         <AboutDialog showAboutDialog={this.state.visibleAbout} close={this.onHide} />
         <GraphDialog showGraphDialog={this.state.visibleGraph} close={this.onHide} />
         <Menubar model={items}>
-          <p className="p-menuitem p-menuitem-link" onClick={this.showAboutDialog}>About BCIT</p>
+          <p className="p-menuitem p-menuitem-link" onClick={this.showAboutDialog}>About BCIT 2</p>
         </Menubar>
       </div>
     );

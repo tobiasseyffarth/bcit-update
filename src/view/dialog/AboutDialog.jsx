@@ -265,7 +265,7 @@ class AboutDialog extends Component {
     return (
       <div className="content-section implementation">
         <Dialog
-          header="About BCIT 2.0"
+          header="About BCIT 2"
           visible={this.state.visibleDialog}
           style={{ width: '50vw' }}
           contentStyle={{ maxHeight: '50vh', overflow: 'auto' }}

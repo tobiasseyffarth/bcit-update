@@ -19,14 +19,13 @@ module.exports = {
           "no-mixed-operators": "off",
           "camelcase": "off"
         },
-
       }
     }],
     [
       '@neutrinojs/react',
       {
         html: {
-          title: 'Compliance Checker'
+          title: 'BCIT 2'
         }
       }
     ],

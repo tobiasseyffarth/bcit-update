@@ -30,12 +30,10 @@ You can use BCIT 2.0 online on the following [GitHub Page](https://pages.github.
 - Node.JS >= 10.15 (only for local usage)
 - Firefox version -1 or Chrome version -1
 
-## Usage
-The models used in the demo can be found in [/resources/models](/resources/models).  
-
-Furthermore, the usage of BCIT 2.0 is show in the following [screencast](/resources/screencast/bcit2.mp4).
-
-
+## Tutorial Document and Screencast
+- The models used in the demo can be found in [/resources/models](/resources/models).  
+- The tutorial document that shows one use case of the tool can be found [here](/resources/tutorial/tutorial_BCIT2.pdf).
+- Furthermore, the usage of BCIT 2.0 is show in the following [screencast](/resources/screencast/bcit2.mp4).
 
 ## Credits
 - Tobias Seyffarth
