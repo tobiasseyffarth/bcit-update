@@ -136,15 +136,6 @@ class GraphDialog extends Component {
             optionLabel="name"
           />
         </div>
-        <br />
-        <div>
-          <Button
-            label="remove compliance node"
-            onClick={this.removeNode}
-            tooltip="remove compliance node"
-            disabled={this.state.removeDisabled}
-          />
-        </div>
       </div>
     );
   }

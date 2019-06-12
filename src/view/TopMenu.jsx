@@ -35,9 +35,10 @@ export default class TopMenu extends Component {
 
   newProject = () => {
     this.onHide();
-    history.pushState({ id: 'homepage' }, 'Home | My App', '/import');
-    location.reload();
+    // history.pushState({ id: 'homepage' }, 'Home | My App', '/import');
+    // location.reload();
     ProjectIo.newProject();
+    this.growl.show({ severity: 'info', summary: 'New project created', detail: 'New project created. Please go to import (step 1) and import your models.' });
   };
 
   async openProject(){
@@ -58,8 +59,16 @@ export default class TopMenu extends Component {
     this.setState({ visibleGraph: true });
   }
 
-  async exportBpmn() {
-    ProjectIo.exportBpmn();
+  exportBpmn() {
+    const success = ProjectIo.exportBpmn();
+
+    if (!success) {
+      this.growl.show({
+        severity: 'error',
+        summary: 'No process model for export available.',
+        details: 'There is no process model available.'
+      });
+    }
   }
 
   render() {

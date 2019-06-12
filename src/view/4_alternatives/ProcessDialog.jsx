@@ -18,7 +18,6 @@ class ProcessDialog extends Component {
       process: null,
       processName: null,
       processId: null,
-      processRule: null,
       Trigger: [],
       selectedTrigger: null,
       furtherReq: [],
@@ -43,7 +42,6 @@ class ProcessDialog extends Component {
   onHide() {
     this.setState({ process: null });
     this.setState({ processName: null });
-    this.setState({ processRule: null });
     this.setState({ Trigger: [] });
     this.setState({ selectedTrigger: [] });
     this.setState({ furtherReq: [] });

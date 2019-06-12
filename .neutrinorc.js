@@ -1,7 +1,9 @@
 module.exports = {
   use: [
+      /*
     ['@neutrinojs/airbnb', {
       eslint: {
+
         rules: {
           "jsx-a11y/label-has-for": "off",
           "space-before-blocks": "off",
@@ -21,6 +23,8 @@ module.exports = {
         },
       }
     }],
+
+      */
     [
       '@neutrinojs/react',
       {

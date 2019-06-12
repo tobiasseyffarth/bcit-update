@@ -38,8 +38,9 @@ class ProcessPatternDialog extends Component {
   }
 
   onHide() {
-    this.props.close();
+    this.setState({ patternName: null });
     this.setState({ visibleDialog: false });
+    this.props.close();
   }
 
   getCpPattern(pattern){
