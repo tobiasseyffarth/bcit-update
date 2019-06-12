@@ -207,7 +207,7 @@ export async function getAdaptedProcesses(altGraph, deleteGraph, bpmnXml){
       for (let i = 0; i < altEles.length; i++) {
         const altEle = altEles[i];
         const bpmnXml = await adaptBusinessProcessByAlternatives(altEle);
-        const name = `alternative process ${i + 1}`;
+        const name = `adapted process ${i + 1}`;
         adaptedProcesses.push({
           name,
           bpmnXml,

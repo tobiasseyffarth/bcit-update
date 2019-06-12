@@ -80,7 +80,6 @@ class AlternativeDialog extends Component {
   hookBpmnOnClick(e) {
     const { element } = e;
     this.renderBpmnProps(element);
-    console.log(element);
   }
 
   hookBpmnEventBus() {
@@ -276,7 +275,7 @@ class AlternativeDialog extends Component {
         <Growl ref={(el) => { this.growl = el; }} position="topright" />
         <div className="content-section implementation">
           <Dialog
-            header="Alternative Processes"
+            header="Adapted Business Processes"
             visible={this.state.visibleAlternative}
             style={{ width: '80vw' }}
             onHide={this.onHide}
