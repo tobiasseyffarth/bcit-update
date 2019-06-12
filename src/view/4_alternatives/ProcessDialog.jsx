@@ -4,6 +4,7 @@ import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { MultiSelect } from 'primereact/multiselect';
 import { Dropdown } from 'primereact/dropdown';
+import { Growl } from 'primereact/growl';
 import '../../App.css';
 import ProjectModel from './../../models/ProjectModel';
 import * as GraphQuery from './../../controller/graph/GraphQuery';
@@ -19,7 +20,7 @@ class ProcessDialog extends Component {
       processId: null,
       processRule: null,
       Trigger: [],
-      selectedTrigger: [],
+      selectedTrigger: null,
       furtherReq: [],
       selectedReq: [],
       complianceProcesses: [],
@@ -110,15 +111,26 @@ class ProcessDialog extends Component {
   }
 
   buttonClick(){
-    const { mode } = this.state;
-    if (mode === 'add'){
-      const comProcess = this.createComplianceProcess();
-      this.props.addProcess(comProcess);
-    } else if (mode === 'edit'){
-      const comProcess = this.createComplianceProcess(this.state.process);
-      this.props.edit(comProcess);
+    const selectedTrigger = this.state.selectedTrigger;
+    const processName = this.state.processName;
+
+    if (selectedTrigger !== null && processName !== null && processName.length !== 0) {
+      const {mode} = this.state;
+      if (mode === 'add') {
+        const comProcess = this.createComplianceProcess();
+        this.props.addProcess(comProcess);
+      } else if (mode === 'edit') {
+        const comProcess = this.createComplianceProcess(this.state.process);
+        this.props.edit(comProcess);
+      }
+      this.onHide();
+    } else {
+      this.growl.show({
+        severity: 'warn',
+        summary: 'Can not create new compliance process.',
+        detail: 'Please specify a name and define a trigger.',
+      });
     }
-    this.onHide();
   }
 
   selectComplianceProcess(cp){ // todo: prüfen, ob bereits in dem Graph vorhanden --> muss unique sein
@@ -183,47 +195,50 @@ class ProcessDialog extends Component {
     }
 
     return (
-      <div className="content-section implementation">
-        <Dialog
-          header={this.state.header}
-          footer={footer}
-          visible={this.state.visibleDialog}
-          style={{ width: '80vw' }}
-          onShow={this.onShow}
-          onHide={this.onHide}
-          closable={false}
-        >
-          {complianceProcess}
-          <div>
-            <label htmlFor="processName">Name</label>
-            <InputText
-              style={{ width: '30%' }}
-              id="processName"
-              value={this.state.processName}
-              onChange={e => this.setState({ processName: e.target.value })}
-            />
-          </div>
-          <div>
-            <label htmlFor="Trigger">Trigger</label>
-            <Dropdown
-              style={{ width: '30%' }}
-              optionLabel="name"
-              value={this.state.selectedTrigger}
-              options={this.state.Trigger}
-              onChange={e => this.setState({ selectedTrigger: e.value })}
-            />
-          </div>
-          <div>
-            <label htmlFor="furtherReq">Further Requirements</label>
-            <MultiSelect
-              style={{ width: '30%' }}
-              optionLabel="name"
-              value={this.state.selectedReq}
-              options={this.state.furtherReq}
-              onChange={e => this.setState({ selectedReq: e.value })}
-            />
-          </div>
-        </Dialog>
+      <div>
+        <Growl ref={(el) => { this.growl = el; }} position="topright" />
+        <div className="content-section implementation">
+          <Dialog
+            header={this.state.header}
+            footer={footer}
+            visible={this.state.visibleDialog}
+            style={{ width: '80vw' }}
+            onShow={this.onShow}
+            onHide={this.onHide}
+            closable={false}
+          >
+            {complianceProcess}
+            <div>
+              <label htmlFor="processName">Name</label>
+              <InputText
+                style={{ width: '30%' }}
+                id="processName"
+                value={this.state.processName}
+                onChange={e => this.setState({ processName: e.target.value })}
+              />
+            </div>
+            <div>
+              <label htmlFor="Trigger">Trigger</label>
+              <Dropdown
+                style={{ width: '30%' }}
+                optionLabel="name"
+                value={this.state.selectedTrigger}
+                options={this.state.Trigger}
+                onChange={e => this.setState({ selectedTrigger: e.value })}
+              />
+            </div>
+            <div>
+              <label htmlFor="furtherReq">Further Requirements</label>
+              <MultiSelect
+                style={{ width: '30%' }}
+                optionLabel="name"
+                value={this.state.selectedReq}
+                options={this.state.furtherReq}
+                onChange={e => this.setState({ selectedReq: e.value })}
+              />
+            </div>
+          </Dialog>
+        </div>
       </div>
     );
   }
