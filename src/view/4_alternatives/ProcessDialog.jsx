@@ -113,9 +113,8 @@ class ProcessDialog extends Component {
   buttonClick(){
     const selectedTrigger = this.state.selectedTrigger;
     const processName = this.state.processName;
-
+    const {mode} = this.state;
     if (selectedTrigger !== null && processName !== null && processName.length !== 0) {
-      const {mode} = this.state;
       if (mode === 'add') {
         const comProcess = this.createComplianceProcess();
         this.props.addProcess(comProcess);
@@ -125,9 +124,10 @@ class ProcessDialog extends Component {
       }
       this.onHide();
     } else {
+      const summary = 'Can not ' +  mode + ' compliance process.';
       this.growl.show({
         severity: 'warn',
-        summary: 'Can not create new compliance process.',
+        summary: summary,
         detail: 'Please specify a name and define a trigger.',
       });
     }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
+import { Growl } from 'primereact/growl';
 import '../../App.css';
 
 class ProcessPatternDialog extends Component {
@@ -70,12 +71,22 @@ class ProcessPatternDialog extends Component {
 
   buttonClick(){
     const { mode } = this.state;
-    if (mode === 'add'){
-      this.addCpPattern();
-    } else if (mode === 'edit'){
-      this.editCpPattern();
+    const patternName = this.state.patternName;
+    if (patternName !== null && patternName.length !== 0) {
+      if (mode === 'add') {
+        this.addCpPattern();
+      } else if (mode === 'edit') {
+        this.editCpPattern();
+      }
+      this.onHide();
+    } else {
+      const summary = 'Can not ' +  mode + ' compliance process pattern.';
+      this.growl.show({
+        severity: 'warn',
+        summary: summary,
+        detail: 'Please specify a name.',
+      });
     }
-    this.onHide();
   }
 
   render() {
@@ -87,25 +98,28 @@ class ProcessPatternDialog extends Component {
     );
 
     return (
-      <div className="content-section implementation">
-        <Dialog
-          header={this.state.header}
-          footer={footer}
-          visible={this.state.visibleDialog}
-          style={{ width: '80vw' }}
-          onShow={this.onShow}
-          onHide={this.onHide}
-          closable={false}
-        >
-          <div>
-            <label htmlFor="processName">Name</label>
-            <InputText
-              id="processName"
-              value={this.state.patternName}
-              onChange={e => this.setState({ patternName: e.target.value })}
-            />
-          </div>
-        </Dialog>
+      <div>
+        <Growl ref={(el) => { this.growl = el; }} position="topright" />
+        <div className="content-section implementation">
+          <Dialog
+            header={this.state.header}
+            footer={footer}
+            visible={this.state.visibleDialog}
+            style={{ width: '80vw' }}
+            onShow={this.onShow}
+            onHide={this.onHide}
+            closable={false}
+          >
+            <div>
+              <label htmlFor="processName">Name</label>
+              <InputText
+                id="processName"
+                value={this.state.patternName}
+                onChange={e => this.setState({ patternName: e.target.value })}
+              />
+            </div>
+          </Dialog>
+        </div>
       </div>
     );
   }
