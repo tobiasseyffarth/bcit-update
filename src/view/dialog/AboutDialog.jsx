@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Dialog } from 'primereact/dialog';
-import { Button } from 'primereact/button';
 import '../../App.css';
 
 class AboutDialog extends Component {
@@ -274,7 +273,7 @@ class AboutDialog extends Component {
         >
           <div>
             <p><b>Contributors:</b></p>
-            <br/>
+            <br />
             <p>Tobias Seyffarth, Kai Raschke</p>
             <br />
           </div>

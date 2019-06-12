@@ -1,12 +1,11 @@
 import { Menubar } from 'primereact/menubar';
 import React, { Component } from 'react';
 import { Growl } from 'primereact/growl';
+import PropTypes from 'prop-types';
+import 'primeicons/primeicons.css';
 import AboutDialog from './dialog/AboutDialog';
 import GraphDialog from './dialog/GraphDialog';
-import PropTypes from 'prop-types';
 import * as ProjectIo from './../controller/helpers/projectio';
-import 'primeicons/primeicons.css';
-
 
 export default class TopMenu extends Component {
   constructor(props) {
@@ -45,7 +44,7 @@ export default class TopMenu extends Component {
     const result = await ProjectIo.openProject();
 
     if (result) {
-      this.growl.show({ severity: 'info', summary: 'Project imported'});
+      this.growl.show({ severity: 'info', summary: 'Project imported' });
     } else {
       this.growl.show({ severity: 'error', summary: 'Project can not be imported' });
     }

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { ListBox } from 'primereact/listbox';
 import { Dialog } from 'primereact/dialog';
-import { Button } from 'primereact/button';
 import { Accordion, AccordionTab } from 'primereact/accordion';
 import cytoscape from 'cytoscape';
 import '../../App.css';
@@ -37,22 +36,6 @@ class ChangeDialog extends Component {
     }
   }
 
-  hookGraphOnClick(graph){
-    const _this = this;
-
-    graph.on('click', (evt) => { // http://js.cytoscape.org/#core/events
-      const element = evt.target;
-      if (element === graph) { // background
-        _this.renderGraphProps(null);
-        GraphRenderer.unhighlightNodes(this.graphChange);
-      } else if (element.isNode()) { // edge
-        _this.renderGraphProps({ node: element });
-        GraphRenderer.unhighlightNodes(this.graphChange);
-        GraphRenderer.highlightNode(element);
-      }
-    });
-  }
-
   getDemands(nodes) {
     const directDemands = [];
     const indirectDemands = [];
@@ -67,6 +50,22 @@ class ChangeDialog extends Component {
     }
     this.setState({ directDemands });
     this.setState({ indirectDemands });
+  }
+
+  hookGraphOnClick(graph){
+    const _this = this;
+
+    graph.on('click', (evt) => { // http://js.cytoscape.org/#core/events
+      const element = evt.target;
+      if (element === graph) { // background
+        _this.renderGraphProps(null);
+        GraphRenderer.unhighlightNodes(this.graphChange);
+      } else if (element.isNode()) { // edge
+        _this.renderGraphProps({ node: element });
+        GraphRenderer.unhighlightNodes(this.graphChange);
+        GraphRenderer.highlightNode(element);
+      }
+    });
   }
 
   renderChangeGraph(graph) {

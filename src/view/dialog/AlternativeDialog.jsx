@@ -55,28 +55,6 @@ class AlternativeDialog extends Component {
     this.renderAlternativeProcesses();
   }
 
-  async renderAlternativeProcesses() {
-    const altGraph = this.altGraph;
-    const removeGraph = this.removeGraph;
-    const bpmnXml = ProjectModel.getBpmnXml();
-    const altProcesses = await ProcessAdapter.getAdaptedProcesses(altGraph, removeGraph, bpmnXml);
-    const processList = this.state.processList;
-
-    if (altProcesses.length > 0) {
-      for (let i = 0; i < altProcesses.length; i++) {
-        const altProc = altProcesses[i];
-        processList.push(altProc);
-      }
-      this.setState({processList});
-    } else {
-      this.growl.show({
-        severity: 'warn',
-        summary: 'Can not found alternative compliance processes.',
-        detail: 'Check if the compliance process is modelled in the alternative graph.',
-      });
-    }
-  }
-
   hookBpmnOnClick(e) {
     const { element } = e;
     this.renderBpmnProps(element);
@@ -187,10 +165,38 @@ class AlternativeDialog extends Component {
   };
 
   exportProcess = () => {
+    /*
     const bpmnXml = this.state.selectedProcess.bpmnXml;
     const name = this.state.selectedProcess.name;
+    */
+
+    const { bpmnXml } = this.state.selectedProcess;
+    const { name } = this.state.selectedProcess;
+
     ProjectIo.exportBpmn(bpmnXml, name);
   };
+
+  async renderAlternativeProcesses() {
+    const { altGraph } = this;
+    const { removeGraph } = this;
+    const bpmnXml = ProjectModel.getBpmnXml();
+    const altProcesses = await ProcessAdapter.getAdaptedProcesses(altGraph, removeGraph, bpmnXml);
+    const { processList } = this.state;
+
+    if (altProcesses.length > 0) {
+      for (let i = 0; i < altProcesses.length; i++) {
+        const altProc = altProcesses[i];
+        processList.push(altProc);
+      }
+      this.setState({ processList });
+    } else {
+      this.growl.show({
+        severity: 'warn',
+        summary: 'Can not found alternative compliance processes.',
+        detail: 'Check if the compliance process is modelled in the alternative graph.',
+      });
+    }
+  }
 
   renderBpmnProps(shape) {
     if (shape !== null) {

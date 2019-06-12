@@ -7,7 +7,6 @@ import ProcIT from './2_connect/ProcIT';
 import ProcCompliance from './2_connect/ProcCompliance';
 import ComplianceCompliance from './2_connect/ComplianceCompliance';
 import ITCompliance from './2_connect/ITCompliance';
-import Rule from './3_rule/Rule';
 import Alternatives from './4_alternatives/Alternatives';
 import Analyze from './5_analyze/Analyze';
 

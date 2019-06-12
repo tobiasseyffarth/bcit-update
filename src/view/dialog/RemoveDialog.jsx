@@ -78,6 +78,13 @@ class RemoveDialog extends Component {
     this.setState({ visibleAlternative: true });
   }
 
+  clickAccordionElement(element){
+    this.renderGraphProps({ el: element });
+    GraphRenderer.unhighlightNodes(this.graphRemove);
+    const node = this.graphRemove.getElementById(element.id);
+    GraphRenderer.highlightNode(node);
+  }
+
   renderRemoveGraph(graph) {
     const containerRemove = document.getElementById('graph-container-remove');
     this.graphRemove = cytoscape({
@@ -116,13 +123,6 @@ class RemoveDialog extends Component {
 
     GraphRenderer.renderAnalyzeGraph(this.graphRemove, graph, containerRemove);
     this.hookGraphOnClick(this.graphRemove);
-  }
-
-  clickAccordionElement(element){
-    this.renderGraphProps({ el: element });
-    GraphRenderer.unhighlightNodes(this.graphRemove);
-    const node = this.graphRemove.getElementById(element.id);
-    GraphRenderer.highlightNode(node);
   }
 
   renderGraphPropsPanel() {

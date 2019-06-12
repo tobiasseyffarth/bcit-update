@@ -102,8 +102,6 @@ class ReqDialog extends Component {
     const { props } = req;
 
     if (props !== undefined || props !== null) {
-      const result = [];
-
       for (let i = 0; i < until.length; i++) {
         for (let j = 0; j < props.length; j++) {
           const entity = until[i];

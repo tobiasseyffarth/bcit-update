@@ -41,7 +41,7 @@ export default class ImportModels extends Component {
 
     this.growl.show({
       severity: 'info',
-      summary: 'Compliance model successfull imported'
+      summary: 'Compliance model successfull imported',
     });
   }
 
@@ -74,21 +74,22 @@ export default class ImportModels extends Component {
     ProjectModel.setBpmnXml(input);
 
     const bpmnModeler = new BpmnModeler({}); // create process object and add to graph
-    let _this = this;
+    const _this = this;
     bpmnModeler.importXML(input, (err) => {
       if (err) {
         console.log('error rendering', err);
         _this.growl.show({
           severity: 'error',
           summary: 'error rendering process model',
-          detail: err});
+          detail: err,
+        });
       } else {
         const process = ProcessQuery.getProcess(bpmnModeler);
         GraphConnector.addSubGraphs({ process });
         _this.growl.show({
           severity: 'info',
           summary: 'BPMN model successfully imported',
-          detail: process.id
+          detail: process.id,
         });
       }
     });

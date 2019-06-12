@@ -380,6 +380,7 @@ export function getSucessorShapes(viewer, shape){
   return result;
 }
 
+/*
 export function getPredecessorShapes(viewer, shape){
   const process = shape.businessObject.$parent;
   const graph = GraphEditor.getEmptyGraph();
@@ -389,7 +390,7 @@ export function getPredecessorShapes(viewer, shape){
   const preds = GraphQuery.getPredecessors(node);
   const result = [];
 
-  for (let i = 0; i < sucs.length; i++){
+  for (let i = 0; i < preds.length; i++){
     const pred = preds[i];
     const shapePred = getShapeOfRegistry(viewer, pred.id());
     result.push(shapePred);
@@ -397,6 +398,8 @@ export function getPredecessorShapes(viewer, shape){
 
   return result;
 }
+
+*/
 
 /*
 export function getSuccessors(viewer, id){

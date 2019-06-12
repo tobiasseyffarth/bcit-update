@@ -23,41 +23,6 @@ async function getModeler(bpmnXml) {
   return promise;
 }
 
-async function adaptBusinessProcessByAlternatives(alternative) {
-  const modeler = await getModeler(ProjectModel.getBpmnXml());
-  const violatedNode = alternative.violatedCP;
-  const altNode = alternative.alternative;
-  const type = altNode.data('nodetype');
-  const violatedShape = ProcessQuery.getShapeOfRegistry(modeler, violatedNode.data('cpid'));
-
-  // 1. check whether alternative is process or pattern
-  // 2. if alternative is pattern
-  if (type === 'complianceprocesspattern') {
-    ProcessEditor.defineAsComplianceProcess(modeler, violatedShape.businessObject, false);
-    ProcessRenderer.colorShape(modeler, violatedShape, { stroke: 'grey', fill: 'none' });
-    ProcessEditor.defineAsComplianceProcessPattern(modeler, violatedShape.businessObject, true);
-    ProcessRenderer.updateShape(modeler, violatedShape, { name: altNode.data('name') });
-    removeDataInputShapes(modeler, violatedShape);
-  }
-
-  // 3. if alternative is process
-  if (type === 'complianceprocess') {
-    const triggerAlt = GraphQuery.getPropsValue(altNode.data('props'), 'trigger')[0];
-    const triggerViolatedCP = GraphQuery.getPropsValue(violatedNode.data('props'), 'trigger')[0];
-
-    if (triggerAlt === triggerViolatedCP) {
-      ProcessRenderer.updateShape(modeler, violatedShape, { name: altNode.data('name') });
-      removeDataInputShapes(modeler, violatedShape);
-      addDataInputShapes(modeler, violatedShape, altNode);
-    } else {
-      const predShape = ProcessQuery.getShapeOfRegistry(modeler, triggerAlt);
-      insertShape(predShape, altNode, modeler);
-      removeObsoleteShape(modeler, violatedShape);
-    }
-  }
-  return FileIo.getXmlFromViewer(modeler);
-}
-
 function insertShape(predShape, altNode, viewer) {
   const posX = predShape.x + 300;
   const posY = predShape.y * 1.5;
@@ -177,6 +142,41 @@ function getShapes(modeler, queryResult) {
     }
   }
   return shapes;
+}
+
+async function adaptBusinessProcessByAlternatives(alternative) {
+  const modeler = await getModeler(ProjectModel.getBpmnXml());
+  const violatedNode = alternative.violatedCP;
+  const altNode = alternative.alternative;
+  const type = altNode.data('nodetype');
+  const violatedShape = ProcessQuery.getShapeOfRegistry(modeler, violatedNode.data('cpid'));
+
+  // 1. check whether alternative is process or pattern
+  // 2. if alternative is pattern
+  if (type === 'complianceprocesspattern') {
+    ProcessEditor.defineAsComplianceProcess(modeler, violatedShape.businessObject, false);
+    ProcessRenderer.colorShape(modeler, violatedShape, { stroke: 'grey', fill: 'none' });
+    ProcessEditor.defineAsComplianceProcessPattern(modeler, violatedShape.businessObject, true);
+    ProcessRenderer.updateShape(modeler, violatedShape, { name: altNode.data('name') });
+    removeDataInputShapes(modeler, violatedShape);
+  }
+
+  // 3. if alternative is process
+  if (type === 'complianceprocess') {
+    const triggerAlt = GraphQuery.getPropsValue(altNode.data('props'), 'trigger')[0];
+    const triggerViolatedCP = GraphQuery.getPropsValue(violatedNode.data('props'), 'trigger')[0];
+
+    if (triggerAlt === triggerViolatedCP) {
+      ProcessRenderer.updateShape(modeler, violatedShape, { name: altNode.data('name') });
+      removeDataInputShapes(modeler, violatedShape);
+      addDataInputShapes(modeler, violatedShape, altNode);
+    } else {
+      const predShape = ProcessQuery.getShapeOfRegistry(modeler, triggerAlt);
+      insertShape(predShape, altNode, modeler);
+      removeObsoleteShape(modeler, violatedShape);
+    }
+  }
+  return FileIo.getXmlFromViewer(modeler);
 }
 
 export async function getAdaptedProcesses(altGraph, deleteGraph, bpmnXml){

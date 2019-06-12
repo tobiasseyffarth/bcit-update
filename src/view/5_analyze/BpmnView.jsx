@@ -41,16 +41,16 @@ class BpmnView extends Component {
     }
   }
 
+  onHide() {
+    this.setState({ visibleRemove: false });
+    this.setState({ visibleChange: false });
+  }
+
   setWith(){
     const bpmnProps = document.getElementById('bpmn-props-panel');
     const bpmnPropsWidth = bpmnProps.offsetWidth;
     const width = this.props.setWidth - bpmnPropsWidth - 50;
     this.setState({ width });
-  }
-
-  onHide() {
-    this.setState({ visibleRemove: false });
-    this.setState({ visibleChange: false });
   }
 
   getRemoveGraph(){

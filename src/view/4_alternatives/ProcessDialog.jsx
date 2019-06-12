@@ -67,7 +67,7 @@ class ProcessDialog extends Component {
   }
 
   getProps(){
-    const selectedTrigger = this.state.selectedTrigger;
+    const { selectedTrigger } = this.state;
     const req = this.state.selectedReq;
     const result = [];
 
@@ -111,9 +111,9 @@ class ProcessDialog extends Component {
   }
 
   buttonClick(){
-    const selectedTrigger = this.state.selectedTrigger;
-    const processName = this.state.processName;
-    const {mode} = this.state;
+    const { selectedTrigger } = this.state;
+    const { processName } = this.state;
+    const { mode } = this.state;
     if (selectedTrigger !== null && processName !== null && processName.length !== 0) {
       if (mode === 'add') {
         const comProcess = this.createComplianceProcess();
@@ -124,10 +124,10 @@ class ProcessDialog extends Component {
       }
       this.onHide();
     } else {
-      const summary = 'Can not ' +  mode + ' compliance process.';
+      const summary = `Can not ${mode} compliance process.`;
       this.growl.show({
         severity: 'warn',
-        summary: summary,
+        summary,
         detail: 'Please specify a name and define a trigger.',
       });
     }
@@ -157,7 +157,7 @@ class ProcessDialog extends Component {
     }
     this.setState({ selectedTrigger });
 
-    let selectedReq = [];
+    const selectedReq = [];
     for (let i = 0; i < req.length; i++){
       for (let j = 0; j < props.length; j++){
         const entity = req[i];
@@ -187,7 +187,7 @@ class ProcessDialog extends Component {
             style={{ width: '30%' }}
             value={this.state.selectedCP}
             options={this.state.complianceProcesses}
-            onChange={(e) => { this.selectComplianceProcess(e.value) }}
+            onChange={(e) => { this.selectComplianceProcess(e.value); }}
             optionLabel="name"
           />
         </div>

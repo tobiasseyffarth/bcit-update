@@ -8,7 +8,6 @@ import GraphPropsPanel from './GraphPropsPanel';
 import * as GraphRenderer from '../../controller/graph/GraphRenderer';
 import * as GraphEditor from '../../controller/graph/GraphEditor';
 import * as GraphQuery from '../../controller/graph/GraphQuery';
-import * as ProjectIO from './../../controller/helpers/projectio';
 
 export default class Alternatives extends Component {
   constructor(props) {
@@ -154,7 +153,7 @@ export default class Alternatives extends Component {
       this.growl.show({
         severity: 'warn',
         summary: 'Please select a node from the graph.',
-        detail: ''
+        detail: '',
       });
     }
   }

@@ -71,7 +71,7 @@ class ProcessPatternDialog extends Component {
 
   buttonClick(){
     const { mode } = this.state;
-    const patternName = this.state.patternName;
+    const { patternName } = this.state;
     if (patternName !== null && patternName.length !== 0) {
       if (mode === 'add') {
         this.addCpPattern();
@@ -80,10 +80,10 @@ class ProcessPatternDialog extends Component {
       }
       this.onHide();
     } else {
-      const summary = 'Can not ' +  mode + ' compliance process pattern.';
+      const summary = `Can not ${mode} compliance process pattern.`;
       this.growl.show({
         severity: 'warn',
-        summary: summary,
+        summary,
         detail: 'Please specify a name.',
       });
     }

@@ -44,17 +44,17 @@ class InfraView extends Component {
     this.setWidth();
   }
 
+  onHide() {
+    this.setState({ visibleRemove: false });
+    this.setState({ visibleChange: false });
+    this.setState({ visibleAlternative: false });
+  }
+
   setWidth(){
     const infraProps = document.getElementById('infra-props-panel');
     const infraPropsWidth = infraProps.offsetWidth;
     const width = this.props.setWidth - infraPropsWidth;
     this.setState({ width });
-  }
-
-  onHide() {
-    this.setState({ visibleRemove: false });
-    this.setState({ visibleChange: false });
-    this.setState({ visibleAlternative: false });
   }
 
   getRemoveGraph(){

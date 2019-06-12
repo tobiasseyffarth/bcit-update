@@ -73,10 +73,10 @@ export function isExecutable(cpNode, reqNode, deleteGraph, viewer) {
   }
 
   // 2nd check all successor of a changed IT component (workaround)
-  const changedInfra = GraphQuery.filterNodes(deleteGraph, {style: 'changedElement', type: 'infra'})[0]; // there is only one changed element
+  const changedInfra = GraphQuery.filterNodes(deleteGraph, { style: 'changedElement', type: 'infra' })[0]; // there is only one changed element
   if (changedInfra !== undefined) {
     const infra = ProjectModel.getInfra();
-    let infraGraph = GraphEditor.getEmptyGraph();
+    const infraGraph = GraphEditor.getEmptyGraph();
     GraphEditor.createGraphFromInfra(infraGraph, infra);
     const infraNode = infraGraph.getElementById(changedInfra.data('id'));
     const infraSucs = GraphQuery.getSuccessors(infraNode);
