@@ -1,5 +1,7 @@
 // contains functions to check whether alternatives can be executed
+import ProjectModel from './../../models/ProjectModel';
 import * as GraphQuery from './../graph/GraphQuery';
+import * as GraphEditor from './../graph/GraphEditor';
 import * as ProcessQuery from './../process/ProcessQuery';
 
 /*
@@ -70,6 +72,25 @@ export function isExecutable(cpNode, reqNode, deleteGraph, viewer) {
     }
   }
 
-  // 2nd check whether trigger is before until
+  // 2nd check all successor of a changed IT component (workaround)
+  const changedInfra = GraphQuery.filterNodes(deleteGraph, {style: 'changedElement', type: 'infra'})[0]; // there is only one changed element
+  if (changedInfra !== undefined) {
+    const infra = ProjectModel.getInfra();
+    let infraGraph = GraphEditor.getEmptyGraph();
+    GraphEditor.createGraphFromInfra(infraGraph, infra);
+    const infraNode = infraGraph.getElementById(changedInfra.data('id'));
+    const infraSucs = GraphQuery.getSuccessors(infraNode);
+
+    for (let i = 0; i < infraSucs.length; i++) {
+      const sucId = infraSucs[i].data('id');
+      for (let j = 0; j < reqs.length; j++) {
+        if (sucId === reqs[j]) {
+          return false;
+        }
+      }
+    }
+  }
+
+  // 3rd check whether trigger is before until
   return isTaskBefore(trigger, until, viewer);
 }

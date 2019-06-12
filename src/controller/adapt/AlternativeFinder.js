@@ -13,7 +13,6 @@ function getAlternativeCP(violatedCP, deleteGraph, viewer) {
 
     if (complianceProcess.data('id') !== violatedCP.data('id')) {
       const isExecutable = AlternativeChecker.isExecutable(complianceProcess, nodeReq, deleteGraph, viewer);
-
       if (isExecutable) {
         result.push({
           violatedCP,
