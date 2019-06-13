@@ -100,6 +100,7 @@ export default class StepProcCompliance extends Component {
 
   updateBpmnXml(){
     const modeler = this.bpmnModeler;
+    ProcessRenderer.resetShapeColor(modeler);
     const bpmnXml = FileIO.getXmlFromViewer(modeler);
     ProjectModel.setBpmnXml(bpmnXml);
     ProjectModel.setViewer(modeler);

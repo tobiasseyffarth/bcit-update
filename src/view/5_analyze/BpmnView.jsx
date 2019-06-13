@@ -8,6 +8,7 @@ import ChangeDialog from '../dialog/ChangeDialog';
 import ProjectModel from '../../models/ProjectModel';
 import * as ProcessQuery from '../../controller/process/ProcessQuery';
 import * as AnalyzeChange from '../../controller/analyze/AnalyzeChange';
+import * as ProcessRenderer from "../../controller/process/ProcessRenderer";
 
 class BpmnView extends Component {
   constructor(props) {
@@ -110,7 +111,22 @@ class BpmnView extends Component {
   }
 
   hookBpmnOnClick(e) {
-    this.renderBpmnProps(e.element);
+    const shape = e.element;
+    const modeler = this.bpmnModeler;
+
+   // this.renderBpmnProps(e.element);
+
+    if (ProcessQuery.isTaskOrSubprocess(shape) || ProcessQuery.isExtensionShape(shape)) {
+      ProcessRenderer.highlightShapeOnClick(this.state.bpmnShape, false, modeler);
+      ProcessRenderer.highlightShapeOnClick(shape, true, modeler);
+      this.renderBpmnProps(shape);
+      this.setState({ bpmnShape: shape });
+    } else {
+      ProcessRenderer.highlightShapeOnClick(this.state.bpmnShape, false, modeler);
+      this.renderBpmnProps(null);
+      this.setState({ bpmnShape: null });
+    }
+
   }
 
   hookBpmnEventBus() {

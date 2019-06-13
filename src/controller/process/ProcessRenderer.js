@@ -16,7 +16,22 @@ export function resetShapeColor(viewer) {
   const shapes = queryprocess.getShapes(viewer);
 
   for (let i = 0; i < shapes.length; i++) {
-    colorShape(viewer, shapes[i], { stroke: 'black' });
+    let shape = shapes[i];
+    const isCompliance = queryprocess.isCompliance(shape.businessObject);
+    const isFlowNode = queryprocess.isTaskOrSubprocess(shape);
+    const isExtShape = queryprocess.isExtensionShape(shape);
+
+    if (isFlowNode) {
+      if (isCompliance) {
+        colorShape(viewer, shapes[i], { stroke: 'black', fill: 'grey' });
+      } else {
+        colorShape(viewer, shapes[i], { stroke: 'black', fill: 'white' });
+      }
+    } else {
+      if (isExtShape) {
+        colorShape(viewer, shapes[i], { stroke: 'grey', fill: 'white' });
+      }
+    }
   }
 }
 
@@ -24,6 +39,7 @@ export function highlightShapeOnClick(shape, selected, modeler) {
 
   if (shape !== null) {
     const isCompliance = queryprocess.isCompliance(shape.businessObject);
+    const isExtensionShape = queryprocess.isExtensionShape(shape);
     if (selected) {
       if (isCompliance) {
         ProcessRenderer.colorShape(modeler, shape, { fill: 'grey', stroke: '#017ADC' });
@@ -34,7 +50,11 @@ export function highlightShapeOnClick(shape, selected, modeler) {
       if (isCompliance) {
         ProcessRenderer.colorShape(modeler, shape, { fill: 'grey', stroke: 'black' });
       } else {
-        ProcessRenderer.colorShape(modeler, shape, { fill: 'white', stroke: 'black' });
+        if (isExtensionShape) {
+          ProcessRenderer.colorShape(modeler, shape, { fill: 'white', stroke: 'grey' });
+        } else {
+          ProcessRenderer.colorShape(modeler, shape, { fill: 'white', stroke: 'black' });
+        }
       }
     }
   }
