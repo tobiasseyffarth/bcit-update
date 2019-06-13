@@ -238,7 +238,7 @@ class RemoveDialog extends Component {
     return (
       <div className="content-section implementation">
         <Dialog
-          header="Graph Remove"
+          header="Impacts on BPC when Removing an Element"
           footer={footer}
           visible={this.state.visibleDialog}
           style={{ width: '80vw' }}

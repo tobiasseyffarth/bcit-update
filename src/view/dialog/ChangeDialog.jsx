@@ -219,7 +219,7 @@ class ChangeDialog extends Component {
     return (
       <div className="content-section implementation">
         <Dialog
-          header="Graph Change"
+          header="Demands by Compliance Requirements when Replacing an Element"
           visible={this.state.visibleDialog}
           style={{ width: '80vw' }}
           onHide={this.onHide}

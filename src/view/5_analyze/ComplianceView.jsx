@@ -159,9 +159,9 @@ class ComplianceView extends Component {
         <br />
         <br />
         <Button
-          label="show result when change"
+          label="show result when replace"
           onClick={this.getChangeGraph}
-          tooltip="show demands by compliance requirements when changing these element"
+          tooltip="show demands by compliance requirements when replacing these element"
         />
       </div>
     );

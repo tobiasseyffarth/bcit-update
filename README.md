@@ -33,7 +33,7 @@ You can use BCIT 2.0 online on the following [GitHub Page](https://pages.github.
 ## Tutorial Document and Screencast
 - The models used in the demo can be found in [/resources/models](/resources/models).  
 - The tutorial document that shows one use case of the tool can be found [here](/resources/tutorial/tutorial_BCIT2.pdf).
-- Furthermore, the usage of BCIT 2.0 is show in the following [screencast](/resources/screencast/bcit2.mp4).
+- Furthermore, the usage of BCIT 2.0 is show in the following [screencast](https://cloud.uni-halle.de/s/q09oK57WnqgvZyr).
 
 ## Credits
 - Tobias Seyffarth
