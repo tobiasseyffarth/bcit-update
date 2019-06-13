@@ -126,7 +126,6 @@ class BpmnView extends Component {
       this.renderBpmnProps(null);
       this.setState({ bpmnShape: null });
     }
-
   }
 
   hookBpmnEventBus() {

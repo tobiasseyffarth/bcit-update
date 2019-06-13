@@ -37,7 +37,7 @@ export function resetShapeColor(viewer) {
 
 export function highlightShapeOnClick(shape, selected, modeler) {
 
-  if (shape !== null) {
+  if (shape !== null && shape !== undefined) {
     const isCompliance = queryprocess.isCompliance(shape.businessObject);
     const isExtensionShape = queryprocess.isExtensionShape(shape);
     if (selected) {

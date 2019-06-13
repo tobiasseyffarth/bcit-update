@@ -56,8 +56,35 @@ class AlternativeDialog extends Component {
   }
 
   hookBpmnOnClick(e) {
-    const { element } = e;
-    this.renderBpmnProps(element);
+    // const { element } = e;
+    // this.renderBpmnProps(element);
+
+    const shape = e.element;
+    const modeler = this.bpmnAltModeler;
+
+    let processType;
+    if (this.state.selectedProcess === null) {
+      processType = 'original process';
+    } else {
+      processType = this.state.selectedProcess.name;
+    }
+
+    if (ProcessQuery.isTaskOrSubprocess(shape)) {
+      if (processType === 'original process') {
+        this.highlightOriginalProcess();
+      }
+      ProcessRenderer.highlightShapeOnClick(this.state.bpmnShape, false, modeler);
+      ProcessRenderer.highlightShapeOnClick(shape, true, modeler);
+      this.renderBpmnProps(shape);
+      this.setState({ bpmnShape: shape });
+    } else {
+      if (processType === 'original process') {
+        this.highlightOriginalProcess();
+      }
+      ProcessRenderer.highlightShapeOnClick(this.state.bpmnShape, false, modeler);
+      this.renderBpmnProps(null);
+      this.setState({ bpmnShape: null });
+    }
   }
 
   hookBpmnEventBus() {
@@ -165,14 +192,8 @@ class AlternativeDialog extends Component {
   };
 
   exportProcess = () => {
-    /*
-    const bpmnXml = this.state.selectedProcess.bpmnXml;
-    const name = this.state.selectedProcess.name;
-    */
-
     const { bpmnXml } = this.state.selectedProcess;
     const { name } = this.state.selectedProcess;
-
     ProjectIo.exportBpmn(bpmnXml, name);
   };
 
