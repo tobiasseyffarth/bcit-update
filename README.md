@@ -20,7 +20,7 @@ BCIT 2.0 demonstrates the feasibility of the methods proposed in [1, 2] and exte
 - Export adapted business processes as *.bpmn 
 
 ## Setup
-You can use BCIT 2.0 online on the following [GitHub Page](https://pages.github.com/) or you can run it locally: 
+You can use BCIT 2.0 online on [https://tobiasseyffarth.github.io/](https://tobiasseyffarth.github.io/) or you can run it locally: 
    1. Clone the repository `git clone`
    2. Install dependencies `npm install`
    3. Start BCIT `npm start`
@@ -32,7 +32,7 @@ You can use BCIT 2.0 online on the following [GitHub Page](https://pages.github.
 
 ## Tutorial Document and Screencast
 - The models used in the demo can be found in [/resources/models](/resources/models).  
-- The tutorial document that shows one use case of the tool can be found [here](/resources/tutorial/tutorial_BCIT2.pdf).
+- The tutorial document that shows one use case of the tool can be found in [/resources/tutorial/tutorial_BCIT2.pdf](/resources/tutorial/tutorial_BCIT2.pdf).
 - Furthermore, the usage of BCIT 2.0 is show in the following [screencast](https://cloud.uni-halle.de/s/q09oK57WnqgvZyr).
 
 ## Credits
@@ -42,7 +42,7 @@ You can use BCIT 2.0 online on the following [GitHub Page](https://pages.github.
 ## License
 MIT
 
-##References
+## References
 * [1] Seyffarth, T., Kuehnel, S., Sackmann, S., Business Process Compliance and Business Process Change. An Approach to Analyze the Interactions, in: Business Information Systems. BIS 2018. Lecture Notes in Business Information Processing (2018), pp. 176–189.
 * [2] Seyffarth, T., Kuehnel, S., Sackmann, S., Business Process Compliance despite Change. Towards Proposals for a Business Process Adaption, in: Information Systems Engineering in Responsible Information Systems. CAiSE 2019. Lecture Notes in Business Information Processing, vol 350. (2019), pp. 227–239.
 * [3] Seyffarth, T., Raschke, K., BCIT. A Tool for Analyzing the Interactions between Business Process Compliance and Business Process Change, in: Proceedings of the Dissertation Award and Demonstration, Industrial Track at BPM 2018 (2018), pp. 81–85.
