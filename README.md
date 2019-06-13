@@ -1,7 +1,7 @@
 # BCIT 2.0
 
 BCIT 2.0 is a tool for analyzing the interactions between business process compliance
-and information technology. Furthermore BCIT is able to adapt the business process through alternative compliance processes.
+and information technology. Furthermore BCIT 2.0 is able to adapt the business process through alternative compliance processes.
 BCIT 2.0 demonstrates the feasibility of the methods proposed in [1, 2] and extends the previously introduced version [3].  
 
 ## Content
@@ -33,7 +33,7 @@ You can use BCIT 2.0 online on [https://tobiasseyffarth.github.io/](https://tobi
 ## Tutorial Document and Screencast
 - The models used in the demo can be found in [/resources/models](/resources/models).  
 - The tutorial document that shows one use case of the tool can be found in [/resources/tutorial/tutorial_BCIT2.pdf](/resources/tutorial/tutorial_BCIT2.pdf).
-- Furthermore, the usage of BCIT 2.0 is show in the following [screencast](https://cloud.uni-halle.de/s/q09oK57WnqgvZyr).
+- Furthermore, a quick introduction to BCIT 2.0 is given in the following [screencast](https://cloud.uni-halle.de/s/q09oK57WnqgvZyr).
 
 ## Credits
 - Tobias Seyffarth
