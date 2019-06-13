@@ -7,7 +7,7 @@ BCIT 2.0 demonstrates the feasibility of the methods proposed in [1, 2] and exte
 ## Content
 - [Features](#features)
 - [Setup](#setup)
-- [Usage](#usage)
+- [Tutorial, sample models and screencast](#Tutorial,-sample-models-and-screencast)
 - [Credits](#credits)
 - [License](#license)
 
@@ -30,9 +30,9 @@ You can use BCIT 2.0 online on [https://tobiasseyffarth.github.io/](https://tobi
 - Node.JS >= 10.15 (only for local usage)
 - Firefox version -1 or Chrome version -1
 
-## Tutorial Document and Screencast
-- The models used in the demo can be found in [/resources/models](/resources/models).  
+## Tutorial, sample models and screencast
 - The tutorial document that shows one use case of the tool can be found in [/resources/tutorial/tutorial_BCIT2.pdf](/resources/tutorial/tutorial_BCIT2.pdf).
+- The models used in the demo can be found in [/resources/models](/resources/models).  
 - Furthermore, a quick introduction to BCIT 2.0 is given in the following [screencast](https://cloud.uni-halle.de/s/q09oK57WnqgvZyr).
 
 ## Credits

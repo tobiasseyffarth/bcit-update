@@ -221,6 +221,7 @@ export default class StepITCompliance extends Component {
             <div className="compliance-view-selector">
               <ListBox
                 style={{ height: '98%', width: '98%' }}
+                listStyle={{ maxHeight: '300px' }}
                 optionLabel="id"
                 value={value}
                 options={option}
@@ -231,7 +232,7 @@ export default class StepITCompliance extends Component {
             <div className="compliance-view-text">
               <InputTextarea
                 readOnly
-                style={{ width: '100%', height: '98%' }}
+                style={{ width: '100%', height: '98%', resize: 'none' }}
                 cols={60}
                 value={this.state.complianceText}
                 autoResize={false}

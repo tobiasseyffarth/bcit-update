@@ -90,10 +90,11 @@ export default class StepComplianceCompliance extends Component {
 
     return (
       <div>
-        <section className="container-compliance">
+        <section className="container-compliance" id="container-compliance-connector">
           <div className="compliance-view-selector">
             <ListBox
               style={{ height: '98%', width: '98%' }}
+              listStyle={{ maxHeight: '300px' }}
               optionLabel="id"
               value={value}
               options={option}
@@ -125,6 +126,7 @@ export default class StepComplianceCompliance extends Component {
           <div className="compliance-view-selector">
             <ListBox
               style={{ height: '98%', width: '98%' }}
+              listStyle={{ maxHeight: '300px' }}
               optionLabel="id"
               value={value}
               options={option}
