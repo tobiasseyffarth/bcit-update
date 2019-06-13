@@ -23,7 +23,7 @@ BCIT 2.0 demonstrates the feasibility of the methods proposed in [1, 2] and exte
 You can use BCIT 2.0 online on [https://tobiasseyffarth.github.io/](https://tobiasseyffarth.github.io/) or you can run it locally: 
    1. Clone the repository `git clone`
    2. Install dependencies `npm install`
-   3. Start BCIT `npm start`
+   3. Start BCIT `npm run start`
    4. Open BCIT in your preferred browser
 
 **Requirements**
