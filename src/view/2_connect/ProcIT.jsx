@@ -84,6 +84,9 @@ export default class StepProcIT extends Component {
 
       this.updateBusinessObject(businessObject);
       this.updateBpmnXml();
+
+      // workaround for highlighting the selected element
+      ProcessRenderer.highlightShapeOnClick(element, true, modeler);
     }
   }
 
@@ -128,10 +131,14 @@ export default class StepProcIT extends Component {
 
   hookBpmnOnClick(e) {
     const { element } = e;
+    const modeler = this.bpmnModeler;
     if (ProcessQuery.isTaskOrSubprocess(element)) {
+      ProcessRenderer.highlightShapeOnClick(this.state.bpmnShape, false, modeler);
+      ProcessRenderer.highlightShapeOnClick(element, true, modeler);
       this.renderBpmnProps(element);
       this.setState({ bpmnShape: element });
     } else {
+      ProcessRenderer.highlightShapeOnClick(this.state.bpmnShape, false, modeler);
       this.renderBpmnProps(null);
       this.setState({ bpmnShape: null });
     }

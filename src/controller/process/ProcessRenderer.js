@@ -1,11 +1,12 @@
 import * as queryprocess from './ProcessQuery';
 import * as editprocess from './ProcessEditor';
+import * as ProcessRenderer from './ProcessRenderer';
 
 // final
 export function colorShape(viewer, shape, coloroption) {
   const modeling = viewer.get('modeling');
   const _stroke = coloroption.stroke || 'black';
-  const _fill = coloroption.fill || 'none';
+  const _fill = coloroption.fill || 'white';
 
   modeling.setColor(shape, { stroke: _stroke, fill: _fill });
 }
@@ -16,6 +17,26 @@ export function resetShapeColor(viewer) {
 
   for (let i = 0; i < shapes.length; i++) {
     colorShape(viewer, shapes[i], { stroke: 'black' });
+  }
+}
+
+export function highlightShapeOnClick(shape, selected, modeler) {
+
+  if (shape !== null) {
+    const isCompliance = queryprocess.isCompliance(shape.businessObject);
+    if (selected) {
+      if (isCompliance) {
+        ProcessRenderer.colorShape(modeler, shape, { fill: 'grey', stroke: '#017ADC' });
+      } else {
+        ProcessRenderer.colorShape(modeler, shape, { fill: 'white', stroke: '#017ADC' });
+      }
+    } else {
+      if (isCompliance) {
+        ProcessRenderer.colorShape(modeler, shape, { fill: 'grey', stroke: 'black' });
+      } else {
+        ProcessRenderer.colorShape(modeler, shape, { fill: 'white', stroke: 'black' });
+      }
+    }
   }
 }
 
