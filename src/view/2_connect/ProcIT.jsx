@@ -181,9 +181,12 @@ export default class StepProcIT extends Component {
       const element = evt.target;
       if (element === graph) { // background
         _this.renderInfraProps(null);
+        GraphRenderer.unhighlightNodes(graph);
       } else {
         if (element.isNode()) { // edge
           _this.renderInfraProps(element);
+          GraphRenderer.unhighlightNodes(graph);
+          GraphRenderer.highlightNode(element);
         }
         if (element.isEdge()) {
           console.log('taped on edge');

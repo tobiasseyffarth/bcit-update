@@ -95,11 +95,14 @@ export default class StepITCompliance extends Component {
       const element = evt.target;
       if (element === graph) { // background
         _this.renderInfraProps(null);
+        GraphRenderer.unhighlightNodes(graph);
       } else {
         if (element.isNode()) { // edge
           const id = element.data('id');
           const itComponent = InfraQuery.getElementById(infra, id);
           _this.renderInfraProps(itComponent);
+          GraphRenderer.unhighlightNodes(graph);
+          GraphRenderer.highlightNode(element);
         }
         if (element.isEdge()) {
           console.log('taped on edge');

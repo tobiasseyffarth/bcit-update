@@ -128,7 +128,7 @@ class InfraView extends Component {
       if (element === graph) { // background
         _this.renderInfraProps(null);
         GraphRenderer.unhighlightNodes(this.graph);
-      } else if (element.isNode()) { // edge
+      } else if (element.isNode()) {
         const id = element.data('id');
         const itComponent = InfraQuery.getElementById(infra, id);
         _this.renderInfraProps(itComponent);
