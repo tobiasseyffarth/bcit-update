@@ -69,10 +69,10 @@ export default class StepITCompliance extends Component {
         ProjectModel.setGraph(graph);
         ProjectModel.setInfra(infra);
 
-        const detail = 'connect';
+        const detail = `connect ${this.state.infraElementName} and ${this.state.selectedCompliance.id}`;
         this.growl.show({ severity: 'info', summary: 'elements connected', detail });
       } else {
-        const detail = 'erro';
+        const detail = `${this.state.infraElementName} and ${this.state.selectedCompliance.id} are already connected`;
         this.growl.show({ severity: 'error', summary: 'elements already connected', detail });
       }
     }

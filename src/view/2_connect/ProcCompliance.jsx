@@ -157,7 +157,7 @@ export default class StepProcCompliance extends Component {
         const detail = `connect ${this.state.bpmnName} and ${this.state.selectedCompliance.id}`;
         this.growl.show({ severity: 'info', summary: 'elements connected', detail });
       } else {
-        const detail = '';
+        const detail = `${this.state.bpmnName} and ${this.state.selectedCompliance.id} are already connected`;
         this.growl.show({ severity: 'error', summary: 'elements already connected', detail });
       }
     }

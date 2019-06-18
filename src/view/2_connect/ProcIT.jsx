@@ -168,7 +168,7 @@ export default class StepProcIT extends Component {
         const detail = `connect ${this.state.infraElementName} and ${this.state.bpmnName}`;
         this.growl.show({ severity: 'info', summary: 'elements connected', detail });
       } else {
-        const detail = 'erro';
+        const detail = `${this.state.infraElementName} and ${this.state.bpmnName} are already connected`;
         this.growl.show({ severity: 'error', summary: 'elements already connected', detail });
       }
     }
