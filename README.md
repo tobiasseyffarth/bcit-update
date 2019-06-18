@@ -10,6 +10,7 @@ BCIT 2.0 demonstrates the feasibility of the methods proposed in [1, 2] and exte
 - [Tutorial, sample models and screencast](#Tutorial,-sample-models-and-screencast)
 - [Credits](#credits)
 - [License](#license)
+- [References](#references)
 
 ## Features
 - Import business process modelled as *.bpmn, import IT architecture modelled as TOGAF Open Exchange Format and import compliance requirement model 

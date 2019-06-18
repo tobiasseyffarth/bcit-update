@@ -56,9 +56,6 @@ class AlternativeDialog extends Component {
   }
 
   hookBpmnOnClick(e) {
-    // const { element } = e;
-    // this.renderBpmnProps(element);
-
     const shape = e.element;
     const modeler = this.bpmnAltModeler;
 
