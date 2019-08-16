@@ -176,6 +176,11 @@ class BpmnView extends Component {
           tooltip="show demands by compliance requirements when replacing these element"
         />
       </div>
+        /*  add outsourcing elements
+            select multiple activities
+            this.getOutsourcing Graph
+         */
+
     );
   }
 

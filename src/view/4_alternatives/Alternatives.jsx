@@ -89,7 +89,7 @@ export default class Alternatives extends Component {
         this.setState({ visibleReqDialog: true });
         this.setState({ reqName: req.id });
       } else {
-        this.growl.show({
+        this.growl.show({ // *** go to tab ****
           severity: 'warn',
           summary: 'Compliance requirement already in the graph.',
           detail: '',
@@ -104,7 +104,7 @@ export default class Alternatives extends Component {
     }
   }
 
-  addReq(req){
+  addReq(req){ // **** add a new Tab and display graph
     GraphEditor.addNode(this.graph, { req });
     GraphRenderer.styleNodesAltGraph(this.graph);
     GraphRenderer.drawNodesAltGraph(this.graph);
@@ -133,7 +133,7 @@ export default class Alternatives extends Component {
     GraphRenderer.drawNodesAltGraph(this.graph);
   }
 
-  removeNode(nodeId) {
+  removeNode(nodeId) { // **** if compliance req. remove tab
     const node = this.graph.getElementById(nodeId);
 
     if (node !== null && nodeId !== null){
