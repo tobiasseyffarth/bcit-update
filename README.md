@@ -21,7 +21,7 @@ BCIT 2.0 demonstrates the feasibility of the methods proposed in [1, 2] and exte
 - Export adapted business processes as *.bpmn 
 
 ## Setup
-You can use BCIT 2.0 online on [https://https://anonymforreview.github.io/](https://https://anonymforreview.github.io/) or you can run it locally: 
+You can use BCIT 2.0 online on [https://anonymforreview.github.io/](https://anonymforreview.github.io/) or you can run it locally: 
    1. Clone the repository `git clone https://github.com/anonymForReview/bcit2.git`
    2. Change directory `cd compliance-checker`
    3. Install dependencies `npm install`
