@@ -38,8 +38,7 @@ You can use BCIT 2.0 online on [https://https://anonymforreview.github.io/](http
 - Furthermore, a quick introduction to BCIT 2.0 is given in the following [screencast](https://cloud.uni-halle.de/s/q09oK57WnqgvZyr).
 
 ## Credits
-- Tobias Seyffarth
-- Kai Raschke
+- anonymForReview
 
 ## License
 MIT
