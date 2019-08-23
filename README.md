@@ -22,8 +22,8 @@ BCIT 2.0 demonstrates the feasibility of the methods proposed in [1, 2] and exte
 
 ## Setup
 You can use BCIT 2.0 online on [https://https://anonymforreview.github.io/](https://https://anonymforreview.github.io/) or you can run it locally: 
-   1. Clone the repository `git clone`
-   2. Change directory `cd compliance checker`
+   1. Clone the repository `git clone https://github.com/anonymForReview/bcit2.git`
+   2. Change directory `cd compliance-checker`
    3. Install dependencies `npm install`
    4. Start BCIT `npm run start`
    5. Open BCIT in your preferred browser
