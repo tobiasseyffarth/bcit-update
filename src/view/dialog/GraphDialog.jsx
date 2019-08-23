@@ -31,7 +31,8 @@ class GraphDialog extends Component {
     this.setState({ visibleDialog: false });
   }
 
-  onShow() { // hier einen asynchronen Aufruf einbauen für das Zeichnen des Graphen
+  onShow() {
+    console.log('show graph');
     if (ProjectModel.getGraph() !== null) {
       this.renderGraphView();
     }
