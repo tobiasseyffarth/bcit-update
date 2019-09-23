@@ -6,10 +6,10 @@ BCIT2 demonstrates the feasibility of the methods proposed in [1, 2] and extends
 
 ## Content
 - [Features](#features)
-- [Setup](#setup)
+- [Run BCIT2](#Run BCIT2)
+- [Demo Video](#Demo Video)
 - [Tutorial Document](#Tutorial Document)
 - [Example Models](#Example Models)
-- [Video](#Video)
 - [Credits](#credits)
 - [License](#license)
 - [References](#references)
@@ -22,8 +22,8 @@ BCIT2 demonstrates the feasibility of the methods proposed in [1, 2] and extends
 - Automatically put forward proposals for a business process adaptation in case of a business process compliance violation [2]
 - Export adapted business processes as *.bpmn 
 
-## Setup
-You can use BCIT2 in two different ways:
+## Run BCIT2
+You can run BCIT2 in two different ways:
 - You can use it online on[https://anonymforreview.github.io/](https://anonymforreview.github.io/)
 - You can run it locally:
    1. Open a terminal 
@@ -40,19 +40,18 @@ You can use BCIT2 in two different ways:
 - [Git](https://git-scm.com/downloads)
 - [Node.JS](https://nodejs.org/en/download/) >= 10.15
 
+## Demo Video
+- A demo video that introduces the basic features of BCIT2 is available [here](https://cloud.uni-halle.de/s/q09oK57WnqgvZyr).
 
 ## Tutorial Document
-- The tutorial document that shows one use case of the tool can be found in [/resources/tutorial/tutorial_BCIT2.pdf](/resources/tutorial/tutorial_BCIT2.pdf).
-
-## Video
-- A quick introduction to the basic features of  BCIT2 is given in the following [video](https://cloud.uni-halle.de/s/q09oK57WnqgvZyr).
+- The tutorial document that describes the basic features step-by-step can be found in [/resources/tutorial/tutorial_BCIT2.pdf](/resources/tutorial/tutorial_BCIT2.pdf).
 
 ## Example Models
-- The **motivation scenario** and can be found [here](https://cloud.uni-halle.de/s/eII8IIuKwPmRLR2). Unzip the file and open the project file in BCIT2 via File -> Open Project
-- The respective **models that are used within the motivation scenario** can be found [here](https://cloud.uni-halle.de/s/eII8IIuKwPmRLR2). The zip file contains three files:
-    - *process model.bpmn*: contains process model modelled as BPMN.
+- The **motivation scenario** can be found [here.](https://cloud.uni-halle.de/s/eII8IIuKwPmRLR2) Unzip the file and open the project file in BCIT2 via File -> Open Project -> select the unzipped file *BCIT project.bcit*
+- Alternatively, the scenario can also be reproduced with the **individual process, IT infrastructure and compliance models**. The individual models models can be found [here.](https://cloud.uni-halle.de/s/eII8IIuKwPmRLR2) The zip file contains three files:
     - *architecture model.xml*: contains IT infrastructure modeled as TOGAF architecture model.
     - *compliance model.json*: contains compliance requirements.
+    - *process model.bpmn*: contains process model modelled as BPMN.
 
 ## Credits
 - anonymForReview
@@ -64,4 +63,3 @@ MIT
 * [1] Seyffarth, T., Kuehnel, S., Sackmann, S., Business Process Compliance and Business Process Change. An Approach to Analyze the Interactions, in: Business Information Systems. BIS 2018. Lecture Notes in Business Information Processing (2018), pp. 176–189.
 * [2] Seyffarth, T., Kuehnel, S., Sackmann, S., Business Process Compliance despite Change. Towards Proposals for a Business Process Adaption, in: Information Systems Engineering in Responsible Information Systems. CAiSE 2019. Lecture Notes in Business Information Processing, vol 350. (2019), pp. 227–239.
 * [3] Seyffarth, T., Raschke, K., BCIT. A Tool for Analyzing the Interactions between Business Process Compliance and Business Process Change, in: Proceedings of the Dissertation Award and Demonstration, Industrial Track at BPM 2018 (2018), pp. 81–85.
-
