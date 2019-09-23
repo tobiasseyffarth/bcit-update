@@ -25,29 +25,34 @@ BCIT2 demonstrates the feasibility of the methods proposed in [1, 2] and extends
 ## Setup
 You can use BCIT2 in two different ways:
 - You can use it online on[https://anonymforreview.github.io/](https://anonymforreview.github.io/)
-- Yu can run it locally: 
-   1. Clone the repository `git clone https://github.com/anonymForReview/bcit2.git`
-   2. Change directory `cd compliance-checker`
-   3. Install dependencies `npm install`
-   4. Start BCIT `npm run start`
-   5. Open BCIT in your preferred browser
+- You can run it locally:
+   1. Open a terminal 
+   2. Clone the repository `git clone https://github.com/anonymForReview/bcit2.git`
+   3. Change directory `cd compliance-checker`
+   4. Install dependencies `npm install`
+   5. Start BCIT2 `npm run start`
+   6. Open BCIT2 in your preferred browser
 
 **Requirements**
-- Node.JS >= 10.15 (only for local usage)
 - Firefox version -1 or Chrome version -1 (in both cases a desktop version is required)
+
+**Further requirements for local usage**
+- [Git](https://git-scm.com/downloads)
+- [Node.JS](https://nodejs.org/en/download/) >= 10.15
+
 
 ## Tutorial Document
 - The tutorial document that shows one use case of the tool can be found in [/resources/tutorial/tutorial_BCIT2.pdf](/resources/tutorial/tutorial_BCIT2.pdf).
 
+## Video
+- A quick introduction to the basic features of  BCIT2 is given in the following [video](https://cloud.uni-halle.de/s/q09oK57WnqgvZyr).
+
 ## Example Models
-- The models used in the motivation scenario and can be found [here](https://cloud.uni-halle.de/s/eII8IIuKwPmRLR2). The zip file contains four files.
-    - *BCIT project model.bcit*: contains the running scenario of the paper as one final project.
+- The **motivation scenario** and can be found [here](https://cloud.uni-halle.de/s/eII8IIuKwPmRLR2). Unzip the file and open the project file in BCIT2 via File -> Open Project
+- The respective **models that are used within the motivation scenario** can be found [here](https://cloud.uni-halle.de/s/eII8IIuKwPmRLR2). The zip file contains three files:
     - *process model.bpmn*: contains process model modelled as BPMN.
     - *architecture model.xml*: contains IT infrastructure modeled as TOGAF architecture model.
     - *compliance model.json*: contains compliance requirements.
-
-## Video
-- A quick introduction to BCIT2  that demonstrates its basic features is given in the following [screencast](https://cloud.uni-halle.de/s/q09oK57WnqgvZyr).
 
 ## Credits
 - anonymForReview
