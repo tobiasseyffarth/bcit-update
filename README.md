@@ -7,7 +7,7 @@ BCIT2 demonstrates the feasibility of the methods proposed in [1, 2] and extends
 ## Content
 - [Features](#features)
 - [Run BCIT2](#Run BCIT2)
-- [Demo Video](#Demo Video)
+- [Video](#Video)
 - [Tutorial Document](#Tutorial Document)
 - [Example Models](#Example Models)
 - [Credits](#credits)
@@ -24,7 +24,7 @@ BCIT2 demonstrates the feasibility of the methods proposed in [1, 2] and extends
 
 ## Run BCIT2
 You can run BCIT2 in two different ways:
-- You can use it online on[https://anonymforreview.github.io/](https://anonymforreview.github.io/)
+- You can use it online on [https://anonymforreview.github.io/](https://anonymforreview.github.io/)
 - You can run it locally:
    1. Open a terminal 
    2. Clone the repository `git clone https://github.com/anonymForReview/bcit2.git`
@@ -40,14 +40,14 @@ You can run BCIT2 in two different ways:
 - [Git](https://git-scm.com/downloads)
 - [Node.JS](https://nodejs.org/en/download/) >= 10.15
 
-## Demo Video
+## Video
 - A demo video that introduces the basic features of BCIT2 is available [here](https://cloud.uni-halle.de/s/q09oK57WnqgvZyr).
 
 ## Tutorial Document
 - The tutorial document that describes the basic features step-by-step can be found in [/resources/tutorial/tutorial_BCIT2.pdf](/resources/tutorial/tutorial_BCIT2.pdf).
 
 ## Example Models
-- The **motivation scenario** can be found [here.](https://cloud.uni-halle.de/s/eII8IIuKwPmRLR2) Unzip the file and open the project file in BCIT2 via File -> Open Project -> select the unzipped file *BCIT project.bcit*
+- The **motivation scenario** in one single project file can be found [here.](https://cloud.uni-halle.de/s/eII8IIuKwPmRLR2) Unzip the file and open the project file in BCIT2 via File -> Open Project -> select the unzipped file *BCIT project.bcit*
 - Alternatively, the scenario can also be reproduced with the **individual process, IT infrastructure and compliance models**. The individual models models can be found [here.](https://cloud.uni-halle.de/s/eII8IIuKwPmRLR2) The zip file contains three files:
     - *architecture model.xml*: contains IT infrastructure modeled as TOGAF architecture model.
     - *compliance model.json*: contains compliance requirements.
