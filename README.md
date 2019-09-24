@@ -8,8 +8,8 @@ BCIT2 demonstrates the feasibility of the methods proposed in [1, 2] and extends
 - [Features](#features)
 - [Run BCIT2](#Run BCIT2)
 - [Video](#Video)
-- [Tutorial Document](#Tutorial Document)
-- [Example Models](#Example Models)
+- [Tutorial](#Tutorial)
+- [Models](#Models)
 - [Credits](#credits)
 - [License](#license)
 - [References](#references)
@@ -43,10 +43,10 @@ You can run BCIT2 in two different ways:
 ## Video
 - A demo video that introduces the basic features of BCIT2 is available [here](https://cloud.uni-halle.de/s/q09oK57WnqgvZyr).
 
-## Tutorial Document
+## Tutorial
 - The tutorial document that describes the basic features step-by-step can be found in [/resources/tutorial/tutorial_BCIT2.pdf](/resources/tutorial/tutorial_BCIT2.pdf).
 
-## Example Models
+## Models
 - The **motivation scenario** in one single project file can be found [here.](https://cloud.uni-halle.de/s/eII8IIuKwPmRLR2) Unzip the file and open the project file in BCIT2 via File -> Open Project -> select the unzipped file *BCIT project.bcit*
 - Alternatively, the scenario can also be reproduced with the **individual process, IT infrastructure and compliance models**. The individual models models can be found [here.](https://cloud.uni-halle.de/s/eII8IIuKwPmRLR2) The zip file contains three files:
     - *architecture model.xml*: contains IT infrastructure modeled as TOGAF architecture model.
