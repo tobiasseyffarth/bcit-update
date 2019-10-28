@@ -24,8 +24,8 @@ async function getModeler(bpmnXml) {
 }
 
 function insertShape(predShape, altNode, viewer) {
-  const posX = predShape.x + 300;
-  const posY = predShape.y * 1.5;
+  const posX = predShape.x + predShape.width + 200;
+  const posY = predShape.y;
   const sucs = ProcessQuery.getSucessorShapes(viewer, predShape);
 
   for (let i = sucs.length - 1; i >= 0; i--){
@@ -34,6 +34,7 @@ function insertShape(predShape, altNode, viewer) {
 
   const name = altNode.data('name');
   const type = altNode.data('nodetype');
+
   const newShape = ProcessRenderer.createShape(viewer, {
     x: posX, y: posY, type: 'bpmn:Task', name,
   });
@@ -50,6 +51,12 @@ function insertShape(predShape, altNode, viewer) {
   const nodeReq = GraphQuery.filterNodesByType(GraphQuery.getSuccessors(altNode), 'compliance')[0];
   ProcessRenderer.addExtensionShape(viewer, newShape, { compliance: nodeReq.data() });
   addDataInputShapes(viewer, newShape, altNode);
+
+  //workaround: move shape
+  const verticalPos = ProcessRenderer.getVerticalPosition(newShape, predShape);
+  const modeler = viewer.get('modeling');
+  const move = verticalPos - newShape.y;
+  modeler.moveShape(newShape, {x: 0,  y: move }, false);
 
   /*
   // add infra as dataStore to the process model
@@ -73,7 +80,7 @@ function removeObsoleteShape(viewer, shape) {
   }
   ProcessRenderer.removeShape(viewer, shape);
 
-  for (let j = sucs.length - 1; j >= 0; j--){
+  for (let j =0; j < sucs.length; j++) {
     ProcessRenderer.moveShape(viewer, sucs[j], 'left');
   }
 }

@@ -221,7 +221,7 @@ class ChangeDialog extends Component {
         <Dialog
           header="Demands by Compliance Requirements when Replacing an Element"
           visible={this.state.visibleDialog}
-          style={{ width: '80vw' }}
+          style={{ width: '90vw' }}
           onHide={this.onHide}
           onShow={() => this.onShow()}
           maximizable

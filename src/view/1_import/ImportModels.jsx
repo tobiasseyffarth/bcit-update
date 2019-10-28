@@ -85,6 +85,9 @@ export default class ImportModels extends Component {
         });
       } else {
         const process = ProcessQuery.getProcess(bpmnModeler);
+
+        console.log(bpmnModeler);
+
         GraphConnector.addSubGraphs({ process });
         _this.growl.show({
           severity: 'info',

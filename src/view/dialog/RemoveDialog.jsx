@@ -241,7 +241,7 @@ class RemoveDialog extends Component {
           header="Impacts on BPC when Removing an Element"
           footer={footer}
           visible={this.state.visibleDialog}
-          style={{ width: '80vw' }}
+          style={{ width: '90vw' }}
           onHide={this.onHide}
           onShow={() => this.onShow()}
           maximizable

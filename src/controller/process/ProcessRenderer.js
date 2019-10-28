@@ -117,19 +117,19 @@ export function updateShape(viewer, shape, option) {
 export function moveShape(viewer, shape, direction) {
   const modeler = viewer.get('modeling');
   let xPos;
-  let yPos = (shape.y / 2) - 51;
+  let yPos = shape.y;
 
   if (direction === undefined) {
     xPos = (shape.x / 2);
   } else if (direction === 'left'){
-    xPos = (shape.x / 2) - 600;
+    xPos = (-1 * shape.width);
   }
 
-  modeler.moveShape(shape, { x: xPos, y: yPos }, false);
+  modeler.moveShape(shape, { x: xPos, y: 0 }, false);
 
   // move labels of shapes
   if (shape.label !== undefined) {
-    modeler.moveShape(shape.label, { x: xPos, y: yPos }, false);
+    modeler.moveShape(shape.label, { x: xPos, y: 0 }, false);
   }
 
   // move DataInput of the activity
@@ -137,10 +137,10 @@ export function moveShape(viewer, shape, direction) {
   for (let i = 0; i < dataInputs.length; i++){
     const dataInput = dataInputs[i];
     yPos = (shape.y / 2) - 51;
-    modeler.moveShape(dataInput, { x: xPos, y: yPos }, false);
+    modeler.moveShape(dataInput, { x: xPos, y: 0 }, false);
 
     const shapeLabel = dataInput.label;
-    modeler.moveShape(shapeLabel, { x: xPos, y: yPos }, false);
+    modeler.moveShape(shapeLabel, { x: xPos, y: 0 }, false);
   }
 
   // move DataOutput of the activity
@@ -148,10 +148,10 @@ export function moveShape(viewer, shape, direction) {
   for (let i = 0; i < dataOutputs.length; i++){
     const dataOutput = dataOutputs[i];
     yPos = (shape.y / 2) - 51;
-    modeler.moveShape(dataOutput, { x: xPos, y: yPos }, false);
+    modeler.moveShape(dataOutput, { x: xPos, y: 0 }, false);
 
     const shapeLabel = dataOutputs.label;
-    modeler.moveShape(shapeLabel, { x: xPos, y: yPos }, false);
+    modeler.moveShape(shapeLabel, { x: xPos, y: 0 }, false);
   }
 }
 
@@ -205,6 +205,16 @@ function getBottomPosition(viewer) {
     }
   }
   return bottom;
+}
+
+function getVerticalMiddlePosition(shape) {
+  return shape.y + (shape.height/2);
+}
+
+export function getVerticalPosition(shape, prevShape) {
+  const middle = getVerticalMiddlePosition(prevShape);
+  const y = middle - shape.height / 2;
+  return y;
 }
 
 // final

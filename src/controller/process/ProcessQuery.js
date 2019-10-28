@@ -7,6 +7,9 @@ export function getProcess(viewer, e) {
   if (e === null || e === undefined) {
     const elementRegistry = viewer.get('elementRegistry');
     const nodes = elementRegistry.getAll();
+
+    // console.log(nodes); // todo collaboration berücksichtigen um process zu bestimmen
+
     for (let i = 0; i < nodes.length; i++) {
       if (nodes[i].businessObject.$type === 'bpmn:Process') {
         process = nodes[i].businessObject;
@@ -561,3 +564,7 @@ export function getTraces(process) {
   return searchTrace(openTraces, finalTraces, endNode);
 }
 */
+
+export function getStartShape() {
+
+}

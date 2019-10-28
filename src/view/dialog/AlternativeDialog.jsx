@@ -22,6 +22,7 @@ class AlternativeDialog extends Component {
       selectedProcess: null,
       visibleAlternative: false,
       bpmnModeler: null,
+      selectedShape: null
     };
 
     this.selectProcess = this.selectProcess.bind(this);
@@ -82,11 +83,18 @@ class AlternativeDialog extends Component {
       this.renderBpmnProps(null);
       this.setState({ bpmnShape: null });
     }
+
+    // test for layout
+    if (e.element !== this.state.selectedShape) {
+      this.setState( {selectedShape: e.element}, () => {
+        console.log(e.element);
+      });
+    }
   }
 
   hookBpmnEventBus() {
     const eventBus = this.bpmnAltModeler.get('eventBus');
-    eventBus.on('element.click', e => this.hookBpmnOnClick(e));
+    eventBus.on('element.mouseup', e => this.hookBpmnOnClick(e));
   }
 
   highlightOriginalProcess() {
@@ -301,7 +309,7 @@ class AlternativeDialog extends Component {
           <Dialog
             header="Adapted Business Processes"
             visible={this.state.visibleAlternative}
-            style={{ width: '80vw' }}
+            style={{ width: '90vw' }}
             onHide={this.onHide}
             onShow={() => this.onShow()}
             maximizable
