@@ -136,6 +136,8 @@ export function moveShape(viewer, shape, direction) {
   const dataInputs = queryprocess.getDataInputShapes(viewer, shape);
   for (let i = 0; i < dataInputs.length; i++){
     const dataInput = dataInputs[i];
+    // console.log(shape.businessObject.name); //toDo DatatStore is undefined, wenn DataOutput vorhanden
+    // console.log(dataInput.businessObject.name);
     yPos = (shape.y / 2) - 51;
     modeler.moveShape(dataInput, { x: xPos, y: 0 }, false);
 
@@ -256,6 +258,20 @@ export function addExtensionShape(viewer, element, option, extension) {
   // connect created shape with flownode and color it
   connectShapes(viewer, dataShape, element);
   colorShape(viewer, dataShape, { stroke: 'grey' });
+
+  // todo DataOutput bei ComplianceProcess definieren
+  /*
+    // determine element is compliance -> switch edge direction
+  const isCompliance = queryprocess.isCompliance(element.businessObject);
+  const isDataObject = queryprocess.isDataObject(dataShape.businessObject);
+  if (isCompliance && isDataObject) {
+    connectShapes(viewer, element, dataShape);
+  } else {
+    connectShapes(viewer, dataShape, element);
+  }
+
+   */
+
 }
 
 // final
