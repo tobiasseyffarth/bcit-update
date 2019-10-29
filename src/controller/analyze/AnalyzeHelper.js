@@ -47,17 +47,23 @@ export function replaceITDirect(graph, node, result_graph) {
       creategraph.addUniqueNode(result_graph, { node: pred }, 'directdemand');
 
       const nodes_between = querygraph.getNodesBetween(pred, node);
+
+      // console.log(node.data('id'));
+      // console.log('vorgänger', pred.data('id'));
+
       for (let j = 0; j < nodes_between.length; j++) {
         const nodeBetween = nodes_between[j];
 
         if (nodeBetween.data('nodetype') === 'compliance') {
           creategraph.addUniqueNode(result_graph, { nodeBetween }, 'directdemand');
         } else {
-          creategraph.addUniqueNode(result_graph, { nodeBetween }, 'between');
+          console.log('add node between', nodeBetween.data('name'));
+          creategraph.addUniqueNode(result_graph, { nodeBetween }, 'between'); // todo unique IT node hinzufügen
         }
       }
     }
   }
+  console.log('result graph', result_graph.nodes());
   creategraph.createEdges(graph, result_graph, 'direct');
 }
 
