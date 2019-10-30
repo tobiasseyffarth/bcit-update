@@ -327,10 +327,18 @@ export function getDataInputShapes(viewer, shape){
     for (let i = 0; i < businessObject.dataInputAssociations.length; i++){
       const input = businessObject.dataInputAssociations[i];
       const sourceId = input.sourceRef[0].id;
+     // console.log(sourceId);
       const inputShape = getShapeOfRegistry(viewer, sourceId);
       result.push(inputShape);
     }
   }
+
+  /*
+  console.log('ergebnisse der input');
+  console.log(businessObject);
+  console.log(result);
+  */
+
   return result;
 }
 
@@ -340,9 +348,9 @@ export function getDataOutputShapes(viewer, shape){
 
   if (businessObject.dataOutputAssociations !== undefined){
     for (let i = 0; i < businessObject.dataOutputAssociations.length; i++){
-      const input = businessObject.dataOutputAssociations[i];
-      console.log(input);
-      const targetId = input.targetRef[0].id;
+      const output = businessObject.dataOutputAssociations[i];
+      // console.log(output);
+      const targetId = output.targetRef.id;
       const outputShape = getShapeOfRegistry(viewer, targetId);
       result.push(outputShape);
     }

@@ -138,8 +138,6 @@ export function moveShape(viewer, shape, direction) {
   const dataInputs = queryprocess.getDataInputShapes(viewer, shape);
   for (let i = 0; i < dataInputs.length; i++){
     const dataInput = dataInputs[i];
-    // console.log(shape.businessObject.name); //toDo DatatStore is undefined, wenn DataOutput vorhanden
-    // console.log(dataInput.businessObject.name);
     yPos = (shape.y / 2) - 51;
     modeler.moveShape(dataInput, { x: xPos, y: 0 }, false);
 
@@ -149,12 +147,12 @@ export function moveShape(viewer, shape, direction) {
 
   // move DataOutput of the activity
   const dataOutputs = queryprocess.getDataOutputShapes(viewer, shape);
+
   for (let i = 0; i < dataOutputs.length; i++){
     const dataOutput = dataOutputs[i];
     yPos = (shape.y / 2) - 51;
     modeler.moveShape(dataOutput, { x: xPos, y: 0 }, false);
-
-    const shapeLabel = dataOutputs.label;
+    const shapeLabel = dataOutput.label;
     modeler.moveShape(shapeLabel, { x: xPos, y: 0 }, false);
   }
 }

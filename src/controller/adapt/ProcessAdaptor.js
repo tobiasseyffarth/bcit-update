@@ -74,14 +74,20 @@ function insertShape(predShape, altNode, viewer) {
 function removeObsoleteShape(viewer, shape) {
   const sucs = ProcessQuery.getSucessorShapes(viewer, shape);
   const dataInputShapes = ProcessQuery.getDataInputShapes(viewer, shape);
+
   for (let j = 0; j < dataInputShapes.length; j++){
     const dataInputShape = dataInputShapes[j];
     ProcessRenderer.removeShape(viewer, dataInputShape);
   }
+
+  const dataOutputShapes = ProcessQuery.getDataOutputShapes(viewer, shape);
+  for (let j = 0; j < dataOutputShapes.length; j++){
+    const dataOutputShape = dataOutputShapes[j];
+    ProcessRenderer.removeShape(viewer, dataOutputShape);
+  }
   ProcessRenderer.removeShape(viewer, shape);
   for (let j = 0; j < sucs.length; j++) {
-    console.log('move shape to left', sucs[j]);
-    // ProcessRenderer.moveShape(viewer, sucs[j], 'left');
+    ProcessRenderer.moveShape(viewer, sucs[j], 'left');
   }
 }
 
@@ -180,7 +186,7 @@ async function adaptBusinessProcessByAlternatives(alternative) {
     } else {
       const predShape = ProcessQuery.getShapeOfRegistry(modeler, triggerAlt);
       insertShape(predShape, altNode, modeler);
-      removeObsoleteShape(modeler, violatedShape);
+      removeObsoleteShape(modeler, violatedShape); // todo: auskommentieren
     }
   }
   return FileIo.getXmlFromViewer(modeler);
@@ -206,6 +212,7 @@ export async function getAdaptedProcesses(altGraph, deleteGraph, bpmnXml){
     const altEles = AlternativeFinder.getAlternatives(altGraph, deleteGraph, modeler);
     const violatedShapes = getShapes(modeler, violatedElements);
     const changedElement = GraphQuery.filterNodes(deleteGraph, { style: 'changedElement' });
+
     if (changedElement[0].data('nodetype') === 'complianceprocess') {
       violatedShapes.push(getShapes(modeler, changedElement)[0]);
     }
