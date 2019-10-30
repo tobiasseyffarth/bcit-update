@@ -256,12 +256,11 @@ export function addExtensionShape(viewer, element, option, extension) {
   }
 
   // connect created shape with flownode and color it
-  connectShapes(viewer, dataShape, element);
+  // connectShapes(viewer, dataShape, element);
   colorShape(viewer, dataShape, { stroke: 'grey' });
 
   // todo DataOutput bei ComplianceProcess definieren
-  /*
-    // determine element is compliance -> switch edge direction
+  // determine element is compliance -> switch edge direction
   const isCompliance = queryprocess.isCompliance(element.businessObject);
   const isDataObject = queryprocess.isDataObject(dataShape.businessObject);
   if (isCompliance && isDataObject) {
@@ -269,9 +268,6 @@ export function addExtensionShape(viewer, element, option, extension) {
   } else {
     connectShapes(viewer, dataShape, element);
   }
-
-   */
-
 }
 
 // final
