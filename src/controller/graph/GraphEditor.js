@@ -538,7 +538,6 @@ export function getEmptyGraph(){
           'border-style': 'solid',
           'border-color': '#666',
           'border-width': 1,
-          label: 'data(display_name)',
           'font-size': 10,
           'text-wrap': 'wrap',
           'text-max-width': 20,

@@ -326,7 +326,6 @@ export function styleNodes(graph){
     } else if (nodeType === 'complianceprocess') {
       node.style('border-color', 'grey');
     } else if (nodeType === 'compliance') {
-      console.log(node);
       node.style('border-color', 'red');
     } else if (nodeType === 'infra') {
       node.style('border-color', 'orange');
