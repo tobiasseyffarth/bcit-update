@@ -237,7 +237,7 @@ export function addExtensionShape(viewer, element, option, extension) {
   }
 
   if (compliance != null) {
-    _name = compliance.id;
+    _name = compliance.title;
     _type = 'bpmn:DataObjectReference';
     _y = getTopPosition(viewer) - element.height - 20;
   }
