@@ -4,6 +4,7 @@ import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { Checkbox } from 'primereact/checkbox';
 import { Growl } from 'primereact/growl';
+import { Accordion, AccordionTab } from 'primereact/accordion';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import '../../App.css';
 import ProjectModel from '../../models/ProjectModel';
@@ -299,10 +300,13 @@ class AlternativeDialog extends Component {
         </div>
         <br/>
         <div>
-          <p style={{fontStyle: 'italic'}}>Legend</p>
-          <p style={{color:'orange'}}>Changed Element</p>
-          <p style={{color:'blue'}}>Obsolete Element</p>
-          <p style={{color:'red'}}>Violated Element</p>
+          <Accordion>
+            <AccordionTab header="Legend">
+              <p style={{color:'orange'}}>Changed Element</p>
+              <p style={{color:'blue'}}>Obsolete Element</p>
+              <p style={{color:'red'}}>Violated Element</p>
+            </AccordionTab>
+          </Accordion>
         </div>
       </div>
     );
@@ -323,7 +327,7 @@ class AlternativeDialog extends Component {
           >
             <section className="container-process">
               {this.renderAlternativePanel()}
-              <div className="viewer" style={{ width: '60vw' }}>
+              <div className="viewer" style={{ width: '90vw' }}>
                 <div id="alternative" />
               </div>
               {this.renderPropsPanel()}

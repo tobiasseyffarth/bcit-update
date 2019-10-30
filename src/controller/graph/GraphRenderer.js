@@ -363,14 +363,13 @@ export function removeElements(graph) {
 export function styleNodesAnalyzeGraph(graph) {
   const nodes = graph.nodes();
 
-  console.log(nodes);
-
   for (let i = 0; i < nodes.length; i++) {
     const node = nodes[i];
     const nodestyle = node.data('nodestyle');
     const nodetype = node.data('nodetype');
 
     node.style('border-width', 2);
+    node.style('font-size', 12);
 
     if (nodestyle === 'directdemand') {
       node.style('border-color', 'green');
