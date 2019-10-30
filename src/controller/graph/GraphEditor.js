@@ -412,7 +412,7 @@ export function addUniqueNode(graph, input, nodestyle) { // adds a single node t
           props: element.source,
           nodetype: 'compliance',
           modeltype: 'compliance',
-          display_name: element.id,
+          display_name: element.title, // alternativ: element.id
           nodestyle,
         },
       });

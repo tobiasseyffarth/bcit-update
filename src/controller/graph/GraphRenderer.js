@@ -347,6 +347,8 @@ export function removeElements(graph) {
 export function styleNodesAnalyzeGraph(graph) {
   const nodes = graph.nodes();
 
+  console.log(nodes);
+
   for (let i = 0; i < nodes.length; i++) {
     const node = nodes[i];
     const nodestyle = node.data('nodestyle');
