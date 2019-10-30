@@ -1,6 +1,8 @@
 import * as queryprocess from './ProcessQuery';
 import * as editprocess from './ProcessEditor';
 import * as ProcessRenderer from './ProcessRenderer';
+import * as ComplianceQuery from './../compliance/ComplianceQuery';
+import Projectmodel from './../../models/ProjectModel';
 
 // final
 export function colorShape(viewer, shape, coloroption) {
@@ -238,6 +240,14 @@ export function addExtensionShape(viewer, element, option, extension) {
 
   if (compliance != null) {
     _name = compliance.title;
+
+    // Workaround to get the compliance title
+    if (_name === undefined) {
+      const complianceList = Projectmodel.getCompliance();
+      const req = ComplianceQuery.getRequirementById(Projectmodel.getCompliance().requirement, compliance.id);
+      _name = req.title;
+    }
+
     _type = 'bpmn:DataObjectReference';
     _y = getTopPosition(viewer) - element.height - 20;
   }

@@ -35,9 +35,11 @@ class ReqDialog extends Component {
 
   onShow(){
     const { reqNode } = this.state;
+    /*
     if (reqNode !== undefined){
       this.setState({ header: 'Edit compliance requirement' });
     }
+    */
     this.setState({ untilActivities: GraphQuery.getBusinessActivities(ProjectModel.getGraph()) });
 
     if (reqNode !== undefined){
