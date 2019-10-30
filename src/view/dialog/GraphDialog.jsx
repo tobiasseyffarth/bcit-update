@@ -83,7 +83,7 @@ class GraphDialog extends Component {
     this.graph.reset();
     this.graph.fit();
     this.graph.resize();
-    GraphRenderer.colorNodes(this.graph);
+    GraphRenderer.styleNodes(this.graph);
     this.hookGraphOnClick(this.graph);
   }
 

@@ -299,19 +299,32 @@ export function drawAnalyze(graph, container) {
   clearGraph(graph);
 }
 
-export function colorNodes(graph){
+export function styleNodes(graph){
   const nodes = graph.nodes();
 
   for (let i = 0; i < nodes.length; i++) {
     const node = nodes[i];
     const nodeType = node.data('nodetype');
 
+    // set label
+    if (nodeType === 'compliance') {
+      node.style('label', node.data('title'));
+    } else {
+      if (node.data('name') !== undefined) {
+        node.style('label', node.data('name'));
+      } else {
+        node.style('label', node.data('id'));
+      }
+    }
+
+    // set border color
     if (nodeType === 'businessprocess') {
       node.style('border-color', 'green');
     } else if (nodeType === 'complianceprocess') {
-      node.style('border-color', 'blue');
-    } else if (nodeType === 'compliance') {
       node.style('border-color', 'grey');
+    } else if (nodeType === 'compliance') {
+      console.log(node);
+      node.style('border-color', 'red');
     } else if (nodeType === 'infra') {
       node.style('border-color', 'orange');
     }
