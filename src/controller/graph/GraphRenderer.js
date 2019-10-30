@@ -352,6 +352,8 @@ export function styleNodesAnalyzeGraph(graph) {
     const nodestyle = node.data('nodestyle');
     const nodetype = node.data('nodetype');
 
+    node.style('border-width', 2);
+
     if (nodestyle === 'directdemand') {
       node.style('border-color', 'green');
     } else if (nodestyle === 'indirectdemand') {
