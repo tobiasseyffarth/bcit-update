@@ -79,9 +79,9 @@ function removeObsoleteShape(viewer, shape) {
     ProcessRenderer.removeShape(viewer, dataInputShape);
   }
   ProcessRenderer.removeShape(viewer, shape);
-
-  for (let j =0; j < sucs.length; j++) {
-    ProcessRenderer.moveShape(viewer, sucs[j], 'left');
+  for (let j = 0; j < sucs.length; j++) {
+    console.log('move shape to left', sucs[j]);
+    // ProcessRenderer.moveShape(viewer, sucs[j], 'left');
   }
 }
 
