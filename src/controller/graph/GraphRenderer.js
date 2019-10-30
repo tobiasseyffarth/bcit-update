@@ -317,6 +317,9 @@ export function styleNodes(graph){
       }
     }
 
+    // set border width
+    node.style('border-width', 2);
+
     // set border color
     if (nodeType === 'businessprocess') {
       node.style('border-color', 'green');

@@ -90,14 +90,15 @@ class GraphDialog extends Component {
   renderGraphProps(node){
     if (node !== null) {
       this.setState({ nodeId: node.data('id') });
-      this.setState({ nodeName: node.data('name') });
       this.setState({ nodeType: node.data('nodetype') });
       this.setState({ modelType: node.data('modeltype') });
 
       const nodeType = node.data('nodetype');
       if (nodeType !== 'compliance'){ // non compliance nodes
+        this.setState({ nodeName: node.data('name') });
         this.setState({ nodeProps: node.data('props') });
       } else { // compliance nodes
+        this.setState({ nodeName: node.data('title') });
         this.setState({ nodeProps: [] });
         this.setState({ removeDisabled: false });
       }
