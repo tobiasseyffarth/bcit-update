@@ -189,27 +189,29 @@ class ChangeDialog extends Component {
 
       if (node !== undefined) {
         this.setState({ nodeId: node.data('id') });
-        this.setState({ nodeName: node.data('name') });
         this.setState({ nodeType: node.data('nodetype') });
         this.setState({ modelType: node.data('modeltype') });
 
         const nodeType = node.data('nodetype');
         if (nodeType !== 'compliance') { // non compliance nodes
+          this.setState({ nodeName: node.data('name') });
           this.setState({ nodeProps: node.data('props') });
         } else { // compliance nodes
+          this.setState({ nodeName: node.data('title') });
           this.setState({ nodeProps: [] });
         }
       } else if (el !== undefined) {
         this.setState({ nodeId: el.id });
-        this.setState({ nodeName: el.name });
         this.setState({ nodeType: el.nodetype });
         this.setState({ modelType: el.modeltype });
 
         const nodeType = el.nodetype;
         if (nodeType !== 'compliance') { // non compliance nodes
+          this.setState({ nodeName: el.name });
           this.setState({ nodeProps: el.props });
         } else { // compliance nodes
           this.setState({ nodeProps: [] });
+          this.setState({ nodeName: el.title });
         }
       }
     }
