@@ -299,7 +299,7 @@ export function drawAnalyze(graph, container) {
   clearGraph(graph);
 }
 
-export function styleNodes(graph){
+export function styleNodes(graph) {
   const nodes = graph.nodes();
 
   for (let i = 0; i < nodes.length; i++) {

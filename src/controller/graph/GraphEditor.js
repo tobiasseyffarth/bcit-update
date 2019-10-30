@@ -422,9 +422,6 @@ export function addUniqueNode(graph, input, nodestyle) { // adds a single node t
   }
 
   if (node !== undefined) { // node != null
-
-    console.log('add node', node.data('name'));
-
     for (let i = 0; i < nodes.length; i++) { // determine whether an node with this id already exists
       if (nodes[i] === node) {
         isUnique = false;

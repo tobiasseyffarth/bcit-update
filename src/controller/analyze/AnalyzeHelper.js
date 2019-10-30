@@ -55,15 +55,14 @@ export function replaceITDirect(graph, node, result_graph) {
         const nodeBetween = nodes_between[j];
 
         if (nodeBetween.data('nodetype') === 'compliance') {
-          creategraph.addUniqueNode(result_graph, { nodeBetween }, 'directdemand');
+          creategraph.addUniqueNode(result_graph, { node: nodeBetween }, 'directdemand');
         } else {
-          console.log('add node between', nodeBetween.data('name'));
-          creategraph.addUniqueNode(result_graph, { nodeBetween }, 'between'); // todo unique IT node hinzufügen
+          creategraph.addUniqueNode(result_graph, { node: nodeBetween }, 'between'); // todo unique IT node hinzufügen -> hier muss der Fehler liegen
         }
       }
     }
   }
-  console.log('result graph', result_graph.nodes());
+
   creategraph.createEdges(graph, result_graph, 'direct');
 }
 
@@ -312,6 +311,7 @@ export function deleteITObsolete(graph, node, result_graph) {
   creategraph.createEdges(graph, result_graph, 'direct'); // create Edges
 
   // check obsolete compliance of precedings IT
+  // todo: ist das ein Ansatz für die IT-Komponenten, die direkt von Compliance betroffen sind?
   const preds = querygraph.getPredecessors(_node, 'infra');
 
   for (let i = 0; i < preds.length; i++) {
