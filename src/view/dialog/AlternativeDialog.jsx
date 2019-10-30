@@ -297,6 +297,13 @@ class AlternativeDialog extends Component {
           />
           <label htmlFor="cbCompliancePattern">is Compliance Process Pattern</label>
         </div>
+        <br/>
+        <div>
+          <p style={{fontStyle: 'italic'}}>Legend</p>
+          <p style={{color:'orange'}}>Changed Element</p>
+          <p style={{color:'blue'}}>Obsolete Element</p>
+          <p style={{color:'red'}}>Violated Element</p>
+        </div>
       </div>
     );
   }
