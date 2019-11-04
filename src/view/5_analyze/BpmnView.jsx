@@ -114,8 +114,6 @@ class BpmnView extends Component {
     const shape = e.element;
     const modeler = this.bpmnModeler;
 
-   // this.renderBpmnProps(e.element);
-
     if (ProcessQuery.isTaskOrSubprocess(shape) || ProcessQuery.isExtensionShape(shape)) {
       ProcessRenderer.highlightShapeOnClick(this.state.bpmnShape, false, modeler);
       ProcessRenderer.highlightShapeOnClick(shape, true, modeler);
