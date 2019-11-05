@@ -155,7 +155,7 @@ class AlternativeDialog extends Component {
     }
   }
 
-  pushOriginalToList(){
+  pushOriginalToList() {
     const bpmnXml = FileIo.getXmlFromViewer(this.bpmnAltModeler);
     const entry = {
       name: 'original process',

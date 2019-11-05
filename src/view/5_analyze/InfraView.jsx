@@ -200,6 +200,7 @@ class InfraView extends Component {
         <br />
         <br />
         <Button
+          className="button-panel"
           label="show result when remove"
           onClick={this.getRemoveGraph}
           tooltip="show compliance violation when removing these element"
@@ -207,6 +208,7 @@ class InfraView extends Component {
         <br />
         <br />
         <Button
+          className="button-panel"
           label="show result when replace"
           onClick={this.getChangeGraph}
           tooltip="show demands by compliance requirements when replacing these element"

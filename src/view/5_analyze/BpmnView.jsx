@@ -9,6 +9,7 @@ import ProjectModel from '../../models/ProjectModel';
 import * as ProcessQuery from '../../controller/process/ProcessQuery';
 import * as AnalyzeChange from '../../controller/analyze/AnalyzeChange';
 import * as ProcessRenderer from "../../controller/process/ProcessRenderer";
+import * as BPCChecker from "../../controller/analyze/CheckBPC";
 
 class BpmnView extends Component {
   constructor(props) {
@@ -23,6 +24,7 @@ class BpmnView extends Component {
     };
 
     this.onHide = this.onHide.bind(this);
+    this.checkBPC = this.checkBPC.bind(this);
     this.getChangeGraph = this.getChangeGraph.bind(this);
     this.getRemoveGraph = this.getRemoveGraph.bind(this);
   }
@@ -47,14 +49,27 @@ class BpmnView extends Component {
     this.setState({ visibleChange: false });
   }
 
-  setWith(){
+  setWith() {
     const bpmnProps = document.getElementById('bpmn-props-panel');
     const bpmnPropsWidth = bpmnProps.offsetWidth;
     const width = this.props.setWidth - bpmnPropsWidth - 50;
     this.setState({ width });
   }
 
-  getRemoveGraph(){
+  checkBPC() {
+    const graph = ProjectModel.getGraph();
+    const violatedGraph = BPCChecker.getViolatedGraph(graph);
+
+    // violated graph bauen
+    // if (elements.length === 0) { -> show growl -> else {
+    // this.showAlternativeDialog();
+  }
+
+  showAlternativeDialog() {
+    this.setState({ visibleAlternative: true });
+  }
+
+  getRemoveGraph() {
     const shape = this.state.bpmnShape;
 
     if (shape === null){
@@ -82,7 +97,7 @@ class BpmnView extends Component {
     }
   }
 
-  getChangeGraph(){
+  getChangeGraph() {
     const shape = this.state.bpmnShape;
 
     if (shape === null) {
@@ -162,6 +177,15 @@ class BpmnView extends Component {
         </div>
         <br />
         <Button
+          className="button-panel"
+          label="check compliance"
+          onClick={this.checkBPC}
+          tooltip="check compliance of business process"
+        />
+        <br />
+        <br />
+        <Button
+          className="button-panel"
           label="show result when remove"
           onClick={this.getRemoveGraph}
           tooltip="show compliance violation when removing these element"
@@ -169,6 +193,7 @@ class BpmnView extends Component {
         <br />
         <br />
         <Button
+          className="button-panel"
           label="show result when replace"
           onClick={this.getChangeGraph}
           tooltip="show demands by compliance requirements when replacing these element"
@@ -182,7 +207,7 @@ class BpmnView extends Component {
     );
   }
 
-  renderBpmnProps(shape){
+  renderBpmnProps(shape) {
     if (shape !== null) {
       const { businessObject } = shape;
       this.setState({ bpmnShape: shape });
