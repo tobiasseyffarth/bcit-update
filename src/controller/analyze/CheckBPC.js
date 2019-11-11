@@ -8,19 +8,31 @@ function checkBPC(graph) {
   const businessNodes = GraphQuery.filterNodes(graph, {type: 'businessprocess'});
 
   // 2nd get compliance requirement of each businessNode
-  let compliance = [];
-  businessNodes.forEach(node => {
-    const preds = GraphQuery.getPredecessors(node, 'compliance');
-    console.log(node);
-    console.log(preds);
+  let resultElements = [];
+  businessNodes.forEach(businessNode => {
+    const preds = GraphQuery.getPredecessors(businessNode, 'compliance');
 
     // 3rd check compliance process of first entry
+    if (preds.length > 0) {
+      console.log(businessNode);
+      const complianceRequirement = preds[0];
+      console.log(complianceRequirement);
 
+      const complianceProcesses = GraphQuery.getPredecessors(complianceRequirement, 'complianceprocess');
+      console.log(complianceProcesses);
 
-    // 4th if no compliance process append preds to compliance
+      // 4th if no compliance process append preds to compliance
+      if (complianceProcesses.length === 0) {
+        console.log('violation');
+        resultElements.push(complianceRequirement); // add compliance requirement
+        resultElements.push(businessNode); // add business node
+      }
+    }
   });
 
   // 5th add nodes to result graph and connect nodes
+
+
 
   return resultGraph;
 }
