@@ -65,8 +65,9 @@ export function isExecutable(cpNode, reqNode, deleteGraph, viewer) {
   const nodes = deleteGraph.nodes();
   for (let i = 0; i < nodes.length; i++) {
     const node = nodes[i];
+
     for (let j = 0; j < reqs.length; j++) {
-      if (reqs[j] === node.data('id')) {
+      if ((reqs[j] === node.data('id')) && (node.data('nodestyle') !== 'between')) {
         return false;
       }
     }
