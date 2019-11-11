@@ -1,5 +1,6 @@
 import * as GraphQuery from './../graph/GraphQuery';
 import cytoscape from "cytoscape";
+import * as creategraph from "../graph/GraphEditor";
 
 function checkBPC(graph) {
   const resultGraph = cytoscape({/* options */});
@@ -26,18 +27,16 @@ function checkBPC(graph) {
         console.log('violation');
         resultElements.push(complianceRequirement); // add compliance requirement
         resultElements.push(businessNode); // add business node
+
+        creategraph.addUniqueNode(resultGraph, { node: complianceRequirement }, 'violated');
+        creategraph.addUniqueNode(resultGraph, { node: businessNode }, 'violated');
       }
     }
   });
-
-  // 5th add nodes to result graph and connect nodes
-
-
 
   return resultGraph;
 }
 
 export function getViolatedGraph(graph) {
-  console.log(graph.nodes());
   return checkBPC(graph);
 }

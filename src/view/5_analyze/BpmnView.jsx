@@ -5,6 +5,7 @@ import { Growl } from 'primereact/growl';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import RemoveDialog from '../dialog/RemoveDialog';
 import ChangeDialog from '../dialog/ChangeDialog';
+import AlternativeDialog from '../dialog/AlternativeDialog';
 import ProjectModel from '../../models/ProjectModel';
 import * as ProcessQuery from '../../controller/process/ProcessQuery';
 import * as AnalyzeChange from '../../controller/analyze/AnalyzeChange';
@@ -21,12 +22,15 @@ class BpmnView extends Component {
       isCompliance: false,
       visibleRemove: false,
       visibleChange: false,
+      visibleAlternative: false,
     };
 
     this.onHide = this.onHide.bind(this);
     this.checkBPC = this.checkBPC.bind(this);
     this.getChangeGraph = this.getChangeGraph.bind(this);
     this.getRemoveGraph = this.getRemoveGraph.bind(this);
+    this.showAlternativeDialog = this.showAlternativeDialog.bind(this);
+    this.closeAlternativeView = this.closeAlternativeView.bind(this);
   }
 
   componentDidMount() {
@@ -60,13 +64,22 @@ class BpmnView extends Component {
     const graph = ProjectModel.getGraph();
     const violatedGraph = BPCChecker.getViolatedGraph(graph);
 
-    // violated graph bauen
-    // if (elements.length === 0) { -> show growl -> else {
-    // this.showAlternativeDialog();
+    if (violatedGraph !== null && violatedGraph.nodes().length <= 1) {
+      const detail = 'no violations found';
+      this.growl.show({ severity: 'info', summary: 'No BPC violation found', detail });
+    } else {
+      console.log(violatedGraph);
+      ProjectModel.setRemoveGraph(violatedGraph);
+      this.setState({ visibleAlternative: true });
+    }
   }
 
   showAlternativeDialog() {
     this.setState({ visibleAlternative: true });
+  }
+
+  closeAlternativeView() {
+    this.setState({ visibleAlternative: false });
   }
 
   getRemoveGraph() {
@@ -178,9 +191,9 @@ class BpmnView extends Component {
         <br />
         <Button
           className="button-panel"
-          label="check compliance"
+          label="check BPC"
           onClick={this.checkBPC}
-          tooltip="check compliance of business process"
+          tooltip="check business process compliance (BPC)"
         />
         <br />
         <br />
@@ -232,8 +245,18 @@ class BpmnView extends Component {
           position="topright"
         />
         <div>
-          <RemoveDialog showRemoveDialog={this.state.visibleRemove} close={this.onHide} />
-          <ChangeDialog showChangeDialog={this.state.visibleChange} close={this.onHide} />
+          <RemoveDialog
+            showRemoveDialog={this.state.visibleRemove}
+            close={this.onHide}
+          />
+          <ChangeDialog
+            showChangeDialog={this.state.visibleChange}
+            close={this.onHide}
+          />
+          <AlternativeDialog
+            showAlternative={this.state.visibleAlternative}
+            close={this.closeAlternativeView}
+          />
           <section className="container-process">
             <div className="viewer" style={{ width: this.state.width }}>
               <div id="canvas" />
