@@ -52,6 +52,9 @@ export default class Alternatives extends Component {
     GraphRenderer.styleNodesAltGraph(this.graph);
     GraphRenderer.drawNodesAltGraph(this.graph);
     this.hookGraphOnClick(this.graph);
+
+    console.log(this.graph.nodes());
+
   }
 
   onHide() {

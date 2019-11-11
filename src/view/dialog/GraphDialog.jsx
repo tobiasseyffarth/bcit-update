@@ -34,9 +34,6 @@ class GraphDialog extends Component {
   onShow() {
     console.log('show graph');
     if (ProjectModel.getGraph() !== null) {
-
-      console.log(ProjectModel.getGraph().nodes())
-
       this.renderGraphView();
     }
   }

@@ -424,6 +424,8 @@ export function styleNodesAltGraph(graph) {
     const node = nodes[i];
     const nodetype = node.data('nodetype');
 
+    node.style('label', node.data('display_name'));
+
     if (nodetype === 'businessprocess') {
       node.style('shape', 'roundrectangle');
     } else if (nodetype === 'compliance') {
