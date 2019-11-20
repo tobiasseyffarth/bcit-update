@@ -45,6 +45,7 @@ class AlternativeDialog extends Component {
     const height = propsPanel.offsetHeight;
 
     if (this.bpmnAltModeler === undefined){
+      console.log('define new bpmnModeler');
       this.bpmnAltModeler = new BpmnModeler({
         container: '#alternative',
         height,
@@ -172,8 +173,10 @@ class AlternativeDialog extends Component {
       if (err) {
         console.log('error rendering', err);
       } else {
+
         const canvas = this.bpmnAltModeler.get('canvas');
         canvas.zoom('fit-viewport');
+
         this.hookBpmnEventBus();
         this.highlightOriginalProcess();
         this.pushOriginalToList();
@@ -187,7 +190,7 @@ class AlternativeDialog extends Component {
         console.log('error rendering', err);
       } else {
         const canvas = this.bpmnAltModeler.get('canvas');
-        canvas.zoom('fit-viewport');
+        canvas.zoom('fit-viewport'); //--> hier liegt der Fehler??
       }
     });
   };

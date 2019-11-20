@@ -213,7 +213,7 @@ export async function getAdaptedProcesses(altGraph, deleteGraph, bpmnXml){
     const violatedShapes = getShapes(modeler, violatedElements);
     const changedElement = GraphQuery.filterNodes(deleteGraph, { style: 'changedElement' });
 
-    if (changedElement[0].data('nodetype') === 'complianceprocess') {
+    if ((changedElement.length > 0) && (changedElement[0].data('nodetype') === 'complianceprocess')) {
       violatedShapes.push(getShapes(modeler, changedElement)[0]);
     }
     // adapt process with alternatives
