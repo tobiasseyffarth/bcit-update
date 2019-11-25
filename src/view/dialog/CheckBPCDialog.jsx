@@ -21,7 +21,7 @@ class CheckBPCDialog extends Component {
     this.state = {
       processList: [],
       selectedProcess: null,
-      visibleAlternative: false,
+      visibleCheckBPC: false,
       bpmnModeler: null,
       selectedShape: null
     };
@@ -32,21 +32,23 @@ class CheckBPCDialog extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ visibleAlternative: nextProps.showAlternative });
+    this.setState({ visibleCheckBPC: nextProps.showCheckBPC });
   }
 
   onHide() {
     this.props.close();
-    this.setState({ visibleAlternative: false });
+    this.setState({ visibleCheckBPC: false });
   }
 
   onShow() {
-    const propsPanel = document.getElementById('alternative-panel');
+    const propsPanel = document.getElementById('alternative-panel-checkBPC');
     const height = propsPanel.offsetHeight;
 
-    if (this.bpmnAltModeler === undefined) {
+    console.log('show check bpc');
+
+    if (this.bpmnCheckModeler === undefined) {
       console.log('define new bpmnModeler');
-      this.bpmnAltModeler = new BpmnModeler({
+      this.bpmnCheckModeler = new BpmnModeler({
         container: '#alternativeBPC',
         height,
       });
@@ -60,7 +62,7 @@ class CheckBPCDialog extends Component {
 
   hookBpmnOnClick(e) {
     const shape = e.element;
-    const modeler = this.bpmnAltModeler;
+    const modeler = this.bpmnCheckModeler;
 
     let processType;
     if (this.state.selectedProcess === null) {
@@ -86,7 +88,6 @@ class CheckBPCDialog extends Component {
       this.setState({ bpmnShape: null });
     }
 
-    // test for layout
     if (e.element !== this.state.selectedShape) {
       this.setState( {selectedShape: e.element}, () => {
         console.log(e.element);
@@ -95,12 +96,12 @@ class CheckBPCDialog extends Component {
   }
 
   hookBpmnEventBus() {
-    const eventBus = this.bpmnAltModeler.get('eventBus');
+    const eventBus = this.bpmnCheckModeler.get('eventBus');
     eventBus.on('element.mouseup', e => this.hookBpmnOnClick(e));
   }
 
   highlightOriginalProcess() {
-    const process = ProcessQuery.getProcess(this.bpmnAltModeler);
+    const process = ProcessQuery.getProcess(this.bpmnCheckModeler);
     const flowNodes = ProcessQuery.getFlowNodesOfProcess(process);
     const graph = this.removeGraph;
     const violatedElements = GraphQuery.filterNodes(graph, { style: 'violated' });
@@ -113,12 +114,12 @@ class CheckBPCDialog extends Component {
         const violatedElement = violatedElements[j].data();
         if (node.name !== undefined) {
           if (node.name === violatedElement.display_name){
-            const shape = ProcessQuery.getShapeOfRegistry(this.bpmnAltModeler, node.id);
+            const shape = ProcessQuery.getShapeOfRegistry(this.bpmnCheckModeler, node.id);
             const isCompliance = ProcessQuery.isCompliance(node);
             if (isCompliance) {
-              ProcessRenderer.colorShape(this.bpmnAltModeler, shape, { stroke: 'red', fill: 'grey' });
+              ProcessRenderer.colorShape(this.bpmnCheckModeler, shape, { stroke: 'red', fill: 'grey' });
             } else {
-              ProcessRenderer.colorShape(this.bpmnAltModeler, shape, { stroke: 'red' });
+              ProcessRenderer.colorShape(this.bpmnCheckModeler, shape, { stroke: 'red' });
             }
           }
         }
@@ -128,12 +129,12 @@ class CheckBPCDialog extends Component {
         const obsoleteElement = obsoleteElements[j].data();
         if (node.name !== undefined) {
           if (node.name === obsoleteElement.display_name){
-            const shape = ProcessQuery.getShapeOfRegistry(this.bpmnAltModeler, node.id);
+            const shape = ProcessQuery.getShapeOfRegistry(this.bpmnCheckModeler, node.id);
             const isCompliance = ProcessQuery.isCompliance(node);
             if (isCompliance) {
-              ProcessRenderer.colorShape(this.bpmnAltModeler, shape, { stroke: 'blue', fill: 'grey' });
+              ProcessRenderer.colorShape(this.bpmnCheckModeler, shape, { stroke: 'blue', fill: 'grey' });
             } else {
-              ProcessRenderer.colorShape(this.bpmnAltModeler, shape, { stroke: 'blue' });
+              ProcessRenderer.colorShape(this.bpmnCheckModeler, shape, { stroke: 'blue' });
             }
           }
         }
@@ -143,12 +144,12 @@ class CheckBPCDialog extends Component {
         const changedElement = changedElements[j].data();
         if (node.name !== undefined) {
           if (node.name === changedElement.display_name){
-            const shape = ProcessQuery.getShapeOfRegistry(this.bpmnAltModeler, node.id);
+            const shape = ProcessQuery.getShapeOfRegistry(this.bpmnCheckModeler, node.id);
             const isCompliance = ProcessQuery.isCompliance(node);
             if (isCompliance) {
-              ProcessRenderer.colorShape(this.bpmnAltModeler, shape, { stroke: 'orange', fill: 'grey' });
+              ProcessRenderer.colorShape(this.bpmnCheckModeler, shape, { stroke: 'orange', fill: 'grey' });
             } else {
-              ProcessRenderer.colorShape(this.bpmnAltModeler, shape, { stroke: 'orange' });
+              ProcessRenderer.colorShape(this.bpmnCheckModeler, shape, { stroke: 'orange' });
             }
           }
         }
@@ -157,7 +158,7 @@ class CheckBPCDialog extends Component {
   }
 
   pushViolatedToList() {
-    const bpmnXml = FileIo.getXmlFromViewer(this.bpmnAltModeler);
+    const bpmnXml = FileIo.getXmlFromViewer(this.bpmnCheckModeler);
     const entry = {
       name: 'violated process',
       bpmnXml,
@@ -169,11 +170,11 @@ class CheckBPCDialog extends Component {
   }
 
   renderOriginalProcess = (xml) => {
-    this.bpmnAltModeler.importXML(xml, (err) => {
+    this.bpmnCheckModeler.importXML(xml, (err) => {
       if (err) {
         console.log('error rendering', err);
       } else {
-        const canvas = this.bpmnAltModeler.get('canvas');
+        const canvas = this.bpmnCheckModeler.get('canvas');
         canvas.zoom('fit-viewport');
         this.hookBpmnEventBus();
         this.highlightOriginalProcess();
@@ -183,11 +184,11 @@ class CheckBPCDialog extends Component {
   };
 
   renderBpmn = (xml) => {
-    this.bpmnAltModeler.importXML(xml, (err) => {
+    this.bpmnCheckModeler.importXML(xml, (err) => {
       if (err) {
         console.log('error rendering', err);
       } else {
-        const canvas = this.bpmnAltModeler.get('canvas');
+        const canvas = this.bpmnCheckModeler.get('canvas');
         canvas.zoom('fit-viewport'); //--> hier liegt der Fehler??
       }
     });
@@ -247,18 +248,18 @@ class CheckBPCDialog extends Component {
 
   renderAlternativePanel() {
     return (
-        <div className="property-panel" id="alternative-panel">
+        <div className="property-panel" id="alternative-panel-checkBPC">
           <ListBox
-              style={{ width: '100%' }}
-              value={this.state.selectedProcess}
-              options={this.state.processList}
-              optionLabel="name"
-              onChange={e => this.selectProcess(e.value)}
+            style={{ width: '100%' }}
+            value={this.state.selectedProcess}
+            options={this.state.processList}
+            optionLabel="name"
+            onChange={e => this.selectProcess(e.value)}
           />
           <br />
           <Button
-              label="export process"
-              onClick={this.exportProcess}
+            label="export process"
+            onClick={this.exportProcess}
           />
         </div>
     );
@@ -313,25 +314,27 @@ class CheckBPCDialog extends Component {
     );
   }
 
+  // {this.renderPropsPanel()}
+
   render() {
     return (
         <div>
           <Growl ref={(el) => { this.growl = el; }} position="topright" />
           <div className="content-section implementation">
             <Dialog
-                header="Check BPC"
-                visible={this.state.visibleAlternative}
-                style={{ width: '90vw' }}
-                onHide={this.onHide}
-                onShow={() => this.onShow()}
-                maximizable
+              header="Check BPC"
+              visible={this.state.visibleCheckBPC}
+              style={{ width: '90vw' }}
+              onHide={this.onHide}
+              onShow={() => this.onShow()}
+              maximizable
             >
               <section className="container-process">
                 {this.renderAlternativePanel()}
                 <div className="viewer" style={{ width: '90vw' }}>
                   <div id="alternativeBPC" />
                 </div>
-                {this.renderPropsPanel()}
+
               </section>
             </Dialog>
           </div>

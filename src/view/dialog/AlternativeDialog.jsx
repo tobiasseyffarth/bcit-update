@@ -44,6 +44,8 @@ class AlternativeDialog extends Component {
     const propsPanel = document.getElementById('alternative-panel');
     const height = propsPanel.offsetHeight;
 
+    console.log('show alternatives');
+
     if (this.bpmnAltModeler === undefined) {
       console.log('define new bpmnModeler');
       this.bpmnAltModeler = new BpmnModeler({

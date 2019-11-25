@@ -241,6 +241,8 @@ class BpmnView extends Component {
    showAlternative={this.state.visibleAlternative}
    close={this.closeAlternativeView}
    />
+
+
    * @returns {*}
    */
 
@@ -255,8 +257,8 @@ class BpmnView extends Component {
         />
         <div>
           <CheckBPCDialog
-            showAlternative={this.state.visibleCheck}
-            close={this.closeCheckBPCView}
+              showCheckBPC={this.state.visibleCheck}
+              close={this.closeCheckBPCView}
           />
           <RemoveDialog
             showRemoveDialog={this.state.visibleRemove}
