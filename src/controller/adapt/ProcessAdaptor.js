@@ -57,18 +57,6 @@ function insertShape(predShape, altNode, viewer) {
   const modeler = viewer.get('modeling');
   const move = verticalPos - newShape.y;
   modeler.moveShape(newShape, {x: 0,  y: move }, false);
-
-  /*
-  // add infra as dataStore to the process model
-  if (altNode.data('props') !== null) {
-    const reqs = GraphQuery.getPropsValue(altNode.data('props'), 'req');
-    const infra = ProjectModel.getInfra();
-    for (let i = 0; i < reqs.length; i++) {
-      const infraElement = InfraQuery.getElementById(infra, reqs[i]);
-      ProcessRenderer.addExtensionShape(viewer, newShape, {infra: infraElement});
-    }
-  }
-  */
 }
 
 function removeObsoleteShape(viewer, shape) {
@@ -192,6 +180,20 @@ async function adaptBusinessProcessByAlternatives(alternative) {
   return FileIo.getXmlFromViewer(modeler);
 }
 
+async function adaptBusinessProcess(alternative) {
+  const modeler = await getModeler(ProjectModel.getBpmnXml());
+  const altNode = alternative.alternative;
+  const type = altNode.data('nodetype');
+
+  // 3. if alternative is process
+  if (type === 'complianceprocess') {
+    const triggerAlt = GraphQuery.getPropsValue(altNode.data('props'), 'trigger')[0];
+    const predShape = ProcessQuery.getShapeOfRegistry(modeler, triggerAlt); // todo: passendes Infra einfügen
+    insertShape(predShape, altNode, modeler);
+  }
+  return FileIo.getXmlFromViewer(modeler);
+}
+
 export async function getAdaptedProcesses(altGraph, deleteGraph, bpmnXml){
   const adaptedProcesses = [];
   const violatedElements = GraphQuery.filterNodes(deleteGraph, { style: 'violated' });
@@ -223,12 +225,22 @@ export async function getAdaptedProcesses(altGraph, deleteGraph, bpmnXml){
     if (altEles !== null) {
       for (let i = 0; i < altEles.length; i++) {
         const altEle = altEles[i];
-        const bpmnXml = await adaptBusinessProcessByAlternatives(altEle);
-        const name = `adapted process ${i + 1}`;
-        adaptedProcesses.push({
-          name,
-          bpmnXml,
-        });
+
+        if (altEle.violatedCP === null) { // if BPC was checked there is no violatedCP
+          const bpmnXml = await adaptBusinessProcess(altEle);
+          const name = `compliant process ${i + 1}`;
+          adaptedProcesses.push({
+            name,
+            bpmnXml,
+          });
+        } else { // if compliant business process was changed
+          const bpmnXml = await adaptBusinessProcessByAlternatives(altEle);
+          const name = `adapted process ${i + 1}`;
+          adaptedProcesses.push({
+            name,
+            bpmnXml,
+          });
+        }
       }
     }
   }

@@ -79,23 +79,33 @@ export function getAlternatives(altGraph, deleteGraph, viewer) {
 
   // check BPC
   if (violatedComplianceProcesses.length === 0) {
-    console.log(deleteGraph.nodes());
     const requirements = GraphQuery.filterNodes(deleteGraph, { type: 'compliance' });
+    let result = [];
 
     for (let i = 0; i < requirements.length; i++) {
-      const id = requirements[i].data('id');
+      const nodeReq = requirements[i];
+      const id = nodeReq.data('id');
+
       // 1st get req in alt graph
       const reqAltGraph = altGraph.getElementById(id);
+
       // 2nd get all compliance processes
-      const cps = GraphQuery.filterNodesByType(GraphQuery.getPredecessors(reqAltGraph), 'complianceprocess');
-      console.log('cps', cps);
+      const complianceProcesses = GraphQuery.filterNodesByType(GraphQuery.getPredecessors(reqAltGraph), 'complianceprocess');
 
       // 3rd check executability of each compliance process
+      for (let j = 0; j < complianceProcesses.length; j++) {
+        const complianceProcess = complianceProcesses[j];
+        const isExecutable = AlternativeChecker.isExecutable(complianceProcess, reqAltGraph, deleteGraph, viewer);
 
-
+        if (isExecutable) {
+          result.push({
+            violatedCP: null,
+            alternative: complianceProcess,
+          });
+        }
+      }
     }
-
-    return null;
+    return result;
   }
 }
 

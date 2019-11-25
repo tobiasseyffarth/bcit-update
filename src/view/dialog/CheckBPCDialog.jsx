@@ -44,8 +44,6 @@ class CheckBPCDialog extends Component {
     const propsPanel = document.getElementById('alternative-panel-checkBPC');
     const height = propsPanel.offsetHeight;
 
-    console.log('show check bpc');
-
     if (this.bpmnCheckModeler === undefined) {
       console.log('define new bpmnModeler');
       this.bpmnCheckModeler = new BpmnModeler({
