@@ -210,6 +210,9 @@ export async function getAdaptedProcesses(altGraph, deleteGraph, bpmnXml){
     });
   } else {
     const altEles = AlternativeFinder.getAlternatives(altGraph, deleteGraph, modeler);
+
+    console.log('alternative', altEles);
+
     const violatedShapes = getShapes(modeler, violatedElements);
     const changedElement = GraphQuery.filterNodes(deleteGraph, { style: 'changedElement' });
 

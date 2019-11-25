@@ -88,7 +88,7 @@ class InfraView extends Component {
     }
   }
 
-  getChangeGraph(){
+  getChangeGraph() {
     const { itComponent } = this.state;
 
     if (itComponent === null){

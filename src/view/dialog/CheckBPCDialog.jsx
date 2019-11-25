@@ -15,7 +15,7 @@ import * as ProcessRenderer from './../../controller/process/ProcessRenderer';
 import * as FileIo from './../../controller/helpers/fileio';
 import * as ProjectIo from './../../controller/helpers/projectio';
 
-class AlternativeDialog extends Component {
+class CheckBPCDialog extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -47,7 +47,7 @@ class AlternativeDialog extends Component {
     if (this.bpmnAltModeler === undefined) {
       console.log('define new bpmnModeler');
       this.bpmnAltModeler = new BpmnModeler({
-        container: '#alternative',
+        container: '#alternativeBPC',
         height,
       });
     }
@@ -247,97 +247,97 @@ class AlternativeDialog extends Component {
 
   renderAlternativePanel() {
     return (
-      <div className="property-panel" id="alternative-panel">
-        <ListBox
-          style={{ width: '100%' }}
-          value={this.state.selectedProcess}
-          options={this.state.processList}
-          optionLabel="name"
-          onChange={e => this.selectProcess(e.value)}
-        />
-        <br />
-        <Button
-          label="export process"
-          onClick={this.exportProcess}
-        />
-      </div>
+        <div className="property-panel" id="alternative-panel">
+          <ListBox
+              style={{ width: '100%' }}
+              value={this.state.selectedProcess}
+              options={this.state.processList}
+              optionLabel="name"
+              onChange={e => this.selectProcess(e.value)}
+          />
+          <br />
+          <Button
+              label="export process"
+              onClick={this.exportProcess}
+          />
+        </div>
     );
   }
 
   renderPropsPanel() {
     return (
-      <div className="property-panel">
-        <div>
-          <label>ID: {this.state.bpmnId} </label>
+        <div className="property-panel">
+          <div>
+            <label>ID: {this.state.bpmnId} </label>
+          </div>
+          <br />
+          <div>
+            <label>Name: {this.state.bpmnName} </label>
+          </div>
+          <br />
+          <div>
+            <ListBox
+                options={this.state.bpmnProps}
+                onChange={e => this.setState({ bpmnProp: e.value })}
+                optionLabel="name"
+                style={{ width: '100%' }}
+            />
+          </div>
+          <br />
+          <div>
+            <Checkbox
+                inputId="cbCompliance"
+                checked={this.state.isCompliance}
+            />
+            <label htmlFor="cbCompliance">is Compliance Process </label>
+          </div>
+          <br />
+          <div>
+            <Checkbox
+                inputId="cbCompliancePattern"
+                checked={this.state.isCompliancePattern}
+            />
+            <label htmlFor="cbCompliancePattern">is Compliance Process Pattern</label>
+          </div>
+          <br/>
+          <div>
+            <Accordion>
+              <AccordionTab header="Legend">
+                <p style={{color:'orange'}}>Changed Element</p>
+                <p style={{color:'blue'}}>Obsolete Element</p>
+                <p style={{color:'red'}}>Violated Element</p>
+              </AccordionTab>
+            </Accordion>
+          </div>
         </div>
-        <br />
-        <div>
-          <label>Name: {this.state.bpmnName} </label>
-        </div>
-        <br />
-        <div>
-          <ListBox
-            options={this.state.bpmnProps}
-            onChange={e => this.setState({ bpmnProp: e.value })}
-            optionLabel="name"
-            style={{ width: '100%' }}
-          />
-        </div>
-        <br />
-        <div>
-          <Checkbox
-            inputId="cbCompliance"
-            checked={this.state.isCompliance}
-          />
-          <label htmlFor="cbCompliance">is Compliance Process </label>
-        </div>
-        <br />
-        <div>
-          <Checkbox
-            inputId="cbCompliancePattern"
-            checked={this.state.isCompliancePattern}
-          />
-          <label htmlFor="cbCompliancePattern">is Compliance Process Pattern</label>
-        </div>
-        <br/>
-        <div>
-          <Accordion>
-            <AccordionTab header="Legend">
-              <p style={{color:'orange'}}>Changed Element</p>
-              <p style={{color:'blue'}}>Obsolete Element</p>
-              <p style={{color:'red'}}>Violated Element</p>
-            </AccordionTab>
-          </Accordion>
-        </div>
-      </div>
     );
   }
 
   render() {
     return (
-      <div>
-        <Growl ref={(el) => { this.growl = el; }} position="topright" />
-        <div className="content-section implementation">
-          <Dialog
-            header="Adapted Business Processes"
-            visible={this.state.visibleAlternative}
-            style={{ width: '90vw' }}
-            onHide={this.onHide}
-            onShow={() => this.onShow()}
-            maximizable
-          >
-            <section className="container-process">
-              {this.renderAlternativePanel()}
-              <div className="viewer" style={{ width: '90vw' }}>
-                <div id="alternative" />
-              </div>
-              {this.renderPropsPanel()}
-            </section>
-          </Dialog>
+        <div>
+          <Growl ref={(el) => { this.growl = el; }} position="topright" />
+          <div className="content-section implementation">
+            <Dialog
+                header="Check BPC"
+                visible={this.state.visibleAlternative}
+                style={{ width: '90vw' }}
+                onHide={this.onHide}
+                onShow={() => this.onShow()}
+                maximizable
+            >
+              <section className="container-process">
+                {this.renderAlternativePanel()}
+                <div className="viewer" style={{ width: '90vw' }}>
+                  <div id="alternativeBPC" />
+                </div>
+                {this.renderPropsPanel()}
+              </section>
+            </Dialog>
+          </div>
         </div>
-      </div>
     );
   }
 }
 
-export default AlternativeDialog;
+export default CheckBPCDialog;

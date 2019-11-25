@@ -65,7 +65,7 @@ class BpmnView extends Component {
     const violatedGraph = BPCChecker.getViolatedGraph(graph);
 
     if (violatedGraph !== null && violatedGraph.nodes().length <= 1) {
-      const detail = 'no violations found';
+      const detail = 'no violations found.';
       this.growl.show({ severity: 'info', summary: 'No BPC violation found', detail });
     } else {
       console.log(violatedGraph);
@@ -235,6 +235,15 @@ class BpmnView extends Component {
     }
   }
 
+  /**
+   *
+   <AlternativeDialog
+   showAlternative={this.state.visibleAlternative}
+   close={this.closeAlternativeView}
+   />
+   * @returns {*}
+   */
+
   render() {
     return (
       <div>
@@ -245,6 +254,7 @@ class BpmnView extends Component {
           position="topright"
         />
         <div>
+
           <RemoveDialog
             showRemoveDialog={this.state.visibleRemove}
             close={this.onHide}
@@ -252,10 +262,6 @@ class BpmnView extends Component {
           <ChangeDialog
             showChangeDialog={this.state.visibleChange}
             close={this.onHide}
-          />
-          <AlternativeDialog
-            showAlternative={this.state.visibleAlternative}
-            close={this.closeAlternativeView}
           />
           <section className="container-process">
             <div className="viewer" style={{ width: this.state.width }}>

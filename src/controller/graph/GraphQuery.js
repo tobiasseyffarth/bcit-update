@@ -78,20 +78,6 @@ export function filterNodesByType(nodes, type) {
   return result;
 }
 
-/*
-function filterNodes(eles) {
-  const nodes = [];
-
-  for (let i = 0; i < eles.length; i++) {
-    if (eles[i].isNode()) {
-      nodes.push(eles[i]);
-    }
-  }
-
-  return nodes;
-}
-*/
-
 export function getEdge(source, target) {
   const sourceEdge = source.connectedEdges();
   const targetEdge = target.connectedEdges();

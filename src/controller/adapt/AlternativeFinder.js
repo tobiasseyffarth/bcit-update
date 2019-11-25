@@ -48,6 +48,64 @@ function getViolatedComplianceProcess(altGraph, id) {
 
 export function getAlternatives(altGraph, deleteGraph, viewer) {
   const violatedComplianceProcesses = GraphQuery.filterNodes(deleteGraph, { type: 'complianceprocess' });
+
+  console.log(violatedComplianceProcesses);
+
+  let alternativeCP;
+
+  // find violated cp due to change
+  if (violatedComplianceProcesses.length > 0) {
+    for (let i = 0; i < violatedComplianceProcesses.length; i++) {
+      const violatedComProcess = violatedComplianceProcesses[i];
+      const violatedNode = getViolatedComplianceProcess(altGraph, violatedComProcess.id());
+
+      if (violatedNode !== undefined) {
+        alternativeCP = getAlternativeCP(violatedNode, deleteGraph, viewer);
+
+        if (alternativeCP.length === 0) {
+          const pattern = getAlternativePattern(violatedNode);
+          alternativeCP.push({
+            violatedCP: violatedNode,
+            alternative: pattern,
+          });
+        }
+      } else {
+        console.log('can not find compliance process in alternatives');
+        return null;
+      }
+    }
+    return alternativeCP;
+  }
+
+  // check BPC
+  if (violatedComplianceProcesses.length === 0) {
+    console.log(deleteGraph.nodes());
+    const requirements = GraphQuery.filterNodes(deleteGraph, { type: 'compliance' });
+
+    for (let i = 0; i < requirements.length; i++) {
+      const id = requirements[i].data('id');
+      // 1st get req in alt graph
+      const reqAltGraph = altGraph.getElementById(id);
+      // 2nd get all compliance processes
+      const cps = GraphQuery.filterNodesByType(GraphQuery.getPredecessors(reqAltGraph), 'complianceprocess');
+      console.log('cps', cps);
+
+      // 3rd check executability of each compliance process
+
+
+    }
+
+    return null;
+  }
+}
+
+/*
+
+export function getAlternatives(altGraph, deleteGraph, viewer) {
+  const violatedComplianceProcesses = GraphQuery.filterNodes(deleteGraph, { type: 'complianceprocess' });
+
+  console.log(violatedComplianceProcesses);
+
   let alternativeCP;
 
   for (let i = 0; i < violatedComplianceProcesses.length; i++){
@@ -71,3 +129,5 @@ export function getAlternatives(altGraph, deleteGraph, viewer) {
   }
   return alternativeCP;
 }
+
+ */

@@ -257,6 +257,12 @@ class RemoveDialog extends Component {
     );
   }
 
+  /*
+
+
+
+   */
+
   render() {
     return (
       <div>
