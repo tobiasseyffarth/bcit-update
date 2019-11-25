@@ -156,10 +156,10 @@ class CheckBPCDialog extends Component {
     }
   }
 
-  pushOriginalToList() {
+  pushViolatedToList() {
     const bpmnXml = FileIo.getXmlFromViewer(this.bpmnAltModeler);
     const entry = {
-      name: 'original process',
+      name: 'violated process',
       bpmnXml,
     };
 
@@ -177,7 +177,7 @@ class CheckBPCDialog extends Component {
         canvas.zoom('fit-viewport');
         this.hookBpmnEventBus();
         this.highlightOriginalProcess();
-        this.pushOriginalToList();
+        this.pushViolatedToList();
       }
     });
   };

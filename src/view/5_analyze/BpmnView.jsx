@@ -5,7 +5,7 @@ import { Growl } from 'primereact/growl';
 import BpmnModeler from 'bpmn-js/dist/bpmn-modeler.development';
 import RemoveDialog from '../dialog/RemoveDialog';
 import ChangeDialog from '../dialog/ChangeDialog';
-import AlternativeDialog from '../dialog/AlternativeDialog';
+import CheckBPCDialog from '../dialog/CheckBPCDialog';
 import ProjectModel from '../../models/ProjectModel';
 import * as ProcessQuery from '../../controller/process/ProcessQuery';
 import * as AnalyzeChange from '../../controller/analyze/AnalyzeChange';
@@ -22,15 +22,15 @@ class BpmnView extends Component {
       isCompliance: false,
       visibleRemove: false,
       visibleChange: false,
-      visibleAlternative: false,
+      visibleCheck: false,
     };
 
     this.onHide = this.onHide.bind(this);
     this.checkBPC = this.checkBPC.bind(this);
     this.getChangeGraph = this.getChangeGraph.bind(this);
     this.getRemoveGraph = this.getRemoveGraph.bind(this);
-    this.showAlternativeDialog = this.showAlternativeDialog.bind(this);
-    this.closeAlternativeView = this.closeAlternativeView.bind(this);
+    this.showCheckBPCView = this.showCheckBPCView.bind(this);
+    this.closeCheckBPCView = this.closeCheckBPCView.bind(this);
   }
 
   componentDidMount() {
@@ -70,16 +70,16 @@ class BpmnView extends Component {
     } else {
       console.log(violatedGraph);
       ProjectModel.setRemoveGraph(violatedGraph);
-      this.setState({ visibleAlternative: true });
+      this.setState({ visibleCheck: true });
     }
   }
 
-  showAlternativeDialog() {
-    this.setState({ visibleAlternative: true });
+  showCheckBPCView() {
+    this.setState({ visibleCheck: true });
   }
 
-  closeAlternativeView() {
-    this.setState({ visibleAlternative: false });
+  closeCheckBPCView() {
+    this.setState({ visibleCheck: false });
   }
 
   getRemoveGraph() {
@@ -254,7 +254,10 @@ class BpmnView extends Component {
           position="topright"
         />
         <div>
-
+          <CheckBPCDialog
+            showAlternative={this.state.visibleCheck}
+            close={this.closeCheckBPCView}
+          />
           <RemoveDialog
             showRemoveDialog={this.state.visibleRemove}
             close={this.onHide}
