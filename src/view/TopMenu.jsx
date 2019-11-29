@@ -38,16 +38,26 @@ export default class TopMenu extends Component {
     // history.pushState({ id: 'homepage' }, 'Home | My App', '/import');
     // location.reload();
     ProjectIo.newProject();
-    this.growl.show({ severity: 'info', summary: 'New project created', detail: 'New project created. Please go to import (step 1) and import your models.' });
+    this.growl.show({
+      severity: 'info',
+      summary: 'New project created',
+      detail: 'New project created. Please go to import (step 1) and import your models.'
+    });
   };
 
   async openProject(){
     const result = await ProjectIo.openProject();
 
     if (result) {
-      this.growl.show({ severity: 'info', summary: 'Project imported' });
+      this.growl.show({
+        severity: 'info',
+        summary: 'Project imported'
+      });
     } else {
-      this.growl.show({ severity: 'error', summary: 'Project can not be imported' });
+      this.growl.show({
+        severity: 'error',
+        summary: 'Project can not be imported'
+      });
     }
   }
 
@@ -114,7 +124,7 @@ export default class TopMenu extends Component {
         <AboutDialog showAboutDialog={this.state.visibleAbout} close={this.onHide} />
         <GraphDialog showGraphDialog={this.state.visibleGraph} close={this.onHide} />
         <Menubar model={items}>
-          <p className="p-menuitem p-menuitem-link" onClick={this.showAboutDialog}>About BCIT 2</p>
+          <p className="p-menuitem p-menuitem-link" onClick={this.showAboutDialog}>About BCIT</p>
         </Menubar>
       </div>
     );

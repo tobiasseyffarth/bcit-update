@@ -52,6 +52,8 @@ function insertShape(predShape, altNode, viewer) {
   ProcessRenderer.addExtensionShape(viewer, newShape, { compliance: nodeReq.data() });
   addDataInputShapes(viewer, newShape, altNode);
 
+  console.log('altNode', altNode);
+
   //workaround: move shape
   const verticalPos = ProcessRenderer.getVerticalPosition(newShape, predShape);
   const modeler = viewer.get('modeling');

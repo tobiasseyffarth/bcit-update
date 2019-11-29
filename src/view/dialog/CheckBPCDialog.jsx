@@ -45,7 +45,6 @@ class CheckBPCDialog extends Component {
     const height = propsPanel.offsetHeight;
 
     if (this.bpmnCheckModeler === undefined) {
-      console.log('define new bpmnModeler');
       this.bpmnCheckModeler = new BpmnModeler({
         container: '#alternativeBPC',
         height,
@@ -265,50 +264,50 @@ class CheckBPCDialog extends Component {
 
   renderPropsPanel() {
     return (
-        <div className="property-panel">
-          <div>
-            <label>ID: {this.state.bpmnId} </label>
-          </div>
-          <br />
-          <div>
-            <label>Name: {this.state.bpmnName} </label>
-          </div>
-          <br />
-          <div>
-            <ListBox
-                options={this.state.bpmnProps}
-                onChange={e => this.setState({ bpmnProp: e.value })}
-                optionLabel="name"
-                style={{ width: '100%' }}
-            />
-          </div>
-          <br />
-          <div>
-            <Checkbox
-                inputId="cbCompliance"
-                checked={this.state.isCompliance}
-            />
-            <label htmlFor="cbCompliance">is Compliance Process </label>
-          </div>
-          <br />
-          <div>
-            <Checkbox
-                inputId="cbCompliancePattern"
-                checked={this.state.isCompliancePattern}
-            />
-            <label htmlFor="cbCompliancePattern">is Compliance Process Pattern</label>
-          </div>
-          <br/>
-          <div>
-            <Accordion>
-              <AccordionTab header="Legend">
-                <p style={{color:'orange'}}>Changed Element</p>
-                <p style={{color:'blue'}}>Obsolete Element</p>
-                <p style={{color:'red'}}>Violated Element</p>
-              </AccordionTab>
-            </Accordion>
-          </div>
+      <div className="property-panel">
+        <div>
+          <label>ID: {this.state.bpmnId} </label>
         </div>
+        <br />
+        <div>
+          <label>Name: {this.state.bpmnName} </label>
+        </div>
+        <br />
+        <div>
+          <ListBox
+            options={this.state.bpmnProps}
+            onChange={e => this.setState({ bpmnProp: e.value })}
+            optionLabel="name"
+            style={{ width: '100%' }}
+          />
+        </div>
+        <br />
+        <div>
+          <Checkbox
+              inputId="cbCompliance"
+              checked={this.state.isCompliance}
+          />
+          <label htmlFor="cbCompliance">is Compliance Process </label>
+        </div>
+        <br />
+        <div>
+          <Checkbox
+              inputId="cbCompliancePattern"
+              checked={this.state.isCompliancePattern}
+          />
+          <label htmlFor="cbCompliancePattern">is Compliance Process Pattern</label>
+        </div>
+        <br/>
+        <div>
+          <Accordion>
+            <AccordionTab header="Legend">
+              <p style={{color:'orange'}}>Changed Element</p>
+              <p style={{color:'blue'}}>Obsolete Element</p>
+              <p style={{color:'red'}}>Violated Element</p>
+            </AccordionTab>
+          </Accordion>
+        </div>
+      </div>
     );
   }
 

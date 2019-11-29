@@ -29,7 +29,7 @@ module.exports = {
       '@neutrinojs/react',
       {
         html: {
-          title: 'BCIT 2'
+          title: 'BCIT'
         }
       }
     ],
