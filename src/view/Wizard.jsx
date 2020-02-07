@@ -15,11 +15,11 @@ export default class ConnectWizard extends Component {
 
   items = [
     { label: 'Import Models' },
-    { label: 'Connect Compliance and Compliance' },
-    { label: 'Connect Process and IT' },
-    { label: 'Connect Process and Compliance' },
-    { label: 'Connect IT and Compliance' },
-    { label: 'Define alternative Compliance Processes' },
+    { label: 'Connect Compliance/Compliance' },
+    { label: 'Connect Process/IT' },
+    { label: 'Connect Process/Compliance' },
+    { label: 'Connect IT/Compliance' },
+    { label: 'Define Compliance Processes' },
     { label: 'Analyze' },
   ];
 
