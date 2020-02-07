@@ -240,7 +240,7 @@ class RemoveDialog extends Component {
     return (
       <div className="content-section implementation">
         <Dialog
-          header="Impacts on BPC when Removing an Element"
+          header="Impacts on Compliance when Removing an Element"
           footer={footer}
           visible={this.state.visibleDialog}
           style={{ width: '90vw' }}
@@ -256,12 +256,6 @@ class RemoveDialog extends Component {
       </div>
     );
   }
-
-  /*
-
-
-
-   */
 
   render() {
     return (

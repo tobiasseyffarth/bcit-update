@@ -221,7 +221,7 @@ class ChangeDialog extends Component {
     return (
       <div className="content-section implementation">
         <Dialog
-          header="Demands by Compliance Requirements when Replacing an Element"
+          header="Demands by Compliance when Replacing an Element"
           visible={this.state.visibleDialog}
           style={{ width: '90vw' }}
           onHide={this.onHide}
