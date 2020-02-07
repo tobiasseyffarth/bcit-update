@@ -230,14 +230,14 @@ export async function getAdaptedProcesses(altGraph, deleteGraph, bpmnXml){
 
         if (altEle.violatedCP === null) { // if BPC was checked there is no violatedCP
           const bpmnXml = await adaptBusinessProcess(altEle);
-          const name = `compliant process ${i + 1}`;
+          const name = `compliant business process ${i + 1}`;
           adaptedProcesses.push({
             name,
             bpmnXml,
           });
         } else { // if compliant business process was changed
           const bpmnXml = await adaptBusinessProcessByAlternatives(altEle);
-          const name = `adapted process ${i + 1}`;
+          const name = `compliant business process ${i + 1}`;
           adaptedProcesses.push({
             name,
             bpmnXml,
