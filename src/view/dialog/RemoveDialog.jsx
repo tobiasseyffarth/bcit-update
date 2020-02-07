@@ -230,9 +230,9 @@ class RemoveDialog extends Component {
     const footer = (
       <div>
         <Button
-          label="show adapted business process"
+          label="recommend compliant business process"
           onClick={this.showAlternativeDialog}
-          tooltip="show business process that are adapted through alternative compliance processes"
+          tooltip="recommend compliant business processes by integrating alternative compliance processes"
         />
       </div>
     );
