@@ -48,9 +48,6 @@ function getViolatedComplianceProcess(altGraph, id) {
 
 export function getAlternatives(altGraph, deleteGraph, viewer) {
   const violatedComplianceProcesses = GraphQuery.filterNodes(deleteGraph, { type: 'complianceprocess' });
-
-  console.log(violatedComplianceProcesses);
-
   let alternativeCP;
 
   // find violated cp due to change
