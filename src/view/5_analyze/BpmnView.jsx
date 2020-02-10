@@ -191,7 +191,7 @@ class BpmnView extends Component {
         <br />
         <Button
           className="button-panel"
-          label="check BPC"
+          label="check compliance"
           onClick={this.checkBPC}
           tooltip="check business process compliance (BPC)"
         />
@@ -235,17 +235,6 @@ class BpmnView extends Component {
     }
   }
 
-  /**
-   *
-   <AlternativeDialog
-   showAlternative={this.state.visibleAlternative}
-   close={this.closeAlternativeView}
-   />
-
-
-   * @returns {*}
-   */
-
   render() {
     return (
       <div>
@@ -257,8 +246,8 @@ class BpmnView extends Component {
         />
         <div>
           <CheckBPCDialog
-              showCheckBPC={this.state.visibleCheck}
-              close={this.closeCheckBPCView}
+            showCheckBPC={this.state.visibleCheck}
+            close={this.closeCheckBPCView}
           />
           <RemoveDialog
             showRemoveDialog={this.state.visibleRemove}
