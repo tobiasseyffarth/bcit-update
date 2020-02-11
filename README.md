@@ -51,12 +51,12 @@ Especially for working with the files in the Projects folder, we recommend cloni
 │   │   ├── demo project            # demonstrates the motivation scenario in the paper
 │   │   └── extended demo project   # second demo used in the evaluation
 │   ├── 3-evaluation                # questionnaire, evaluation results and histogram of the evaluation results
-│   └── 4-pseudocoode               # pseudocode for 
+│   └── 4-pseudocoode               # pseudocode of algorithm
 └── ...
 ```
 
 ### Project Data
-- 
+- Each project data folder contains the same file types.
 ```
 .   
 └──resources
