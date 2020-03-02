@@ -1,11 +1,11 @@
 # BCIT
 
 BCIT is a tool for analyzing the interactions between compliance, business process 
-and information technology. Furthermore BCIT is able to propose compliant business processes through alternative compliance processes.
+and information technology. Furthermore BCIT is able to propose compliant business process models through the integration of alternative compliance processes.
 
 ## Content
 - [Features](#features)
-- [Run BCIT](#Run BCIT)
+- [Run](#Run)
 - [Video](#Video)
 - [Resources](#Resources)
 
@@ -17,7 +17,7 @@ and information technology. Furthermore BCIT is able to propose compliant busine
 - Automatically propose compliant business process in case of a compliance violation [2]
 - Export compliant business processes as *.bpmn 
 
-## Run BCIT
+## Run
 You can run BCIT in two different ways:
 - You can use it online on [https://anonymforreview.github.io/](https://anonymforreview.github.io/)
 - You can run it locally:
