@@ -23,7 +23,7 @@ You can run BCIT in two different ways:
 - You can run it locally:
    1. Open a terminal 
    2. Clone the repository `git clone https://github.com/anonymForReview/bcit.git`
-   3. Change directory `cd compliance-checker`
+   3. Change directory `cd compliance-checker-master`
    4. Install dependencies `npm install`
    5. Start BCIT `npm run start`
    6. Open BCIT in your preferred browser
