@@ -19,7 +19,7 @@ and information technology. Furthermore BCIT is able to propose compliant busine
 
 ## Run
 You can run BCIT in two different ways:
-- You can use it online on [https://anonymforreview.github.io/](https://anonymforreview.github.io/)
+- You can use it online on [https://anonymforreview.github.io/anonymForReview/](https://anonymforreview.github.io/anonymForReview/)
 - You can run it locally:
    1. Open a terminal 
    2. Clone the repository `git clone https://github.com/anonymForReview/bcit.git`
