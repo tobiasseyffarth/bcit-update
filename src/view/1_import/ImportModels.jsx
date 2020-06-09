@@ -101,11 +101,14 @@ export default class ImportModels extends Component {
     });
   }
 
-  // show modal
   openProjectModel = () => {
-    if (ProjectModel.getBpmnXml() === null && ProjectModel.getCompliance()===null && ProjectModel.getInfra()===null) {
-      // ProjectIO.openProject(sampleModel);
-      console.log('show screen')
+    if (ProjectModel.getBpmnXml() === null && ProjectModel.getCompliance() === null && ProjectModel.getInfra() === null) {
+      ProjectIO.openProject(sampleModel);
+
+      this.growl.show({
+        severity: 'info',
+        summary: 'Demo Project loaded'
+      });
     }
   };
 
@@ -148,8 +151,6 @@ export default class ImportModels extends Component {
       <div>
         <Growl ref={(el) => { this.growl = el; }} position="topright" />
         <div>
-          <br />
-          <br />
           <Button
             className="button-import"
             label="Import Compliance Requirements"
