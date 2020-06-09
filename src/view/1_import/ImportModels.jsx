@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable linebreak-style */
 import React, { Component } from 'react';
 import { Button } from 'primereact/button';
 import { Growl } from 'primereact/growl';
@@ -27,7 +29,10 @@ export default class ImportModels extends Component {
     this.openInfra = this.openInfra.bind(this);
     this.openBPMN = this.openBPMN.bind(this);
     // this.openModels(); // temporary
-    // this.openProjectModel(); // temporary
+  }
+
+  componentDidMount() {
+    this.openProjectModel(); // temporary
   }
 
   async openCompliance() {
@@ -50,7 +55,7 @@ export default class ImportModels extends Component {
     const input = await fileio.readFile(file);
     const result = infraimporter(input);
 
-    if (result.infra !== undefined){
+    if (result.infra !== undefined) {
       ProjectModel.setInfra(result.infra);
       GraphConnector.addSubGraphs({ infra: result.infra }); // add infra to graph
       const metadata = infraquery.getMetadata(result.infra);
@@ -96,27 +101,28 @@ export default class ImportModels extends Component {
     });
   }
 
-  // temporary
+  // show modal
   openProjectModel = () => {
-    if (ProjectModel.getBpmnXml() === null){
-      ProjectIO.openProject(sampleModel);
+    if (ProjectModel.getBpmnXml() === null && ProjectModel.getCompliance()===null && ProjectModel.getInfra()===null) {
+      // ProjectIO.openProject(sampleModel);
+      console.log('show screen')
     }
   };
 
   // temporary
   openModels = () => {
-    if (ProjectModel.getCompliance() === null){
+    if (ProjectModel.getCompliance() === null) {
       const compliance = complianceimporter.getJSON(complianceJson);
       ProjectModel.setCompliance(compliance);
     }
 
-    if (ProjectModel.getInfra() === null){
+    if (ProjectModel.getInfra() === null) {
       const infra = infraimporter(infraXml);
       ProjectModel.setInfra(infra.infra);
       GraphConnector.addSubGraphs({ infra: infra.infra });
     }
 
-    if (ProjectModel.getBpmnXml() === null){
+    if (ProjectModel.getBpmnXml() === null) {
       const bpmnModeler = new BpmnModeler({});
 
       bpmnModeler.importXML(bpmnXml, (err) => { // create process object and add to graph
@@ -130,7 +136,7 @@ export default class ImportModels extends Component {
       });
     }
 
-    if (ProjectModel.getAltGraph() === null){
+    if (ProjectModel.getAltGraph() === null) {
       const elements = JSON.parse(altGraph);
       const graph = ProjectIO.getGraphFromElements(elements);
       ProjectModel.setAltGraph(graph);
@@ -154,7 +160,7 @@ export default class ImportModels extends Component {
           <br />
           <Button
             className="button-import"
-            label="Import Business Process"
+            label="Import Business Process Model"
             onClick={this.openBPMN}
             tooltip="import business process model modelled as BPMN file"
           />

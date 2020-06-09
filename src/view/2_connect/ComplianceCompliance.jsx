@@ -26,20 +26,20 @@ export default class StepComplianceCompliance extends Component {
     this.connectCompliance = this.connectCompliance.bind(this);
   }
 
-  componentDidMount(){
+  componentDidMount() {
     if (ProjectModel.getCompliance() !== null) {
       this.onMount();
     }
   }
 
-  onMount(){
+  onMount() {
     const compliance = ProjectModel.getCompliance();
     this.setState({ compliance });
     this.setState({ complianceFilterOne: compliance });
     this.setState({ complianceFilterTwo: compliance });
   }
 
-  selectCompliance(no, selectedRequirement){
+  selectCompliance(no, selectedRequirement) {
     const compliance = this.state.compliance.requirement;
     const { id } = selectedRequirement;
     const reqText = ComplianceQuery.toString(compliance, id);
@@ -53,12 +53,12 @@ export default class StepComplianceCompliance extends Component {
     }
   }
 
-  connectCompliance(){
+  connectCompliance() {
     const sourceReq = this.state.selectedComplianceOne;
     const targetReq = this.state.selectedComplianceTwo;
 
-    if (sourceReq !== null && targetReq !== null){
-      if (sourceReq === targetReq){
+    if (sourceReq !== null && targetReq !== null) {
+      if (sourceReq === targetReq) {
         const detail = '';
         this.growl.show({ severity: 'warn', summary: 'Can not connect same elements.', detail });
       } else {
@@ -84,7 +84,7 @@ export default class StepComplianceCompliance extends Component {
     }
   }
 
-  renderComplianceSelectorOne(no){
+  renderComplianceSelectorOne(no) {
     const option = this.state.complianceFilterOne.requirement;
     const value = this.state.selectedComplianceOne;
 
@@ -116,7 +116,7 @@ export default class StepComplianceCompliance extends Component {
     );
   }
 
-  renderComplianceSelectorTwo(no){
+  renderComplianceSelectorTwo(no) {
     const option = this.state.complianceFilterTwo.requirement;
     const value = this.state.selectedComplianceTwo;
 

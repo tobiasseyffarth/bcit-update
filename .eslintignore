@@ -1,2 +1,5 @@
 /src/controller/helpers/fast-xml-parser/*
 /src/models/compliancemodel.js
+/src/view/*
+/src/controller/*
+/src/models/*

@@ -15,16 +15,16 @@ function checkBPC(graph) {
 
     // 3rd check compliance process of first entry
     if (preds.length > 0) {
-      console.log(businessNode);
+      // console.log(businessNode);
       const complianceRequirement = preds[0];
-      console.log(complianceRequirement);
+      // console.log(complianceRequirement);
 
       const complianceProcesses = GraphQuery.getPredecessors(complianceRequirement, 'complianceprocess');
-      console.log(complianceProcesses);
+      // console.log(complianceProcesses);
 
       // 4th if no compliance process append preds to compliance
       if (complianceProcesses.length === 0) {
-        console.log('violation');
+        // console.log('violation');
         resultElements.push(complianceRequirement); // add compliance requirement
         resultElements.push(businessNode); // add business node
 
