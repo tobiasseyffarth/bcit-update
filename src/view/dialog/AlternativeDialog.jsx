@@ -187,7 +187,7 @@ class AlternativeDialog extends Component {
         console.log('error rendering', err);
       } else {
         const canvas = this.bpmnAltModeler.get('canvas');
-        canvas.zoom('fit-viewport'); //--> hier liegt der Fehler??
+        canvas.zoom('fit-viewport');
       }
     });
   };
