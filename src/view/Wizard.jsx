@@ -11,7 +11,9 @@ import Alternatives from './4_alternatives/Alternatives';
 import Analyze from './5_analyze/Analyze';
 
 export default class ConnectWizard extends Component {
-  state ={};
+  state ={
+    activeIndex:0,
+  };
 
   items = [
     { label: 'Import Models' },
@@ -22,6 +24,10 @@ export default class ConnectWizard extends Component {
     { label: 'Define Compliance Processes' },
     { label: 'Analyze' },
   ];
+
+  componentDidMount() {
+    this.props.history.push('/import'); // force to load first step
+  }
 
   render() {
     return (
