@@ -191,9 +191,9 @@ class BpmnView extends Component {
         <br />
         <Button
           className="button-panel"
-          label="check compliance"
+          label="check business process compliance"
           onClick={this.checkBPC}
-          tooltip="check business process compliance (BPC)"
+          tooltip="check business process compliance (BPC) and recommend compliant business processes based on alternative compliance processes"
         />
         <br />
         <br />
@@ -201,7 +201,7 @@ class BpmnView extends Component {
           className="button-panel"
           label="show result when remove"
           onClick={this.getRemoveGraph}
-          tooltip="show compliance violation when removing these element"
+          tooltip="show compliance violation when removing the selected element"
         />
         <br />
         <br />
@@ -209,7 +209,7 @@ class BpmnView extends Component {
           className="button-panel"
           label="show result when replace"
           onClick={this.getChangeGraph}
-          tooltip="show demands by compliance requirements when replacing these element"
+          tooltip="show demands by compliance requirements when replacing the selected element"
         />
       </div>
         /*  add outsourcing elements
