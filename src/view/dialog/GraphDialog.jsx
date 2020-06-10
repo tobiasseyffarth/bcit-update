@@ -16,12 +16,13 @@ class GraphDialog extends Component {
       nodeProps: [],
       removeDisabled: true,
       visibleDialog: false,
+      firstStart: true,
     };
     this.onHide = this.onHide.bind(this);
     this.onShow = this.onShow.bind(this);
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     this.setState({ visibleDialog: nextProps.showGraphDialog });
   }
 
@@ -31,13 +32,20 @@ class GraphDialog extends Component {
   }
 
   onShow() {
-    console.log('show graph');
+    // Workaround: show graph
+    if (this.state.firstStart) {
+      this.setState({ firstStart: false });
+      if (ProjectModel.getGraph() !== null) {
+        this.renderGraphView();
+      }
+    }
+
     if (ProjectModel.getGraph() !== null) {
       this.renderGraphView();
     }
   }
 
-  hookGraphOnClick(graph){
+  hookGraphOnClick(graph) {
     const _this = this;
 
     graph.on('click', (evt) => { // http://js.cytoscape.org/#core/events
@@ -73,7 +81,7 @@ class GraphDialog extends Component {
     */
   };
 
-  renderGraphView(){
+  renderGraphView() {
     const container = document.getElementById('graph-container');
 
     console.log(container);
@@ -92,14 +100,14 @@ class GraphDialog extends Component {
     this.hookGraphOnClick(this.graph);
   }
 
-  renderGraphProps(node){
+  renderGraphProps(node) {
     if (node !== null) {
       this.setState({ nodeId: node.data('id') });
       this.setState({ nodeType: node.data('nodetype') });
       this.setState({ modelType: node.data('modeltype') });
 
       const nodeType = node.data('nodetype');
-      if (nodeType !== 'compliance'){ // non compliance nodes
+      if (nodeType !== 'compliance') { // non compliance nodes
         this.setState({ nodeName: node.data('name') });
         this.setState({ nodeProps: node.data('props') });
       } else { // compliance nodes

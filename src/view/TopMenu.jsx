@@ -1,6 +1,6 @@
-import { Menubar } from 'primereact/menubar';
 import React, { Component } from 'react';
 import { Growl } from 'primereact/growl';
+import { Menubar } from 'primereact/menubar';
 import PropTypes from 'prop-types';
 import 'primeicons/primeicons.css';
 import AboutDialog from './dialog/AboutDialog';
