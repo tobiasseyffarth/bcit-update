@@ -26,7 +26,7 @@ export default class ConnectWizard extends Component {
   ];
 
   componentDidMount() {
-    this.props.history.push('/import'); // force to load first step
+    this.props.history.push('./import'); // force to load first step
   }
 
   render() {
@@ -40,41 +40,41 @@ export default class ConnectWizard extends Component {
             this.setState({ activeIndex: e.index });
             switch (e.index) {
               case 0:
-                this.props.history.push('/import');
+                this.props.history.push('./import');
                 break;
               case 1:
-                this.props.history.push('/ComplianceCompliance');
+                this.props.history.push('./ComplianceCompliance');
                 break;
               case 2:
-                this.props.history.push('/ProcIT');
+                this.props.history.push('./ProcIT');
                 break;
               case 3:
-                this.props.history.push('/ProcCompliance');
+                this.props.history.push('./ProcCompliance');
                 break;
               case 4:
-                this.props.history.push('/ITCompliance');
+                this.props.history.push('./ITCompliance');
                 break;
               case 5:
-                this.props.history.push('/alternatives');
+                this.props.history.push('./alternatives');
                 break;
               case 6:
-                this.props.history.push('/analyze');
+                this.props.history.push('./analyze');
                 break;
               default:
-                this.props.history.push('/import');
+                this.props.history.push('./import');
                 break;
             }
               }}
         />
         <Switch>
-          <Redirect from="/" exact to="/import" />
-          <Route path="/import" component={ImportModels} />
-          <Route path="/ComplianceCompliance" component={ComplianceCompliance} />
-          <Route path="/ProcIT" component={ProcIT} />
-          <Route path="/ProcCompliance" component={ProcCompliance} />
-          <Route path="/ITCompliance" component={ITCompliance} />
-          <Route path="/alternatives" component={Alternatives} />
-          <Route path="/analyze" component={Analyze} />
+          <Redirect from="./" exact to="/import" />
+          <Route path="./import" component={ImportModels} />
+          <Route path="./ComplianceCompliance" component={ComplianceCompliance} />
+          <Route path="./ProcIT" component={ProcIT} />
+          <Route path="./ProcCompliance" component={ProcCompliance} />
+          <Route path="./ITCompliance" component={ITCompliance} />
+          <Route path="./alternatives" component={Alternatives} />
+          <Route path="./analyze" component={Analyze} />
         </Switch>
       </div>
     );
