@@ -83,14 +83,8 @@ class GraphDialog extends Component {
 
   renderGraphView() {
     const container = document.getElementById('graph-container');
-
-    console.log(container);
-
     this.graph = ProjectModel.getGraph();
     this.graph.mount(container);
-
-    console.log(container);
-
     const layout = this.graph.layout({ name: 'breadthfirst' }); // more options http://js.cytoscape.org/#layouts
     layout.run();
     this.graph.reset();
