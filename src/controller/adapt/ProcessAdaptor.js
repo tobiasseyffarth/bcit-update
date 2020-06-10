@@ -52,7 +52,7 @@ function insertShape(predShape, altNode, viewer) {
   ProcessRenderer.addExtensionShape(viewer, newShape, { compliance: nodeReq.data() });
   addDataInputShapes(viewer, newShape, altNode);
 
-  console.log('altNode', altNode);
+  // console.log('altNode', altNode);
 
   //workaround: move shape
   const verticalPos = ProcessRenderer.getVerticalPosition(newShape, predShape);
@@ -215,7 +215,7 @@ export async function getAdaptedProcesses(altGraph, deleteGraph, bpmnXml){
   } else {
     const altEles = AlternativeFinder.getAlternatives(altGraph, deleteGraph, modeler);
 
-    console.log('alternative', altEles);
+    // console.log('alternative', altEles);
 
     const violatedShapes = getShapes(modeler, violatedElements);
     const changedElement = GraphQuery.filterNodes(deleteGraph, { style: 'changedElement' });
