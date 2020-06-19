@@ -2,6 +2,7 @@
 
 BCIT is a tool for analyzing the interactions between compliance, business process 
 and information technology. Furthermore BCIT is able to propose compliant business process models through the integration of alternative compliance processes.
+This version builds on its predecessor [1] and extends it by the feature of process adaption. 
 
 ## Content
 - [Features](#features)
@@ -13,9 +14,9 @@ and information technology. Furthermore BCIT is able to propose compliant busine
 ## Features
 - Import business process modelled as *.bpmn, import IT architecture modelled as TOGAF Open Exchange Format and import compliance requirement model 
 - Connect the model elements together
-- Analyze the interactions between compliance and business process change [1] 
-- Define alternative compliance processes to compliance requirements [2]
-- Automatically propose compliant business process in case of a compliance violation [2]
+- Analyze the interactions between compliance and business process change [2] 
+- Define alternative compliance processes to compliance requirements [3]
+- Automatically recommend compliant business process in case of a compliance violation [3]
 - Export compliant business processes as *.bpmn 
 
 ## Run
@@ -37,10 +38,10 @@ You can run BCIT in two different ways:
 - [Node.JS](https://nodejs.org/en/download/) >= 10.15
 
 ## Video
-- A demo video that introduces the basic features of BCIT is available [here](https://cloud.uni-halle.de/s/q09oK57WnqgvZyr).
+- A demo video that introduces the basic features of BCIT is available at https://cloud.uni-halle.de/s/hok34Awrt9BX9go.
 
 ## Tutorial
-- A tutorial document is available at [here](https://github.com/tobiasseyffarth/bcit-update/tree/master/resources/1-tutorial)
+- A tutorial document is available at https://github.com/tobiasseyffarth/bcit-update/tree/master/resources/1-tutorial
 
 ## Resources
 - In [/resources/](/resources/) we provide additional information and documents.
@@ -74,3 +75,10 @@ Especially for working with the files in the project folder, we recommend clonin
              └── ...
 
 ```
+
+## References
+[1] Seyffarth, Tobias; Raschke, Kai (2018): BCIT. A Tool for Analyzing the Interactions between Business Process Compliance and Business Process Change. In: Proceedings of the Dissertation Award and Demonstration, Industrial Track at BPM 2018, S. 81–85.
+
+[2] Seyffarth, Tobias; Kühnel, Stephan; Sackmann, Stefan (2018): Business Process Compliance and Business Process Change. An Approach to Analyze the Interactions. In: Business Information Systems. BIS 2018. Lecture Notes in Business Information Processing (320), S. 176–189.
+
+[3] Seyffarth, Tobias; Kühnel, Stephan; Sackmann, Stefan (2019): Business Process Compliance despite Change. Towards Proposals for a Business Process Adaption. In: Information Systems Engineering in Responsible Information Systems. CAiSE 2019. Lecture Notes in Business Information Processing, vol 350., S. 227–239. 
