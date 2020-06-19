@@ -1,8 +1,8 @@
-# BCIT
+# BCIT (Business Process Compliance and IT)
 
 BCIT is a tool for analyzing the interactions between compliance, business process 
 and information technology. Furthermore BCIT is able to propose compliant business process models through the integration of alternative compliance processes.
-This version builds on its predecessor [1] and extends it by the feature of process adaption. 
+This version builds on its predecessor [1] and extends it by the feature to recommend compliant business processes based on process adaption. 
 
 ## Content
 - [Features](#features)
