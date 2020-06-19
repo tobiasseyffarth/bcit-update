@@ -41,7 +41,7 @@ You can run BCIT in two different ways:
 - A demo video that introduces the basic features of BCIT is available at https://cloud.uni-halle.de/s/hok34Awrt9BX9go.
 
 ## Tutorial
-- A tutorial document is available at https://github.com/tobiasseyffarth/bcit-update/tree/master/resources/1-tutorial
+- A tutorial document is available at [/resources/](/resources/1-tutorial)
 
 ## Resources
 - In [/resources/](/resources/) we provide additional information and documents.
