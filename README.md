@@ -84,8 +84,8 @@ Especially for working with the files in the project folder, we recommend clonin
 [3] Seyffarth, Tobias; Kühnel, Stephan; Sackmann, Stefan (2019): Business Process Compliance despite Change. Towards Proposals for a Business Process Adaption. In: Information Systems Engineering in Responsible Information Systems. CAiSE 2019. Lecture Notes in Business Information Processing, vol 350., S. 227–239. 
 
 ## Contributors
-[Tobias Seyffarth](https://github.com/tobiasseyffarth)
-[Kai Raschke](https://github.com/kai-raschke/)
+- [Tobias Seyffarth](https://github.com/tobiasseyffarth)
+- [Kai Raschke](https://github.com/kai-raschke/)
 
 ## License
 MIT
