@@ -10,6 +10,9 @@ This version builds on its predecessor [1] and extends it by the feature to reco
 - [Video](#Video)
 - [Tutorial](#Tutorial)
 - [Resources](#Resources)
+- [References](#References)
+- [Contributors](#Contributors)
+- [License](#License)
 
 ## Features
 - Import business process modelled as *.bpmn, import IT architecture modelled as TOGAF Open Exchange Format and import compliance requirement model 
