@@ -24,8 +24,8 @@ You can run BCIT in two different ways:
 - You can use it online on https://seyffarth.me/apps/bcit/ 
 - You can run it locally:
    1. Open a terminal 
-   2. Clone the repository `git clone https://github.com/tobiasseyffarth/bcit-update.git`
-   3. Change directory `cd compliance-checker-master`
+   2. Clone the repository `git clone https://github.com/tobiasseyffarth/bcit.git`
+   3. Change directory `cd bcit-update-master`
    4. Install dependencies `npm install` 
    5. Start BCIT `npm run start`
    6. Open BCIT in your preferred browser
@@ -82,3 +82,10 @@ Especially for working with the files in the project folder, we recommend clonin
 [2] Seyffarth, Tobias; Kühnel, Stephan; Sackmann, Stefan (2018): Business Process Compliance and Business Process Change. An Approach to Analyze the Interactions. In: Business Information Systems. BIS 2018. Lecture Notes in Business Information Processing (320), S. 176–189.
 
 [3] Seyffarth, Tobias; Kühnel, Stephan; Sackmann, Stefan (2019): Business Process Compliance despite Change. Towards Proposals for a Business Process Adaption. In: Information Systems Engineering in Responsible Information Systems. CAiSE 2019. Lecture Notes in Business Information Processing, vol 350., S. 227–239. 
+
+## Contributors
+[Tobias Seyffarth](https://github.com/tobiasseyffarth)
+[Kai Raschke](https://github.com/kai-raschke/)
+
+## License
+MIT
