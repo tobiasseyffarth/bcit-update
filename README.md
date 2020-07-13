@@ -2,7 +2,7 @@
 
 BCIT is a tool for analyzing the interactions between compliance, business process 
 and information technology. Furthermore BCIT is able to propose compliant business process models through the integration of alternative compliance processes.
-This version builds on its predecessor [1] and extends it by the feature to recommend compliant business processes based on process adaption. 
+This version builds on its predecessor [1] and extends it by the feature to recommend compliant business processes based on process adaption. In [4] the prototype is briefly described.
 
 ## Content
 - [Features](#features)
@@ -85,6 +85,8 @@ Especially for working with the files in the project folder, we recommend clonin
 [2] Seyffarth, Tobias; Kühnel, Stephan; Sackmann, Stefan (2018): Business Process Compliance and Business Process Change. An Approach to Analyze the Interactions. In: Business Information Systems. BIS 2018. Lecture Notes in Business Information Processing (320), S. 176–189.
 
 [3] Seyffarth, Tobias; Kühnel, Stephan; Sackmann, Stefan (2019): Business Process Compliance despite Change. Towards Proposals for a Business Process Adaption. In: Information Systems Engineering in Responsible Information Systems. CAiSE 2019. Lecture Notes in Business Information Processing, vol 350., S. 227–239. 
+
+[4] Seyffarth, Tobias; Raschke, Kai (2020): BCIT. A Tool to Recommend Compliant Business Processes based on Process Adaption. In: Proceedings of the Best Dissertation Award, Doctoral Consortium, and Demonstration & Resources Track at BPM 2020.
 
 ## Contributors
 - [Tobias Seyffarth](https://github.com/tobiasseyffarth)
